@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+      <ProjectReference Include="..\LiWiMus.Core\LiWiMus.Core.csproj" />
     </ItemGroup>
 
 </Project>

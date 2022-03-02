@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using LiWiMus.Models;
+using LiWiMus.Web.Models;
 
-namespace LiWiMus.Controllers;
+namespace LiWiMus.Web.Controllers;
 
 public class HomeController : Controller
 {

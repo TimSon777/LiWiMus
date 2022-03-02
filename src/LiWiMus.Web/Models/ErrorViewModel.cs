@@ -1,4 +1,4 @@
-namespace LiWiMus.Models;
+namespace LiWiMus.Web.Models;
 
 public class ErrorViewModel
 {
