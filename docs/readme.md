@@ -1,4 +1,6 @@
-﻿# README
+# README
+## Установка MySql
+Следовать инструкции: https://it-black.ru/ustanovka-mysql-workbench/
 
 ## Строка подключения
 Добавить в папку LiWiMus.Web файл `appsettings.Development.json` со следующим содержимым:
@@ -25,3 +27,12 @@
   dotnet ef --startup-project ..\LiWiMus.Web\ database update
   ```
   *запускать из папки LiWiMus.Infrastructure* 
+  
+## Подключение через Rider
+* Нажать на кнопку справа Database
+* Нажать на "+"
+* Далее Data Source 
+* Затем MySql
+* Установить driver
+* Пароль, логин: то, что вводили при установке MySql
+* База данных: liwimus
