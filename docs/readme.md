@@ -1,4 +1,6 @@
 ﻿# README
+ ## Установка MySql
+ Следовать инструкции: https://it-black.ru/ustanovka-mysql-workbench/
 
 ## Строка подключения
 Добавить в папку LiWiMus.Web файл `appsettings.Development.json` со следующим содержимым:
