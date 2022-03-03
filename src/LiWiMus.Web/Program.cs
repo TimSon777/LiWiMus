@@ -1,15 +1,8 @@
-using LiWiMus.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationContext>(options =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-});
+LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 
 var app = builder.Build();
 
