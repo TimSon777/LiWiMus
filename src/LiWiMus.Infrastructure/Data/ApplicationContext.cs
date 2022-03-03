@@ -1,11 +1,13 @@
 ﻿using System.Reflection;
 using LiWiMus.Core.Entities;
 using LiWiMus.SharedKernel;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LiWiMus.Infrastructure.Data;
 
-public class ApplicationContext : DbContext
+public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int>
 {
     public DbSet<Album> Albums => Set<Album>();
     public DbSet<Artist> Artists => Set<Artist>();
@@ -15,7 +17,7 @@ public class ApplicationContext : DbContext
     public DbSet<Track> Tracks => Set<Track>();
     public DbSet<User> Users => Set<User>();
 
-    public ApplicationContext(DbContextOptions options) : base(options)
+    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
 
     }
@@ -26,7 +28,7 @@ public class ApplicationContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
     {
         var entries = ChangeTracker
                       .Entries()

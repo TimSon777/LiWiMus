@@ -1,9 +1,9 @@
 ﻿namespace LiWiMus.Core.Entities;
 
-public class User : BaseEntity
+public class User : BaseUserEntity
 {
-    public string AvatarPath { get; set; }
-    public UserPlan UserPlan { get; set; }
+    public string? AvatarPath { get; set; }
+    public UserPlan? UserPlan { get; set; }
 
     public int? ArtistId { get; set; }
     public Artist Artist { get; set; }

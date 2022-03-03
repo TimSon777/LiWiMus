@@ -1,16 +1,28 @@
-var builder = WebApplication.CreateBuilder(args);
+using LiWiMus.Core.Entities;
+using LiWiMus.Infrastructure.Data;
 
-// Add services to the container.
-builder.Services.AddControllersWithViews();
-LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
+
+LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
+services.AddDefaultIdentity<User>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 3;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.User.RequireUniqueEmail = true;
+        options.SignIn.RequireConfirmedEmail = false;
+    })
+    .AddEntityFrameworkStores<ApplicationContext>();
+services.AddControllersWithViews();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -19,10 +31,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapRazorPages();
 app.Run();
