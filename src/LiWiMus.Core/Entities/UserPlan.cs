@@ -1,6 +1,4 @@
-﻿using System.Numerics;
-
-namespace LiWiMus.Core.Entities;
+﻿namespace LiWiMus.Core.Entities;
 
 public class UserPlan : BaseEntity
 {

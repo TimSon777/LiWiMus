@@ -13,6 +13,9 @@ public static class Dependencies
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+            options
+                .UseValidationCheckConstraints()
+                .UseAllCheckConstraints();
         });
     }
 }

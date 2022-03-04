@@ -15,7 +15,6 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int
     public DbSet<Plan> Plans => Set<Plan>();
     public DbSet<Playlist> Playlists => Set<Playlist>();
     public DbSet<Track> Tracks => Set<Track>();
-    public DbSet<User> Users => Set<User>();
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
     {
