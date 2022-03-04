@@ -2,9 +2,13 @@ using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Logging.AddConsole();
+
 var services = builder.Services;
 
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
+
 services.AddDefaultIdentity<User>(options =>
     {
         options.Password.RequireDigit = false;
@@ -19,6 +23,8 @@ services.AddDefaultIdentity<User>(options =>
 services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.Logger.LogInformation("App created...");
 
 if (!app.Environment.IsDevelopment())
 {
@@ -38,4 +44,23 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
+
+app.Logger.LogInformation("Seeding Database...");
+
+using (var scope = app.Services.CreateScope())
+{
+    var scopedProvider = scope.ServiceProvider;
+    try
+    {
+        var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
+        await ApplicationContextSeed.SeedAsync(applicationContext, app.Logger);
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "An error occurred seeding the DB.");
+    }
+}
+
+app.Logger.LogInformation("LAUNCHING");
+
 app.Run();
