@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LiWiMus.Infrastructure.Data;
 
-public class ApplicationContextSeed
+public static class ApplicationContextSeed
 {
     public static async Task SeedAsync(ApplicationContext applicationContext,
                                        ILogger logger,
@@ -15,7 +15,7 @@ public class ApplicationContextSeed
         {
             if (applicationContext.Database.IsMySql())
             {
-                applicationContext.Database.Migrate();
+                await applicationContext.Database.MigrateAsync();
             }
 
             if (!await applicationContext.Plans.AnyAsync())
@@ -32,7 +32,7 @@ public class ApplicationContextSeed
 
             retryForAvailability++;
 
-            logger.LogError(ex.Message);
+            logger.LogError("Error while seeding database: {Message}", ex.Message);
             await SeedAsync(applicationContext, logger, retryForAvailability);
             throw;
         }
