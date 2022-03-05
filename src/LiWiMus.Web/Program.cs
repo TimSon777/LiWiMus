@@ -1,5 +1,6 @@
 using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
+using LiWiMus.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,7 @@ builder.Logging.AddConsole();
 var services = builder.Services;
 
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
+services.AddCoreServices(builder.Configuration);
 
 services.AddDefaultIdentity<User>(options =>
     {

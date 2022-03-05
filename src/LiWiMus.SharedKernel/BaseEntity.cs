@@ -1,6 +1,8 @@
-﻿namespace LiWiMus.SharedKernel;
+﻿using LiWiMus.SharedKernel.Interfaces;
 
-public abstract class BaseEntity
+namespace LiWiMus.SharedKernel;
+
+public abstract class BaseEntity : IAggregateRoot
 {
     public int Id { get; set; }
     public DateTime CreatedAt { get; set; }
