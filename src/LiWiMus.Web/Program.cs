@@ -4,9 +4,9 @@ using LiWiMus.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddEnvironmentVariables();
-
 builder.Logging.AddConsole();
+
+builder.Configuration.AddEnvironmentVariables();
 
 var services = builder.Services;
 
@@ -27,6 +27,8 @@ services.AddDefaultIdentity<User>(options =>
 services.AddControllersWithViews();
 
 var app = builder.Build();
+
+app.Logger.LogInformation("\nConnection string: {ConnectionString} \n", builder.Configuration.GetConnectionString("DefaultConnection"));
 
 app.Logger.LogInformation("App created...");
 
