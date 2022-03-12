@@ -44,5 +44,5 @@ jobs:
             docker image pull aslipatov/liwimus
             docker container stop liwimus-prod
             docker container prune -f
-            docker run -d --name liwimus-prod --restart unless-stopped -p 5101:80 aslipatov/liwimus
+            docker run -d --name liwimus-prod --restart unless-stopped -p 5101:80 --env-file "/var/run/env/default_connection.env" --add-host host.docker.internal:host-gateway aslipatov/liwimus
             docker image prune -f

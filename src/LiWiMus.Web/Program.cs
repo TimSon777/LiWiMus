@@ -4,6 +4,8 @@ using LiWiMus.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables();
+
 builder.Logging.AddConsole();
 
 var services = builder.Services;
