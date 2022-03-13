@@ -4,7 +4,7 @@ using LiWiMus.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Logging.AddConsole(options => options.FormatterName = "simple");
+builder.Logging.AddSimpleConsole();
 
 builder.Configuration.AddEnvironmentVariables();
 
