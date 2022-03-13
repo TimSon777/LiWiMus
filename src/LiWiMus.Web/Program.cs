@@ -1,6 +1,7 @@
 using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,7 +14,7 @@ var services = builder.Services;
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
 services.AddCoreServices(builder.Configuration);
 
-services.AddDefaultIdentity<User>(options =>
+services.AddIdentity<User, IdentityRole<int>>(options =>
     {
         options.Password.RequireDigit = false;
         options.Password.RequiredLength = 3;
@@ -49,7 +50,6 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
 
 app.Logger.LogInformation("Seeding Database...");
 
