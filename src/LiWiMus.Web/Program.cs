@@ -2,6 +2,7 @@ using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,7 @@ var services = builder.Services;
 
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
 services.AddCoreServices(builder.Configuration);
+services.AddWebServices(builder.Configuration);
 
 services.AddIdentity<User, IdentityRole<int>>(options =>
     {
@@ -41,6 +43,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(builder.Environment.ContentRootPath, "Data")),
+    RequestPath = "/Data"
+});
 
 app.UseRouting();
 

@@ -3,11 +3,15 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+
+
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
+        var currentUser = await UserManager.GetUserAsync(User);
         <li class="nav-item">
-            <a class="nav-link text-dark" title="Manage">Hello @User.Identity?.Name!</a>
+            <img src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 50px">
+            <a class="nav-link text-dark d-inline-block" title="Manage">Hello @User.Identity?.Name!</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Account" asp-action="Logout">

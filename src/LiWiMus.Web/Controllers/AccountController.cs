@@ -1,9 +1,12 @@
 ﻿using LiWiMus.Core.Entities;
+using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Settings;
 using LiWiMus.Core.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.Controllers;
 
@@ -13,14 +16,24 @@ public class AccountController : Controller
     private readonly SignInManager<User> _signInManager;
     private readonly IRepository<UserPlan> _userPlanRepository;
     private readonly IRepository<Plan> _planRepository;
+    private readonly IAvatarService _avatarService;
+    private readonly IWebHostEnvironment _environment;
+    private readonly IOptions<DataSettings> _dataDirectoriesOptions;
+
+    private readonly HttpClient _httpClient = new();
 
     public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
-                             IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository)
+                             IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository,
+                             IAvatarService avatarService, IWebHostEnvironment environment,
+                             IOptions<DataSettings> dataDirectoriesOptions)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _userPlanRepository = userPlanRepository;
         _planRepository = planRepository;
+        _avatarService = avatarService;
+        _environment = environment;
+        _dataDirectoriesOptions = dataDirectoriesOptions;
     }
 
     [HttpGet]
@@ -37,7 +50,8 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var defaultPlan = await _planRepository.GetBySpecAsync(new DefaultPlanSpecification()) ?? throw new SystemException();
+        var defaultPlan = await _planRepository.GetBySpecAsync(new DefaultPlanSpecification()) ??
+                          throw new SystemException();
         var userPlan = new UserPlan
         {
             Plan = defaultPlan,
@@ -46,6 +60,8 @@ public class AccountController : Controller
         };
         await _userPlanRepository.AddAsync(userPlan);
         var user = new User {Email = model.Email, UserName = model.UserName, UserPlan = userPlan};
+        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath,
+            _dataDirectoriesOptions.Value.AvatarsDirectory);
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {

@@ -1,4 +1,6 @@
-﻿using LiWiMus.Infrastructure.Data;
+﻿using LiWiMus.Core.Interfaces;
+using LiWiMus.Infrastructure.Data;
+using LiWiMus.Infrastructure.Services;
 using LiWiMus.SharedKernel.Interfaces;
 
 namespace LiWiMus.Web.Configuration;
@@ -9,6 +11,8 @@ public static class ConfigureCoreServices
     {
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+
+        services.AddSingleton<IAvatarService, AvatarService>();
 
         return services;
     }
