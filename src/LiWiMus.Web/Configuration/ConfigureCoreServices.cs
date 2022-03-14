@@ -14,6 +14,8 @@ public static class ConfigureCoreServices
 
         services.AddSingleton<IAvatarService, AvatarService>();
 
+        services.AddTransient<IMailService, MailService>();
+
         return services;
     }
 }
