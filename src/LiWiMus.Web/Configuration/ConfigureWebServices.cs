@@ -1,6 +1,6 @@
-﻿using LiWiMus.Core;
+﻿using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Settings;
-using Microsoft.Extensions.DependencyInjection;
+using LiWiMus.Web.Services;
 
 namespace LiWiMus.Web.Configuration;
 
@@ -10,6 +10,7 @@ public static class ConfigureWebServices
     {
         services.Configure<DataSettings>(configuration.GetSection("DataSettings"));
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+        services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
         return services;
     }
 }

@@ -1,8 +1,6 @@
 using LiWiMus.Core.Entities;
-using LiWiMus.Core.Interfaces;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
-using LiWiMus.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
@@ -17,8 +15,6 @@ var services = builder.Services;
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
 services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
-
-services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
 
 services.AddIdentity<User, IdentityRole<int>>(options =>
     {
