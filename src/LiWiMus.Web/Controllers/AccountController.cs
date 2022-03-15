@@ -1,13 +1,11 @@
 ﻿using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Settings;
 using LiWiMus.Core.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.Controllers;
 
@@ -19,15 +17,13 @@ public class AccountController : Controller
     private readonly IRepository<Plan> _planRepository;
     private readonly IAvatarService _avatarService;
     private readonly IWebHostEnvironment _environment;
-    private readonly IOptions<DataSettings> _dataDirectoriesOptions;
     private readonly IMailService _mailService;
 
     private readonly HttpClient _httpClient = new();
 
     public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
                              IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository,
-                             IAvatarService avatarService, IWebHostEnvironment environment,
-                             IOptions<DataSettings> dataDirectoriesOptions, IMailService mailService)
+                             IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -35,7 +31,6 @@ public class AccountController : Controller
         _planRepository = planRepository;
         _avatarService = avatarService;
         _environment = environment;
-        _dataDirectoriesOptions = dataDirectoriesOptions;
         _mailService = mailService;
     }
 
@@ -63,8 +58,7 @@ public class AccountController : Controller
         };
         await _userPlanRepository.AddAsync(userPlan);
         var user = new User {Email = model.Email, UserName = model.UserName, UserPlan = userPlan};
-        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath,
-            _dataDirectoriesOptions.Value.AvatarsDirectory);
+        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
         var result = await _userManager.CreateAsync(user, model.Password);
         
         if (result.Succeeded)
