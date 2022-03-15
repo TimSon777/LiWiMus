@@ -24,15 +24,13 @@ public class AccountController : Controller
     private readonly IWebHostEnvironment _environment;
     private readonly IOptions<DataSettings> _dataDirectoriesOptions;
     private readonly IMailService _mailService;
-    private readonly IRazorViewRenderer _razorViewRenderer;
 
     private readonly HttpClient _httpClient = new();
 
     public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
                              IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository,
                              IAvatarService avatarService, IWebHostEnvironment environment,
-                             IOptions<DataSettings> dataDirectoriesOptions, IMailService mailService, 
-                             IRazorViewRenderer razorViewRenderer)
+                             IOptions<DataSettings> dataDirectoriesOptions, IMailService mailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -42,7 +40,6 @@ public class AccountController : Controller
         _environment = environment;
         _dataDirectoriesOptions = dataDirectoriesOptions;
         _mailService = mailService;
-        _razorViewRenderer = razorViewRenderer;
     }
 
     [HttpGet]
@@ -76,7 +73,7 @@ public class AccountController : Controller
         if (result.Succeeded)
         {
             await SendConfirmEmailAsync(user);
-            
+            await _signInManager.SignInAsync(user, false);
             return RedirectToAction("Index", "Home");
         }
 
@@ -158,9 +155,6 @@ public class AccountController : Controller
             new { userId = user.Id, code = token },
             HttpContext.Request.Scheme);
 
-        var mailRequest = await MailRequest.CreateConfirmEmailAsync(_razorViewRenderer, 
-            user.UserName, user.Email, confirmUrl!);
-            
-        await _mailService.SendEmailAsync(mailRequest);
-    } 
+        await _mailService.SendConfirmEmailAsync(user.UserName, user.Email, confirmUrl!);
+    }
 }

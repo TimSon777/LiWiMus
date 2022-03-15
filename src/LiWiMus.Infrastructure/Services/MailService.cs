@@ -10,8 +10,11 @@ namespace LiWiMus.Infrastructure.Services;
 public class MailService : IMailService
 {
     private readonly MailSettings _mailSettings;
-    public MailService(IOptions<MailSettings> mailSettings)
+    private readonly IMailRequestService _mailRequestService;
+
+    public MailService(IOptions<MailSettings> mailSettings, IMailRequestService mailRequestService)
     {
+        _mailRequestService = mailRequestService;
         _mailSettings = mailSettings.Value;
     }
 
@@ -31,5 +34,11 @@ public class MailService : IMailService
         await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
         await smtp.SendAsync(email);
         await smtp.DisconnectAsync(true);
+    }
+
+    public async Task SendConfirmEmailAsync(string userName, string email, string confirmUrl)
+    {
+        var mailRequest = await _mailRequestService.CreateConfirmEmailAsync(userName, email, confirmUrl);
+        await SendEmailAsync(mailRequest);
     }
 }
