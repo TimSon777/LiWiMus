@@ -1,6 +1,5 @@
 ﻿using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Models;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
@@ -8,9 +7,7 @@ using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Options;
-using MimeKit;
 
 namespace LiWiMus.Web.Controllers;
 
@@ -89,7 +86,7 @@ public class AccountController : Controller
     [AllowAnonymous]
     public async Task<IActionResult> ConfirmEmailAsync(string userId, string code)
     {
-        if (userId == "" || code == "")
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(code))
         {
             return View("Error");
         }
