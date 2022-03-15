@@ -1,6 +1,8 @@
 using LiWiMus.Core.Entities;
+using LiWiMus.Core.Interfaces;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
+using LiWiMus.Web.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
@@ -16,6 +18,8 @@ LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, ser
 services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
 
+services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
+
 services.AddIdentity<User, IdentityRole<int>>(options =>
     {
         options.Password.RequireDigit = false;
@@ -26,6 +30,7 @@ services.AddIdentity<User, IdentityRole<int>>(options =>
         options.User.RequireUniqueEmail = true;
         options.SignIn.RequireConfirmedEmail = false;
     })
+    .AddDefaultTokenProviders()
     .AddEntityFrameworkStores<ApplicationContext>();
 services.AddControllersWithViews();
 
