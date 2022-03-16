@@ -1,6 +1,7 @@
 using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
@@ -43,6 +44,15 @@ var app = builder.Build();
 app.Logger.LogInformation("\nConnection string: {ConnectionString} \n", builder.Configuration.GetConnectionString("DefaultConnection"));
 
 app.Logger.LogInformation("App created...");
+
+var forwardedHeadersOptions = new ForwardedHeadersOptions
+{
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
+    RequireHeaderSymmetry = false
+};
+forwardedHeadersOptions.KnownNetworks.Clear();
+forwardedHeadersOptions.KnownProxies.Clear();
+app.UseForwardedHeaders(forwardedHeadersOptions);
 
 if (!app.Environment.IsDevelopment())
 {
