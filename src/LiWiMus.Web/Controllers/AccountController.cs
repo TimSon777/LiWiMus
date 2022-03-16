@@ -173,7 +173,7 @@ public class AccountController : Controller
         if (remoteError != null)
         {
             ModelState
-                .AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+                .AddModelError("", $"Error from external provider: {remoteError}");
 
             return View("Login", loginViewModel);
         }
@@ -183,7 +183,7 @@ public class AccountController : Controller
         if (info == null)
         {
             ModelState
-                .AddModelError(string.Empty, "Error loading external login information.");
+                .AddModelError("", "Error loading external login information.");
 
             return View("Login", loginViewModel);
         }
