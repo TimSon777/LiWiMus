@@ -12,8 +12,8 @@ public static class ConfigureCoreServices
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
 
-        services.AddSingleton<IAvatarService, AvatarService>();
-
+        services.AddTransient<IAvatarService, AvatarService>();
+        services.AddTransient<IPlanService, PlanService>();
         services.AddTransient<IMailService, MailService>();
         services.AddTransient<IMailRequestService, MailRequestService>();
 

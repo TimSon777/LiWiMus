@@ -1,7 +1,5 @@
 ﻿using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Specifications;
-using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -13,25 +11,22 @@ public class AccountController : Controller
 {
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
-    private readonly IRepository<UserPlan> _userPlanRepository;
-    private readonly IRepository<Plan> _planRepository;
     private readonly IAvatarService _avatarService;
     private readonly IWebHostEnvironment _environment;
     private readonly IMailService _mailService;
+    private readonly IPlanService _planService;
 
     private readonly HttpClient _httpClient = new();
 
     public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
-                             IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository,
-                             IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService)
+                             IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService, IPlanService planService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _userPlanRepository = userPlanRepository;
-        _planRepository = planRepository;
         _avatarService = avatarService;
         _environment = environment;
         _mailService = mailService;
+        _planService = planService;
     }
 
     [HttpGet]
@@ -48,32 +43,26 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var defaultPlan = await _planRepository.GetBySpecAsync(new DefaultPlanSpecification()) ??
-                          throw new SystemException();
-        var userPlan = new UserPlan
-        {
-            Plan = defaultPlan,
-            Start = DateTime.Now,
-            End = DateTime.MaxValue
-        };
-        await _userPlanRepository.AddAsync(userPlan);
-        var user = new User {Email = model.Email, UserName = model.UserName, UserPlan = userPlan};
-        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
+        var user = new User {Email = model.Email, UserName = model.UserName};
         var result = await _userManager.CreateAsync(user, model.Password);
-        
-        if (result.Succeeded)
+
+        if (!result.Succeeded)
         {
-            await SendConfirmEmailAsync(user);
-            await _signInManager.SignInAsync(user, false);
-            return RedirectToAction("Index", "Home");
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+
+            return View(model);
         }
 
-        foreach (var error in result.Errors)
-        {
-            ModelState.AddModelError("", error.Description);
-        }
+        await _planService.SetDefaultPlanAsync(user);
+        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
+        await _userManager.UpdateAsync(user);
 
-        return View(model);
+        await SendConfirmEmailAsync(user);
+        await _signInManager.SignInAsync(user, false);
+        return RedirectToAction("Index", "Home");
     }
     
     [HttpGet]
