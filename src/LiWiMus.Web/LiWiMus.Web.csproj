@@ -21,15 +21,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="Data\**">
+        <Content Include="Data\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Data\Avatars" />
-      <Folder Include="Data\Covers" />
-      <Folder Include="Data\Tracks" />
     </ItemGroup>
 
 </Project>
