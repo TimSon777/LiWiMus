@@ -13,6 +13,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.2" />
       <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.2">
@@ -25,6 +27,14 @@
         <Content Include="Data\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Views\Profile\Index.cshtml" />
     </ItemGroup>
 
 </Project>

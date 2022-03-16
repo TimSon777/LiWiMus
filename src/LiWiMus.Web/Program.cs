@@ -1,6 +1,8 @@
+using AutoMapper;
 using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
+using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
@@ -31,6 +33,8 @@ services.AddIdentity<User, IdentityRole<int>>(options =>
     .AddEntityFrameworkStores<ApplicationContext>();
 
 services.AddControllersWithViews();
+
+services.AddMapper();
 
 services.AddAuthentication()
         .AddGoogle(options =>

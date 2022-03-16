@@ -1,17 +1,15 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LiWiMus.Core.Entities
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-
-
+@inject SignInManager<User> _signInManager
+@inject UserManager<User> _userManager
 
 <ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+    @if (_signInManager.IsSignedIn(User))
     {
-        var currentUser = await UserManager.GetUserAsync(User);
+        var currentUser = await _userManager.GetUserAsync(User);
         <li class="nav-item">
             <img src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 50px">
-            <a class="nav-link text-dark d-inline-block" title="Manage">Hello @User.Identity?.Name!</a>
+            <a class="nav-link text-dark d-inline-block" title="Manage" asp-controller="Profile" asp-action="Index">Личный кабинет</a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-controller="Account" asp-action="Logout">

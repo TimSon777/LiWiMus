@@ -1,0 +1,17 @@
+﻿@model LiWiMus.Web.ViewModels.ProfileViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<section>
+    Hello @Model.UserName !
+</section>
+
+@if (Model.IsAccountOwner)
+{
+    <section>
+        <a asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
+    </section>
+}
