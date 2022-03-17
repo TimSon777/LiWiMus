@@ -28,13 +28,4 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Pages" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <AdditionalFiles Include="Views\Profile\Index.cshtml" />
-    </ItemGroup>
-
 </Project>
