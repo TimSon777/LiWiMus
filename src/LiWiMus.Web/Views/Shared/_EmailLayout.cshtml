@@ -1,1 +1,65 @@
-﻿@RenderBody()
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="max-width: 365px;
+             min-height: 560px;
+             margin: 10px auto 0;
+             color: #000000;
+             font-family: 'Overpass',serif;">
+
+<div class="wrap" style="width: 365px;  background-image: url('images/email-background.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            justify-items: center;
+            box-sizing: border-box;
+            padding: 5%;">
+    <div class="outline" style="width: 328px;
+                                min-height: 464px;
+                                background: rgba(196, 196, 196, 0.25);
+                                outline: 1px solid #ffffff;
+                                box-sizing: border-box;
+                                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+                                border-radius: 10px;
+                                margin: 0 auto;
+                                top: 3%;
+                                padding: 5%;">
+        <div class="email-card" style="display: flex;
+                                      flex-direction: column;
+                                      width: 295px;
+                                      min-height: 429px;
+                                      border-radius: 10px;
+                                      box-sizing: border-box;
+                                      top: 5%;
+                                      align-items: center;
+                                      padding-top: 7%;
+                                      background-color: #FFEDE1;
+                                      border: none;">
+            
+            <div class="all-text" style="text-align: start;
+                                         max-width: 210px;;">
+                <h2 class="email-confirm-title" style="font-family: 'Overpass',serif;
+                                                       font-weight: 300;
+                                                       font-size: 26px;
+                                                       line-height: 18px;
+                                                       margin: 7% 0 0;">
+                    @ViewData["Email header"]
+                </h2>
+                <p class="dear-user-text" style="font-size: 18px;
+                                                 margin-top: 12%;
+                                                 padding-left: 8%;
+                                                 margin-bottom: 0;">
+                    Dear @ViewData["User name"],
+                </p>
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+ 
+</html>

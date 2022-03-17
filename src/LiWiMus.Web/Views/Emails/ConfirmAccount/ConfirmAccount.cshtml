@@ -1,6 +1,31 @@
 ﻿@model (string userName, string confirmUrl)
+@{
+    ViewData["Email header"] = "Email confirmation";
+    ViewData["User name"] = Model.userName;
+}
 
 <section>
-    Dear @Model.userName
-    Confirm your account <a href="@Model.confirmUrl">Link</a>
+    <p class="confirm-text" style="padding-left: 8%;
+                                   font-size: 16px;
+                                   margin-top: 8%;">
+         We are glad to see you on our website!<br>
+         To have access to all features, confirm your email.
+    </p>
+    <a class="button" href="#" style=" display: inline-block;
+                                       background-color: #EF6817;
+                                       border-radius: 20px;
+                                       width: 201px;
+                                       min-height: 44px;   
+                                       text-align: center;
+                                       font-size: 16px;
+                                       line-height: 18px;
+                                       color: #FFFFFF;
+                                       text-decoration: none;
+                                       box-sizing: border-box;
+                                       margin-top: 8%;
+                                       margin-bottom: 8%;
+                                       cursor: pointer;
+                                       padding: 13px 0 11px 0;">
+        Verify email address
+    </a>
 </section>
