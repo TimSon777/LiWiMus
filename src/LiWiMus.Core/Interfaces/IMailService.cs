@@ -6,4 +6,5 @@ public interface IMailService
 {
     Task SendEmailAsync(MailRequest mailRequest);
     Task SendConfirmEmailAsync(string userName, string email, string confirmUrl);
+    Task SendResetPasswordAsync(string userName, string email, string resetUrl);
 }

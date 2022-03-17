@@ -25,4 +25,18 @@ public class MailRequestService : IMailRequestService
             ToEmail = email
         };
     }
+    
+    public async Task<MailRequest> CreateResetPasswordEmailAsync(string userName, string email, string resetUrl)
+    {
+        var body = await _razorViewRenderer.RenderViewAsync(
+            "/Views/Emails/ResetPassword/ResetPassword.cshtml",
+            (userName, resetUrl));
+
+        return new MailRequest
+        {
+            Body = body,
+            Subject = "Сброс пароля",
+            ToEmail = email
+        };
+    }
 }

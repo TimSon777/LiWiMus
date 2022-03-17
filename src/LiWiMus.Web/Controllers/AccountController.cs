@@ -1,6 +1,8 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.SharedKernel;
+using LiWiMus.Web.Models;
 using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -50,10 +52,7 @@ public class AccountController : Controller
 
         if (!result.Succeeded)
         {
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
+            result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
 
             return View(model);
         }
@@ -144,6 +143,90 @@ public class AccountController : Controller
         await _mailService.SendConfirmEmailAsync(user.UserName, user.Email, confirmUrl!);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> ResetPassword(string userName)
+    {
+        if (userName.IsNullOrEmpty())
+        {
+            return new BadRequestObjectResult("Введите имя пользователя");
+        }
+
+        var user = await _userManager.FindByNameAsync(userName);
+        
+        if (user is null)
+        {
+            return new BadRequestObjectResult("Пользователь не найден");
+        }
+
+        if (!user.EmailConfirmed)
+        {
+            return new BadRequestObjectResult("Ваш email не подтвержден");
+        }
+        
+        var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+        
+        var resetUrl = Url.Action(
+            "ResetPasswordCallback",
+            "Account",
+            new {userId = user.Id, token},
+            HttpContext.Request.Scheme);
+        
+        await _mailService.SendResetPasswordAsync(userName, user.Email, resetUrl!);
+
+        return new OkObjectResult("Проверьте почтовый ящик");
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ResetPasswordCallback(string userId, string token)
+    {
+        if (userId.IsNullOrEmpty() || token.IsNullOrEmpty())
+        {
+            return View("Error");
+        }
+        
+        var user = await _userManager.FindByIdAsync(userId);
+        
+        if (user is null)
+        {
+            return View("Error");
+        }
+        
+        var resetPasswordVm = new ResetPasswordViewModel
+        {
+            UserId = userId,
+            Token = token
+        };
+        
+        return View(resetPasswordVm);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> ResetPasswordCallback(ResetPasswordViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View();
+        }
+
+        var user = await _userManager.FindByIdAsync(model.UserId);
+        
+        if (user is null)
+        {
+            return new NotFoundResult();
+        }
+
+        var result = await _userManager.ResetPasswordAsync(user, model.Token, model.Password);
+
+        if (!result.Succeeded)
+        {
+            result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
+            return View();
+        }
+        
+        await _signInManager.SignInAsync(user, false);
+        return Redirect("/Profile/Index");
+    }
+
     [AllowAnonymous]
     [HttpPost]
     public IActionResult ExternalLogin(string provider, string returnUrl)
@@ -202,7 +285,6 @@ public class AccountController : Controller
 
         // Get the email claim value
         var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-
         if (email == null)
         {
             ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";

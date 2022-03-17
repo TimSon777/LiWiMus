@@ -41,4 +41,10 @@ public class MailService : IMailService
         var mailRequest = await _mailRequestService.CreateConfirmEmailAsync(userName, email, confirmUrl);
         await SendEmailAsync(mailRequest);
     }
+
+    public async Task SendResetPasswordAsync(string userName, string email, string resetUrl)
+    {
+        var mailRequest = await _mailRequestService.CreateResetPasswordEmailAsync(userName, email, resetUrl);
+        await SendEmailAsync(mailRequest);
+    }
 }
