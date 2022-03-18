@@ -20,17 +20,17 @@ services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
 
 services.AddIdentity<User, IdentityRole<int>>(options =>
-    {
-        options.Password.RequireDigit = false;
-        options.Password.RequiredLength = 3;
-        options.Password.RequireLowercase = false;
-        options.Password.RequireUppercase = false;
-        options.Password.RequireNonAlphanumeric = false;
-        options.User.RequireUniqueEmail = true;
-        options.SignIn.RequireConfirmedEmail = false;
-    })
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<ApplicationContext>();
+        {
+            options.Password.RequireDigit = false;
+            options.Password.RequiredLength = 3;
+            options.Password.RequireLowercase = false;
+            options.Password.RequireUppercase = false;
+            options.Password.RequireNonAlphanumeric = false;
+            options.User.RequireUniqueEmail = true;
+            options.SignIn.RequireConfirmedEmail = false;
+        })
+        .AddDefaultTokenProviders()
+        .AddEntityFrameworkStores<ApplicationContext>();
 
 services.AddControllersWithViews();
 
@@ -43,9 +43,15 @@ services.AddAuthentication()
             options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
         });
 
+services.AddWebOptimizer(pipeline =>
+{
+    pipeline.CompileScssFiles();
+});
+
 var app = builder.Build();
 
-app.Logger.LogInformation("\nConnection string: {ConnectionString} \n", builder.Configuration.GetConnectionString("DefaultConnection"));
+app.Logger.LogInformation("\nConnection string: {ConnectionString} \n",
+    builder.Configuration.GetConnectionString("DefaultConnection"));
 
 app.Logger.LogInformation("App created...");
 
@@ -65,6 +71,9 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseWebOptimizer();
+
 app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
