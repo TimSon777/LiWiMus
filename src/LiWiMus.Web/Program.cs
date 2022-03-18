@@ -1,10 +1,6 @@
-using AutoMapper;
-using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
-using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,34 +15,20 @@ LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, ser
 services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
 
-services.AddIdentity<User, IdentityRole<int>>(options =>
-        {
-            options.Password.RequireDigit = false;
-            options.Password.RequiredLength = 3;
-            options.Password.RequireLowercase = false;
-            options.Password.RequireUppercase = false;
-            options.Password.RequireNonAlphanumeric = false;
-            options.User.RequireUniqueEmail = true;
-            options.SignIn.RequireConfirmedEmail = false;
-        })
-        .AddDefaultTokenProviders()
-        .AddEntityFrameworkStores<ApplicationContext>();
+services.AddIdentity(builder.Environment);
 
 services.AddControllersWithViews();
 
 services.AddMapper();
 
 services.AddAuthentication()
-        .AddGoogle(options =>
-        {
-            options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
-            options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
-        });
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
+        options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
+    });
 
-services.AddWebOptimizer(pipeline =>
-{
-    pipeline.CompileScssFiles();
-});
+services.AddWebOptimizer(pipeline => { pipeline.CompileScssFiles(); });
 
 var app = builder.Build();
 
