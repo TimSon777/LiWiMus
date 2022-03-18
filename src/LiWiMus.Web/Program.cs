@@ -1,3 +1,5 @@
+using System.Reflection;
+using FluentValidation.AspNetCore;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Web.Configuration;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -17,16 +19,17 @@ services.AddWebServices(builder.Configuration);
 
 services.AddIdentity(builder.Environment);
 
-services.AddControllersWithViews();
+services.AddControllersWithViews()
+        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
 services.AddMapper();
 
 services.AddAuthentication()
-    .AddGoogle(options =>
-    {
-        options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
-        options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
-    });
+        .AddGoogle(options =>
+        {
+            options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
+            options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
+        });
 
 services.AddWebOptimizer(pipeline => { pipeline.CompileScssFiles(); });
 

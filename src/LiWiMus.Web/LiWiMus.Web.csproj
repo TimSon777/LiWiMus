@@ -15,6 +15,8 @@
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
+      <PackageReference Include="FluentValidation" Version="10.4.0" />
+      <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
       <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.357" />
       <PackageReference Include="LigerShark.WebOptimizer.Sass" Version="3.0.82-beta" />
       <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3" />
@@ -32,6 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Validators" />
       <Folder Include="wwwroot\images" />
     </ItemGroup>
 </Project>
