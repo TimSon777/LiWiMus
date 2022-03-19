@@ -1,7 +1,16 @@
-﻿namespace LiWiMus.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using LiWiMus.Core.Constants;
+
+namespace LiWiMus.Core.Entities;
 
 public class User : BaseUserEntity
 {
+    [StringLength(50)]
+    [RegularExpression(RegularExpressions.DisableTags)]
+    public string? Name { get; set; }
+    public DateOnly? BirthDate { get; set; }
+    public Gender? Gender { get; set; }
+
     public string? AvatarPath { get; set; }
     public UserPlan? UserPlan { get; set; }
 
