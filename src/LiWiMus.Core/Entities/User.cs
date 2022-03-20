@@ -11,6 +11,8 @@ public class User : BaseUserEntity
     public DateOnly? BirthDate { get; set; }
     public Gender? Gender { get; set; }
 
+    public decimal Balance { get; set; }
+
     public string? AvatarPath { get; set; }
     public UserPlan? UserPlan { get; set; }
 
