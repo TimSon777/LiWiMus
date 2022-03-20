@@ -14,6 +14,7 @@ builder.Configuration.AddEnvironmentVariables();
 var services = builder.Services;
 
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
+TriggersConfiguration.ConfigureTriggers();
 services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
 

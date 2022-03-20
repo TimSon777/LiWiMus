@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using EntityFrameworkCore.Triggers;
 using LiWiMus.Core.Entities;
 using LiWiMus.SharedKernel;
 using Microsoft.AspNetCore.Identity;
@@ -28,27 +29,16 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
-    {
-        var entries = ChangeTracker
-                      .Entries()
-                      .Where(e => e.Entity is BaseEntity &&
-                                  e.State is EntityState.Added or EntityState.Modified);
-
-        foreach (var entityEntry in entries)
-        {
-            if (entityEntry.State == EntityState.Added)
-            {
-                ((BaseEntity) entityEntry.Entity).CreatedAt = DateTime.Now;
-            }
-            else
-            {
-                Entry((BaseEntity) entityEntry.Entity).Property(p => p.CreatedAt).IsModified = false;
-            }
-
-            ((BaseEntity) entityEntry.Entity).ModifiedAt = DateTime.Now;
-        }
-
-        return base.SaveChangesAsync(cancellationToken);
+    public override int SaveChanges() {
+        return this.SaveChangesWithTriggers(base.SaveChanges, true);
+    }
+    public override int SaveChanges(bool acceptAllChangesOnSuccess) {
+        return this.SaveChangesWithTriggers(base.SaveChanges, acceptAllChangesOnSuccess);
+    }
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) {
+        return this.SaveChangesWithTriggersAsync(base.SaveChangesAsync, true, cancellationToken);
+    }
+    public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default) {
+        return this.SaveChangesWithTriggersAsync(base.SaveChangesAsync, acceptAllChangesOnSuccess, cancellationToken);
     }
 }
