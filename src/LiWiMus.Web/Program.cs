@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using LiWiMus.Infrastructure.Data;
+using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Configuration;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.FileProviders;
