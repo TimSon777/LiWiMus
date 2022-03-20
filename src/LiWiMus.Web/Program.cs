@@ -33,7 +33,11 @@ services.AddAuthentication()
             options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
         });
 
-services.AddWebOptimizer(pipeline => { pipeline.CompileScssFiles(); });
+services.AddWebOptimizer(pipeline =>
+{
+    pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css");
+    //pipeline.AddJavaScriptBundle("/js/bundle.js", "/js/**/*.js");
+});
 
 var app = builder.Build();
 
