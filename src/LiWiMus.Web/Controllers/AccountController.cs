@@ -143,24 +143,24 @@ public class AccountController : Controller
         await _mailService.SendConfirmEmailAsync(user.UserName, user.Email, confirmUrl!);
     }
 
-    [HttpGet]
+    [HttpPost]
     public async Task<IActionResult> ResetPassword(string userName)
     {
         if (userName.IsNullOrEmpty())
         {
-            return new BadRequestObjectResult("Введите имя пользователя");
+            return BadRequest("Введите имя пользователя");
         }
 
         var user = await _userManager.FindByNameAsync(userName);
         
         if (user is null)
         {
-            return new BadRequestObjectResult("Пользователь не найден");
+            return BadRequest("Пользователь не найден");
         }
 
         if (!user.EmailConfirmed)
         {
-            return new BadRequestObjectResult("Ваш email не подтвержден");
+            return BadRequest("Ваш email не подтвержден");
         }
         
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -173,7 +173,7 @@ public class AccountController : Controller
         
         await _mailService.SendResetPasswordAsync(userName, user.Email, resetUrl!);
 
-        return new OkObjectResult("Проверьте почтовый ящик");
+        return Ok("Проверьте почтовый ящик");
     }
 
     [HttpGet]
