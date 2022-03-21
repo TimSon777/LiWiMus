@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
+using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using LiWiMus.Web.Models;
 
 namespace LiWiMus.Web.Controllers;
 

@@ -2,7 +2,6 @@
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.SharedKernel;
-using LiWiMus.Web.Models;
 using LiWiMus.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
