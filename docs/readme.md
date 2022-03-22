@@ -36,3 +36,13 @@
 * Установить driver
 * Пароль, логин: то, что вводили при установке MySql
 * База данных: liwimus
+
+## Добавление yotrack integration
+* Rider -> File -> Settings -> Plugins
+* Скачать Youtrack Integration
+* Переходим на сайт yotrack 
+* Profile -> Account Security
+* Слева снизу new token, название любое, копируете токен
+* В rider появится расширение Youtrack, переходим
+* Вставляем путь https://timson777-7.youtrack.cloud/, а в токен то, что скопировали
+* Подтверждаете
