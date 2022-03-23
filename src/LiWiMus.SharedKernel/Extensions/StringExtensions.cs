@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.SharedKernel;
+﻿namespace LiWiMus.SharedKernel.Extensions;
 
 public static class StringExtensions
 {

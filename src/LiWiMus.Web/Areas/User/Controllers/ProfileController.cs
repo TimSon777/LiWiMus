@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LiWiMus.SharedKernel;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -7,18 +8,21 @@ using Microsoft.AspNetCore.Mvc;
 namespace LiWiMus.Web.Areas.User.Controllers;
 
 [Area("User")]
+[Route("[area]/[controller]/[action]")]
 public class ProfileController : Controller
 {
     private readonly UserManager<Core.Entities.User> _userManager;
+    private readonly IMapper _mapper;
 
-    public ProfileController(UserManager<Core.Entities.User> userManager)
+    public ProfileController(UserManager<Core.Entities.User> userManager, IMapper mapper)
     {
         _userManager = userManager;
+        _mapper = mapper;
     }
 
     [HttpGet]
-    [Route("[area]/[controller]/[action]/{userName?}")]
-    public async Task<IActionResult> Index(string userName, [FromServices] IMapper mapper)
+    [Route("{userName?}")]
+    public async Task<IActionResult> Index(string userName)
     {
         var currentUser = await _userManager.GetUserAsync(User);
 
@@ -32,7 +36,7 @@ public class ProfileController : Controller
             return View("Error");
         }
 
-        var profile = mapper.Map<ProfileViewModel>(user);
+        var profile = _mapper.Map<ProfileViewModel>(user);
         profile.IsAccountOwner = currentUser == user;
 
         return View(profile);
@@ -71,5 +75,32 @@ public class ProfileController : Controller
         }
 
         return View();
+    }
+
+    [Authorize]
+    [HttpPost]
+    public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
+    {
+        model.BirthDate = DateOnly.TryParse(Request.Form[nameof(model.BirthDate)], out var birthDate) 
+            ? birthDate 
+            : null;
+        
+        var user = await _userManager.GetUserAsync(User);
+        
+        if (!ModelState.IsValid)
+        {
+            return BadRequest("Fu");
+        }
+
+        _mapper.Map(model, user);
+        
+        var result = await _userManager.UpdateAsync(user);
+
+        if (result.Succeeded)
+        {
+            return Ok("Ok");
+        }
+        
+        return BadRequest("Fu");
     }
 }

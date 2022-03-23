@@ -8,7 +8,16 @@ public class User : BaseUserEntity
 {
     [StringLength(50)]
     [RegularExpression(RegularExpressions.DisableTags)]
-    public string? Name { get; set; }
+    public string? FirstName { get; set; }
+
+    [MaxLength(50)]
+    [RegularExpression(RegularExpressions.DisableTags)]
+    public string? SecondName { get; set; }
+    
+    [StringLength(50)]
+    [RegularExpression(RegularExpressions.DisableTags)]
+    public string? Patronymic { get; set; }
+    
     public DateOnly? BirthDate { get; set; }
     public Gender? Gender { get; set; }
 

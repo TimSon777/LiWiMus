@@ -9,9 +9,46 @@
     Hello @Model.UserName !
 </section>
 
+<section>
+    <form asp-area="User" asp-controller="Profile" asp-action="Update"
+          data-ajax="true"
+          data-ajax-method="post"
+          data-ajax-success="successUpdate"
+          data-ajax-failure="failureUpdate">
+        <label asp-for="FirstName"></label>
+        <input asp-for="FirstName"/>
+        
+        <label asp-for="SecondName"></label>
+        <input asp-for="SecondName">
+        
+        <label asp-for="Patronymic"></label>
+        <input asp-for="Patronymic">
+        
+        @if (Model.IsAccountOwner)
+        {
+            <label asp-for="Email"></label>
+            <input asp-for="Email">
+        }
+        
+        <label asp-for="UserName"></label>
+        <input asp-for="UserName">
+        
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
+
+        <input type="submit" value="Edit">
+    </form>
+</section>
+
 @if (Model.IsAccountOwner)
 {
     <section>
         <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
     </section>
+}
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajax-unobtrusive/3.2.6/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="/js/update_profile.js"></script>
 }
