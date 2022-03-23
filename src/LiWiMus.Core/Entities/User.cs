@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LiWiMus.Core.Constants;
+using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Core.Entities;
 
@@ -14,7 +15,6 @@ public class User : BaseUserEntity
     public decimal Balance { get; set; }
 
     public string? AvatarPath { get; set; }
-    public UserPlan? UserPlan { get; set; }
 
     public int? ArtistId { get; set; }
     public Artist Artist { get; set; }
@@ -25,4 +25,9 @@ public class User : BaseUserEntity
     public List<LikedSong> LikedSongs { get; set; } = new();
     public List<LikedUser> Subscribers { get; set; } = new();
     public List<LikedUser> LikedUsers { get; set; } = new();
+
+    public ICollection<IdentityUserClaim<int>> Claims { get; set; }
+    public ICollection<IdentityUserLogin<int>> Logins { get; set; }
+    public ICollection<IdentityUserToken<int>> Tokens { get; set; }
+    public ICollection<UserRole> UserRoles { get; set; }
 }

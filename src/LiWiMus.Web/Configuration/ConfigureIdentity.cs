@@ -8,7 +8,7 @@ public static class ConfigureIdentity
 {
     public static IServiceCollection AddIdentity(this IServiceCollection services, IWebHostEnvironment environment)
     {
-        services.AddIdentity<User, IdentityRole<int>>(options =>
+        services.AddIdentity<User, Role>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = false;
 

@@ -1,9 +1,13 @@
 using System.Reflection;
+using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
+using LiWiMus.Core.Entities;
+using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Configuration;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +19,7 @@ builder.Configuration.AddEnvironmentVariables();
 var services = builder.Services;
 
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
+builder.Services.AddTriggers();
 TriggersConfiguration.ConfigureTriggers();
 services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
@@ -97,7 +102,10 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
-        await ApplicationContextSeed.SeedAsync(applicationContext, app.Logger);
+        var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
+        var roleManager = scopedProvider.GetRequiredService<RoleManager<Role>>();
+        var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
+        await ApplicationContextSeed.SeedAsync(applicationContext, app.Logger, userManager, roleManager, adminSettings);
     }
     catch (Exception ex)
     {

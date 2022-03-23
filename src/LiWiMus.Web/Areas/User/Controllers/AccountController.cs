@@ -16,20 +16,17 @@ public class AccountController : Controller
     private readonly IAvatarService _avatarService;
     private readonly IWebHostEnvironment _environment;
     private readonly IMailService _mailService;
-    private readonly IPlanService _planService;
 
     private readonly HttpClient _httpClient = new();
 
     public AccountController(UserManager<Core.Entities.User> userManager, SignInManager<Core.Entities.User> signInManager,
-                             IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService,
-                             IPlanService planService)
+                             IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _avatarService = avatarService;
         _environment = environment;
         _mailService = mailService;
-        _planService = planService;
     }
 
     [HttpGet]
@@ -56,7 +53,6 @@ public class AccountController : Controller
             return View(model);
         }
 
-        await _planService.SetDefaultPlanAsync(user);
         await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
         await _userManager.UpdateAsync(user);
 
@@ -308,7 +304,6 @@ public class AccountController : Controller
             if (result.Succeeded)
             {
                 await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
-                await _planService.SetDefaultPlanAsync(user);
                 await _userManager.UpdateAsync(user);
                 await SendConfirmEmailAsync(user);
             }
