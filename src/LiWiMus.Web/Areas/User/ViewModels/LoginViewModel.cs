@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authentication;
 
-namespace LiWiMus.Web.ViewModels;
+namespace LiWiMus.Web.Areas.User.ViewModels;
 
 public class LoginViewModel
 {

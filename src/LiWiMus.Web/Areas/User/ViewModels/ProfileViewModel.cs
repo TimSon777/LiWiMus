@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.ViewModels;
+﻿namespace LiWiMus.Web.Areas.User.ViewModels;
 
 public class ProfileViewModel
 {

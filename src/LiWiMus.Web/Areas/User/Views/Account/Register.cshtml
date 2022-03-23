@@ -1,11 +1,11 @@
-﻿@model LiWiMus.Web.ViewModels.RegisterViewModel
+﻿@model LiWiMus.Web.Areas.User.ViewModels.RegisterViewModel
 
 @{
     ViewData["Title"] = "Register";
 }
 
 <h2>Регистрация нового пользователя</h2>
-<form method="post" asp-controller="Account" asp-action="Register">
+<form method="post" asp-area="User" asp-controller="Account" asp-action="Register">
     <div asp-validation-summary="ModelOnly"></div>
     <div>
         <label asp-for="UserName"></label><br />

@@ -1,4 +1,4 @@
-﻿@model LiWiMus.Web.ViewModels.LoginViewModel
+﻿@model LiWiMus.Web.Areas.User.ViewModels.LoginViewModel
 
 @{
     ViewData["Title"] = "Login";
@@ -25,7 +25,7 @@
                 }
                 else
                 {
-                    <form method="post" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
+                    <form method="post" asp-area="User" asp-action="ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl">
                         <div >
                             @foreach (var provider in Model.ExternalLogins)
                             {
@@ -47,7 +47,7 @@
             </p>
         </div>
         <div>
-            <form method="post" asp-controller="Account" asp-action="Login" style="margin:auto; width: auto;">
+            <form method="post" asp-area="User" asp-controller="Account" asp-action="Login" style="margin:auto; width: auto;">
                 <div asp-validation-summary="ModelOnly"></div>
                 <div class="text-white" style="padding-bottom: 2%">
                     <label asp-for="UserName" style="padding-bottom: 2%"></label><br/>
@@ -71,7 +71,7 @@
             </form>
         </div>
         <div>
-            <form asp-controller="Account" asp-action="ResetPassword" 
+            <form asp-area="User" asp-controller="Account" asp-action="ResetPassword"
                       data-ajax="true" 
                       data-ajax-method="post" 
                       data-ajax-success="successResetPassword"

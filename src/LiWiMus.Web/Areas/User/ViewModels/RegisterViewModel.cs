@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LiWiMus.Web.ViewModels;
+namespace LiWiMus.Web.Areas.User.ViewModels;
 
 public class RegisterViewModel
 {

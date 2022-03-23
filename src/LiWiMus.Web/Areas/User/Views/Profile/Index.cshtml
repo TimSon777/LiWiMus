@@ -1,4 +1,4 @@
-﻿@model LiWiMus.Web.ViewModels.ProfileViewModel
+﻿@model LiWiMus.Web.Areas.User.ViewModels.ProfileViewModel
 
 @{
     ViewBag.Title = "title";
@@ -12,6 +12,6 @@
 @if (Model.IsAccountOwner)
 {
     <section>
-        <a asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
+        <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
     </section>
 }

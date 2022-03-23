@@ -1,18 +1,18 @@
 ﻿using System.Security.Claims;
-using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.SharedKernel;
-using LiWiMus.Web.ViewModels;
+using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LiWiMus.Web.Controllers;
+namespace LiWiMus.Web.Areas.User.Controllers;
 
+[Area("User")]
 public class AccountController : Controller
 {
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
+    private readonly UserManager<Core.Entities.User> _userManager;
+    private readonly SignInManager<Core.Entities.User> _signInManager;
     private readonly IAvatarService _avatarService;
     private readonly IWebHostEnvironment _environment;
     private readonly IMailService _mailService;
@@ -20,7 +20,7 @@ public class AccountController : Controller
 
     private readonly HttpClient _httpClient = new();
 
-    public AccountController(UserManager<User> userManager, SignInManager<User> signInManager,
+    public AccountController(UserManager<Core.Entities.User> userManager, SignInManager<Core.Entities.User> signInManager,
                              IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService,
                              IPlanService planService)
     {
@@ -46,7 +46,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = new User {Email = model.Email, UserName = model.UserName};
+        var user = new Core.Entities.User {Email = model.Email, UserName = model.UserName};
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
@@ -62,7 +62,7 @@ public class AccountController : Controller
 
         await SendConfirmEmailAsync(user);
         await _signInManager.SignInAsync(user, false);
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Home", new {area = ""});
     }
 
     [HttpGet]
@@ -85,7 +85,7 @@ public class AccountController : Controller
 
         if (result.Succeeded)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new {area = ""});
         }
 
         return View("Error");
@@ -114,7 +114,7 @@ public class AccountController : Controller
             await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
         if (result.Succeeded)
         {
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", new {area = ""});
         }
 
         ModelState.AddModelError("", "Неправильный логин и (или) пароль");
@@ -126,10 +126,10 @@ public class AccountController : Controller
     public async Task<IActionResult> Logout()
     {
         await _signInManager.SignOutAsync();
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Home", new {area = ""});
     }
 
-    private async Task SendConfirmEmailAsync(User user)
+    private async Task SendConfirmEmailAsync(Core.Entities.User user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -151,7 +151,7 @@ public class AccountController : Controller
         }
 
         var user = await _userManager.FindByNameAsync(userName);
-        
+
         if (user is null)
         {
             return BadRequest("Пользователь не найден");
@@ -161,15 +161,15 @@ public class AccountController : Controller
         {
             return BadRequest("Ваш email не подтвержден");
         }
-        
+
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-        
+
         var resetUrl = Url.Action(
             "ResetPasswordCallback",
             "Account",
-            new {userId = user.Id, token},
+            new {area = "User", userId = user.Id, token},
             HttpContext.Request.Scheme);
-        
+
         await _mailService.SendResetPasswordAsync(userName, user.Email, resetUrl!);
 
         return Ok("Проверьте почтовый ящик");
@@ -182,20 +182,20 @@ public class AccountController : Controller
         {
             return View("Error");
         }
-        
+
         var user = await _userManager.FindByIdAsync(userId);
-        
+
         if (user is null)
         {
             return View("Error");
         }
-        
+
         var resetPasswordVm = new ResetPasswordViewModel
         {
             UserId = userId,
             Token = token
         };
-        
+
         return View(resetPasswordVm);
     }
 
@@ -208,7 +208,7 @@ public class AccountController : Controller
         }
 
         var user = await _userManager.FindByIdAsync(model.UserId);
-        
+
         if (user is null)
         {
             return new NotFoundResult();
@@ -221,9 +221,9 @@ public class AccountController : Controller
             result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
             return View();
         }
-        
+
         await _signInManager.SignInAsync(user, false);
-        return Redirect("/Profile/Index");
+        return Redirect("/User/Profile/Index");
     }
 
     [AllowAnonymous]
@@ -231,7 +231,7 @@ public class AccountController : Controller
     public IActionResult ExternalLogin(string provider, string returnUrl)
     {
         var redirectUrl = Url.Action("ExternalLoginCallback", "Account",
-            new {ReturnUrl = returnUrl});
+            new {area = "User", ReturnUrl = returnUrl});
 
         var properties =
             _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
@@ -298,7 +298,7 @@ public class AccountController : Controller
 
         if (user == null)
         {
-            user = new User
+            user = new Core.Entities.User
             {
                 UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
                 Email = info.Principal.FindFirstValue(ClaimTypes.Email)

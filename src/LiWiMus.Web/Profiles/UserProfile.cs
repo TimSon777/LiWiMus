@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Entities;
-using LiWiMus.Web.ViewModels;
+using LiWiMus.Web.Areas.User.ViewModels;
 
 namespace LiWiMus.Web.Profiles;
 

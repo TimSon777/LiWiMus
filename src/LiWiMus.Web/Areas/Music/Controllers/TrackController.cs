@@ -2,10 +2,11 @@
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LiWiMus.Web.Controllers;
+namespace LiWiMus.Web.Areas.Music.Controllers;
 
+[Area("Music")]
 [ApiController]
-[Route("[controller]/[action]")]
+[Route("[area]/[controller]/[action]")]
 public class TrackController : ControllerBase
 {
     private readonly IRepository<Track> _trackRepository;

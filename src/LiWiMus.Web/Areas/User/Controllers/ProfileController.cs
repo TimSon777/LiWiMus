@@ -1,23 +1,23 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Entities;
-using LiWiMus.Web.ViewModels;
+using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LiWiMus.Web.Controllers;
+namespace LiWiMus.Web.Areas.User.Controllers;
 
+[Area("User")]
 public class ProfileController : Controller
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<Core.Entities.User> _userManager;
 
-    public ProfileController(UserManager<User> userManager)
+    public ProfileController(UserManager<Core.Entities.User> userManager)
     {
         _userManager = userManager;
     }
 
     [HttpGet]
-    [Route("[controller]/[action]/{userName?}")]
+    [Route("[area]/[controller]/[action]/{userName?}")]
     public async Task<IActionResult> Index(string userName, [FromServices] IMapper mapper)
     {
         var currentUser = await _userManager.GetUserAsync(User);
@@ -62,7 +62,7 @@ public class ProfileController : Controller
 
             if (result.Succeeded)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Profile", new {area = "User"});
             }
         }
         else
