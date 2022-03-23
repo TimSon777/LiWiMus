@@ -1,18 +1,47 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.account-input-field {
+    width: 100%;
+    border: none;
+    padding-left: 4%;
+    border-radius: 20px
+}
+
+.account-submit-button-area {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 2%;
+    font-size: smaller
+}
+
+.account-submit-button {
+    border-radius: 50px;
+    background-color: #EF6817;
+    font-size: larger;
+}
+.body{
+    padding: 60px;
+    height: 100vh;
+    background-color: #727271;
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    justify-content: center;
 }

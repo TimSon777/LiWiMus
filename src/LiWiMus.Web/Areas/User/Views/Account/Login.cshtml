@@ -4,17 +4,6 @@
     ViewData["Title"] = "Login";
 }
 
-<style>
-    .body{
-    padding: 60px;
-    height: 100vh;
-    background-color: #727271;
-    display: flex;
-    position: relative;
-    overflow: hidden;
-    justify-content: center;
-    }
-</style>
 <div class="body">
     <div class="content" style="position: absolute; min-width: 166px; width: 20%">
         <div style="margin:auto; width: auto; padding-bottom: 10%">
@@ -42,7 +31,7 @@
             }
         </div>
         <div>
-            <p class="text-white" style="font-weight: bold;">
+            <p class="text-white" style="font-weight: bold; width: 100%; text-align: center">
                 OR
             </p>
         </div>
@@ -51,34 +40,34 @@
                 <div asp-validation-summary="ModelOnly"></div>
                 <div class="text-white" style="padding-bottom: 2%">
                     <label asp-for="UserName" style="padding-bottom: 2%"></label><br/>
-                    <input asp-for="UserName" id="userName" style="width: 100%;border: none; padding-left: 4%; border-radius: 20px"/>
+                    <input asp-for="UserName" id="userName" class="account-input-field"/>
                     <span asp-validation-for="UserName"></span>
                 </div>
                 <div class="text-white" style="padding-bottom:10%">
                     <label asp-for="Password" style="padding-bottom: 2%"></label><br/>
-                    <input asp-for="Password" style="width: 100%; border: none;padding-left: 4%; border-radius: 20px"/>
+                    <input asp-for="Password" class="account-input-field"/>
                     <span asp-validation-for="Password"></span>
                 </div>
-                <div class="text-white" style="display: flex; justify-content: space-between;padding-bottom: 2%">
+                <div class="text-white account-submit-button-area">
                     <div>
                         <input asp-for="RememberMe"/>
-                        <label asp-for="RememberMe" style="font-weight: lighter; font-size: smaller"></label>
+                        <label asp-for="RememberMe" style="font-weight: lighter;"></label>
                     </div>
                     <div>
-                        <input type="submit" class="btn text-white" value="Log In" style="border-radius: 50px; background-color: #EF6817; font-size: larger;"/>
+                        <input type="submit" class="btn text-white account-submit-button" value="Log In"/>
                     </div>
                 </div>
             </form>
         </div>
         <div>
             <form asp-area="User" asp-controller="Account" asp-action="ResetPassword"
-                      data-ajax="true" 
-                      data-ajax-method="post" 
-                      data-ajax-success="successResetPassword"
-                      data-ajax-failure="failureResetPassword">
-                    <input name="userName"/>
-                    <input type="submit" class="btn" style="border-radius: 50px" value="Reset password">
-                </form>
+                  data-ajax="true"
+                  data-ajax-method="post"
+                  data-ajax-success="successResetPassword"
+                  data-ajax-failure="failureResetPassword">
+                <input name="userName"/>
+                <input type="submit" class="btn" style="border-radius: 50px" value="Reset password">
+            </form>
         </div>
     </div>
 </div>
