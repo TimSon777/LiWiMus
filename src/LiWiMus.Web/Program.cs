@@ -6,6 +6,7 @@ using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Configuration;
+using LiWiMus.Web.Permission;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
@@ -25,6 +26,11 @@ services.AddCoreServices(builder.Configuration);
 services.AddWebServices(builder.Configuration);
 
 services.AddIdentity(builder.Environment);
+services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/User/Account/Login";
+    options.AccessDeniedPath = "/User/Account/Denied";
+});
 
 services.AddControllersWithViews()
         .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
