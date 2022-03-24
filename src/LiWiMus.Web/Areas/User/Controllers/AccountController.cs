@@ -321,4 +321,9 @@ public class AccountController : Controller
 
         return LocalRedirect(returnUrl);
     }
+
+    public IActionResult Denied(string returnUrl)
+    {
+        return View();
+    }
 }
