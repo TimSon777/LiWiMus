@@ -5,21 +5,22 @@ namespace LiWiMus.Web.Permission;
 
 internal class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {
-    public DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
+    private DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
     public PermissionPolicyProvider(IOptions<AuthorizationOptions> options)
     {
         FallbackPolicyProvider = new DefaultAuthorizationPolicyProvider(options);
     }
     public Task<AuthorizationPolicy> GetDefaultPolicyAsync() => FallbackPolicyProvider.GetDefaultPolicyAsync();
-    public Task<AuthorizationPolicy> GetPolicyAsync(string policyName)
+    public Task<AuthorizationPolicy?> GetPolicyAsync(string policyName)
     {
-        if (policyName.StartsWith("Permission", StringComparison.OrdinalIgnoreCase))
+        if (!policyName.StartsWith("Permission", StringComparison.OrdinalIgnoreCase))
         {
-            var policy = new AuthorizationPolicyBuilder();
-            policy.AddRequirements(new PermissionRequirement(policyName));
-            return Task.FromResult(policy.Build());
+            return FallbackPolicyProvider.GetPolicyAsync(policyName);
         }
-        return FallbackPolicyProvider.GetPolicyAsync(policyName);
+
+        var policy = new AuthorizationPolicyBuilder();
+        policy.AddRequirements(new PermissionRequirement(policyName));
+        return Task.FromResult(policy.Build())!;
     }
-    public Task<AuthorizationPolicy> GetFallbackPolicyAsync() => FallbackPolicyProvider.GetFallbackPolicyAsync();
+    public Task<AuthorizationPolicy?> GetFallbackPolicyAsync() => FallbackPolicyProvider.GetFallbackPolicyAsync();
 }

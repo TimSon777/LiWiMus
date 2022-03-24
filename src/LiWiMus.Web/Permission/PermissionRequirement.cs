@@ -4,7 +4,7 @@ namespace LiWiMus.Web.Permission;
 
 internal class PermissionRequirement : IAuthorizationRequirement
 {
-    public string Permission { get; private set; }
+    public string Permission { get; }
     public PermissionRequirement(string permission)
     {
         Permission = permission;

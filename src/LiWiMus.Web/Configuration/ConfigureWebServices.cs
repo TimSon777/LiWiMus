@@ -14,7 +14,7 @@ public static class ConfigureWebServices
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
         services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
         services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
-        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+        services.AddScoped<IAuthorizationHandler, AuthorizationHandler>();
         return services;
     }
 }

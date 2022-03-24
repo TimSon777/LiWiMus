@@ -37,6 +37,10 @@ services.AddAuthentication()
             options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
             options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
         });
+services.AddAuthorization(options =>
+{
+    options.AddPolicy("SameAuthorPolicy", policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
+});
 
 services.AddWebOptimizer(pipeline =>
 {
