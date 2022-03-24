@@ -1,9 +1,9 @@
 ﻿namespace LiWiMus.Core.Entities;
 
-public class ArtistTrack : BaseEntity
+public class ArtistAlbum : BaseEntity
 {
     public Artist Artist { get; set; }
     public int ArtistId { get; set; }
-    public Track Track { get; set; }
-    public int TrackId { get; set; }
+    public Album Album { get; set; }
+    public int AlbumId { get; set; }
 }

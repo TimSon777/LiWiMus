@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LiWiMus.Core.Constants;
+using LiWiMus.Core.Entities.Interfaces;
 
 namespace LiWiMus.Core.Entities;
 
-public class Track : BaseEntity
+public class Track : BaseEntity, IMultipleArtistOwnersResource
 {
-    public List<ArtistTrack> Artists { get; set; } = new();
-
+    public List<ArtistTrack> ArtistTracks { get; set; } = new();
+    public List<Artist> Artists { get; set; } = new();
     public Album Album { get; set; }
     public Genre Genre { get; set; }
 
@@ -18,5 +19,5 @@ public class Track : BaseEntity
     public string PathToFile { get; set; }
 
     public List<LikedSong> Subscribers { get; set; } = new();
-    public List<PlaylistTrack> Playlists { get; set; }
+    public List<PlaylistTrack> Playlists { get; set; } = new();
 }

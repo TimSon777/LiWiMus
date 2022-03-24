@@ -27,16 +27,14 @@ public class User : BaseUserEntity
 
     public int? ArtistId { get; set; }
     public Artist Artist { get; set; }
-
     public List<LikedAlbum> LikedAlbums { get; set; } = new();
     public List<LikedArtist> LikedArtists { get; set; } = new();
     public List<LikedPlaylist> LikedPlaylists { get; set; } = new();
     public List<LikedSong> LikedSongs { get; set; } = new();
     public List<LikedUser> Subscribers { get; set; } = new();
     public List<LikedUser> LikedUsers { get; set; } = new();
-
-    public ICollection<IdentityUserClaim<int>> Claims { get; set; }
-    public ICollection<IdentityUserLogin<int>> Logins { get; set; }
-    public ICollection<IdentityUserToken<int>> Tokens { get; set; }
-    public ICollection<UserRole> UserRoles { get; set; }
+    public List<IdentityUserClaim<int>> Claims { get; set; } = new();
+    public List<IdentityUserLogin<int>> Logins { get; set; } = new();
+    public List<IdentityUserToken<int>> Tokens { get; set; } = new();
+    public List<UserRole> UserRoles { get; set; } = new();
 }

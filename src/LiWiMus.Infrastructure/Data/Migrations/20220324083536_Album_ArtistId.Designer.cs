@@ -3,16 +3,18 @@ using System;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LiWiMus.Infrastructure.Migrations
+namespace LiWiMus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220324083536_Album_ArtistId")]
+    partial class Album_ArtistId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,6 +25,9 @@ namespace LiWiMus.Infrastructure.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("ArtistId")
                         .HasColumnType("int");
 
                     b.Property<string>("CoverPath")
@@ -44,6 +49,8 @@ namespace LiWiMus.Infrastructure.Migrations
                         .HasColumnType("varchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ArtistId");
 
                     b.ToTable("Albums");
                 });
@@ -77,33 +84,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Artists");
-                });
-
-            modelBuilder.Entity("LiWiMus.Core.Entities.ArtistAlbum", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AlbumId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ArtistId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AlbumId");
-
-                    b.HasIndex("ArtistId");
-
-                    b.ToTable("ArtistAlbum");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.ArtistTrack", b =>
@@ -664,21 +644,13 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("LiWiMus.Core.Entities.ArtistAlbum", b =>
+            modelBuilder.Entity("LiWiMus.Core.Entities.Album", b =>
                 {
-                    b.HasOne("LiWiMus.Core.Entities.Album", "Album")
-                        .WithMany("ArtistAlbums")
-                        .HasForeignKey("AlbumId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LiWiMus.Core.Entities.Artist", "Artist")
-                        .WithMany("ArtistAlbums")
+                        .WithMany()
                         .HasForeignKey("ArtistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Album");
 
                     b.Navigation("Artist");
                 });
@@ -799,13 +771,13 @@ namespace LiWiMus.Infrastructure.Migrations
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Playlist", b =>
                 {
-                    b.HasOne("LiWiMus.Core.Entities.User", "User")
+                    b.HasOne("LiWiMus.Core.Entities.User", "Creator")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("User");
+                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.PlaylistTrack", b =>
@@ -923,15 +895,11 @@ namespace LiWiMus.Infrastructure.Migrations
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Album", b =>
                 {
-                    b.Navigation("ArtistAlbums");
-
                     b.Navigation("Subscribers");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Artist", b =>
                 {
-                    b.Navigation("ArtistAlbums");
-
                     b.Navigation("ArtistTracks");
 
                     b.Navigation("Subscribers");
