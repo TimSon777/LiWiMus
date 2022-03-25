@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using LiWiMus.Core.Constants;
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
@@ -25,6 +26,18 @@ public class ApplicationUserManager : UserManager<User>
     {
         _roleRepository = roleRepository;
         _userRoleRepository = userRoleRepository;
+    }
+
+    public override async Task<IdentityResult> CreateAsync(User user)
+    {
+        var result = await base.CreateAsync(user);
+
+        if (result.Succeeded)
+        {
+            result = await AddToRoleAsync(user, Roles.User.Name);
+        }
+
+        return result;
     }
 
     public override async Task<IList<string>> GetRolesAsync(User user)
