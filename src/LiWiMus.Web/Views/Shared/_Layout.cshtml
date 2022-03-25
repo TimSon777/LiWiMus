@@ -4,9 +4,7 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - LiWiMus.Web</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="~/LiWiMus.Web.styles.css" asp-append-version="true"/>
-    <link rel="stylesheet" href="/css/bundle.css" />
+    <partial name="Partials/_LinksPartial"></partial>
 </head>
 <body>
 <header style="background-color: #444444">
@@ -42,11 +40,7 @@
         &copy; 2022 - LiWiMus.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
     </div>
 </footer>*@
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
-<link rel="stylesheet" href="/formhelper/formhelper.min.css" />
-<script src="/formhelper/formhelper.bundle.min.js"></script>
+<partial name="Partials/_ScriptsPartial"></partial>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
