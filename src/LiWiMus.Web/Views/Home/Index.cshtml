@@ -1,24 +1,15 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_LayoutMainPage";
 }
 
-<div class="body-main">
-    <div class="usersidebar" style="background-color: #21201F; position: relative;">
-        <div class="loginButtons text-white" style="position: absolute; top: 25%; left: 50%;transform: translate(-50%, -25%); display: grid;
-grid-template-rows: 1fr 1fr">
-            кнопки не работают! не тыкать!
-            <button class="btn btn-success" style="margin: 15px; border-radius: 50px;">Log In</button>
-            <button class="btn btn-link" style="margin: 15px; border-radius: 50px;">Sign Up</button>
-        </div>
-    </div>
-    <div class="content" style="background-color: #727271;position: relative;overflow: hidden; display: flex; justify-content: center">
-        <img src="/images/main-background.jpg" alt="" style="position: absolute; height: 100%; opacity: 0.4"/>
-    </div>
-    <div class="about" style="background-color: #5F605D;position: relative">
-        <div class="about text-white" style="position: absolute; top: 25%; left: 20%;transform: translate(-20%, -25%); display: grid; grid-template-rows: 1fr 1fr">
-            <h1>About</h1>
-            <hr style="height:2px;border-width:0;color:#EF6817;background-color:#EF6817"/>
-            <text>Welcome to our site!</text>
-        </div>
+<div class="content-main" style="background-color: #727271;position: relative;overflow: hidden; display: flex; justify-content: center">
+    <img src="/images/main-background.jpg" alt="" style="position: absolute; height: 100%; opacity: 0.4"/>
+</div>
+<div class="about" style="background-color: #5F605D;position: relative">
+    <div class="about text-white" style="position: absolute; top: 25%; left: 20%;transform: translate(-20%, -25%); display: grid; grid-template-rows: 1fr 1fr">
+        <h1>About</h1>
+        <hr style="height:2px;border-width:0;color:#EF6817;background-color:#EF6817"/>
+        <text>Welcome to our site!</text>
     </div>
 </div>

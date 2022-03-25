@@ -5,7 +5,7 @@
 }
 
 <div class="body">
-    <div class="content" style="position: absolute; min-width: 166px; width: 20%">
+    <div class="content">
         <div>
             <p class="text-white" style="font-weight: bold; width: 100%; text-align: center">
                 CREATE AN ACCOUNT
@@ -37,7 +37,7 @@
                 <div class="text-white account-submit-button-area">
                     <div>
                         Have an account?<br/>
-                        <a class="text-white" href="https://liwimus.aslipatov.site/User/Account/Login" style="font-size: smaller">Log In</a>
+                        <a class="text-white" asp-area="User" asp-controller="Account" asp-action="Login" style="font-size: smaller">Log In</a>
                     </div>
                     <div>
                         <input type="submit" class="btn text-white account-submit-button" value="Sign Up"/>

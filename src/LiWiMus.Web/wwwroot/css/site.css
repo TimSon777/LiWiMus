@@ -13,9 +13,11 @@ html {
     min-height: 100%;
 }
 
+/*
 body {
     margin-bottom: 60px;
 }
+*/
 
 .account-input-field {
     width: 100%;
@@ -51,4 +53,44 @@ body {
     display: grid;
     grid-template-columns: 1.5fr 4fr 2fr;
     height: 100vh;
+}
+
+.body-sidebar {
+    display: grid;
+    grid-template-columns: 1.5fr 6fr;
+    height: 100vh;
+}
+
+.content {
+    position: absolute;
+    min-width: 166px;
+    width: 20%
+}
+
+.login-buttons {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    width: 20%;
+    min-width: 120px;
+}
+.user-sidebar-nav{
+    position: absolute;
+    top: 15%;
+    left: 50%;
+    transform: translate(-50%, -15%);
+    display: grid;
+    width: 20%;
+    min-width: 120px;
+}
+
+.text-link{
+    text-decoration: none;
+    color: white;
+}
+.text-link:hover{
+    color: wheat;
 }
