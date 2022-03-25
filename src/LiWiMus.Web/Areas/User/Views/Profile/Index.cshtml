@@ -5,7 +5,7 @@
     Layout = "_LayoutSidebar";
 }
 
-<div class="" style="padding: 0">
+<div class="p-0">
     <section class="user-nav">
         
     </section>
@@ -28,31 +28,31 @@
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                 		<div class="label-input">
                 			<label asp-for="FirstName"></label>
-                			<input class="edit-profile-input" asp-for="FirstName"/>
+                			<input class="edit-profile-input disabled-input" asp-for="FirstName" disabled="disabled"/>
                 		</div>
                 	
                 		<div class="label-input">
                 			<label asp-for="BirthDate"></label>
-                			<input class="edit-profile-input" asp-for="BirthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
+                			<input class="edit-profile-input disabled-input" asp-for="BirthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")" disabled="disabled">
                 		</div>
                 	
                 		<div class="label-input">
                 			<label asp-for="UserName"></label>
-                			<input class="edit-profile-input" asp-for="UserName">
+                			<input class="edit-profile-input disabled-input" asp-for="UserName" disabled="disabled">
                 		</div>
                 	
                 		<div class="label-input">
                 			<label asp-for="SecondName"></label>
-                			<input class="edit-profile-input" asp-for="SecondName">
+                			<input class="edit-profile-input disabled-input" asp-for="SecondName" disabled="disabled">
                 		</div>
                 	
                 		<div class="label-input">
-                			<p style="margin: 0">Gender</p>
-                			<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                			<p class="m-0">Gender</p>
+                			<input class="form-check-input disabled-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" disabled="disabled">
                 			<label class="form-check-label" for="flexRadioDefault1">
                 				Male
                 			</label>
-                			<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                			<input class="form-check-input disabled-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked disabled="disabled">
                 			<label class="form-check-label" for="flexRadioDefault2">
                 				Female
                 			</label>
@@ -62,16 +62,26 @@
                 		{
                 			<div class="label-input">
                 				<label asp-for="Email"></label>
-                				<input class="edit-profile-input" asp-for="Email">
+                				<input class="edit-profile-input disabled-input" asp-for="Email" disabled="disabled">
                 			</div>
                 		}
                 	
-                		<div class="label-input">
-                			<label asp-for="Patronymic"></label>
-                			<input class="edit-profile-input" asp-for="Patronymic">
-                		</div>
-                	
-                		<input class="edit-button " type="submit" value="Edit">
+		                <div class="label-input">
+			                <label asp-for="Patronymic"></label>
+			                <input class="edit-profile-input disabled-input" asp-for="Patronymic" disabled="disabled">
+		                </div>
+		                
+		                @if (Model.IsAccountOwner)
+		                {
+			                <div class="">
+				                <button class="edit-button" type="button" id="btn-edit-profile-info">Edit</button>
+			                </div>
+
+			                <div class="">
+				                <input class="edit-button" id="btn-save-profile-info" type="submit" value="Save" style="display: none; background-color: #21201F">
+			                </div>
+		                }
+	                
                 </div>
             </form>
         </section>
