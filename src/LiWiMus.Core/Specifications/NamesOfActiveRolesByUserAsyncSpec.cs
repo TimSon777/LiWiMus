@@ -8,7 +8,7 @@ public sealed class NamesOfActiveRolesByUserAsyncSpec : Specification<Role, stri
     public NamesOfActiveRolesByUserAsyncSpec(User user)
     {
         Query.Where(role =>
-            role.UserRoles.Any(userRole => userRole.UserId == user.Id && userRole.ActiveUntil > DateTime.UtcNow));
+            role.UserRoles.Any(userRole => userRole.UserId == user.Id && userRole.IsActive));
         Query.Select(role => role.Name);
     }
 }
