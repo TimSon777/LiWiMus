@@ -36,7 +36,8 @@ body {
     background-color: #EF6817;
     font-size: larger;
 }
-.body{
+
+.body {
     padding: 60px;
     height: 100vh;
     background-color: #727271;
@@ -44,4 +45,10 @@ body {
     position: relative;
     overflow: hidden;
     justify-content: center;
+}
+
+.body-main {
+    display: grid;
+    grid-template-columns: 1.5fr 4fr 2fr;
+    height: 100vh;
 }
