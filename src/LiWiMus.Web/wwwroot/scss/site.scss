@@ -30,8 +30,8 @@ $btn-text-color: white;
   @extend .edit-btns;
   border: none;
   max-width: 100px;
-  align-self: center;
-  margin: 2% 2% 2% 50%;
+  margin: 8% 0 0;
+
   &:hover {
     background-color: #ee522f;
   }
