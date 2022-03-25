@@ -62,10 +62,15 @@ public static class ApplicationContextSeed
         if (user == null)
         {
             await userManager.CreateAsync(admin, adminSettings.Password);
-            await userManager.AddToRoleAsync(admin, Roles.Admin.Name);
-            await userManager.AddToRoleAsync(admin, Roles.Moderator.Name);
-            await userManager.AddToRoleAsync(admin, Roles.User.Name);
         }
+        else
+        {
+            admin = user;
+        }
+
+        await userManager.AddToRoleAsync(admin, Roles.Admin.Name);
+        await userManager.AddToRoleAsync(admin, Roles.Moderator.Name);
+        await userManager.AddToRoleAsync(admin, Roles.User.Name);
 
         var adminRole = await roleManager.FindByNameAsync(Roles.Admin.Name);
         await roleManager.AddPermissionClaim(adminRole, Permissions.GetAllPermissions());
