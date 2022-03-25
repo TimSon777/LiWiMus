@@ -5,47 +5,86 @@
     Layout = "_Layout";
 }
 
-<section>
-    Hello @Model.UserName !
-</section>
-
-<section>
-    <form asp-area="User" asp-controller="Profile" asp-action="Update"
-          data-ajax="true"
-          data-ajax-method="post"
-          data-ajax-success="successUpdate"
-          data-ajax-failure="failureUpdate">
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName"/>
+<div class="container">
+    <section class="user-nav">
         
-        <label asp-for="SecondName"></label>
-        <input asp-for="SecondName">
+    </section>
+    
+    <div class="editor-wrap">
+        <div class="stars-image">
+            </div>
         
-        <label asp-for="Patronymic"></label>
-        <input asp-for="Patronymic">
+            <h2 class="your-profile-header">
+                Your profile
+            </h2>
+        
+        <section class="edit-inputs-group">
+            <form class="edit-inputs-form" asp-area="User" asp-controller="Profile" asp-action="Update"
+                  data-ajax="true"
+                  data-ajax-method="post"
+                  data-ajax-success="successUpdate"
+                  data-ajax-failure="failureUpdate">
+                
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                		<div class="label-input">
+                			<label asp-for="FirstName"></label>
+                			<input class="edit-profile-input" asp-for="FirstName"/>
+                		</div>
+                	
+                		<div class="label-input">
+                			<label asp-for="BirthDate"></label>
+                			<input class="edit-profile-input" asp-for="BirthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
+                		</div>
+                	
+                		<div class="label-input">
+                			<label asp-for="UserName"></label>
+                			<input class="edit-profile-input" asp-for="UserName">
+                		</div>
+                	
+                		<div class="label-input">
+                			<label asp-for="SecondName"></label>
+                			<input class="edit-profile-input" asp-for="SecondName">
+                		</div>
+                	
+                		<div class="label-input">
+                			<p style="margin: 0">Gender</p>
+                			<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                			<label class="form-check-label" for="flexRadioDefault1">
+                				Male
+                			</label>
+                			<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                			<label class="form-check-label" for="flexRadioDefault2">
+                				Female
+                			</label>
+                		</div>
+                	
+                		@if (Model.IsAccountOwner)
+                		{
+                			<div class="label-input">
+                				<label asp-for="Email"></label>
+                				<input class="edit-profile-input" asp-for="Email">
+                			</div>
+                		}
+                	
+                		<div class="label-input">
+                			<label asp-for="Patronymic"></label>
+                			<input class="edit-profile-input" asp-for="Patronymic">
+                		</div>
+                	
+                		<input class="edit-button " type="submit" value="Edit">
+                </div>
+            </form>
+        </section>
         
         @if (Model.IsAccountOwner)
-        {
-            <label asp-for="Email"></label>
-            <input asp-for="Email">
-        }
-        
-        <label asp-for="UserName"></label>
-        <input asp-for="UserName">
-        
-        <label asp-for="BirthDate"></label>
-        <input asp-for="BirthDate" value="@Model.BirthDate?.ToString("yyyy-MM-dd")">
+            {
+                <div class="change-password-button">
+                    <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
+                </div>
+            }
+    </div>
+</div>
 
-        <input type="submit" value="Edit">
-    </form>
-</section>
-
-@if (Model.IsAccountOwner)
-{
-    <section>
-        <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
-    </section>
-}
 
 @section Scripts
 {
