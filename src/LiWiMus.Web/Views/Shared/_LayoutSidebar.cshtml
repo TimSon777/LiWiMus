@@ -35,11 +35,7 @@
     <main role="main">
         <div class="body-sidebar">
             <div class="user-sidebar" style="background-color: #21201F; position: relative;">
-                <div class="login-buttons text-white" style="position: absolute; top: 25%; left: 50%;transform: translate(-50%, -25%); display: grid;
-        grid-template-rows: 1fr 1fr">
-                    <button class="btn btn-success" style="margin: 15px; border-radius: 50px;">Log In</button>
-                    <button class="btn btn-link" style="margin: 15px; border-radius: 50px;">Sign Up</button>
-                </div>
+                 <partial name="Partials/_LoginSidebarPartial"/>
             </div>
             @RenderBody()
         </div>
