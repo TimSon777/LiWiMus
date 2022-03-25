@@ -1,15 +1,17 @@
-﻿using LiWiMus.Core.Entities;
+﻿using System.Security.Claims;
+using LiWiMus.Core.Constants;
+using LiWiMus.Core.Entities;
 using LiWiMus.Core.Entities.Interfaces;
+using LiWiMus.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Web.Permission;
 
 public class AuthorizationHandler : IAuthorizationHandler
 {
-    private readonly UserManager<User> _userManager;
+    private readonly ApplicationUserManager _userManager;
 
-    public AuthorizationHandler(UserManager<User> userManager)
+    public AuthorizationHandler(ApplicationUserManager userManager)
     {
         _userManager = userManager;
     }
@@ -17,21 +19,27 @@ public class AuthorizationHandler : IAuthorizationHandler
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var pendingRequirements = context.PendingRequirements.ToList();
+        var user = await _userManager.GetUserAsync(context.User);
+
+        if (user is null)
+        {
+            return;
+        }
 
         foreach (var requirement in pendingRequirements)
         {
             switch (requirement)
             {
                 case PermissionRequirement permissionRequirement:
-                    HandlePermissionRequirement(context, permissionRequirement);
+                {
+                    var userClaims = await _userManager.GetAllClaimsAsync(user);
+                    HandlePermissionRequirement(context, permissionRequirement, userClaims);
                     break;
+                }
+
                 case SameAuthorRequirement sameAuthorRequirement:
                 {
-                    var user = await _userManager.GetUserAsync(context.User);
-                    if (user is not null)
-                    {
-                        HandleSameAuthorRequirement(context, sameAuthorRequirement, user);
-                    }
+                    HandleSameAuthorRequirement(context, sameAuthorRequirement, user);
                     break;
                 }
             }
@@ -39,9 +47,9 @@ public class AuthorizationHandler : IAuthorizationHandler
     }
 
     private static void HandlePermissionRequirement(AuthorizationHandlerContext context,
-                                                    PermissionRequirement permissionRequirement)
+                                                    PermissionRequirement permissionRequirement, IEnumerable<Claim> userClaims)
     {
-        var permissions = context.User.Claims.Where(x => x.Type == "Permission" &&
+        var permissions = userClaims.Where(x => x.Type == Permissions.ClaimType &&
                                                          x.Value == permissionRequirement.Permission &&
                                                          x.Issuer == "LOCAL AUTHORITY");
         if (!permissions.Any())
@@ -53,7 +61,7 @@ public class AuthorizationHandler : IAuthorizationHandler
     }
 
     private static void HandleSameAuthorRequirement(AuthorizationHandlerContext context,
-                                                    IAuthorizationRequirement sameAuthorRequirement, User user)
+                                                    SameAuthorRequirement sameAuthorRequirement, User user)
     {
         switch (context.Resource)
         {

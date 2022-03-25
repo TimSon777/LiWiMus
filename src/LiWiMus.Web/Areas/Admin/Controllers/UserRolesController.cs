@@ -57,12 +57,20 @@ public class UserRolesController : Controller
     public async Task<IActionResult> Update(string id, ManageUserRolesViewModel model)
     {
         var user = await _userManager.FindByIdAsync(id);
-        var roles = await _userManager.GetRolesAsync(user);
-        var result = await _userManager.RemoveFromRolesAsync(user, roles);
-        result = await _userManager.AddToRolesAsync(user,
-            model.UserRoles.Where(x => x.Selected).Select(y => y.RoleName));
-        var currentUser = await _userManager.GetUserAsync(User);
-        await _signInManager.RefreshSignInAsync(currentUser);
+
+        var selectedRoles = model.UserRoles
+                                 .Where(userRole => userRole.Selected)
+                                 .Select(userRole => userRole.RoleName)
+                                 .ToList();
+
+        var existingRoles = await _userManager.GetRolesAsync(user);
+
+        var newRoles = selectedRoles.Except(existingRoles).ToList();
+        await _userManager.AddToRolesAsync(user, newRoles);
+
+        var removedRoles = existingRoles.Except(selectedRoles).ToList();
+        await _userManager.RemoveFromRolesAsync(user, removedRoles);
+
         return RedirectToAction("Index", "Users", new {area = "Admin"});
     }
 }

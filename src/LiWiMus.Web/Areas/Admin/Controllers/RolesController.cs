@@ -34,6 +34,11 @@ public class RolesController : Controller
     [HttpPost]
     public async Task<IActionResult> AddRole(RoleViewModel roleViewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(roleViewModel);
+        }
+
         var role = _mapper.Map<Role>(roleViewModel);
         await _roleManager.CreateAsync(role);
         return RedirectToAction("Index", "Roles", new {area = "Admin"});
