@@ -20,8 +20,9 @@ $btn-text-color: white;
 .editor-wrap {
   color: white;
   background-color: $color_4;
-  max-width: 80%;
   padding-bottom: 2%;
+  height: 100%;
+  width: 100%;
 }
 
 .edit-button {
@@ -106,4 +107,9 @@ $btn-text-color: white;
 
 .label-input {
   margin-bottom: 2%;
+}
+
+.translations-content-container {
+  background-color: $color_4;
+  color: white;
 }
