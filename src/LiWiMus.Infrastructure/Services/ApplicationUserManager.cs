@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Constants;
 using LiWiMus.Core.Entities;
+using LiWiMus.Core.Models;
 using LiWiMus.Core.Specifications;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
@@ -15,6 +16,7 @@ public class ApplicationUserManager : UserManager<User>
 {
     private readonly IRepository<Role> _roleRepository;
     private readonly IRepository<UserRole> _userRoleRepository;
+    private readonly IRepository<UserClaim> _userClaimRepository;
     private readonly IdentityErrorDescriber _errorDescriber = new();
     private readonly RoleManager<Role> _roleManager;
 
@@ -24,13 +26,15 @@ public class ApplicationUserManager : UserManager<User>
                                   IEnumerable<IPasswordValidator<User>> passwordValidators,
                                   ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors,
                                   IServiceProvider services, ILogger<ApplicationUserManager> logger,
-                                  IRepository<Role> roleRepository, IRepository<UserRole> userRoleRepository, RoleManager<Role> roleManager) : base(
+                                  IRepository<Role> roleRepository, IRepository<UserRole> userRoleRepository,
+                                  RoleManager<Role> roleManager, IRepository<UserClaim> userClaimRepository) : base(
         store, optionsAccessor, passwordHasher,
         userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
         _roleRepository = roleRepository;
         _userRoleRepository = userRoleRepository;
         _roleManager = roleManager;
+        _userClaimRepository = userClaimRepository;
     }
 
     public override async Task<IdentityResult> CreateAsync(User user)
@@ -144,25 +148,54 @@ public class ApplicationUserManager : UserManager<User>
         return base.RemoveFromRolesAsync(user, roles);
     }
 
-    public override Task<IdentityResult> AddClaimAsync(User user, Claim claim)
+    public override async Task<IdentityResult> AddClaimAsync(User user, Claim claim)
     {
-        return base.AddClaimAsync(user, claim);
+        var existingUserClaim = await _userClaimRepository.GetBySpecAsync(new UserClaimByUserAndClaimSpec(user, claim));
+        if (existingUserClaim is not null)
+        {
+            await _userClaimRepository.DeleteAsync(existingUserClaim);
+        }
+
+        var timeLimitedClaim = claim as TimeLimitedClaim;
+        timeLimitedClaim ??= new TimeLimitedClaim(claim.Type, claim.Value);
+
+        var userClaim = new UserClaim
+        {
+            UserId = user.Id,
+            ClaimType = timeLimitedClaim.Type,
+            ClaimValue = timeLimitedClaim.Value,
+            GrantedAt = timeLimitedClaim.GrantedAt,
+            ActiveUntil = timeLimitedClaim.ActiveUntil
+        };
+
+        await _userClaimRepository.AddAsync(userClaim);
+
+        return IdentityResult.Success;
     }
 
-    public override Task<IdentityResult> AddClaimsAsync(User user, IEnumerable<Claim> claims)
+    public override async Task<IdentityResult> AddClaimsAsync(User user, IEnumerable<Claim> claims)
     {
-        return base.AddClaimsAsync(user, claims);
+        var errors = new List<IdentityError>();
+        foreach (var claim in claims)
+        {
+            var result = await AddClaimAsync(user, claim);
+            errors.AddRange(result.Errors);
+        }
+
+        return errors.Count > 0
+            ? IdentityResult.Failed(errors.ToArray())
+            : IdentityResult.Success;
     }
 
-    public override Task<IList<Claim>> GetClaimsAsync(User user)
+    public override async Task<IList<Claim>> GetClaimsAsync(User user)
     {
-        return base.GetClaimsAsync(user);
+        return await _userClaimRepository.ListAsync(new ActiveClaimsByUserSpec(user));
     }
 
     public async Task<IList<Claim>> GetAllClaimsAsync(User user)
     {
-        var userClaims = await base.GetClaimsAsync(user);
-        var userRoleNames = await base.GetRolesAsync(user);
+        var userClaims = await GetClaimsAsync(user);
+        var userRoleNames = await GetRolesAsync(user);
         var userRoles = await _roleRepository.ListAsync(new RolesByNamesSpec(userRoleNames));
         foreach (var role in userRoles)
         {
