@@ -37,13 +37,28 @@
     {
         <div class="login-buttons text-white">
             <div style="margin: 15px">
-                <button class="btn text-black" style="width:100%; border-radius: 50px; background-color: #C4C4C4;">Log In</button>
+                <a asp-area="User" asp-controller="Account" asp-action="Login"
+                   class="btn text-black" style="width:100%; border-radius: 50px; background-color: #C4C4C4;">
+                    Log In
+                </a>
             </div>
             <div style="margin: 15px;">
-                <button class="btn text-link" style="background-color: transparent;border-radius: 50px;width:100%;">
+                <a asp-area="User" asp-controller="Account" asp-action="Register" class="btn text-link" style="background-color: transparent;border-radius: 50px;width:100%;">
                     Sign Up
-                </button>
+                </a>
             </div>
         </div>
     }
 }
+<div class="website-info text-white"; style=" font-weight: lighter; position: absolute;top: 80%; left: 10%; transform: translate(-10%, -80%)">
+
+    <div>
+        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-link">Privacy</a>
+    </div>
+    <div>
+        <a>
+            Cookies
+        </a>
+    </div>
+
+</div>
