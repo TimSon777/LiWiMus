@@ -87,10 +87,11 @@ $btn-text-color: white;
   border-radius: 5px;
   width: 95%;
   padding-left: 4%;
+  height: 40px;
 }
 
 .stars-image {
-  height: 200px;
+  height: 15%;
   background-image: url('../images/stars.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -100,16 +101,51 @@ $btn-text-color: white;
   display: flex;
   flex-direction: column;
   width: 30%;
-  label {
-    margin-bottom: 2%;
-  }
 }
 
 .label-input {
   margin-bottom: 2%;
+  label {
+    margin-bottom: 10px;
+  }
 }
 
 .translations-content-container {
   background-color: $color_4;
   color: white;
+}
+
+.privacy-link {
+  color: $color_1;
+}
+
+.change-password-container {
+  background-color: #727271;
+  text-align: center;
+  color: white;
+}
+
+.save-password-button {
+  @extend .change-password-button;
+  background: none;
+  padding: 2%;
+}
+
+.change-password-outline {
+  box-sizing: border-box;
+  width: 85%;
+  margin: 2% auto 0;
+  outline: 1px solid rgba(255, 255, 255, 0.26);
+  border-radius: 10px;
+  padding: 4% 4% 2%;
+  background-color: rgba(140, 140, 140, 0.09);
+}
+
+.change-password-form-container {
+  background-color: $color_2;
+  margin: 0 auto;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 0 8px 8px rgba(0, 0, 0, 0.25);
+  padding: 5% 7%;
 }
