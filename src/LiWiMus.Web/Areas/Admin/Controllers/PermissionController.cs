@@ -18,25 +18,33 @@ public class PermissionController : Controller
     {
         _roleManager = roleManager;
     }
+
     public async Task<ActionResult> Index(string roleId)
     {
-        var model = new PermissionViewModel();
-        var allPermissions = new List<RoleClaimsViewModel>();
-        allPermissions.GetPermissions(typeof(Permissions.Artist), roleId);
+        var allPermissions = Permissions
+                             .GetAllPermissions()
+                             .Select(permission =>
+                                 new RoleClaimsViewModel
+                                 {
+                                     Type = Permissions.ClaimType,
+                                     Value = permission
+                                 })
+                             .ToList();
         var role = await _roleManager.FindByIdAsync(roleId);
-        model.RoleId = roleId;
         var claims = await _roleManager.GetClaimsAsync(role);
         var allClaimValues = allPermissions.Select(a => a.Value).ToList();
         var roleClaimValues = claims.Select(a => a.Value).ToList();
         var authorizedClaims = allClaimValues.Intersect(roleClaimValues).ToList();
         foreach (var permission in allPermissions)
         {
-            if (authorizedClaims.Any(a => a == permission.Value))
-            {
-                permission.Selected = true;
-            }
+            permission.Selected = authorizedClaims.Contains(permission.Value);
         }
-        model.RoleClaims = allPermissions;
+
+        var model = new PermissionViewModel
+        {
+            RoleId = roleId,
+            RoleClaims = allPermissions
+        };
         return View(model);
     }
 
@@ -49,11 +57,13 @@ public class PermissionController : Controller
         {
             await _roleManager.RemoveClaimAsync(role, claim);
         }
+
         var selectedClaims = model.RoleClaims.Where(a => a.Selected).ToList();
         foreach (var claim in selectedClaims)
         {
             await _roleManager.AddPermissionClaim(role, claim.Value);
         }
-        return RedirectToAction("Index", "Roles", new { area = "Admin" });
+
+        return RedirectToAction("Index", "Roles", new {area = "Admin"});
     }
 }

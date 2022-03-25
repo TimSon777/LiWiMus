@@ -7,7 +7,7 @@ namespace LiWiMus.Web.Areas.Artist.Controllers;
 [Area("Artist")]
 public class HomeController : Controller
 {
-    [Authorize(Policy = Permissions.Artist.View)]
+    [Authorize(Policy = Permissions.Artist.Read)]
     public IActionResult Index()
     {
         return Ok("you can see that");
