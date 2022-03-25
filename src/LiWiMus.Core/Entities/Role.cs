@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LiWiMus.SharedKernel.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Core.Entities;
 
-public class Role : IdentityRole<int>
+public class Role : IdentityRole<int>, IAggregateRoot
 {
     public Role(string name, string description, bool isPublic = false, decimal? pricePerMonth = null) : base(name)
     {
