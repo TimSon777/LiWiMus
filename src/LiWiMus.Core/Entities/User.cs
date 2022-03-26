@@ -33,7 +33,7 @@ public class User : BaseUserEntity
     public List<LikedSong> LikedSongs { get; set; } = new();
     public List<LikedUser> Subscribers { get; set; } = new();
     public List<LikedUser> LikedUsers { get; set; } = new();
-    public List<IdentityUserClaim<int>> Claims { get; set; } = new();
+    public List<UserClaim> Claims { get; set; } = new();
     public List<IdentityUserLogin<int>> Logins { get; set; } = new();
     public List<IdentityUserToken<int>> Tokens { get; set; } = new();
     public List<UserRole> UserRoles { get; set; } = new();

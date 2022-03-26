@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LiWiMus.Infrastructure.Data;
 
-public class ApplicationContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, UserRole,
+public class ApplicationContext : IdentityDbContext<User, Role, int, UserClaim, UserRole,
     IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
     public DbSet<Album> Albums => Set<Album>();

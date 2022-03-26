@@ -3,16 +3,18 @@ using System;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LiWiMus.Infrastructure.Migrations
+namespace LiWiMus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220325012038_Role_DefaultTimeout")]
+    partial class Role_DefaultTimeout
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -563,34 +565,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasCheckConstraint("CK_AspNetUsers_Gender_Enum", "`Gender` IN ('Male', 'Female')");
                 });
 
-            modelBuilder.Entity("LiWiMus.Core.Entities.UserClaim", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ActiveUntil")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime>("GrantedAt")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("AspNetUserClaims", (string)null);
-                });
-
             modelBuilder.Entity("LiWiMus.Core.Entities.UserRole", b =>
                 {
                     b.Property<int>("UserId")
@@ -632,6 +606,28 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
@@ -876,15 +872,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.Navigation("Artist");
                 });
 
-            modelBuilder.Entity("LiWiMus.Core.Entities.UserClaim", b =>
-                {
-                    b.HasOne("LiWiMus.Core.Entities.User", null)
-                        .WithMany("Claims")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("LiWiMus.Core.Entities.UserRole", b =>
                 {
                     b.HasOne("LiWiMus.Core.Entities.Role", "Role")
@@ -909,6 +896,15 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasOne("LiWiMus.Core.Entities.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
+                {
+                    b.HasOne("LiWiMus.Core.Entities.User", null)
+                        .WithMany("Claims")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

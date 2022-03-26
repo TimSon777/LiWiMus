@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Login";
 }
-
+@section Header{
+    <partial name="Partials/_LoginHeaderPartial"/>
+}
 <div class="body">
     <div class="content">
         <div style="margin:auto; width: auto; padding-bottom: 10%">
@@ -27,7 +29,6 @@
                         </div>
                     </form>
                 }
-
             }
         </div>
         <div>
@@ -49,9 +50,11 @@
                     <span asp-validation-for="Password"></span>
                 </div>
                 <div class="text-white account-submit-button-area">
-                    <div>
+                    <div >
+
                         <input asp-for="RememberMe"/>
-                        <label asp-for="RememberMe" style="font-weight: lighter;"></label>
+                        <label asp-for="RememberMe" style="font-weight: lighter; "></label>
+
                     </div>
                     <div>
                         <input type="submit" class="btn text-white account-submit-button" value="Log In"/>
@@ -59,14 +62,17 @@
                 </div>
             </form>
         </div>
+        <div class="text-white" style="padding-top: 10%">
+            <p>Forgot password?</p>
+        </div>
         <div>
             <form asp-area="User" asp-controller="Account" asp-action="ResetPassword"
                   data-ajax="true"
                   data-ajax-method="post"
                   data-ajax-success="successResetPassword"
                   data-ajax-failure="failureResetPassword">
-                <input name="userName"/>
-                <input type="submit" class="btn" style="border-radius: 50px" value="Reset password">
+                <input name="userName" type="text" placeholder="Input username" class="account-input-field" style="margin-bottom: 3%"/>
+                <input type="submit" class="btn text-white account-submit-button" value="Reset password">
             </form>
         </div>
     </div>

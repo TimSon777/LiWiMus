@@ -2,18 +2,7 @@
 
 public static class Permissions
 {
-    public const string ClaimType = "Permissions";
-
-    public static List<string> GeneratePermissionsForModule(string module)
-    {
-        return new List<string>()
-        {
-            $"Permissions.{module}.Create",
-            $"Permissions.{module}.Read",
-            $"Permissions.{module}.Update",
-            $"Permissions.{module}.Delete",
-        };
-    }
+    public const string ClaimType = nameof(Permissions);
 
     public static List<string> GetAllPermissions()
     {
@@ -63,65 +52,65 @@ public static class Permissions
 
     public static class Artist
     {
-        public const string Create = "Permissions.Artist.Create";
-        public const string Read = "Permissions.Artist.Read";
-        public const string Update = "Permissions.Artist.Update";
-        public const string Delete = "Permissions.Artist.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Artist)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Artist)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Artist)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Artist)}.{nameof(Delete)}";
     }
 
     public static class Album
     {
-        public const string Create = "Permissions.Album.Create";
-        public const string Read = "Permissions.Album.Read";
-        public const string Update = "Permissions.Album.Update";
-        public const string Delete = "Permissions.Album.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Album)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Album)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Album)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Album)}.{nameof(Delete)}";
     }
 
     public static class Genre
     {
-        public const string Create = "Permissions.Genre.Create";
-        public const string Read = "Permissions.Genre.Read";
-        public const string Update = "Permissions.Genre.Update";
-        public const string Delete = "Permissions.Genre.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
     }
 
     public static class Playlist
     {
-        public const string Create = "Permissions.Playlist.Create";
-        public const string Read = "Permissions.Playlist.Read";
-        public const string Update = "Permissions.Playlist.Update";
-        public const string Delete = "Permissions.Playlist.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
     }
 
     public static class Role
     {
-        public const string Create = "Permissions.Role.Create";
-        public const string Read = "Permissions.Role.Read";
-        public const string Update = "Permissions.Role.Update";
-        public const string Delete = "Permissions.Role.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
     }
 
     public static class Track
     {
-        public const string Create = "Permissions.Track.Create";
-        public const string Read = "Permissions.Track.Read";
-        public const string Update = "Permissions.Track.Update";
-        public const string Delete = "Permissions.Track.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
     }
 
     public static class User
     {
-        public const string Create = "Permissions.User.Create";
-        public const string Read = "Permissions.User.Read";
-        public const string Update = "Permissions.User.Update";
-        public const string Delete = "Permissions.User.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
     }
 
     public static class Transaction
     {
-        public const string Create = "Permissions.Transaction.Create";
-        public const string Read = "Permissions.Transaction.Read";
-        public const string Update = "Permissions.Transaction.Update";
-        public const string Delete = "Permissions.Transaction.Delete";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Delete)}";
     }
 }

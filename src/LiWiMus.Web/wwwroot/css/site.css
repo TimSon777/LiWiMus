@@ -13,6 +13,12 @@ html {
     min-height: 100%;
 }
 
+br {
+    display: block;
+    margin: 0;
+    content: "";
+}
+
 /*
 body {
     margin-bottom: 60px;
@@ -36,7 +42,6 @@ body {
 .account-submit-button {
     border-radius: 50px;
     background-color: #EF6817;
-    font-size: larger;
 }
 
 .body {
@@ -74,10 +79,11 @@ body {
     transform: translate(-50%, -25%);
     display: grid;
     grid-template-rows: 1fr 1fr;
-    width: 20%;
+    width: 80%;
     min-width: 120px;
 }
-.user-sidebar-nav{
+
+.user-sidebar-nav {
     position: absolute;
     top: 15%;
     left: 50%;
@@ -87,10 +93,11 @@ body {
     min-width: 120px;
 }
 
-.text-link{
+.text-link {
     text-decoration: none;
     color: white;
 }
-.text-link:hover{
+
+.text-link:hover {
     color: wheat;
 }
