@@ -25,6 +25,7 @@ public class ProfileController : Controller
     [Route("{userName?}")]
     public async Task<IActionResult> Index(string userName)
     {
+        ModelState.Clear();
         var currentUser = await _userManager.GetUserAsync(User);
 
         var user = string.IsNullOrEmpty(userName)
@@ -83,7 +84,6 @@ public class ProfileController : Controller
     [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
     {
-        var r = Request;
         model.BirthDate = DateOnly.TryParse(Request.Form[nameof(model.BirthDate)], out var birthDate) 
             ? birthDate 
             : null;
