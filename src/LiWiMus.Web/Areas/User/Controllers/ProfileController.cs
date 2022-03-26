@@ -84,10 +84,6 @@ public class ProfileController : Controller
     [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
     {
-        model.BirthDate = DateOnly.TryParse(Request.Form[nameof(model.BirthDate)], out var birthDate) 
-            ? birthDate 
-            : null;
-        
         var user = await _userManager.GetUserAsync(User);
 
         _mapper.Map(model, user);
