@@ -1,6 +1,7 @@
 using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
+using FormHelper;
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data;
@@ -33,7 +34,11 @@ services.ConfigureApplicationCookie(options =>
 });
 
 services.AddControllersWithViews()
-        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
+        .AddFormHelper(options =>
+        {
+            options.EmbeddedFiles = true;
+        });
 
 services.AddMapper();
 
@@ -89,6 +94,8 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseRouting();
+
+app.UseFormHelper();
 
 app.UseAuthentication();
 app.UseAuthorization();

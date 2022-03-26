@@ -9,6 +9,9 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<ProfileViewModel, User>().ReverseMap();
+        CreateMap<ProfileViewModel, User>()
+            .ForMember(user => user.Gender, opt => opt.MapFrom(vm => vm.IsMan ? Gender.Male : Gender.Female))
+            .ReverseMap()
+            .ForPath(vm => vm.IsMan, opt => opt.MapFrom(user => user.Gender == Gender.Male));
     }
 }

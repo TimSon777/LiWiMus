@@ -11,6 +11,7 @@ public class ProfileViewModel
     public string? FirstName { get; set; }
     public string? SecondName { get; set; }
     public string? Patronymic { get; set; }
+    public bool IsMan { get; set; }
 
     [DataType(DataType.Date)]
     public DateOnly? BirthDate { get; set; }

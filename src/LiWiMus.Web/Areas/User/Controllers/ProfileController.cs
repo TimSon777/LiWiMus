@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FormHelper;
 using LiWiMus.SharedKernel;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -79,28 +80,22 @@ public class ProfileController : Controller
 
     [Authorize]
     [HttpPost]
+    [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
     {
+        var r = Request;
         model.BirthDate = DateOnly.TryParse(Request.Form[nameof(model.BirthDate)], out var birthDate) 
             ? birthDate 
             : null;
         
         var user = await _userManager.GetUserAsync(User);
-        
-        if (!ModelState.IsValid)
-        {
-            return BadRequest("Fu");
-        }
 
         _mapper.Map(model, user);
         
         var result = await _userManager.UpdateAsync(user);
 
-        if (result.Succeeded)
-        {
-            return Ok("Ok");
-        }
-        
-        return BadRequest("Fu");
+        return result.Succeeded 
+            ? FormResult.CreateSuccessResult("Ok") 
+            : FormResult.CreateErrorResult("Fu");
     }
 }

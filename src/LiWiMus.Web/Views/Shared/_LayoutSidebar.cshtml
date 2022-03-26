@@ -2,11 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>@ViewData["Title"] - LiWiMus.Web</title>
-        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="~/LiWiMus.Web.styles.css" asp-append-version="true"/>
-        <link rel="stylesheet" href="/css/bundle.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>@ViewData["Title"] - LiWiMus.Web</title>
+    <partial name="Partials/_LinksPartial"></partial>
 </head>
 <body>
 <header style="background-color: #444444">
@@ -35,15 +33,13 @@
     <main role="main">
         <div class="body-sidebar">
             <div class="user-sidebar" style="background-color: #21201F; position: relative;">
-                 <partial name="Partials/_LoginSidebarPartial"/>
+                <partial name="Partials/_LoginSidebarPartial"/>
             </div>
             @RenderBody()
         </div>
     </main>
 </div>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="~/js/site.js" asp-append-version="true"></script>
+<partial name="Partials/_ScriptsPartial"></partial>
 @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
