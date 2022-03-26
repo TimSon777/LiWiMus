@@ -76,34 +76,34 @@ public static class Permissions
 
     public static class Playlist
     {
-        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
-        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
-        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
-        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Playlist)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Playlist)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Playlist)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Playlist)}.{nameof(Delete)}";
     }
 
     public static class Role
     {
-        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
-        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
-        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
-        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Role)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Role)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Role)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Role)}.{nameof(Delete)}";
     }
 
     public static class Track
     {
-        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
-        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
-        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
-        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(Track)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(Track)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(Track)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(Track)}.{nameof(Delete)}";
     }
 
     public static class User
     {
-        public const string Create  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Create)}";
-        public const string Read    = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Read)}";
-        public const string Update  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Update)}";
-        public const string Delete  = $"{nameof(Permissions)}.{nameof(Genre)}.{nameof(Delete)}";
+        public const string Create  = $"{nameof(Permissions)}.{nameof(User)}.{nameof(Create)}";
+        public const string Read    = $"{nameof(Permissions)}.{nameof(User)}.{nameof(Read)}";
+        public const string Update  = $"{nameof(Permissions)}.{nameof(User)}.{nameof(Update)}";
+        public const string Delete  = $"{nameof(Permissions)}.{nameof(User)}.{nameof(Delete)}";
     }
 
     public static class Transaction
