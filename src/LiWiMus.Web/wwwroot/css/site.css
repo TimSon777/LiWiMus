@@ -19,6 +19,10 @@ br {
     content: "";
 }
 
+body {
+    font-family: 'Overpass', sans-serif;
+    font-style: normal;
+}
 /*
 body {
     margin-bottom: 60px;
