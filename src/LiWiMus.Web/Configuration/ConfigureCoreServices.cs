@@ -15,6 +15,7 @@ public static class ConfigureCoreServices
         services.AddTransient<IAvatarService, AvatarService>();
         services.AddTransient<IMailService, MailService>();
         services.AddTransient<IMailRequestService, MailRequestService>();
+        services.AddTransient<IImageService, ImageService>();
 
         return services;
     }

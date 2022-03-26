@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using LiWiMus.Web.Binders.ImageBinder;
+using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
 
 namespace LiWiMus.Web.Areas.User.ViewModels;
 
@@ -18,4 +21,7 @@ public class ProfileViewModel
     public DateOnly? BirthDate { get; set; }
 
     public bool IsAccountOwner { get; set; }
+    
+    [ModelBinder(typeof(ImageModelBinder))]
+    public Image? Avatar { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FormHelper;
-using LiWiMus.SharedKernel;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

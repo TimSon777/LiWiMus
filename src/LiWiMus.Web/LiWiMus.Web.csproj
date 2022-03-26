@@ -29,6 +29,7 @@
       </PackageReference>
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
       <PackageReference Include="NickStrupat.EntityFrameworkCore.Triggers.AspNetCore" Version="1.0.3" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
     </ItemGroup>
 
     <ItemGroup>
