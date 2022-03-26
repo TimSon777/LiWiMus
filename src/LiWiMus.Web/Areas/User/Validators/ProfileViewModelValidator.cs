@@ -4,6 +4,7 @@ using LiWiMus.Web.Extensions;
 
 namespace LiWiMus.Web.Areas.User.Validators;
 
+// ReSharper disable once UnusedType.Global
 public class ProfileViewModelValidator : AbstractValidator<ProfileViewModel>
 {
     public ProfileViewModelValidator()
