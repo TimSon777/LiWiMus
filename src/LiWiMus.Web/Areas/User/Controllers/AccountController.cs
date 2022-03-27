@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LiWiMus.Web.Areas.User.Controllers;
 
 [Area("User")]
+[AllowAnonymous]
 public class AccountController : Controller
 {
     private readonly UserManager<Core.Entities.User> _userManager;
@@ -62,7 +63,6 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> ConfirmEmailAsync(string userId, string code)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(code))
@@ -222,7 +222,6 @@ public class AccountController : Controller
         return Redirect("/User/Profile/Index");
     }
 
-    [AllowAnonymous]
     [HttpPost]
     public IActionResult ExternalLogin(string provider, string returnUrl)
     {
@@ -235,7 +234,6 @@ public class AccountController : Controller
         return new ChallengeResult(provider, properties);
     }
 
-    [AllowAnonymous]
     public async Task<IActionResult>
         ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
     {

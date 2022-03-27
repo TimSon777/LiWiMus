@@ -22,6 +22,7 @@ public class ProfileController : Controller
 
     [HttpGet]
     [Route("{userName?}")]
+    [AllowAnonymous]
     public async Task<IActionResult> Index(string userName)
     {
         ModelState.Clear();
@@ -44,13 +45,11 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    [Authorize]
     public IActionResult ChangePassword()
     {
         return View();
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
@@ -78,7 +77,6 @@ public class ProfileController : Controller
         return View();
     }
 
-    [Authorize]
     [HttpPost]
     [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)

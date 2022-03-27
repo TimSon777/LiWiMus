@@ -8,6 +8,7 @@ using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Configuration;
 using LiWiMus.Web.Permission;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
@@ -49,6 +50,9 @@ services.AddAuthorization(options =>
 {
     options.AddPolicy("SameAuthorPolicy",
         policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
 });
 
 services.AddWebOptimizer(pipeline =>
