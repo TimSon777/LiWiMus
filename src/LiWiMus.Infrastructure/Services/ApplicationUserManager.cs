@@ -32,18 +32,6 @@ public class ApplicationUserManager : UserManager<User>
         _roleManager = roleManager;
     }
 
-    public override async Task<IdentityResult> CreateAsync(User user)
-    {
-        var result = await base.CreateAsync(user);
-
-        if (result.Succeeded)
-        {
-            result = await AddToRoleAsync(user, Roles.User.Name);
-        }
-
-        return result;
-    }
-
     public async Task<IList<Claim>> GetAllClaimsAsync(User user)
     {
         var userClaims = await GetClaimsAsync(user);
