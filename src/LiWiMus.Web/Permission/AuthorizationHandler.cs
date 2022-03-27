@@ -4,14 +4,15 @@ using LiWiMus.Core.Entities;
 using LiWiMus.Core.Entities.Interfaces;
 using LiWiMus.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Web.Permission;
 
 public class AuthorizationHandler : IAuthorizationHandler
 {
-    private readonly ApplicationUserManager _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public AuthorizationHandler(ApplicationUserManager userManager)
+    public AuthorizationHandler(UserManager<User> userManager)
     {
         _userManager = userManager;
     }
@@ -32,7 +33,7 @@ public class AuthorizationHandler : IAuthorizationHandler
             {
                 case PermissionRequirement permissionRequirement:
                 {
-                    var userClaims = await _userManager.GetAllClaimsAsync(user);
+                    var userClaims = context.User.Claims;
                     HandlePermissionRequirement(context, permissionRequirement, userClaims);
                     break;
                 }
