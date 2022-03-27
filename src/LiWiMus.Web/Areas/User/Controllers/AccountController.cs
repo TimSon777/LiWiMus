@@ -302,6 +302,8 @@ public class AccountController : Controller
                     // Update any authentication tokens as well
                     await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
 
+                    await SendConfirmEmailAsync(user);
+
                     return LocalRedirect(returnUrl);
                 }
             }
