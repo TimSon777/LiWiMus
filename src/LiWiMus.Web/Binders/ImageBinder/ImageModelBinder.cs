@@ -1,4 +1,6 @@
-﻿using LiWiMus.Web.Extensions;
+﻿using ByteSizeLib;
+using LiWiMus.Core.Models;
+using LiWiMus.Web.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace LiWiMus.Web.Binders.ImageBinder;
@@ -21,13 +23,16 @@ public class ImageModelBinder : IModelBinder
         
         var isOk = formFiles[0].TryParseToImage(out var image);
 
-        if (!isOk)
+        if (!isOk || image is null)
         {
             ctx.Result = ModelBindingResult.Failed();
             return Task.CompletedTask;
         }
+
+        var extension = Path.GetExtension(formFiles[0].FileName);
+        var imageInfo = new ImageInfo(ByteSize.FromBytes(formFiles[0].Length), extension, image);
         
-        ctx.Result = ModelBindingResult.Success(image);
+        ctx.Result = ModelBindingResult.Success(imageInfo);
         return Task.CompletedTask;
     }
 }

@@ -2,7 +2,6 @@
 using FluentValidation;
 using LiWiMus.Web.Areas.User.ViewModels;
 using LiWiMus.Web.Extensions;
-using NUglify.Helpers;
 
 namespace LiWiMus.Web.Areas.User.Validators;
 
@@ -43,7 +42,7 @@ public class ProfileViewModelValidator : AbstractValidator<ProfileViewModel>
 
         RuleFor(vm => vm.Avatar)
             .MaximumDifferenceSidesInPercent(10)
-            .MaxSize(ByteSize.FromMegaBytes(5))
+            .MaxSize(ByteSize.FromMegaBytes(1))
             .When(vm => vm.Avatar is not null);
     }
 }

@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using FormHelper;
+using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Settings;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.Areas.User.Controllers;
 
@@ -13,11 +16,18 @@ public class ProfileController : Controller
 {
     private readonly UserManager<Core.Entities.User> _userManager;
     private readonly IMapper _mapper;
+    private readonly IAvatarService _avatarService;
+    private readonly string _contentRootPath;
 
-    public ProfileController(UserManager<Core.Entities.User> userManager, IMapper mapper)
+    public ProfileController(UserManager<Core.Entities.User> userManager, 
+        IMapper mapper,
+        IHostEnvironment environment,
+        IAvatarService avatarService)
     {
         _userManager = userManager;
         _mapper = mapper;
+        _avatarService = avatarService;
+        _contentRootPath = environment.ContentRootPath;
     }
 
     [HttpGet]
@@ -84,7 +94,12 @@ public class ProfileController : Controller
         var user = await _userManager.GetUserAsync(User);
 
         _mapper.Map(model, user);
-        
+
+        if (model.Avatar is not null)
+        {
+            await _avatarService.SetAvatarAsync(user, model.Avatar, _contentRootPath);
+        }
+
         var result = await _userManager.UpdateAsync(user);
 
         return result.Succeeded 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using LiWiMus.Core.Models;
 using LiWiMus.Web.Binders.ImageBinder;
 using Microsoft.AspNetCore.Mvc;
 using SixLabors.ImageSharp;
@@ -23,5 +24,5 @@ public class ProfileViewModel
     public bool IsAccountOwner { get; set; }
     
     [ModelBinder(typeof(ImageModelBinder))]
-    public Image? Avatar { get; set; }
+    public ImageInfo? Avatar { get; set; }
 }
