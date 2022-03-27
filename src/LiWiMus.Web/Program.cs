@@ -24,8 +24,10 @@ var services = builder.Services;
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
 builder.Services.AddTriggers();
 TriggersConfiguration.ConfigureTriggers();
-services.AddCoreServices(builder.Configuration);
+services.AddCoreServices(builder.Configuration, builder.Environment);
 services.AddWebServices(builder.Configuration);
+
+services.AddHttpClient();
 
 services.AddIdentity(builder.Environment);
 services.ConfigureApplicationCookie(options =>

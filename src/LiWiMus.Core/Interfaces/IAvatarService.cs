@@ -5,6 +5,6 @@ namespace LiWiMus.Core.Interfaces;
 
 public interface IAvatarService
 {
-    Task SetRandomAvatarAsync(User user, HttpClient httpClient, string contentRootPath);
-    Task SetAvatarAsync(User user, ImageInfo imageInfo, string contentRootPat);
+    Task SetRandomAvatarAsync(User user);
+    Task SetAvatarAsync(User user, ImageInfo imageInfo);
 }

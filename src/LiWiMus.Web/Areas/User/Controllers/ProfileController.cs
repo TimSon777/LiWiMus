@@ -96,7 +96,7 @@ public class ProfileController : Controller
 
         if (model.Avatar is not null)
         {
-            await _avatarService.SetAvatarAsync(user, model.Avatar, _contentRootPath);
+            await _avatarService.SetAvatarAsync(user, model.Avatar);
         }
 
         var result = await _userManager.UpdateAsync(user);
@@ -111,7 +111,7 @@ public class ProfileController : Controller
     public async Task ChangeAvatarToRandom()
     {
         var user = await _userManager.GetUserAsync(User);
-        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _contentRootPath);
+        await _avatarService.SetRandomAvatarAsync(user);
         await _userManager.UpdateAsync(user);
     }
 }

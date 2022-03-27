@@ -7,7 +7,7 @@ namespace LiWiMus.Web.Configuration;
 
 public static class ConfigureCoreServices
 {
-    public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection AddCoreServices(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
@@ -17,6 +17,7 @@ public static class ConfigureCoreServices
         services.AddTransient<IMailRequestService, MailRequestService>();
         services.AddTransient<IImageService, ImageService>();
 
+        AvatarService.Configure(environment.ContentRootPath);
         return services;
     }
 }

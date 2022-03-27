@@ -1,5 +1,6 @@
 ﻿using EntityFrameworkCore.Triggers;
 using LiWiMus.Core.Entities;
+using LiWiMus.Core.Interfaces;
 using LiWiMus.SharedKernel;
 
 namespace LiWiMus.Infrastructure.Data.Config;
@@ -22,5 +23,8 @@ public static class TriggersConfiguration
             Amount = 100,
             Description = "Gift for registration"
         });
+
+        Triggers<User, ApplicationContext>.GlobalInserted.Add<IAvatarService>(entry =>
+            entry.Service.SetRandomAvatarAsync(entry.Entity));
     }
 }

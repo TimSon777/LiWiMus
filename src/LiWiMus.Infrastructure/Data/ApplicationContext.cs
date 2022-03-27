@@ -11,6 +11,7 @@ namespace LiWiMus.Infrastructure.Data;
 public class ApplicationContext : IdentityDbContext<User, Role, int, UserClaim, UserRole,
     IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
 {
+    private readonly IServiceProvider _serviceProvider;
     public DbSet<Album> Albums => Set<Album>();
     public DbSet<Artist> Artists => Set<Artist>();
     public DbSet<Genre> Genres => Set<Genre>();
@@ -18,8 +19,9 @@ public class ApplicationContext : IdentityDbContext<User, Role, int, UserClaim, 
     public DbSet<Track> Tracks => Set<Track>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
 
-    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options)
+    public ApplicationContext(DbContextOptions<ApplicationContext> options, IServiceProvider serviceProvider) : base(options)
     {
+        _serviceProvider = serviceProvider;
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,22 +32,22 @@ public class ApplicationContext : IdentityDbContext<User, Role, int, UserClaim, 
 
     public override int SaveChanges()
     {
-        return this.SaveChangesWithTriggers(base.SaveChanges, true);
+        return this.SaveChangesWithTriggers(base.SaveChanges, _serviceProvider, true);
     }
 
     public override int SaveChanges(bool acceptAllChangesOnSuccess)
     {
-        return this.SaveChangesWithTriggers(base.SaveChanges, acceptAllChangesOnSuccess);
+        return this.SaveChangesWithTriggers(base.SaveChanges, _serviceProvider, acceptAllChangesOnSuccess);
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        return this.SaveChangesWithTriggersAsync(base.SaveChangesAsync, true, cancellationToken);
+        return this.SaveChangesWithTriggersAsync(base.SaveChangesAsync, _serviceProvider, true, cancellationToken);
     }
 
     public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
                                                CancellationToken cancellationToken = default)
     {
-        return this.SaveChangesWithTriggersAsync(base.SaveChangesAsync, acceptAllChangesOnSuccess, cancellationToken);
+        return this.SaveChangesWithTriggersAsync(base.SaveChangesAsync, _serviceProvider, acceptAllChangesOnSuccess, cancellationToken);
     }
 }
