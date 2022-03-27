@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using LiWiMus.Core.Constants;
 using LiWiMus.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 
@@ -9,9 +10,9 @@ public static class ClaimsHelper
     public static async Task AddPermissionClaim(this RoleManager<Role> roleManager, Role role, string permission)
     {
         var allClaims = await roleManager.GetClaimsAsync(role);
-        if (!allClaims.Any(a => a.Type == "Permission" && a.Value == permission))
+        if (!allClaims.Any(a => a.Type == Permissions.ClaimType && a.Value == permission))
         {
-            await roleManager.AddClaimAsync(role, new Claim("Permission", permission));
+            await roleManager.AddClaimAsync(role, new Claim(Permissions.ClaimType, permission));
         }
     }
 }
