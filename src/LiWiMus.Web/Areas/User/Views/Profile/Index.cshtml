@@ -50,19 +50,19 @@
                     </div>
 
                     <div class="label-input">
-                        @{
-                            var checkedWhenWomen = !Model.IsMan ? "checked" : "";
-                            var checkedWhenMan = Model.IsMan ? "checked" : "";
-                        }
                         <p class="m-0">Gender</p>
-                        <input class="form-check-input disabled-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" @checkedWhenMan asp-for="IsMan" disabled="disabled">
-                        <label class="form-check-label" for="flexRadioDefault1">
+                        @{
+                            var isMale = Model.IsMale;
+                        }
+                        <input class="form-check-input disabled-input" @(isMale ? "checked" : "") type="radio" name="gender" id="gender-male" disabled="disabled">
+                        <label class="form-check-label" for="gender-male">
                             Male
                         </label>
-                        <input class="form-check-input disabled-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" @checkedWhenWomen disabled="disabled">
-                        <label class="form-check-label" for="flexRadioDefault2">
+                        <input class="form-check-input disabled-input" @(!isMale ? "checked" : "") type="radio" name="gender" id="gender-female" disabled="disabled">
+                        <label class="form-check-label" for="gender-female">
                             Female
                         </label>
+                        <input type="hidden" id="is-male" asp-for="IsMale">
                     </div>
 
                     @if (Model.IsAccountOwner)
@@ -71,6 +71,12 @@
                             <label asp-for="Email"></label>
                             <input class="edit-profile-input disabled-input" asp-for="Email" disabled="disabled">
                             <span asp-validation-for="Email"></span>
+                        </div>
+                        
+                        <div class="label-input">
+                            <label asp-for="Avatar"></label>
+                            <input type="file" class="edit-profile-input disabled-input" asp-for="Avatar" disabled="disabled">
+                            <span asp-validation-for="Avatar"></span>
                         </div>
                     }
 

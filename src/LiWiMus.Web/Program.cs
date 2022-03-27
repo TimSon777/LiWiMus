@@ -33,24 +33,22 @@ services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/User/Account/Denied";
 });
 
-services.AddControllersWithViews()
-        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
-        .AddFormHelper(options =>
-        {
-            options.EmbeddedFiles = true;
-        });
+services.AddControllersWithViews(options => options.UseDateOnlyTimeOnlyStringConverters())
+    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
+    .AddFormHelper(options => { options.EmbeddedFiles = true; });
 
 services.AddMapper();
 
 services.AddAuthentication()
-        .AddGoogle(options =>
-        {
-            options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
-            options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
-        });
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
+        options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
+    });
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("SameAuthorPolicy", policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
+    options.AddPolicy("SameAuthorPolicy",
+        policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
 });
 
 services.AddWebOptimizer(pipeline =>

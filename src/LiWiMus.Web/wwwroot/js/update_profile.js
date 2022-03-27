@@ -10,6 +10,7 @@ $(document).ready(() => {
     let isShowSaveBtn = false;
     let saveBtn = $("#btn-save-profile-info");
     let editInputs = $(".disabled-input");
+    
     $("#btn-edit-profile-info").click(() => {
         if (isShowSaveBtn) {
             $(saveBtn).hide();
@@ -19,5 +20,9 @@ $(document).ready(() => {
 
         $(editInputs).prop('disabled', isShowSaveBtn);
         isShowSaveBtn = !isShowSaveBtn;
-    })
+    });
+    
+    $("input[name='gender']").change(function () {
+        $('#is-male').val(this.id.indexOf("female") === -1);
+    });
 })

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using FormHelper;
-using LiWiMus.SharedKernel;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -84,10 +83,6 @@ public class ProfileController : Controller
     [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
     {
-        model.BirthDate = DateOnly.TryParse(Request.Form[nameof(model.BirthDate)], out var birthDate) 
-            ? birthDate 
-            : null;
-        
         var user = await _userManager.GetUserAsync(User);
 
         _mapper.Map(model, user);
