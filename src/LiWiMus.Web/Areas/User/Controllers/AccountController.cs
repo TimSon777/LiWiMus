@@ -16,8 +16,6 @@ public class AccountController : Controller
     private readonly SignInManager<Core.Entities.User> _signInManager;
     private readonly IMailService _mailService;
 
-    private readonly HttpClient _httpClient = new();
-
     public AccountController(UserManager<Core.Entities.User> userManager,
                              SignInManager<Core.Entities.User> signInManager, IMailService mailService)
     {
