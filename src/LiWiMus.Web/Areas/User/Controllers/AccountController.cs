@@ -261,12 +261,10 @@ public class AccountController : Controller
         }
 
         // If the user does not have an account, then ask the user to create an account.
-        var email = info.Principal.FindFirstValue(ClaimTypes.Email);
         return View("ExternalLoginConfirmation",
             new ExternalLoginConfirmationViewModel
             {
                 ReturnUrl = returnUrl,
-                Email = email,
                 ProviderDisplayName = info.ProviderDisplayName
             });
     }
@@ -290,7 +288,8 @@ public class AccountController : Controller
                 return View("ExternalLoginFailure");
             }
 
-            var user = new Core.Entities.User {UserName = model.UserName, Email = model.Email};
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = new Core.Entities.User {UserName = model.UserName, Email = email};
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
             {
