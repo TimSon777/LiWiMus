@@ -100,6 +100,12 @@
                 </div>
             </form>
         </section>
+        
+        <section>
+            <form asp-formhelper="true" asp-action="ChangeAvatarToRandom">
+                <button>Set random avatar</button>
+            </form>
+        </section>
 
         @if (Model.IsAccountOwner)
         {

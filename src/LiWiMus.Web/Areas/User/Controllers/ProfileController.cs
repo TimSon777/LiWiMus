@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Settings;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.Areas.User.Controllers;
 
@@ -18,6 +16,7 @@ public class ProfileController : Controller
     private readonly IMapper _mapper;
     private readonly IAvatarService _avatarService;
     private readonly string _contentRootPath;
+    private readonly HttpClient _httpClient = new();
 
     public ProfileController(UserManager<Core.Entities.User> userManager, 
         IMapper mapper,
@@ -105,5 +104,14 @@ public class ProfileController : Controller
         return result.Succeeded 
             ? FormResult.CreateSuccessResult("Ok") 
             : FormResult.CreateErrorResult("Fu");
+    }
+
+    [HttpPost]
+    [FormValidator]
+    public async Task ChangeAvatarToRandom()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _contentRootPath);
+        await _userManager.UpdateAsync(user);
     }
 }
