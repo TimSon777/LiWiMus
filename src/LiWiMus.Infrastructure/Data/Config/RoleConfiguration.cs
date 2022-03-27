@@ -10,7 +10,8 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
     public void Configure(EntityTypeBuilder<Role> builder)
     {
         builder.Property(role => role.DefaultTimeout)
-               .HasConversion(new TimeSpanToStringConverter());
+               .HasConversion(new TimeSpanToStringConverter())
+               .HasDefaultValue(TimeSpan.MaxValue);
 
         // Each Role can have many entries in the UserRole join table
         builder.HasMany(e => e.UserRoles)

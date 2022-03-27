@@ -34,6 +34,7 @@ public static class ConfigureIdentity
             })
             .AddDefaultTokenProviders()
             .AddEntityFrameworkStores<ApplicationContext>()
+            .AddUserStore<ApplicationUserStore>()
             .AddUserManager<ApplicationUserManager>();
 
         return services;

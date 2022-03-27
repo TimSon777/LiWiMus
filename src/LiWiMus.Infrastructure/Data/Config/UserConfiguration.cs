@@ -13,8 +13,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         // Each User can have many UserClaims
         builder.HasMany(e => e.Claims)
-         .WithOne()
-         .HasForeignKey(uc => uc.UserId)
+         .WithOne(claim => claim.User)
+         .HasForeignKey(claim => claim.UserId)
          .IsRequired();
 
         // Each User can have many UserLogins
