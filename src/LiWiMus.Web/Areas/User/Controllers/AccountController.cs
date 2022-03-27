@@ -45,8 +45,7 @@ public class AccountController : Controller
 
         if (!result.Succeeded)
         {
-            result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
-
+            AddErrors(result);
             return View(model);
         }
 
@@ -209,7 +208,7 @@ public class AccountController : Controller
 
         if (!result.Succeeded)
         {
-            result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
+            AddErrors(result);
             return View();
         }
 
@@ -313,6 +312,14 @@ public class AccountController : Controller
         await _signInManager.SignInAsync(user, false);
 
         return LocalRedirect(returnUrl);
+    }
+
+    private void AddErrors(IdentityResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
     }
 
     public IActionResult Denied(string returnUrl)
