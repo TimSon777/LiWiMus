@@ -108,10 +108,11 @@ public class ProfileController : Controller
 
     [HttpPost]
     [FormValidator]
-    public async Task ChangeAvatarToRandom()
+    public async Task<IActionResult> ChangeAvatarToRandom()
     {
         var user = await _userManager.GetUserAsync(User);
         await _avatarService.SetRandomAvatarAsync(user, _httpClient, _contentRootPath);
         await _userManager.UpdateAsync(user);
+        return FormResult.CreateSuccessResult("Refresh the page (ctrl f5) for the changes to take effect");
     }
 }
