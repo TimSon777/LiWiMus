@@ -1,8 +1,7 @@
 ﻿using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Settings;
-using LiWiMus.Infrastructure.Services;
-using LiWiMus.Web.Permission;
+using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

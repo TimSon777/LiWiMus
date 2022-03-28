@@ -1,6 +1,6 @@
 ﻿using LiWiMus.Core.Entities;
 using LiWiMus.Infrastructure.Data;
-using LiWiMus.Infrastructure.Services;
+using LiWiMus.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Web.Configuration;

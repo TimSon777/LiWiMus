@@ -1,7 +1,7 @@
 ﻿using LiWiMus.Core.Entities;
 using Microsoft.AspNetCore.Identity;
 
-namespace LiWiMus.Infrastructure.Services;
+namespace LiWiMus.Infrastructure.Identity;
 
 public class ApplicationUserValidator : UserValidator<User>
 {

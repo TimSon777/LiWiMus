@@ -2,11 +2,10 @@
 using LiWiMus.Core.Constants;
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Entities.Interfaces;
-using LiWiMus.Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
-namespace LiWiMus.Web.Permission;
+namespace LiWiMus.Infrastructure.Identity;
 
 public class AuthorizationHandler : IAuthorizationHandler
 {

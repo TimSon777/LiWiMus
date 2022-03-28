@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using System.Security.Claims;
-using EntityFrameworkCore.Triggers;
+﻿using System.Security.Claims;
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Models;
 using LiWiMus.Core.Specifications;
@@ -10,7 +8,7 @@ using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace LiWiMus.Infrastructure.Services;
+namespace LiWiMus.Infrastructure.Identity;
 
 public class ApplicationUserStore :
     UserStore<User, Role, ApplicationContext, int, UserClaim, UserRole, IdentityUserLogin<int>, IdentityUserToken<int>,

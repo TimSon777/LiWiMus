@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
 
-namespace LiWiMus.Web.Permission;
+namespace LiWiMus.Infrastructure.Identity;
 
-internal class PermissionPolicyProvider : IAuthorizationPolicyProvider
+public class PermissionPolicyProvider : IAuthorizationPolicyProvider
 {
     private DefaultAuthorizationPolicyProvider FallbackPolicyProvider { get; }
     public PermissionPolicyProvider(IOptions<AuthorizationOptions> options)

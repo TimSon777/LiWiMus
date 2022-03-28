@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace LiWiMus.Web.Permission;
+namespace LiWiMus.Infrastructure.Identity;
 
 internal class PermissionRequirement : IAuthorizationRequirement
 {
