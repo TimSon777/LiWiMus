@@ -287,7 +287,11 @@ public class AccountController : Controller
             }
 
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-            var user = new Core.Entities.User {UserName = model.UserName, Email = email};
+            var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+            var surName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+
+            var user = new Core.Entities.User {UserName = model.UserName, Email = email, FirstName = givenName, SecondName = surName};
+
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
             {
