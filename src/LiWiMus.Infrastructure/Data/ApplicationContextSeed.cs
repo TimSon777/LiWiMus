@@ -25,7 +25,7 @@ public static class ApplicationContextSeed
             }
 
             await roleManager.SeedRolesAsync();
-            await SeedAdminAsync(userManager, roleManager, adminSettings);
+            await SeedAdminAsync(userManager, adminSettings);
         }
         catch (Exception ex)
         {
@@ -41,16 +41,17 @@ public static class ApplicationContextSeed
 
     private static async Task SeedRolesAsync(this RoleManager<Role> roleManager)
     {
-        foreach (var role in Roles.GetPreconfiguredRoles())
+        foreach (var (role, permissions) in Roles.GetPreconfiguredRoles())
         {
             if (!await roleManager.RoleExistsAsync(role.Name))
             {
                 await roleManager.CreateAsync(role);
+                await roleManager.AddPermissionClaim(role, permissions);
             }
         }
     }
 
-    private static async Task SeedAdminAsync(UserManager<User> userManager, RoleManager<Role> roleManager, AdminSettings adminSettings)
+    private static async Task SeedAdminAsync(UserManager<User> userManager, AdminSettings adminSettings)
     {
         var admin = new User
         {
@@ -68,12 +69,10 @@ public static class ApplicationContextSeed
             admin = user;
         }
 
-        await userManager.AddToRoleAsync(admin, Roles.Admin.Name);
-        await userManager.AddToRoleAsync(admin, Roles.Moderator.Name);
-        await userManager.AddToRoleAsync(admin, Roles.User.Name);
-
-        var adminRole = await roleManager.FindByNameAsync(Roles.Admin.Name);
-        await roleManager.AddPermissionClaim(adminRole, Permissions.GetAllPermissions());
+        foreach (var (role, _) in Roles.GetPreconfiguredRoles())
+        {
+            await userManager.AddToRoleAsync(admin, role.Name);
+        }
     }
 
     private static async Task AddPermissionClaim(this RoleManager<Role> roleManager, Role role, List<string> permissions)
