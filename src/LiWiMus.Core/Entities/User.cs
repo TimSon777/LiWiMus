@@ -37,4 +37,6 @@ public class User : BaseUserEntity
     public List<IdentityUserLogin<int>> Logins { get; set; } = new();
     public List<IdentityUserToken<int>> Tokens { get; set; } = new();
     public List<UserRole> UserRoles { get; set; } = new();
+    public List<Chat> UserChats { get; set; } = new();
+    public List<Chat> ConsultantChats { get; set; } = new();
 }

@@ -3,16 +3,18 @@ using System;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LiWiMus.Infrastructure.Migrations
+namespace LiWiMus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220330153718_Chat_Message")]
+    partial class Chat_Message
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -781,13 +783,13 @@ namespace LiWiMus.Infrastructure.Migrations
             modelBuilder.Entity("LiWiMus.Core.Entities.Chat", b =>
                 {
                     b.HasOne("LiWiMus.Core.Entities.User", "Consultant")
-                        .WithMany("ConsultantChats")
+                        .WithMany()
                         .HasForeignKey("ConsultantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LiWiMus.Core.Entities.User", "User")
-                        .WithMany("UserChats")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1085,8 +1087,6 @@ namespace LiWiMus.Infrastructure.Migrations
                 {
                     b.Navigation("Claims");
 
-                    b.Navigation("ConsultantChats");
-
                     b.Navigation("LikedAlbums");
 
                     b.Navigation("LikedArtists");
@@ -1102,8 +1102,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.Navigation("Subscribers");
 
                     b.Navigation("Tokens");
-
-                    b.Navigation("UserChats");
 
                     b.Navigation("UserRoles");
                 });
