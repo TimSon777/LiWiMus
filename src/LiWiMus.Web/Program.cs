@@ -6,8 +6,9 @@ using LiWiMus.Core.Entities;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
+using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.Configuration;
-using LiWiMus.Web.Permission;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
@@ -23,8 +24,10 @@ var services = builder.Services;
 LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
 builder.Services.AddTriggers();
 TriggersConfiguration.ConfigureTriggers();
-services.AddCoreServices(builder.Configuration);
+services.AddCoreServices(builder.Configuration, builder.Environment);
 services.AddWebServices(builder.Configuration);
+
+services.AddHttpClient();
 
 services.AddIdentity(builder.Environment);
 services.ConfigureApplicationCookie(options =>
@@ -33,24 +36,29 @@ services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/User/Account/Denied";
 });
 
-services.AddControllersWithViews()
-        .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
-        .AddFormHelper(options =>
-        {
-            options.EmbeddedFiles = true;
-        });
+services.AddControllersWithViews(options => options.UseDateOnlyTimeOnlyStringConverters())
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        fv.LocalizationEnabled = false;
+    })
+    .AddFormHelper(options => { options.EmbeddedFiles = true; });
 
 services.AddMapper();
 
 services.AddAuthentication()
-        .AddGoogle(options =>
-        {
-            options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
-            options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
-        });
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
+        options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
+    });
 services.AddAuthorization(options =>
 {
-    options.AddPolicy("SameAuthorPolicy", policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
+    options.AddPolicy("SameAuthorPolicy",
+        policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                             .RequireAuthenticatedUser()
+                             .Build();
 });
 
 services.AddWebOptimizer(pipeline =>

@@ -9,23 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 namespace LiWiMus.Web.Areas.User.Controllers;
 
 [Area("User")]
+[AllowAnonymous]
 public class AccountController : Controller
 {
     private readonly UserManager<Core.Entities.User> _userManager;
     private readonly SignInManager<Core.Entities.User> _signInManager;
-    private readonly IAvatarService _avatarService;
-    private readonly IWebHostEnvironment _environment;
     private readonly IMailService _mailService;
 
-    private readonly HttpClient _httpClient = new();
-
-    public AccountController(UserManager<Core.Entities.User> userManager, SignInManager<Core.Entities.User> signInManager,
-                             IAvatarService avatarService, IWebHostEnvironment environment, IMailService mailService)
+    public AccountController(UserManager<Core.Entities.User> userManager,
+                             SignInManager<Core.Entities.User> signInManager, IMailService mailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
-        _avatarService = avatarService;
-        _environment = environment;
         _mailService = mailService;
     }
 
@@ -48,12 +43,10 @@ public class AccountController : Controller
 
         if (!result.Succeeded)
         {
-            result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
-
+            AddErrors(result);
             return View(model);
         }
 
-        await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
         await _userManager.UpdateAsync(user);
 
         await SendConfirmEmailAsync(user);
@@ -62,7 +55,6 @@ public class AccountController : Controller
     }
 
     [HttpGet]
-    [AllowAnonymous]
     public async Task<IActionResult> ConfirmEmailAsync(string userId, string code)
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(code))
@@ -214,7 +206,7 @@ public class AccountController : Controller
 
         if (!result.Succeeded)
         {
-            result.Errors.Foreach(error => ModelState.AddModelError("", error.Description));
+            AddErrors(result);
             return View();
         }
 
@@ -222,104 +214,113 @@ public class AccountController : Controller
         return Redirect("/User/Profile/Index");
     }
 
-    [AllowAnonymous]
+    //
+    // POST: /Account/ExternalLogin
     [HttpPost]
-    public IActionResult ExternalLogin(string provider, string returnUrl)
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public IActionResult ExternalLogin(string provider, string? returnUrl = null)
     {
-        var redirectUrl = Url.Action("ExternalLoginCallback", "Account",
-            new {area = "User", ReturnUrl = returnUrl});
-
-        var properties =
-            _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
-
-        return new ChallengeResult(provider, properties);
+        // Request a redirect to the external login provider.
+        var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new {Area = "User", ReturnUrl = returnUrl});
+        var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        return Challenge(properties, provider);
     }
 
+    //
+    // GET: /Account/ExternalLoginCallback
+    [HttpGet]
     [AllowAnonymous]
-    public async Task<IActionResult>
-        ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
+    public async Task<IActionResult> ExternalLoginCallback(string? returnUrl = null, string? remoteError = null)
     {
-        returnUrl ??= Url.Content("~/");
-
-        var loginViewModel = new LoginViewModel
-        {
-            ReturnUrl = returnUrl,
-            ExternalLogins =
-                (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList()
-        };
+        returnUrl ??= Url.Action("Index", "Home", new {Area = ""});
 
         if (remoteError != null)
         {
-            ModelState
-                .AddModelError("", $"Error from external provider: {remoteError}");
-
-            return View("Login", loginViewModel);
+            ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
+            return View(nameof(Login));
         }
 
-        // Get the login information about the user from the external login provider
         var info = await _signInManager.GetExternalLoginInfoAsync();
         if (info == null)
         {
-            ModelState
-                .AddModelError("", "Error loading external login information.");
-
-            return View("Login", loginViewModel);
+            return RedirectToAction(nameof(Login));
         }
 
-        // If the user already has a login (i.e if there is a record in AspNetUserLogins
-        // table) then sign-in the user with this external login provider
-        var signInResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider,
-            info.ProviderKey, false, true);
-
-        if (signInResult.Succeeded)
+        // Sign in the user with this external login provider if the user already has a login.
+        var result =
+            await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false);
+        if (result.Succeeded)
         {
-            return LocalRedirect(returnUrl);
-        }
-        // If there is no record in AspNetUserLogins table, the user may not have
-        // a local account
+            // Update any authentication tokens if login succeeded
+            await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
 
-        // Get the email claim value
-        var email = info.Principal.FindFirstValue(ClaimTypes.Email);
-        if (email == null)
-        {
-            ViewBag.ErrorTitle = $"Email claim not received from: {info.LoginProvider}";
-            ViewBag.ErrorMessage = "Please contact support on liwimus@aslipatov.site";
-
-            return View("Error");
+            return LocalRedirect(returnUrl!);
         }
 
-        // If we cannot find the user email we cannot continue
-        // Create a new user without password if we do not have a user already
-        var user = await _userManager.FindByEmailAsync(email);
-
-        if (user == null)
-        {
-            user = new Core.Entities.User
+        // If the user does not have an account, then ask the user to create an account.
+        return View("ExternalLoginConfirmation",
+            new ExternalLoginConfirmationViewModel
             {
-                UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
-                Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-            };
+                ReturnUrl = returnUrl,
+                ProviderDisplayName = info.ProviderDisplayName
+            });
+    }
+
+    //
+    // POST: /Account/ExternalLoginConfirmation
+    [HttpPost]
+    [AllowAnonymous]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model,
+                                                               string? returnUrl = null)
+    {
+        returnUrl ??= Url.Action("Index", "Home", new {Area = ""})!;
+
+        if (ModelState.IsValid)
+        {
+            // Get the information about the user from the external login provider
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return View("ExternalLoginFailure");
+            }
+
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+            var surName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+
+            var user = new Core.Entities.User {UserName = model.UserName, Email = email, FirstName = givenName, SecondName = surName};
 
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
             {
-                await _avatarService.SetRandomAvatarAsync(user, _httpClient, _environment.ContentRootPath);
-                await _userManager.UpdateAsync(user);
-                await SendConfirmEmailAsync(user);
+                result = await _userManager.AddLoginAsync(user, info);
+                if (result.Succeeded)
+                {
+                    await _signInManager.SignInAsync(user, false);
+
+                    // Update any authentication tokens as well
+                    await _signInManager.UpdateExternalAuthenticationTokensAsync(info);
+
+                    await SendConfirmEmailAsync(user);
+
+                    return LocalRedirect(returnUrl);
+                }
             }
-            else
-            {
-                ViewBag.ErrorTitle = $"{info.ProviderDisplayName} registration error";
-                ViewBag.ErrorMessage = result.Errors.FirstOrDefault()?.Description ?? "";
-                return View("Error");
-            }
+            AddErrors(result);
         }
 
-        // Add a login (i.e insert a row for the user in AspNetUserLogins table)
-        await _userManager.AddLoginAsync(user, info);
-        await _signInManager.SignInAsync(user, false);
+        model.ReturnUrl = returnUrl;
+        return View(model);
+    }
 
-        return LocalRedirect(returnUrl);
+    private void AddErrors(IdentityResult result)
+    {
+        foreach (var error in result.Errors)
+        {
+            ModelState.AddModelError(string.Empty, error.Description);
+        }
     }
 
     public IActionResult Denied(string returnUrl)

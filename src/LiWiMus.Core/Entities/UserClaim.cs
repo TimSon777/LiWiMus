@@ -6,6 +6,7 @@ namespace LiWiMus.Core.Entities;
 
 public class UserClaim : IdentityUserClaim<int>, IAggregateRoot
 {
+    public User User { get; set; }
     public DateTime GrantedAt { get; set; }
     public DateTime ActiveUntil { get; set; }
 

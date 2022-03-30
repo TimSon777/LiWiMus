@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FormHelper;
-using LiWiMus.SharedKernel;
+using LiWiMus.Core.Interfaces;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -14,17 +14,27 @@ public class ProfileController : Controller
 {
     private readonly UserManager<Core.Entities.User> _userManager;
     private readonly IMapper _mapper;
+    private readonly IAvatarService _avatarService;
+    private readonly string _contentRootPath;
+    private readonly HttpClient _httpClient = new();
 
-    public ProfileController(UserManager<Core.Entities.User> userManager, IMapper mapper)
+    public ProfileController(UserManager<Core.Entities.User> userManager, 
+        IMapper mapper,
+        IHostEnvironment environment,
+        IAvatarService avatarService)
     {
         _userManager = userManager;
         _mapper = mapper;
+        _avatarService = avatarService;
+        _contentRootPath = environment.ContentRootPath;
     }
 
     [HttpGet]
     [Route("{userName?}")]
+    [AllowAnonymous]
     public async Task<IActionResult> Index(string userName)
     {
+        ModelState.Clear();
         var currentUser = await _userManager.GetUserAsync(User);
 
         var user = string.IsNullOrEmpty(userName)
@@ -44,13 +54,11 @@ public class ProfileController : Controller
     }
 
     [HttpGet]
-    [Authorize]
     public IActionResult ChangePassword()
     {
         return View();
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
@@ -78,24 +86,33 @@ public class ProfileController : Controller
         return View();
     }
 
-    [Authorize]
     [HttpPost]
     [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
     {
-        var r = Request;
-        model.BirthDate = DateOnly.TryParse(Request.Form[nameof(model.BirthDate)], out var birthDate) 
-            ? birthDate 
-            : null;
-        
         var user = await _userManager.GetUserAsync(User);
 
         _mapper.Map(model, user);
-        
+
+        if (model.Avatar is not null)
+        {
+            await _avatarService.SetAvatarAsync(user, model.Avatar);
+        }
+
         var result = await _userManager.UpdateAsync(user);
 
         return result.Succeeded 
             ? FormResult.CreateSuccessResult("Ok") 
             : FormResult.CreateErrorResult("Fu");
+    }
+
+    [HttpPost]
+    [FormValidator]
+    public async Task<IActionResult> ChangeAvatarToRandom()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        await _avatarService.SetRandomAvatarAsync(user);
+        await _userManager.UpdateAsync(user);
+        return FormResult.CreateSuccessResult("Refresh the page (ctrl f5) for the changes to take effect");
     }
 }

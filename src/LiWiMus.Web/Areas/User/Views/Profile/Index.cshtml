@@ -5,6 +5,13 @@
     Layout = "_LayoutSidebar";
 }
 
+<style>
+    .img-container img {
+      max-width: 100%;
+    }
+</style>
+
+
 <div class="p-0">
     <section class="user-nav">
 
@@ -21,6 +28,8 @@
         <section class="edit-inputs-group">
             <form asp-formhelper="true"
                   class="edit-inputs-form"
+                  asp-resetFormAfterSuccess="false"
+                  asp-beforeSubmit="beforeSubmit"
                   asp-area="User" asp-controller="Profile" asp-action="Update">
 
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
@@ -49,19 +58,19 @@
                     </div>
 
                     <div class="label-input">
-                        @{
-                            var checkedWhenWomen = !Model.IsMan ? "checked" : "";
-                            var checkedWhenMan = Model.IsMan ? "checked" : "";
-                        }
                         <p class="m-0">Gender</p>
-                        <input class="form-check-input disabled-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" @checkedWhenMan asp-for="IsMan" disabled="disabled">
-                        <label class="form-check-label" for="flexRadioDefault1">
+                        @{
+                            var isMale = Model.IsMale;
+                        }
+                        <input class="form-check-input disabled-input" @(isMale ? "checked" : "") type="radio" name="gender" id="gender-male" disabled="disabled">
+                        <label class="form-check-label" for="gender-male">
                             Male
                         </label>
-                        <input class="form-check-input disabled-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" @checkedWhenWomen disabled="disabled">
-                        <label class="form-check-label" for="flexRadioDefault2">
+                        <input class="form-check-input disabled-input" @(!isMale ? "checked" : "") type="radio" name="gender" id="gender-female" disabled="disabled">
+                        <label class="form-check-label" for="gender-female">
                             Female
                         </label>
+                        <input type="hidden" id="is-male" asp-for="IsMale">
                     </div>
 
                     @if (Model.IsAccountOwner)
@@ -70,6 +79,32 @@
                             <label asp-for="Email"></label>
                             <input class="edit-profile-input disabled-input" asp-for="Email" disabled="disabled">
                             <span asp-validation-for="Email"></span>
+                        </div>
+
+                        <label class="label-input" style="cursor: pointer">
+                            Change your avatar
+                            <input type="file" asp-for="Avatar" class="visually-hidden disabled-input" id="input" name="image" accept="image/*" disabled="disabled">
+                            <span asp-validation-for="Avatar"></span>
+                        </label>
+
+                        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modalLabel">Crop the image</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="img-container">
+                                            <img id="image" src="">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" id="crop">Crop</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     }
 
@@ -93,6 +128,12 @@
                 </div>
             </form>
         </section>
+        
+        <section>
+            <form asp-formhelper="true" asp-action="ChangeAvatarToRandom">
+                <button>Set random avatar</button>
+            </form>
+        </section>
 
         @if (Model.IsAccountOwner)
         {
@@ -106,5 +147,6 @@
 
 @section Scripts
 {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js" integrity="sha512-IlZV3863HqEgMeFLVllRjbNOoh8uVj0kgx0aYxgt4rdBABTZCl/h5MfshHD9BrnVs6Rs9yNN7kUQpzhcLkNmHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/js/update_profile.js"></script>
 }
