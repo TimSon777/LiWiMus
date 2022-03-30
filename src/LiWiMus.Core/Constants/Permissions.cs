@@ -47,6 +47,9 @@ public static class Permissions
             Transaction.Read,
             Transaction.Update,
             Transaction.Delete,
+
+            Chat.Ask,
+            Chat.Answer
         };
     }
 
@@ -112,5 +115,11 @@ public static class Permissions
         public const string Read    = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Read)}";
         public const string Update  = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Update)}";
         public const string Delete  = $"{nameof(Permissions)}.{nameof(Transaction)}.{nameof(Delete)}";
+    }
+
+    public static class Chat
+    {
+        public const string Ask = $"{nameof(Permissions)}.{nameof(Chat)}.{nameof(Ask)}";
+        public const string Answer = $"{nameof(Permissions)}.{nameof(Chat)}.{nameof(Answer)}";
     }
 }
