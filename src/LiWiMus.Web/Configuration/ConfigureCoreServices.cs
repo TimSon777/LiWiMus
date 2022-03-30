@@ -16,6 +16,7 @@ public static class ConfigureCoreServices
         services.AddTransient<IMailService, MailService>();
         services.AddTransient<IMailRequestService, MailRequestService>();
         services.AddTransient<IImageService, ImageService>();
+        services.AddTransient<IPaymentService, PaymentService>();
 
         AvatarService.Configure(environment.ContentRootPath);
         return services;

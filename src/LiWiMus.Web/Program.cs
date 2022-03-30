@@ -37,7 +37,11 @@ services.ConfigureApplicationCookie(options =>
 });
 
 services.AddControllersWithViews(options => options.UseDateOnlyTimeOnlyStringConverters())
-    .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()))
+    .AddFluentValidation(fv =>
+    {
+        fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+        fv.LocalizationEnabled = false;
+    })
     .AddFormHelper(options => { options.EmbeddedFiles = true; });
 
 services.AddMapper();
