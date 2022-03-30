@@ -8,15 +8,15 @@ public class Track : BaseEntity, IMultipleArtistOwnersResource
 {
     public List<ArtistTrack> ArtistTracks { get; set; } = new();
     public List<Artist> Artists { get; set; } = new();
-    public Album Album { get; set; }
-    public Genre Genre { get; set; }
+    public Album Album { get; set; } = null!;
+    public Genre Genre { get; set; } = null!;
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     public DateOnly PublishedAt { get; set; }
-    public string PathToFile { get; set; }
+    public string PathToFile { get; set; } = null!;
 
     public List<LikedSong> Subscribers { get; set; } = new();
     public List<PlaylistTrack> Playlists { get; set; } = new();

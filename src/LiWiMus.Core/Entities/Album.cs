@@ -9,10 +9,10 @@ public class Album : BaseEntity, IMultipleArtistOwnersResource
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
-    public string Title { get; set; }
+    public string Title { get; set; } = null!;
 
     public DateOnly PublishedAt { get; set; }
-    public string CoverPath { get; set; }
+    public string CoverPath { get; set; } = null!;
 
     public List<LikedAlbum> Subscribers { get; set; } = new();
     public List<Artist> Artists { get; set; } = new();

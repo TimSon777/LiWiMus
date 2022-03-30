@@ -2,6 +2,6 @@
 
 public class LikedArtist : BaseEntity
 {
-    public User User { get; set; }
-    public Artist Artist { get; set; }
+    public User User { get; set; } = null!;
+    public Artist Artist { get; set; } = null!;
 }

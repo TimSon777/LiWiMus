@@ -6,7 +6,7 @@ namespace LiWiMus.Core.Entities;
 
 public class Playlist : BaseEntity, ISingleOwnerResource
 {
-    public User User { get; set; }
+    public User User { get; set; } = null!;
     public int UserId { get; set; }
 
     [StringLength(50, MinimumLength = 5)]

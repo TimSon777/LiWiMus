@@ -9,12 +9,12 @@ public class Artist : BaseEntity
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
 
     [StringLength(500)]
-    public string About { get; set; }
+    public string About { get; set; } = null!;
 
-    public string PhotoPath { get; set; }
+    public string PhotoPath { get; set; } = null!;
 
     public List<Track> Tracks { get; set; } = new();
     public List<ArtistTrack> ArtistTracks { get; set; } = new();

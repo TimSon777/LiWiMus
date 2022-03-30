@@ -6,8 +6,8 @@ namespace LiWiMus.Core.Entities;
 
 public class UserRole : IdentityUserRole<int>, IAggregateRoot
 {
-    public User User { get; set; }
-    public Role Role { get; set; }
+    public User User { get; set; } = null!;
+    public Role Role { get; set; } = null!;
     public DateTime GrantedAt { get; set; }
     public DateTime ActiveUntil { get; set; }
 
