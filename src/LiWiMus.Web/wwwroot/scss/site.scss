@@ -30,7 +30,7 @@ $btn-text-color: white;
   @extend .edit-btns;
   border: none;
   max-width: 100px;
-  margin: 8% 0 0;
+  vertical-align: middle;
 
   &:hover {
     background-color: #ee522f;
