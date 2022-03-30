@@ -85,8 +85,13 @@
                             Change your avatar
                             <input type="file" asp-for="Avatar" class="visually-hidden disabled-input" id="input" name="image" accept="image/*" disabled="disabled">
                             <span asp-validation-for="Avatar"></span>
+                            <div class="camera-icon">
+                             <!--   https://liwimus.aslipatov.site/images/logo.jpg -->
+                                <img src="https://localhost:5000//images/camera.png" width="48px" height="48px" alt="Camera icon."/>
+                            </div>
                         </label>
-
+                            
+                        
                         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -129,18 +134,19 @@
             </form>
         </section>
         
-        <section>
-            <form asp-formhelper="true" asp-action="ChangeAvatarToRandom">
-                <button>Set random avatar</button>
+        <section class="change-password-random-avatar-btns">
+            <form asp-formhelper="true" asp-action="ChangeAvatarToRandom" style="display: flex; justify-content: center">
+                <button class="random-avatar-button">Set random avatar</button>
             </form>
+            @if (Model.IsAccountOwner)
+            {
+                <div class="change-password-button">
+                    <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
+                </div>
+            }
         </section>
 
-        @if (Model.IsAccountOwner)
-        {
-            <div class="change-password-button">
-                <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
-            </div>
-        }
+        
     </div>
 </div>
 
