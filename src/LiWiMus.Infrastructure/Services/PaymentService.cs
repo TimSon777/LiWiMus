@@ -2,6 +2,7 @@
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Exceptions;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
 
 namespace LiWiMus.Infrastructure.Services;
@@ -24,7 +25,7 @@ public class PaymentService : IPaymentService
             Description = reason ?? "Not specified",
         };
 
-        if (Random.Shared.Next(100) < 10)
+        if (Random.Shared.TryProbability(10))
         {
             throw new PaymentException();
         }
