@@ -8,7 +8,7 @@ public class TrackConfiguration : IEntityTypeConfiguration<Track>
 {
     public void Configure(EntityTypeBuilder<Track> builder)
     {
-        builder.HasMany(p => p.Artists)
+        builder.HasMany(p => p.Owners)
                .WithMany(p => p.Tracks)
                .UsingEntity<ArtistTrack>(
                    j => j

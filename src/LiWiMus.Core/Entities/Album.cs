@@ -4,7 +4,7 @@ using LiWiMus.Core.Entities.Interfaces;
 
 namespace LiWiMus.Core.Entities;
 
-public class Album : BaseEntity, IMultipleArtistOwnersResource
+public class Album : BaseEntity, IResource.WithMultipleOwners<Artist>
 {
 
     [StringLength(50, MinimumLength = 5)]
@@ -15,6 +15,6 @@ public class Album : BaseEntity, IMultipleArtistOwnersResource
     public string CoverPath { get; set; } = null!;
 
     public List<LikedAlbum> Subscribers { get; set; } = new();
-    public List<Artist> Artists { get; set; } = new();
     public List<ArtistAlbum> ArtistAlbums { get; set; } = new();
+    public List<Artist> Owners { get; set; } = new();
 }

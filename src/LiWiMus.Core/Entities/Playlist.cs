@@ -4,11 +4,9 @@ using LiWiMus.Core.Entities.Interfaces;
 
 namespace LiWiMus.Core.Entities;
 
-public class Playlist : BaseEntity, ISingleOwnerResource
+public class Playlist : BaseEntity, IResource.WithOwner<User>
 {
-    public User User { get; set; } = null!;
-    public int UserId { get; set; }
-
+    public User Owner { get; set; } = null!;
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
     public string Name { get; set; } = null!;

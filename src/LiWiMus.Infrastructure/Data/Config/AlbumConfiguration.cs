@@ -8,7 +8,7 @@ public class AlbumConfiguration : IEntityTypeConfiguration<Album>
 {
     public void Configure(EntityTypeBuilder<Album> builder)
     {
-        builder.HasMany(p => p.Artists)
+        builder.HasMany(p => p.Owners)
                .WithMany(p => p.Albums)
                .UsingEntity<ArtistAlbum>(
                    j => j

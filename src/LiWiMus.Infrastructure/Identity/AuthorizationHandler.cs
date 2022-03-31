@@ -65,14 +65,14 @@ public class AuthorizationHandler : IAuthorizationHandler
     {
         switch (context.Resource)
         {
-            case ISingleOwnerResource singleOwnerResource
-                when user.Id == singleOwnerResource.UserId:
-            case ISingleArtistOwnerResource singleArtistOwnerResource
-                when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Artist.Id:
-            case IMultipleOwnersResource multipleOwnersResource
-                when multipleOwnersResource.Users.Select(u => u.Id).Contains(user.Id):
-            case IMultipleArtistOwnersResource multipleArtistOwnersResource
-                when user.ArtistId is not null && multipleArtistOwnersResource.Artists.Select(a => a.Id)
+            case IResource.WithOwner<User> singleOwnerResource
+                when user.Id == singleOwnerResource.Owner.Id:
+            case IResource.WithOwner<Artist> singleArtistOwnerResource
+                when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Owner.Id:
+            case IResource.WithMultipleOwners<User> multipleOwnersResource
+                when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
+            case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
+                when user.ArtistId is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
                                                                               .Contains(user.ArtistId.Value):
                 context.Succeed(sameAuthorRequirement);
                 break;

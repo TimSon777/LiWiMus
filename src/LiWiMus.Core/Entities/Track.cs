@@ -4,10 +4,10 @@ using LiWiMus.Core.Entities.Interfaces;
 
 namespace LiWiMus.Core.Entities;
 
-public class Track : BaseEntity, IMultipleArtistOwnersResource
+public class Track : BaseEntity, IResource.WithMultipleOwners<Artist>
 {
+    public List<Artist> Owners { get; set; } = new();
     public List<ArtistTrack> ArtistTracks { get; set; } = new();
-    public List<Artist> Artists { get; set; } = new();
     public Album Album { get; set; } = null!;
     public Genre Genre { get; set; } = null!;
 
