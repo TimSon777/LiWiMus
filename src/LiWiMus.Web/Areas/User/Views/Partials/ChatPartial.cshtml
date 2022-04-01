@@ -1,0 +1,10 @@
+﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel?
+
+@if (Model is not null)
+{
+    foreach (var message in Model.Messages)
+    {
+        <h3>@message.Sender.UserName:</h3>
+        <p>@message.Text</p>                            
+    }
+}
