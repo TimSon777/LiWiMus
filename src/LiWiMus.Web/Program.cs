@@ -1,34 +1,44 @@
 using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
 using LiWiMus.Core.Entities;
 using LiWiMus.Core.Settings;
+using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.Configuration;
+using LiWiMus.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Logging.AddSimpleConsole();
 
-builder.Configuration.AddEnvironmentVariables();
+configuration.AddEnvironmentVariables();
 
 var services = builder.Services;
 
-LiWiMus.Infrastructure.Dependencies.ConfigureServices(builder.Configuration, services);
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(containerBuilder =>
+        containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath))
+            .RegisterModule(new ConfigurationWebModule()));
+
+services.Configure<DataSettings>(configuration.GetSection("DataSettings"));
+services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+
+Dependencies.ConfigureServices(configuration, services);
 builder.Services.AddTriggers();
 TriggersConfiguration.ConfigureTriggers();
-services.AddCoreServices(builder.Configuration, builder.Environment);
-services.AddWebServices(builder.Configuration);
 
 services.AddHttpClient();
-
 services.AddIdentity(builder.Environment);
 services.ConfigureApplicationCookie(options =>
 {
@@ -49,36 +59,39 @@ services.AddMapper();
 services.AddAuthentication()
     .AddGoogle(options =>
     {
-        options.ClientId = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientId");
-        options.ClientSecret = builder.Configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
+        options.ClientId = configuration.GetValue<string>("GoogleAuthSettings:ClientId");
+        options.ClientSecret = configuration.GetValue<string>("GoogleAuthSettings:ClientSecret");
     });
+
 services.AddAuthorization(options =>
 {
     options.AddPolicy("SameAuthorPolicy",
         policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
+    
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                             .RequireAuthenticatedUser()
-                             .Build();
+        .RequireAuthenticatedUser()
+        .Build();
 });
 
-services.AddWebOptimizer(pipeline =>
-{
-    pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css");
-    //pipeline.AddJavaScriptBundle("/js/bundle.js", "/js/**/*.js");
-});
+services.AddWebOptimizer(pipeline => 
+    pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css"));
+
+services.AddSignalR();
 
 var app = builder.Build();
+var logger = app.Logger;
 
-app.Logger.LogInformation("\nConnection string: {ConnectionString} \n",
-    builder.Configuration.GetConnectionString("DefaultConnection"));
+logger.LogInformation("\nConnection string: {ConnectionString} \n",
+    configuration.GetConnectionString("DefaultConnection"));
 
-app.Logger.LogInformation("App created...");
+logger.LogInformation("App created...");
 
 var forwardedHeadersOptions = new ForwardedHeadersOptions
 {
     ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto,
     RequireHeaderSymmetry = false
 };
+
 forwardedHeadersOptions.KnownNetworks.Clear();
 forwardedHeadersOptions.KnownProxies.Clear();
 app.UseForwardedHeaders(forwardedHeadersOptions);
@@ -96,8 +109,7 @@ app.UseWebOptimizer();
 app.UseStaticFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
-    FileProvider = new PhysicalFileProvider(
-        Path.Combine(builder.Environment.ContentRootPath, "Data")),
+    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Data")),
     RequestPath = "/Data"
 });
 
@@ -117,27 +129,30 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapHub<SupportChatHub>("/supportChat1");
+    endpoints.MapHub<SupportChatConsultantHub>("/supportChat1");
 });
 
-app.Logger.LogInformation("Seeding Database...");
+logger.LogInformation("Seeding Database...");
 
-using (var scope = app.Services.CreateScope())
+using var scope = app.Services.CreateScope();
+var scopedProvider = scope.ServiceProvider;
+
+try
 {
-    var scopedProvider = scope.ServiceProvider;
-    try
-    {
-        var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
-        var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
-        var roleManager = scopedProvider.GetRequiredService<RoleManager<Role>>();
-        var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
-        await ApplicationContextSeed.SeedAsync(applicationContext, app.Logger, userManager, roleManager, adminSettings);
-    }
-    catch (Exception ex)
-    {
-        app.Logger.LogError(ex, "An error occurred seeding the DB.");
-    }
+    var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
+    var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = scopedProvider.GetRequiredService<RoleManager<Role>>();
+    var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
+    await ApplicationContextSeed.SeedAsync(applicationContext, app.Logger, userManager, roleManager, adminSettings);
+}
+catch (Exception ex)
+{
+    logger.LogError(ex, "An error occurred seeding the DB.");
 }
 
-app.Logger.LogInformation("LAUNCHING");
+
+logger.LogInformation("LAUNCHING");
 
 app.Run();
