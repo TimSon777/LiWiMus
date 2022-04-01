@@ -3,10 +3,10 @@ on: [push]
 jobs:
 
   build:
-    name: Build
+    name: Notification
     runs-on: ubuntu-latest
     steps:
-      - name: send telegram message on push
+      - name: send telegram message
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
@@ -16,3 +16,8 @@ jobs:
             📝 Commit message: ${{ github.event.commits[0].message }}
             
             💩 See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+      - name: send telegram sticker
+        run: |
+          curl -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendSticker \
+            -d chat_id=${{ secrets.TELEGRAM_TO }} \
+            -d sticker=CAACAgQAAxkDAAMfYkcvUZJcWd20HVCHniK1N6bc9UMAAkcYAAKm8XEeayFzmiCwAfsjBA \
