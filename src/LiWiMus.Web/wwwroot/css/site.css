@@ -29,6 +29,10 @@ body {
 }
 */
 
+.editor-wrap {
+    padding-top: 2%;
+}
+
 .account-input-field {
     width: 100%;
     border: none;

@@ -14,7 +14,7 @@ $btn-text-color: white;
 }
 
 .your-profile-header {
-  margin: 2%;
+  margin: 0 2% 2%;
 }
 
 .editor-wrap {
@@ -52,7 +52,6 @@ $btn-text-color: white;
   }
   @extend .edit-btns;
   //width: 20%;
-  margin: 3%;
   padding: 10px;
 
   &:hover {
@@ -95,7 +94,7 @@ $btn-text-color: white;
 
 .stars-image {
   height: 15%;
-  background-image: url('../images/stars.jpg');
+  background-image: url('https://liwimus.aslipatov.site/images/stars.jpg');
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -136,7 +135,7 @@ $btn-text-color: white;
 
 .change-password-outline {
   box-sizing: border-box;
-  width: 85%;
+  width: 60%;
   margin: 2% auto 0;
   outline: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 10px;
@@ -157,6 +156,7 @@ $btn-text-color: white;
   display: flex;
   justify-content: space-between;
   text-align: center;
+  margin: 0 3%;
 }
 
 .random-avatar-button {
