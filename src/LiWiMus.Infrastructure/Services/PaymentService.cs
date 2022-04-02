@@ -25,7 +25,7 @@ public class PaymentService : IPaymentService
             Description = reason ?? "Not specified",
         };
 
-        if (Random.Shared.TryProbability(10))
+        if (Random.Shared.TryProbability(25))
         {
             throw new PaymentException();
         }
