@@ -18,8 +18,8 @@
     </section>
 
     <div class="editor-wrap">
-        <div class="stars-image">
-        </div>
+       <!-- <div class="stars-image">
+        </div> -->
 
         <h2 class="your-profile-header">
             Your profile
@@ -56,22 +56,14 @@
                         <input class="edit-profile-input disabled-input" asp-for="SecondName" disabled="disabled">
                         <span asp-validation-for="SecondName"></span>
                     </div>
-
+                    
                     <div class="label-input">
-                        <p class="m-0">Gender</p>
-                        @{
-                            var isMale = Model.IsMale;
-                        }
-                        <input class="form-check-input disabled-input" @(isMale ? "checked" : "") type="radio" name="gender" id="gender-male" disabled="disabled">
-                        <label class="form-check-label" for="gender-male">
-                            Male
-                        </label>
-                        <input class="form-check-input disabled-input" @(!isMale ? "checked" : "") type="radio" name="gender" id="gender-female" disabled="disabled">
-                        <label class="form-check-label" for="gender-female">
-                            Female
-                        </label>
-                        <input type="hidden" id="is-male" asp-for="IsMale">
+                        <label asp-for="Patronymic"></label>
+                        <input class="edit-profile-input disabled-input" asp-for="Patronymic" disabled="disabled">
+                        <span asp-validation-for="Patronymic"></span>
                     </div>
+
+                    
 
                     @if (Model.IsAccountOwner)
                     {
@@ -113,18 +105,26 @@
                     }
 
                     <div class="label-input">
-                        <label asp-for="Patronymic"></label>
-                        <input class="edit-profile-input disabled-input" asp-for="Patronymic" disabled="disabled">
-                        <span asp-validation-for="Patronymic"></span>
+                         <p class="m-0">Gender</p>
+                         @{
+                             var isMale = Model.IsMale;
+                         }
+                         <input class="form-check-input disabled-input" @(isMale ? "checked" : "") type="radio" name="gender" id="gender-male" disabled="disabled">
+                         <label class="form-check-label" for="gender-male">
+                             Male
+                         </label>
+                         <input class="form-check-input disabled-input" @(!isMale ? "checked" : "") type="radio" name="gender" id="gender-female" disabled="disabled">
+                         <label class="form-check-label" for="gender-female">
+                             Female
+                         </label>
+                        <input type="hidden" id="is-male" asp-for="IsMale">
                     </div>
+                    
 
                     @if (Model.IsAccountOwner)
                     {
                         <div class="" style="text-align: center">
                             <button class="edit-button" type="button" id="btn-edit-profile-info">Edit</button>
-                        </div>
-
-                        <div class="">
                             <input class="edit-button" id="btn-save-profile-info" type="submit" value="Save" style="display: none; background-color: #21201F">
                         </div>
                     }

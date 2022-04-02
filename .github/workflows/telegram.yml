@@ -16,8 +16,9 @@ jobs:
             📝 Commit message: ${{ github.event.commits[0].message }}
             
             💩 See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+          disable_web_page_preview: true
       - name: send telegram sticker
         run: |
           curl -X POST https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendSticker \
             -d chat_id=${{ secrets.TELEGRAM_TO }} \
-            -d sticker=CAACAgQAAxkDAAMfYkcvUZJcWd20HVCHniK1N6bc9UMAAkcYAAKm8XEeayFzmiCwAfsjBA \
+            -d sticker=CAACAgIAAxkBAAEEWEJiR1m_4rk1FQEt_fTLlZecKD5RUgACbxIAAlP0sEnt1eGAMPBOWCME \
