@@ -32,6 +32,23 @@
 $ npm install
 ```
 
+## Run both server and client
+**Working directory:** `src/LiWiMus.Admin/server`
+
+```bash
+# development
+$ npm run both
+
+# watch mode
+$ npm run both:dev
+
+# debug
+$ npm run both:debug
+
+# production mode
+$ npm run both:prod
+```
+
 ## Running the app
 
 ```bash
