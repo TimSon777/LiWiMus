@@ -14,4 +14,8 @@
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LiWiMus.Infrastructure\LiWiMus.Infrastructure.csproj" />
+    </ItemGroup>
+
 </Project>
