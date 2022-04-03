@@ -1,12 +1,6 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>@ViewData["Title"] - LiWiMus.Web</title>
-    <partial name="Partials/_LinksPartial"></partial>
-</head>
-<body>
+﻿@{
+    Layout = "_Layout";
+}
 @await RenderSectionAsync("Header", required: false)
 @if (!IsSectionDefined("Header"))
 {
@@ -43,7 +37,5 @@
         </div>
     </main>
 </div>
-<partial name="Partials/_ScriptsPartial"></partial>
+
 @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>

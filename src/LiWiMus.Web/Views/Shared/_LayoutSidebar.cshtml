@@ -1,12 +1,6 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>@ViewData["Title"] - LiWiMus.Web</title>
-        <partial name="Partials/_LinksPartial"></partial>
-</head>
-<body>
+﻿@{
+    Layout = "_Layout";
+}
 <header style="background-color: #444444">
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
         <div class="container-fluid">
@@ -33,13 +27,10 @@
     <main role="main">
         <div class="body-sidebar">
             <div class="user-sidebar" style="background-color: #21201F; position: relative;">
-                 <partial name="Partials/_LoginSidebarPartial"/>
+                <partial name="Partials/_LoginSidebarPartial"/>
             </div>
             @RenderBody()
         </div>
     </main>
 </div>
-<partial name="Partials/_ScriptsPartial"></partial>
 @await RenderSectionAsync("Scripts", required: false)
-</body>
-</html>
