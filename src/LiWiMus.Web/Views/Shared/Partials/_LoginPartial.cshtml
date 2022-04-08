@@ -19,10 +19,9 @@
                     <a class="nav-link text-white d-inline-block" title="Admin - roles" asp-area="Admin" asp-controller="Roles" asp-action="Index">Роли</a>
                 </li>
             }
-
             <li class="nav-item">
-                <img src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 50px">
-                <a class="nav-link text-white d-inline-block" title="Manage" asp-area="User" asp-controller="Profile" asp-action="Index">Личный кабинет</a>
+                <img src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 42px; border-radius: 100%">
+                <a class="nav-link text-white d-inline-block" title="Manage" asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
             </li>
             <li class="nav-item">
                 <form class="form-inline" asp-area="User" asp-controller="Account" asp-action="Logout">
