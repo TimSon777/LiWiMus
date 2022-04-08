@@ -50,7 +50,7 @@ else
                             @if (role.Name != "SuperAdmin")
                             {
                                 <li>
-                                    <a style='margin-right:16px' asp-area="Admin" asp-controller="Permission" asp-action="Index" asp-route-roleId="@role.Id" class="dropdown-item">
+                                    <a style='margin-right:16px' asp-area="AdminOld" asp-controller="Permission" asp-action="Index" asp-route-roleId="@role.Id" class="dropdown-item">
                                         <i class="fas fa-wrench"></i> Manage Permissions
                                     </a>
                                 </li>
@@ -63,4 +63,4 @@ else
         </tbody>
     </table>
 }
-<a asp-area="Admin" asp-controller="Roles" asp-action="AddRole">Add new role</a>
+<a asp-area="AdminOld" asp-controller="Roles" asp-action="AddRole">Add new role</a>

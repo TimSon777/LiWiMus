@@ -8,7 +8,7 @@
 <br />
 <div class="card">
     <div id="viewAll" class="card-body table-responsive">
-        <form asp-area="Admin" asp-controller="UserRoles" method="post" asp-action="Update" asp-route-id="@Model.UserId" class="d-inline">
+        <form asp-area="AdminOld" asp-controller="UserRoles" method="post" asp-action="Update" asp-route-id="@Model.UserId" class="d-inline">
             <input asp-for="@Model.UserId" type="hidden" />
             <table class="table table-striped" id="userRolesTable">
                 <thead>

@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LiWiMus.Web.Areas.Admin.Controllers;
+namespace LiWiMus.Web.Areas.AdminOld.Controllers;
 
-[Area("Admin")]
+[Area("AdminOld")]
 [Authorize(Roles = "Admin")]
 public class UserRolesController : Controller
 {
@@ -71,6 +71,6 @@ public class UserRolesController : Controller
         var removedRoles = existingRoles.Except(selectedRoles).ToList();
         await _userManager.RemoveFromRolesAsync(user, removedRoles);
 
-        return RedirectToAction("Index", "Users", new {area = "Admin"});
+        return RedirectToAction("Index", "Users", new {area = "AdminOld"});
     }
 }

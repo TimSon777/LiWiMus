@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace LiWiMus.Web.Areas.Admin.Controllers;
+namespace LiWiMus.Web.Areas.AdminOld.Controllers;
 
-[Area("Admin")]
+[Area("AdminOld")]
 [Authorize(Roles = "Admin")]
 public class UsersController : Controller
 {

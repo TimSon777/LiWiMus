@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace LiWiMus.Web.Areas.Admin.Controllers;
+namespace LiWiMus.Web.Areas.AdminOld.Controllers;
 
-[Area("Admin")]
+[Area("AdminOld")]
 [Authorize(Roles ="Admin")]
 public class RolesController : Controller
 {
@@ -41,6 +41,6 @@ public class RolesController : Controller
 
         var role = _mapper.Map<Role>(roleViewModel);
         await _roleManager.CreateAsync(role);
-        return RedirectToAction("Index", "Roles", new {area = "Admin"});
+        return RedirectToAction("Index", "Roles", new {area = "AdminOld"});
     }
 }

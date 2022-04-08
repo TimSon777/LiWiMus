@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LiWiMus.Web.Areas.Admin.Controllers;
+namespace LiWiMus.Web.Areas.AdminOld.Controllers;
 
-[Area("Admin")]
+[Area("AdminOld")]
 [Authorize(Roles = "Admin")]
 public class PermissionController : Controller
 {
@@ -64,6 +64,6 @@ public class PermissionController : Controller
             await _roleManager.AddPermissionClaim(role, claim.Value);
         }
 
-        return RedirectToAction("Index", "Roles", new {area = "Admin"});
+        return RedirectToAction("Index", "Roles", new {area = "AdminOld"});
     }
 }
