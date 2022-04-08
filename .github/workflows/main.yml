@@ -3,8 +3,12 @@ name: CI/CD MVC
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths:
+      - src/LiWiMus.Core/**
+      - src/LiWiMus.Infrastructure/**
+      - src/LiWiMus.SharedKernel/**
+      - src/LiWiMus.Web/**
+      - Dockerfile
 
 jobs:
   build:
