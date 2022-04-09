@@ -17,8 +17,6 @@ public class Artist : BaseEntity
     public string PhotoPath { get; set; } = null!;
 
     public List<Track> Tracks { get; set; } = new();
-    public List<ArtistTrack> ArtistTracks { get; set; } = new();
     public List<LikedArtist> Subscribers { get; set; } = new();
-    public List<ArtistAlbum> ArtistAlbums { get; set; } = new();
     public List<Album> Albums { get; set; } = new();
 }

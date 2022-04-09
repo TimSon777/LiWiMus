@@ -15,6 +15,5 @@ public class Album : BaseEntity, IResource.WithMultipleOwners<Artist>
     public string CoverPath { get; set; } = null!;
 
     public List<LikedAlbum> Subscribers { get; set; } = new();
-    public List<ArtistAlbum> ArtistAlbums { get; set; } = new();
     public List<Artist> Owners { get; set; } = new();
 }
