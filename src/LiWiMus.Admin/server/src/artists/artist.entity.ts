@@ -1,4 +1,4 @@
-﻿import {Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne} from 'typeorm';
+﻿import {Column, Entity, JoinTable, ManyToMany, OneToOne} from 'typeorm';
 import { CommonEntity } from '../shared/commonEntity';
 import {User} from "../users/user.entity";
 import {Album} from "../albums/album.entity";

@@ -1,10 +1,10 @@
-import {CommonEntity} from 'src/shared/CommonEntity';
 import {Entity, Column, OneToOne, JoinColumn, OneToMany} from 'typeorm';
 import {Artist} from "../artists/artist.entity";
 import {UserRole} from "../userRoles/userRoles.entity";
 import {ExternalLogin} from "../externalLogins/externalLogin.entity";
 import {Transaction} from "../transactions/transaction.entity";
 import {Playlist} from "../playlists/playlist.entity";
+import {CommonEntity} from "../shared/commonEntity";
 
 @Entity('aspnetusers')
 export class User extends CommonEntity {
