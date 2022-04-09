@@ -56,4 +56,9 @@ export class AppController {
   async play(): Promise<Playlist[]> {
     return Playlist.find({relations: ['tracks']});
   }
+
+  @Get('sex')
+  async sex(): Promise<boolean> {
+    return (await User.findOne(1)).gender === "Female";
+  }
 }
