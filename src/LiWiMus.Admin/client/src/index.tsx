@@ -1,21 +1,14 @@
 import React from "react";
-import "./index.sass";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createRoot } from "react-dom/client";
-import { ThemeProvider } from "@mui/material";
-import theme from "./theme";
+import "./index.sass";
 
 const container = document.getElementById("root") as HTMLElement;
 const root = createRoot(container);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-    </BrowserRouter>
+    <App />
   </React.StrictMode>
 );
 

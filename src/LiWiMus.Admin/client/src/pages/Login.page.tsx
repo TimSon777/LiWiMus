@@ -1,8 +1,15 @@
-import React from "react";
-import { Button, Card, Grid, Stack, TextField } from "@mui/material";
+import React, { useContext } from "react";
+import { Button, Grid, Stack, TextField } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { AuthContext } from "../contexts/Auth.context";
 
 export default function LoginPage() {
+  const auth = useContext(AuthContext);
+
+  const loginHandler = () => {
+    auth.login("token", "id");
+  };
+
   return (
     <Grid
       container
@@ -23,6 +30,7 @@ export default function LoginPage() {
           variant="contained"
           endIcon={<ArrowForwardIcon />}
           sx={{ borderRadius: "20px", px: 4 }}
+          onClick={loginHandler}
         >
           Next
         </Button>

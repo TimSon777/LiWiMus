@@ -1,16 +1,28 @@
 import React from "react";
-import "./App.sass";
-import { Route, Routes } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
-import LoginPage from "./pages/Login.page";
+import { useRoutes } from "./routes";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme";
+import { BrowserRouter } from "react-router-dom";
+import { useAuth } from "./hooks/Auth.hook";
+import { AuthContext } from "./contexts/Auth.context";
+import "./App.sass";
 
 function App() {
+  const { token, login, logout, userId } = useAuth();
+  const isAuthenticated = !!token;
+  const routes = useRoutes(isAuthenticated);
+
   return (
-    <Layout>
-      <Routes>
-        <Route path="/admin/login" element={<LoginPage />} />
-      </Routes>
-    </Layout>
+    <AuthContext.Provider
+      value={{ token, login, logout, userId, isAuthenticated }}
+    >
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <Layout>{routes}</Layout>
+        </ThemeProvider>
+      </BrowserRouter>
+    </AuthContext.Provider>
   );
 }
 
