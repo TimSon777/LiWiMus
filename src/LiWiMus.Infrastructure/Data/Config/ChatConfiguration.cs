@@ -13,8 +13,5 @@ public class ChatConfiguration : IEntityTypeConfiguration<Chat>
 
         builder.HasOne(c => c.User)
                .WithMany(u => u.UserChats);
-
-        builder.HasOne(c => c.Consultant)
-               .WithMany(u => u.ConsultantChats);
     }
 }

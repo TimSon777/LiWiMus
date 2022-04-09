@@ -38,4 +38,13 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Hubs\SupportChatConsultantHub.cs" />
+      <Compile Remove="Hubs\SupportChatHub.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Shared\Components\Chat\Default.cshtml" />
+    </ItemGroup>
 </Project>

@@ -1,10 +1,26 @@
-﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel?
+﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel
 
-@if (Model is not null)
-{
-    foreach (var message in Model.Messages)
-    {
-        <h3>@message.Sender.UserName:</h3>
-        <p>@message.Text</p>                            
-    }
-}
+<div id="@Model.User.UserName">
+    <div class="chat">
+
+        <div class="">
+            <h3>
+                @Model.User.UserName
+            </h3>
+        </div>
+
+        @foreach (var message in Model.Messages.Take(5))
+        {
+            <div class="message">
+                <p>
+                    @message.Text
+                </p>
+            </div>
+        }
+
+        <div class="send">
+            <textarea class="ta-send-message-to-user" id="@Model.UserConnectionId"></textarea>
+            <button id="btn-@Model.User.UserName" class="btn-send-to-user" value="@Model.UserConnectionId">Send</button>
+        </div>
+    </div>
+</div>

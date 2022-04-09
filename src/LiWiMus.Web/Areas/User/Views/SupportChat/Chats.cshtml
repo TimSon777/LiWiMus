@@ -1,11 +1,18 @@
-﻿@model System.Collections.Generic.List<LiWiMus.Core.Entities.Chat>
+﻿@model System.Collections.Generic.List<LiWiMus.Web.Areas.User.ViewModels.ChatViewModel>
 
 @{
     ViewBag.Title = "title";
     Layout = "_MainLayout";
 }
 
-@foreach (var chat in Model)
-{
-    <p>@chat.User.UserName</p>
-}
+<button id="online">Start</button>
+<button id="refresh-chats">Get chats</button>
+
+<section>
+    <div id="chats">
+        @foreach (var chat in Model)
+        {
+            <partial name="~/Areas/User/Views/Partials/ChatPartial.cshtml" model="chat"/>
+        }
+    </div>
+</section>

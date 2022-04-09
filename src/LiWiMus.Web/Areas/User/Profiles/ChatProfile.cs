@@ -10,6 +10,9 @@ public class ChatProfile : Profile
     public ChatProfile()
     {
         CreateMap<Core.Entities.User, UserChatViewModel>().ReverseMap();
-        CreateMap<Chat, ChatViewModel>().ReverseMap();
+        CreateMap<Chat, ChatViewModel>()
+            .ForMember(a => a.Consultant, opt => opt.MapFrom(s => s.Consultant.Consultant))
+            .ReverseMap()
+            .ForPath(a => a.Consultant.Consultant, opt => opt.MapFrom(s => s.Consultant));
     }
 }
