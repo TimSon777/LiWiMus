@@ -2,8 +2,8 @@ import React from "react";
 import { Link as RLink } from "react-router-dom";
 import logo from "../../images/logo.jpg";
 import styles from "./NavMenu.module.sass";
-import "../../App.sass";
 import { Avatar, Container, Link } from "@mui/material";
+import "../../App.sass";
 
 export default function NavMenu() {
   return (
