@@ -18,6 +18,7 @@ public class ApplicationContext : IdentityDbContext<User, Role, int, UserClaim, 
     public DbSet<Playlist> Playlists => Set<Playlist>();
     public DbSet<Track> Tracks => Set<Track>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
+    public DbSet<OnlineConsultant> OnlineConsultants => Set<OnlineConsultant>();
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options, IServiceProvider serviceProvider) : base(options)
     {
