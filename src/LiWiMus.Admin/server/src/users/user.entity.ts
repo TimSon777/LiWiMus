@@ -18,7 +18,7 @@ export class User extends CommonEntity {
   patronymic: string;
   
   @Column({ type: 'enum', enum: ["Male","Female"], name: 'Gender' })
-  gender: string;
+  gender: "Male" | "Female";
   
   @Column({ type: 'date', name: 'BirthDate' })
   birthDate: Date;
