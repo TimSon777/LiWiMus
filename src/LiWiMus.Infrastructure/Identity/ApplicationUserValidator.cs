@@ -1,4 +1,4 @@
-﻿using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Identity;

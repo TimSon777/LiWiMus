@@ -1,7 +1,8 @@
 ﻿using EntityFrameworkCore.Triggers;
 using LiWiMus.Core.Constants;
-using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Transactions;
+using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 

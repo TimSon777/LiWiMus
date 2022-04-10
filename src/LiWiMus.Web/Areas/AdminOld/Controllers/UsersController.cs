@@ -9,8 +9,8 @@ namespace LiWiMus.Web.Areas.AdminOld.Controllers;
 [Authorize(Roles = "Admin")]
 public class UsersController : Controller
 {
-    private readonly UserManager<Core.Entities.User> _userManager;
-    public UsersController(UserManager<Core.Entities.User> userManager)
+    private readonly UserManager<Core.Users.User> _userManager;
+    public UsersController(UserManager<Core.Users.User> userManager)
     {
         _userManager = userManager;
     }

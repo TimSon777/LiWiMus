@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Roles;
 using LiWiMus.Web.Areas.Admin.ViewModels;
 
-namespace LiWiMus.Web.Areas.Admin.Profiles;
+namespace LiWiMus.Web.Areas.AdminOld.Profiles;
 
 public class RoleProfile : Profile
 {

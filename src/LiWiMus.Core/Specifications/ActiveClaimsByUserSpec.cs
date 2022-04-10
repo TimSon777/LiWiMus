@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using Ardalis.Specification;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.UserClaims;
 
 namespace LiWiMus.Core.Specifications;
 

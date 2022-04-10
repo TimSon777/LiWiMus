@@ -1,4 +1,4 @@
-﻿using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Roles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;

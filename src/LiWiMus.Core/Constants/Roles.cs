@@ -1,4 +1,4 @@
-﻿using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Roles;
 
 namespace LiWiMus.Core.Constants;
 

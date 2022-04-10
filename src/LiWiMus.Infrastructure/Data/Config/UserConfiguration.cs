@@ -1,4 +1,4 @@
-﻿using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

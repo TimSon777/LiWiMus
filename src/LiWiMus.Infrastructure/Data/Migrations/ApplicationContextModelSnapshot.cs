@@ -31,7 +31,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("OwnersId");
 
-                    b.ToTable("AlbumArtist");
+                    b.ToTable("AlbumArtist", (string)null);
                 });
 
             modelBuilder.Entity("ArtistTrack", b =>
@@ -46,7 +46,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("TracksId");
 
-                    b.ToTable("ArtistTrack");
+                    b.ToTable("ArtistTrack", (string)null);
                 });
 
             modelBuilder.Entity("GenreTrack", b =>
@@ -61,7 +61,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("TracksId");
 
-                    b.ToTable("GenreTrack");
+                    b.ToTable("GenreTrack", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Album", b =>
@@ -90,7 +90,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Albums");
+                    b.ToTable("Albums", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Artist", b =>
@@ -121,7 +121,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Artists");
+                    b.ToTable("Artists", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Chat", b =>
@@ -156,7 +156,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Chat");
+                    b.ToTable("Chat", (string)null);
 
                     b.HasCheckConstraint("CK_Chat_Status_Enum", "`Status` IN ('Opened', 'ClosedByUser', 'ClosedByConsultant')");
                 });
@@ -180,7 +180,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres");
+                    b.ToTable("Genres", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.LikedAlbum", b =>
@@ -207,7 +207,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikedAlbum");
+                    b.ToTable("LikedAlbum", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.LikedArtist", b =>
@@ -234,7 +234,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikedArtist");
+                    b.ToTable("LikedArtist", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.LikedPlaylist", b =>
@@ -261,7 +261,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikedPlaylist");
+                    b.ToTable("LikedPlaylist", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.LikedSong", b =>
@@ -288,7 +288,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikedSong");
+                    b.ToTable("LikedSong", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.LikedUser", b =>
@@ -315,7 +315,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LikedUser");
+                    b.ToTable("LikedUser", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Message", b =>
@@ -346,7 +346,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Message");
+                    b.ToTable("Message", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.OnlineConsultant", b =>
@@ -372,7 +372,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("ConsultantId");
 
-                    b.ToTable("OnlineConsultants");
+                    b.ToTable("OnlineConsultants", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Playlist", b =>
@@ -405,7 +405,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Playlists");
+                    b.ToTable("Playlists", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.PlaylistTrack", b =>
@@ -432,7 +432,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("TrackId");
 
-                    b.ToTable("PlaylistTrack");
+                    b.ToTable("PlaylistTrack", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Role", b =>
@@ -509,7 +509,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("AlbumId");
 
-                    b.ToTable("Tracks");
+                    b.ToTable("Tracks", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.Transaction", b =>
@@ -539,7 +539,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("Transactions", (string)null);
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Entities.User", b =>

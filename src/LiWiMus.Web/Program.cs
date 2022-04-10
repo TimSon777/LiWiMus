@@ -4,8 +4,9 @@ using Autofac.Extensions.DependencyInjection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
+using LiWiMus.Core.Users;
 using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
@@ -150,7 +151,6 @@ catch (Exception ex)
 {
     logger.LogError(ex, "An error occurred seeding the DB.");
 }
-
 
 logger.LogInformation("LAUNCHING");
 

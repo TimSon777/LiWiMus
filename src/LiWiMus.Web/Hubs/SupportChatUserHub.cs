@@ -1,6 +1,11 @@
-﻿using LiWiMus.Core.Constants;
-using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Chats;
+using LiWiMus.Core.Chats.Specifications;
+using LiWiMus.Core.Constants;
+using LiWiMus.Core.Messages;
+using LiWiMus.Core.OnlineConsultants;
+using LiWiMus.Core.OnlineConsultants.Specifications;
 using LiWiMus.Core.Specifications;
+using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;

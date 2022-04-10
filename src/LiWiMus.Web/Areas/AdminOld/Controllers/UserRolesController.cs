@@ -1,4 +1,4 @@
-﻿using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Roles;
 using LiWiMus.Web.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,12 +10,12 @@ namespace LiWiMus.Web.Areas.AdminOld.Controllers;
 [Authorize(Roles = "Admin")]
 public class UserRolesController : Controller
 {
-    private readonly SignInManager<Core.Entities.User> _signInManager;
-    private readonly UserManager<Core.Entities.User> _userManager;
+    private readonly SignInManager<Core.Users.User> _signInManager;
+    private readonly UserManager<Core.Users.User> _userManager;
     private readonly RoleManager<Role> _roleManager;
 
-    public UserRolesController(UserManager<Core.Entities.User> userManager,
-                               SignInManager<Core.Entities.User> signInManager, RoleManager<Role> roleManager)
+    public UserRolesController(UserManager<Core.Users.User> userManager,
+                               SignInManager<Core.Users.User> signInManager, RoleManager<Role> roleManager)
     {
         _userManager = userManager;
         _signInManager = signInManager;

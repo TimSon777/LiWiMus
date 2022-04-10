@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
+using LiWiMus.Core.Artists;
 using LiWiMus.Core.Constants;
-using LiWiMus.Core.Entities;
-using LiWiMus.Core.Entities.Interfaces;
+using LiWiMus.Core.Shared.Interfaces;
+using LiWiMus.Core.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 

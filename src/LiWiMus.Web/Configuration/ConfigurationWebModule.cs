@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using LiWiMus.Core.Entities;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Users;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.Services;
 using Microsoft.AspNetCore.Authorization;

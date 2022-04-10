@@ -1,10 +1,9 @@
-﻿using LiWiMus.Core.Entities;
-using LiWiMus.Core.Models;
+﻿using LiWiMus.Core.Models;
 
 namespace LiWiMus.Core.Interfaces;
 
 public interface IAvatarService
 {
-    Task SetRandomAvatarAsync(User user);
-    Task SetAvatarAsync(User user, ImageInfo imageInfo);
+    Task SetRandomAvatarAsync(Users.User user);
+    Task SetAvatarAsync(Users.User user, ImageInfo imageInfo);
 }

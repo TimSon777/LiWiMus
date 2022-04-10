@@ -12,13 +12,13 @@ namespace LiWiMus.Web.Areas.User.Controllers;
 [Route("[area]/[controller]/[action]")]
 public class ProfileController : Controller
 {
-    private readonly UserManager<Core.Entities.User> _userManager;
+    private readonly UserManager<Core.Users.User> _userManager;
     private readonly IMapper _mapper;
     private readonly IAvatarService _avatarService;
     private readonly string _contentRootPath;
     private readonly HttpClient _httpClient = new();
 
-    public ProfileController(UserManager<Core.Entities.User> userManager, 
+    public ProfileController(UserManager<Core.Users.User> userManager, 
         IMapper mapper,
         IHostEnvironment environment,
         IAvatarService avatarService)

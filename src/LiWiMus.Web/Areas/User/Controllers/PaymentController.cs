@@ -11,9 +11,9 @@ namespace LiWiMus.Web.Areas.User.Controllers;
 public class PaymentController : Controller
 {
     private readonly IPaymentService _paymentService;
-    private readonly UserManager<Core.Entities.User> _userManager;
+    private readonly UserManager<Core.Users.User> _userManager;
 
-    public PaymentController(IPaymentService paymentService, UserManager<Core.Entities.User> userManager)
+    public PaymentController(IPaymentService paymentService, UserManager<Core.Users.User> userManager)
     {
         _paymentService = paymentService;
         _userManager = userManager;
