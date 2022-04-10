@@ -1,9 +1,17 @@
-import React, { useContext } from "react";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import React, { useContext, useState } from "react";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Stack,
+} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { AuthContext } from "../contexts/Auth.context";
 import { SubmitHandler, useForm } from "react-hook-form";
 import ContrastTextField from "../components/ContrastTextField/ContrastTextField";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface ILoginInput {
   username: string;
@@ -11,6 +19,8 @@ interface ILoginInput {
 }
 
 export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
+
   const auth = useContext(AuthContext);
 
   const {
@@ -51,11 +61,25 @@ export default function LoginPage() {
               error={!!errors.password && !!errors.password.message}
               label="Password"
               variant="outlined"
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: { value: true, message: "Enter password" },
               })}
               helperText={errors.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      onMouseDown={(e) => e.preventDefault()}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
           </Stack>
         </Grid>
