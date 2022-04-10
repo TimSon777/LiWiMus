@@ -37,7 +37,7 @@
 * Пароль, логин: то, что вводили при установке MySql
 * База данных: liwimus
 
-## Добавление yotrack integration
+## Добавление youtrack integration
 * Rider -> File -> Settings -> Plugins
 * Скачать Youtrack Integration
 * Переходим на сайт yotrack 
