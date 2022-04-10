@@ -1,5 +1,6 @@
-﻿using LiWiMus.Core.Entities;
-using LiWiMus.Core.Specifications;
+﻿using LiWiMus.Core.Specifications;
+using LiWiMus.Core.Tracks;
+using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

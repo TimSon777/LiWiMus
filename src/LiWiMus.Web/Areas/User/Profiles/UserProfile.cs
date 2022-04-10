@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Users.Enums;
 using LiWiMus.Web.Areas.User.ViewModels;
 
 namespace LiWiMus.Web.Areas.User.Profiles;
@@ -9,7 +9,7 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        CreateMap<ProfileViewModel, Core.Entities.User>()
+        CreateMap<ProfileViewModel, Core.Users.User>()
             .ForMember(user => user.Gender, opt => opt.MapFrom(vm => vm.IsMale ? Gender.Male : Gender.Female))
             .ReverseMap()
             .ForPath(vm => vm.IsMale, opt => opt.MapFrom(user => user.Gender == Gender.Male));

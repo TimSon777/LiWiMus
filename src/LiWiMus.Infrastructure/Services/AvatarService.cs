@@ -1,7 +1,7 @@
-﻿using LiWiMus.Core.Entities;
-using LiWiMus.Core.Interfaces;
+﻿using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Models;
 using LiWiMus.Core.Settings;
+using LiWiMus.Core.Users;
 using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Infrastructure.Services;

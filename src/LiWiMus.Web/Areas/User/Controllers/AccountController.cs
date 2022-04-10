@@ -12,12 +12,12 @@ namespace LiWiMus.Web.Areas.User.Controllers;
 [AllowAnonymous]
 public class AccountController : Controller
 {
-    private readonly UserManager<Core.Entities.User> _userManager;
-    private readonly SignInManager<Core.Entities.User> _signInManager;
+    private readonly UserManager<Core.Users.User> _userManager;
+    private readonly SignInManager<Core.Users.User> _signInManager;
     private readonly IMailService _mailService;
 
-    public AccountController(UserManager<Core.Entities.User> userManager,
-                             SignInManager<Core.Entities.User> signInManager, IMailService mailService)
+    public AccountController(UserManager<Core.Users.User> userManager,
+                             SignInManager<Core.Users.User> signInManager, IMailService mailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -38,7 +38,7 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = new Core.Entities.User {Email = model.Email, UserName = model.UserName};
+        var user = new Core.Users.User {Email = model.Email, UserName = model.UserName};
         var result = await _userManager.CreateAsync(user, model.Password);
 
         if (!result.Succeeded)
@@ -117,7 +117,7 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home", new {area = ""});
     }
 
-    private async Task SendConfirmEmailAsync(Core.Entities.User user)
+    private async Task SendConfirmEmailAsync(Core.Users.User user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -290,7 +290,7 @@ public class AccountController : Controller
             var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
             var surName = info.Principal.FindFirstValue(ClaimTypes.Surname);
 
-            var user = new Core.Entities.User {UserName = model.UserName, Email = email, FirstName = givenName, SecondName = surName};
+            var user = new Core.Users.User {UserName = model.UserName, Email = email, FirstName = givenName, SecondName = surName};
 
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)

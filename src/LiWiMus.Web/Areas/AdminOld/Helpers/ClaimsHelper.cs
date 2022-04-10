@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Constants;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Roles;
 using Microsoft.AspNetCore.Identity;
 
-namespace LiWiMus.Web.Areas.Admin.Helpers;
+namespace LiWiMus.Web.Areas.AdminOld.Helpers;
 
 public static class ClaimsHelper
 {

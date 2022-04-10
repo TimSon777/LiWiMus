@@ -1,4 +1,5 @@
-﻿using LiWiMus.Core.Entities;
+﻿using LiWiMus.Core.Chats.Enums;
+using LiWiMus.Core.Messages;
 
 namespace LiWiMus.Web.Areas.User.ViewModels;
 

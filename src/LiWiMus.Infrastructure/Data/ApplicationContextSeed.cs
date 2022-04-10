@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Constants;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
+using LiWiMus.Core.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;

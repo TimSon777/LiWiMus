@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Roles;
 using LiWiMus.Web.Areas.Admin.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

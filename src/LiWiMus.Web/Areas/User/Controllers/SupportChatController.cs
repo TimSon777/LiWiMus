@@ -1,29 +1,29 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Constants;
-using LiWiMus.Core.Entities;
+using LiWiMus.Core.Chats;
+using LiWiMus.Core.Chats.Enums;
+using LiWiMus.Core.Chats.Specifications;
+using LiWiMus.Core.OnlineConsultants;
+using LiWiMus.Core.OnlineConsultants.Specifications;
 using LiWiMus.Core.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.User.ViewModels;
-using LiWiMus.Web.Hubs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 
 namespace LiWiMus.Web.Areas.User.Controllers;
-
 
 [Area("User")]
 public class SupportChatController : Controller
 {
     private readonly IRepository<OnlineConsultant> _repositoryConsultant;
     private readonly IRepository<Chat> _chatRepository;
-    private readonly UserManager<Core.Entities.User> _userManager;
+    private readonly UserManager<Core.Users.User> _userManager;
     private readonly IMapper _mapper;
 
     public SupportChatController(IRepository<OnlineConsultant> repositoryConsultant,
         IRepository<Chat> chatRepository, 
-        UserManager<Core.Entities.User> userManager,
+        UserManager<Core.Users.User> userManager,
         IMapper mapper)
     {
         _repositoryConsultant = repositoryConsultant;

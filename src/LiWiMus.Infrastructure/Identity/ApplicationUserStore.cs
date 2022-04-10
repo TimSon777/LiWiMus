@@ -1,7 +1,13 @@
 ﻿using System.Security.Claims;
-using LiWiMus.Core.Entities;
 using LiWiMus.Core.Models;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Specifications;
+using LiWiMus.Core.UserClaims;
+using LiWiMus.Core.UserClaims.Specifications;
+using LiWiMus.Core.UserRoles;
+using LiWiMus.Core.UserRoles.Specifications;
+using LiWiMus.Core.Users;
+using LiWiMus.Core.Users.Specifications;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;

@@ -1,6 +1,4 @@
-﻿using LiWiMus.Core.Entities;
-
-namespace LiWiMus.Core.Interfaces;
+﻿namespace LiWiMus.Core.Interfaces;
 
 public interface IPaymentService
 {
