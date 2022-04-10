@@ -1,0 +1,15 @@
+﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel?
+
+@{
+    Layout = "_LayoutSidebar";
+}
+
+<div id="chat"></div>
+<textarea id="ta-send-to-consultant" cols="30" rows="10"></textarea>
+<button id="btn-send-to-consultant">Send</button>
+
+@section Scripts
+{   
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/js/user_chat.js"></script>
+}

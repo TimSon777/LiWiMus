@@ -14,15 +14,17 @@ public class RazorViewRenderer : IRazorViewRenderer
     private readonly IRazorViewEngine _viewEngine;
     private readonly ITempDataProvider _tempDataProvider;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IHttpContextAccessor _contextAccessor;
 
     public RazorViewRenderer(
         IRazorViewEngine viewEngine,
         ITempDataProvider tempDataProvider,
-        IServiceProvider serviceProvider)
+        IServiceProvider serviceProvider, IHttpContextAccessor contextAccessor)
     {
         _viewEngine = viewEngine;
         _tempDataProvider = tempDataProvider;
         _serviceProvider = serviceProvider;
+        _contextAccessor = contextAccessor;
     }
 
     public async Task<string> RenderViewAsync<TModel>(string viewName, TModel model)
@@ -75,7 +77,7 @@ public class RazorViewRenderer : IRazorViewRenderer
 
     private ActionContext GetActionContext()
     {
-        var httpContext = new DefaultHttpContext
+        var httpContext = _contextAccessor.HttpContext ?? new DefaultHttpContext
         {
             RequestServices = _serviceProvider
         };

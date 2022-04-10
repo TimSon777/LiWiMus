@@ -3,6 +3,8 @@
         const connectionId = $(this).val()
         const message = $(`textarea[id=${connectionId}]`).val()
         await connection.invoke("SendMessageToUser", connectionId, message)
+        let id = 'messages-' + $(this).attr('id');
+        $(`#${id}`).append(`<p>I: ${message}</p>`)
     })
 }
 
@@ -29,6 +31,8 @@ async function chatStartWithCOrOpen() {
                                     const connectionId = $(this).val()
                                     const message = $(`textarea[id=${connectionId}]`).val()
                                     await connection.invoke("SendMessageToUser", connectionId, message)
+                                    let id = 'messages-' + $(this).attr('id');
+                                    $(`#${id}`).append(`<p>I: ${message}</p>`)
                                 });
                             },
                             error: (error) => {

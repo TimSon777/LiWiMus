@@ -1,26 +1,33 @@
-﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel
+﻿@model (LiWiMus.Web.Areas.User.ViewModels.ChatViewModel chatVm, int countMessages)
 
-<div id="@Model.User.UserName">
+@{
+    Layout = null;
+}
+<div id="@Model.chatVm.User.UserName">
     <div class="chat">
 
         <div class="">
             <h3>
-                @Model.User.UserName
+                @Model.chatVm.User.UserName
             </h3>
         </div>
 
-        @foreach (var message in Model.Messages.Take(5))
-        {
-            <div class="message">
-                <p>
-                    @message.Text
-                </p>
+        <div class="messages">
+            <div id="messages-@Model.chatVm.User.UserName">
+                @foreach (var message in Model.chatVm.Messages.Take(Model.countMessages))
+                {
+                    <div class="message">
+                        <p>
+                            @message.Text
+                        </p>
+                    </div>
+                }
             </div>
-        }
+        </div>
 
         <div class="send">
-            <textarea class="ta-send-message-to-user" id="@Model.UserConnectionId"></textarea>
-            <button id="btn-@Model.User.UserName" class="btn-send-to-user" value="@Model.UserConnectionId">Send</button>
+            <textarea class="ta-send-message-to-user" id="@Model.chatVm.UserConnectionId"></textarea>
+            <button id="btn-@Model.chatVm.User.UserName" class="btn-send-to-user" value="@Model.chatVm.UserConnectionId">Send</button>
         </div>
     </div>
 </div>

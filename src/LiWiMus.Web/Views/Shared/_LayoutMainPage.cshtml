@@ -17,4 +17,8 @@
     </main>
 </div>
 
-@await RenderSectionAsync("Scripts", required: false)
+@section Scripts 
+{
+    @await RenderSectionAsync("Scripts", required: false)
+}
+
