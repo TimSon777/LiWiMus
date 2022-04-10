@@ -40,7 +40,7 @@
 ## Добавление youtrack integration
 * Rider -> File -> Settings -> Plugins
 * Скачать Youtrack Integration
-* Переходим на сайт yotrack 
+* Переходим на сайт youtrack 
 * Profile -> Account Security
 * Слева снизу new token, название любое, копируете токен
 * В rider появится расширение Youtrack, переходим
