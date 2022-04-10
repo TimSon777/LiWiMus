@@ -20,6 +20,7 @@ export function Layout(props: LayoutComponentProps) {
         sx={{
           display: "flex",
           pt: "64px",
+          height: "100%",
         }}
       >
         {drawer}
