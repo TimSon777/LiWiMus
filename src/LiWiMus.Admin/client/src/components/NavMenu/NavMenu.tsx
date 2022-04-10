@@ -1,7 +1,6 @@
 import React from "react";
 import { Link as RLink } from "react-router-dom";
 import logo from "../../images/logo.jpg";
-import styles from "./NavMenu.module.sass";
 import { Avatar, Link } from "@mui/material";
 import "../../App.sass";
 import AppBar from "@mui/material/AppBar";
@@ -29,7 +28,7 @@ export default function NavMenu() {
           }}
         >
           <Avatar alt="Logo" src={logo} sx={{ width: 50, height: 50, mr: 2 }} />
-          <span className={styles.overpass}>LiWiMus</span>
+          <span>LiWiMus</span>
         </Link>
       </Toolbar>
     </AppBar>

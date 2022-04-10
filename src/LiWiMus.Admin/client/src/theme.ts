@@ -18,6 +18,9 @@ const theme = createTheme({
       paperLight: "#444444",
     },
   },
+  typography: {
+    fontFamily: "'Overpass', sans-serif",
+  },
 });
 
 export default theme;

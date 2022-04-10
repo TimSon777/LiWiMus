@@ -1,8 +1,8 @@
 import React from "react";
-import NavMenu from "../navmenu/NavMenu";
+import NavMenu from "../NavMenu/NavMenu";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
-import SideBar from "../SideBar/Drawer";
+import SideBar from "../SideBar/SideBar";
 
 export interface LayoutComponentProps {
   children: React.ReactNode;
