@@ -9,9 +9,13 @@ import { AuthContext } from "./contexts/Auth.context";
 import "./App.sass";
 
 function App() {
-  const { token, login, logout, userId } = useAuth();
+  const { token, login, logout, userId, ready } = useAuth();
   const isAuthenticated = !!token;
   const routes = useRoutes(isAuthenticated);
+
+  if (!ready) {
+    return <div />;
+  }
 
   return (
     <AuthContext.Provider
@@ -19,7 +23,7 @@ function App() {
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Layout>{routes}</Layout>
+          <Layout isAuthenticated={isAuthenticated}>{routes}</Layout>
         </ThemeProvider>
       </BrowserRouter>
     </AuthContext.Provider>

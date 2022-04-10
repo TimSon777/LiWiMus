@@ -1,25 +1,30 @@
 import React from "react";
 import NavMenu from "../navmenu/NavMenu";
-import { Container } from "@mui/material";
+import CssBaseline from "@mui/material/CssBaseline";
+import Box from "@mui/material/Box";
+import SideBar from "../SideBar/Drawer";
 
 export interface LayoutComponentProps {
   children: React.ReactNode;
+  isAuthenticated: boolean;
 }
 
-export function Layout({ children }: LayoutComponentProps) {
+export function Layout(props: LayoutComponentProps) {
+  const drawer = props.isAuthenticated ? <SideBar /> : "";
+
   return (
     <>
+      <CssBaseline />
       <NavMenu />
-      <Container
-        maxWidth={false}
+      <Box
         sx={{
-          height: "calc(100% - 69.5px)",
-          bgcolor: "background.default",
-          pt: 1,
+          display: "flex",
+          pt: "64px",
         }}
       >
-        {children}
-      </Container>
+        {drawer}
+        {props.children}
+      </Box>
     </>
   );
 }

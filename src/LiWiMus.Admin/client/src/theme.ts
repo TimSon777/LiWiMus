@@ -1,5 +1,11 @@
 import { createTheme } from "@mui/material/styles";
 
+declare module "@mui/material/styles" {
+  interface TypeBackground {
+    paperLight: string;
+  }
+}
+
 const theme = createTheme({
   palette: {
     mode: "dark",
@@ -8,7 +14,8 @@ const theme = createTheme({
     },
     background: {
       default: "#727271",
-      paper: "#444444",
+      paper: "#21201f",
+      paperLight: "#444444",
     },
   },
 });
