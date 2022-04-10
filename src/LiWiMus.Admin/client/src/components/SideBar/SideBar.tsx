@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Avatar,
   Box,
@@ -8,9 +8,12 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
+import { AuthContext } from "../../contexts/Auth.context";
 import GroupIcon from "@mui/icons-material/Group";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
+import ListButton from "../ListButton/ListButton";
 import "./SideBar.sass";
 
 const drawerWidth = 240;
@@ -24,6 +27,8 @@ export default function SideBar({
   mobileOpen,
   handleDrawerToggle,
 }: SideBarProps) {
+  const { logout } = useContext(AuthContext);
+
   const linkClickHandler = () => {
     if (mobileOpen) {
       handleDrawerToggle();
@@ -62,6 +67,16 @@ export default function SideBar({
           />
         </List>
         <Divider />
+        <List>
+          <ListButton
+            icon={<LogoutIcon />}
+            text={"Logout"}
+            onClick={() => {
+              linkClickHandler();
+              logout();
+            }}
+          />
+        </List>
       </Box>
     </>
   );
