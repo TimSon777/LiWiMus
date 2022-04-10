@@ -24,7 +24,7 @@ export function Layout(props: LayoutComponentProps) {
         }}
       >
         {drawer}
-        {props.children}
+        <Box sx={{ m: 3 }}>{props.children}</Box>
       </Box>
     </>
   );
