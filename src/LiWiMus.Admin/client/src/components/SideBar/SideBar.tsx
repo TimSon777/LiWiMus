@@ -20,19 +20,14 @@ const drawerWidth = 240;
 
 export interface SideBarProps {
   mobileOpen: boolean;
-  handleDrawerToggle: () => void;
+  setMobileOpen: (state: boolean) => void;
 }
 
-export default function SideBar({
-  mobileOpen,
-  handleDrawerToggle,
-}: SideBarProps) {
+export default function SideBar({ mobileOpen, setMobileOpen }: SideBarProps) {
   const { logout } = useContext(AuthContext);
 
   const linkClickHandler = () => {
-    if (mobileOpen) {
-      handleDrawerToggle();
-    }
+    setMobileOpen(false);
   };
 
   const drawer = (
@@ -90,9 +85,9 @@ export default function SideBar({
       <Drawer
         variant="temporary"
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={() => setMobileOpen(!mobileOpen)}
         ModalProps={{
-          keepMounted: true, // Better open performance on mobile.
+          keepMounted: true,
         }}
         sx={{
           display: { xs: "block", sm: "none" },

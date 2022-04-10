@@ -1,27 +1,18 @@
-import React from "react";
+import React, { PropsWithChildren, useContext } from "react";
 import NavMenu from "../NavMenu/NavMenu";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import SideBar from "../SideBar/SideBar";
+import { AuthContext } from "../../contexts/Auth.context";
 
-export interface LayoutComponentProps {
-  children: React.ReactNode;
-  isAuthenticated: boolean;
-}
-
-export function Layout(props: LayoutComponentProps) {
+export function Layout(props: PropsWithChildren<{}>) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <>
       <CssBaseline />
-      <NavMenu
-        handleDrawerToggle={handleDrawerToggle}
-        isAuthenticated={props.isAuthenticated}
-      />
+      <NavMenu mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
       <Box
         sx={{
           display: "flex",
@@ -29,11 +20,8 @@ export function Layout(props: LayoutComponentProps) {
           height: "100%",
         }}
       >
-        {props.isAuthenticated && (
-          <SideBar
-            handleDrawerToggle={handleDrawerToggle}
-            mobileOpen={mobileOpen}
-          />
+        {isAuthenticated && (
+          <SideBar mobileOpen={mobileOpen} setMobileOpen={setMobileOpen} />
         )}
         <Box sx={{ m: 3, width: "100%" }}>{props.children}</Box>
       </Box>

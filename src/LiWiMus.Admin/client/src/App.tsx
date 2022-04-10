@@ -23,7 +23,7 @@ function App() {
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Layout isAuthenticated={isAuthenticated}>{routes}</Layout>
+          <Layout>{routes}</Layout>
         </ThemeProvider>
       </BrowserRouter>
     </AuthContext.Provider>
