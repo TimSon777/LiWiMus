@@ -4,7 +4,7 @@ using LiWiMus.Core.Chats.Enums;
 using LiWiMus.Core.Chats.Specifications;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
-using LiWiMus.Core.Specifications;
+using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -20,16 +20,18 @@ public class SupportChatController : Controller
     private readonly IRepository<Chat> _chatRepository;
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly IMapper _mapper;
+    private readonly IRepository<Core.Users.User> _userRepository;
 
     public SupportChatController(IRepository<OnlineConsultant> repositoryConsultant,
         IRepository<Chat> chatRepository, 
         UserManager<Core.Users.User> userManager,
-        IMapper mapper)
+        IMapper mapper, IRepository<Core.Users.User> userRepository)
     {
         _repositoryConsultant = repositoryConsultant;
         _chatRepository = chatRepository;
         _userManager = userManager;
         _mapper = mapper;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -58,8 +60,9 @@ public class SupportChatController : Controller
 
         return Json(userNames);
     }
-    
+
     [HttpGet]
+    [Authorize(Roles = "Consultant")]
     public async Task<IActionResult> Chat(string userName)
     {
         var user = await _userManager.GetUserAsync(User);
@@ -74,7 +77,7 @@ public class SupportChatController : Controller
 
         var chatVm = _mapper.Map<ChatViewModel>(chat);
         
-        return PartialView("~/Areas/User/Views/Partials/ChatPartial.cshtml", chatVm);
+        return PartialView("~/Areas/User/Views/Partials/ChatPartial.cshtml", (chatVm, chatVm.Messages.Count));
     }
 
     [HttpGet]
@@ -83,6 +86,6 @@ public class SupportChatController : Controller
         var user = await _userManager.GetUserAsync(User);
         var chat = await _chatRepository.GetBySpecAsync(new OpenChatSpec(user));
         var chatVm = _mapper.Map<ChatViewModel>(chat);
-        return PartialView("~/Areas/User/Views/Partials/ChatPartial.cshtml", chatVm);
+        return View(chatVm);
     }
 }

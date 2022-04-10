@@ -1,5 +1,4 @@
 ﻿using LiWiMus.Core.Chats.Enums;
-using LiWiMus.Core.Messages;
 
 namespace LiWiMus.Web.Areas.User.ViewModels;
 
@@ -11,5 +10,5 @@ public class ChatViewModel
     
     public ChatStatus Status { get; set; }
 
-    public List<Message> Messages { get; set; }
+    public List<MessageViewModel> Messages { get; set; }
 }
