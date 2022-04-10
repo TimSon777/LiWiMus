@@ -15,16 +15,13 @@ export function Layout(props: LayoutComponentProps) {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = props.isAuthenticated ? (
-    <SideBar handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
-  ) : (
-    ""
-  );
-
   return (
     <>
       <CssBaseline />
-      <NavMenu handleDrawerToggle={handleDrawerToggle} />
+      <NavMenu
+        handleDrawerToggle={handleDrawerToggle}
+        isAuthenticated={props.isAuthenticated}
+      />
       <Box
         sx={{
           display: "flex",
@@ -32,7 +29,12 @@ export function Layout(props: LayoutComponentProps) {
           height: "100%",
         }}
       >
-        {drawer}
+        {props.isAuthenticated && (
+          <SideBar
+            handleDrawerToggle={handleDrawerToggle}
+            mobileOpen={mobileOpen}
+          />
+        )}
         <Box sx={{ m: 3, width: "100%" }}>{props.children}</Box>
       </Box>
     </>

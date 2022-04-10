@@ -10,9 +10,13 @@ import "../../App.sass";
 
 export interface NavMenuProps {
   handleDrawerToggle: () => void;
+  isAuthenticated: boolean;
 }
 
-export default function NavMenu({ handleDrawerToggle }: NavMenuProps) {
+export default function NavMenu({
+  handleDrawerToggle,
+  isAuthenticated,
+}: NavMenuProps) {
   return (
     <AppBar
       position="fixed"
@@ -22,15 +26,17 @@ export default function NavMenu({ handleDrawerToggle }: NavMenuProps) {
       }}
     >
       <Toolbar>
-        <IconButton
-          color="inherit"
-          aria-label="open drawer"
-          edge="start"
-          onClick={handleDrawerToggle}
-          sx={{ mr: 2, display: { sm: "none" } }}
-        >
-          <MenuIcon />
-        </IconButton>
+        {isAuthenticated && (
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ mr: 2, display: { sm: "none" } }}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
 
         <Link
           color="primary.contrastText"
