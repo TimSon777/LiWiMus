@@ -1,12 +1,18 @@
 import React from "react";
 import { Link as RLink } from "react-router-dom";
-import logo from "../../images/logo.jpg";
 import { Avatar, Link } from "@mui/material";
-import "../../App.sass";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import logo from "../../images/logo.jpg";
+import "../../App.sass";
 
-export default function NavMenu() {
+export interface NavMenuProps {
+  handleDrawerToggle: () => void;
+}
+
+export default function NavMenu({ handleDrawerToggle }: NavMenuProps) {
   return (
     <AppBar
       position="fixed"
@@ -16,6 +22,16 @@ export default function NavMenu() {
       }}
     >
       <Toolbar>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          edge="start"
+          onClick={handleDrawerToggle}
+          sx={{ mr: 2, display: { sm: "none" } }}
+        >
+          <MenuIcon />
+        </IconButton>
+
         <Link
           color="primary.contrastText"
           component={RLink}

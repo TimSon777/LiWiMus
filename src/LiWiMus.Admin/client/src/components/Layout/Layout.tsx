@@ -10,12 +10,21 @@ export interface LayoutComponentProps {
 }
 
 export function Layout(props: LayoutComponentProps) {
-  const drawer = props.isAuthenticated ? <SideBar /> : "";
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const drawer = props.isAuthenticated ? (
+    <SideBar handleDrawerToggle={handleDrawerToggle} mobileOpen={mobileOpen} />
+  ) : (
+    ""
+  );
 
   return (
     <>
       <CssBaseline />
-      <NavMenu />
+      <NavMenu handleDrawerToggle={handleDrawerToggle} />
       <Box
         sx={{
           display: "flex",
