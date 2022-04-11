@@ -4,9 +4,18 @@
     Layout = "_LayoutSidebar";
 }
 
-<div id="chat"></div>
-<textarea id="ta-send-to-consultant" cols="30" rows="10"></textarea>
-<button id="btn-send-to-consultant">Send</button>
+
+<div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center">
+    <div class="" id="chat" style="height: 100%"></div>
+    <div class="textarea-send-btn" style="height: 100%">
+        <textarea id="ta-send-to-consultant" cols="30" rows="10"></textarea>
+        <div>
+            <button class="btn-send-to-chat" id="btn-send-to-consultant " style="text-align: center">Send</button>
+        </div>
+    </div>
+</div>
+
+
 
 @section Scripts
 {   

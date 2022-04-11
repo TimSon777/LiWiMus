@@ -179,3 +179,11 @@ body {
     opacity: 100%;
   }
 }
+
+.btn-send-to-chat {
+  @extend .random-avatar-button;
+}
+
+.textarea-send-btn {
+  grid-column: 2/3;
+}
