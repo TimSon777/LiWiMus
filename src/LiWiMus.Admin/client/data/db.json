@@ -8,8 +8,8 @@
       "username": "DaphneName",
       "phoneNumber": "90373648291",
       "enum": "male",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "false",
+      "emailConfirmed": true,
+      "phoneConfirmed": false,
       "balance": "760"
     },
     {
@@ -20,8 +20,8 @@
       "username": "CharmaineName",
       "phoneNumber": "89133848689",
       "enum": "male",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "311"
     },
     {
@@ -32,8 +32,8 @@
       "username": "SidoneyName",
       "phoneNumber": "42206982721",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "411"
     },
     {
@@ -44,8 +44,8 @@
       "username": "MerciName",
       "phoneNumber": "31173397537",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "120"
     },
     {
@@ -56,8 +56,8 @@
       "username": "EloraName",
       "phoneNumber": "10756314261",
       "enum": "male",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "520"
     },
     {
@@ -68,8 +68,8 @@
       "username": "ElkaName",
       "phoneNumber": "37445955497",
       "enum": "female",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "311"
     },
     {
@@ -80,8 +80,8 @@
       "username": "JeanName",
       "phoneNumber": "22724841484",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "168"
     },
     {
@@ -92,8 +92,8 @@
       "username": "KeeliaName",
       "phoneNumber": "49686170848",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "647"
     },
     {
@@ -104,8 +104,8 @@
       "username": "NessieName",
       "phoneNumber": "47063354522",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "699"
     },
     {
@@ -116,8 +116,8 @@
       "username": "BritteName",
       "phoneNumber": "39441679222",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "765"
     },
     {
@@ -128,8 +128,8 @@
       "username": "AnnabelaName",
       "phoneNumber": "57576563737",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "54"
     },
     {
@@ -140,8 +140,8 @@
       "username": "CacilieName",
       "phoneNumber": "79702678245",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "530"
     },
     {
@@ -152,8 +152,8 @@
       "username": "ArlenaName",
       "phoneNumber": "92434732647",
       "enum": "female",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "340"
     },
     {
@@ -164,8 +164,8 @@
       "username": "AurelieName",
       "phoneNumber": "15446159844",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "715"
     },
     {
@@ -176,8 +176,8 @@
       "username": "WendiName",
       "phoneNumber": "87272448961",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "504"
     },
     {
@@ -188,8 +188,8 @@
       "username": "DanikaName",
       "phoneNumber": "96776658483",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "855"
     },
     {
@@ -200,8 +200,8 @@
       "username": "TressaName",
       "phoneNumber": "90172868431",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "946"
     },
     {
@@ -212,8 +212,8 @@
       "username": "YettyName",
       "phoneNumber": "24765413033",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "584"
     },
     {
@@ -224,8 +224,8 @@
       "username": "ConsuelaName",
       "phoneNumber": "88303343707",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "527"
     },
     {
@@ -236,8 +236,8 @@
       "username": "AmaraName",
       "phoneNumber": "65632645150",
       "enum": "male",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "false",
+      "emailConfirmed": true,
+      "phoneConfirmed": false,
       "balance": "930"
     },
     {
@@ -248,8 +248,8 @@
       "username": "SadieName",
       "phoneNumber": "46222514652",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "739"
     },
     {
@@ -260,8 +260,8 @@
       "username": "FredName",
       "phoneNumber": "93122993016",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "65"
     },
     {
@@ -272,8 +272,8 @@
       "username": "BelvaName",
       "phoneNumber": "48139892909",
       "enum": "male",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "882"
     },
     {
@@ -284,8 +284,8 @@
       "username": "JocelineName",
       "phoneNumber": "68541985981",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "856"
     },
     {
@@ -296,8 +296,8 @@
       "username": "ChandraName",
       "phoneNumber": "31955002491",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "false",
+      "emailConfirmed": false,
+      "phoneConfirmed": false,
       "balance": "681"
     },
     {
@@ -308,8 +308,8 @@
       "username": "MarcyName",
       "phoneNumber": "25442259451",
       "enum": "female",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "802"
     },
     {
@@ -320,8 +320,8 @@
       "username": "TobeName",
       "phoneNumber": "74706124325",
       "enum": "female",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "870"
     },
     {
@@ -332,8 +332,8 @@
       "username": "GlynnisName",
       "phoneNumber": "55651645252",
       "enum": "female",
-      "emailConfirmed": "false",
-      "phoneConfirmed": "true",
+      "emailConfirmed": false,
+      "phoneConfirmed": true,
       "balance": "100"
     },
     {
@@ -344,8 +344,8 @@
       "username": "ImojeanName",
       "phoneNumber": "51136503796",
       "enum": "female",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "true",
+      "emailConfirmed": true,
+      "phoneConfirmed": true,
       "balance": "600"
     },
     {
@@ -356,8 +356,8 @@
       "username": "PollyannaName",
       "phoneNumber": "14253183224",
       "enum": "female",
-      "emailConfirmed": "true",
-      "phoneConfirmed": "false",
+      "emailConfirmed": true,
+      "phoneConfirmed": false,
       "balance": "284"
     }
   ],
