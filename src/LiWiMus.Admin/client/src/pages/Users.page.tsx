@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef, useCallback} from "react";
 import {
     DataGrid,
     GridRowsProp,
@@ -6,24 +6,31 @@ import {
     GridApi,
     GridCellValue,
     GridToolbar,
-    GridToolbarContainer
+    GridFilterModel,
+    GridToolbarContainer,
+    GridSelectionModel,
+    GridSortModel
 } from '@mui/x-data-grid';
 import {Button} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
 export default function UsersPage() {
     const [users, setUsers] = useState([])
-
-    useEffect(() => {
-        const getUsers = async () => {
-            const res = await fetch('http://localhost:3500/users');
-            const data = await res.json();
-            setUsers(data)
-        };
-        getUsers();
-    }, []);
-
-    const rows: GridRowsProp = users;
+    const [rows, setRows] = useState<GridRowsProp>([]);
+    
+    const [page, setPage] = useState(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
+    const prevSelectionModel = useRef<GridSelectionModel>(selectionModel);
+    const [sortModel, setSortModel] = useState<GridSortModel>([{field: 'id', sort:'asc' }])
+    const [filterValue, setFilterValue] = useState<string | undefined>();
+    
+    const onFilterChange = useCallback((filterModel: GridFilterModel) => {
+        setFilterValue(filterModel.items[0].value);
+    },[]);
+    const handleSortModelChange = (newModel: GridSortModel) => {
+        setSortModel(newModel);
+    }
     const columns: GridColDef[] = [{field: 'id', hide: true}, {
         field: 'username', headerName: 'Username', flex: 0.6
     }, {
@@ -66,7 +73,82 @@ export default function UsersPage() {
                            sx={{borderRadius: "20px", px: 4}} onClick={onClick}>Edit</Button>;
         },
     },];
+    
+    useEffect(() => {
+        const getUsers = async () => {
+            const res = await fetch('http://localhost:3500/users');
+            const data = await res.json();
+            setUsers(data)
+        };
+        getUsers();
+    }, []);
+    
+    useEffect(() => {
+        let active = true;
 
+        (async () => {
+            setLoading(true);
+            const res = await fetch('');
+            const newRows = await res.json();
+            
+            if(!active){
+                return;
+            }
+            
+            setRows(newRows);
+            setLoading(false);
+            setTimeout(() => {
+                setSelectionModel(prevSelectionModel.current)
+            });
+        })();
+        
+        return () => {
+            active = false;
+        };
+    }, [page]);
+    
+    useEffect(() => {
+        let active = true;
+
+        (async () => {
+            setLoading(true);
+            const res = await fetch('');
+            const newRows = await res.json();
+            
+            if(!active){
+                return;
+            }
+            
+            setRows(newRows);
+            setLoading(false);
+        })();
+        
+        return () => {
+            active = false;
+        };
+    },[sortModel,page]);
+
+    useEffect(() => {
+        let active = true;
+
+        (async () => {
+            setLoading(true);
+            const res = await fetch('');
+            const newRows = await res.json();
+            
+            if (!active) {
+                return;
+            }
+
+            setRows(newRows);
+            setLoading(false);
+        })();
+
+        return () => {
+            active = false;
+        };
+    }, [filterValue, page]);
+    
     return (
         <div>
             <div>
@@ -75,10 +157,28 @@ export default function UsersPage() {
             <div>
                 <DataGrid
                     columns={columns}
-                    rows={rows}
+                    rows={users}
                     components={{Toolbar: GridToolbar}}
+                    checkboxSelection
+                    pagination
                     pageSize={5}
-                    checkboxSelection={true}
+                    rowsPerPageOptions={[5]}
+                    rowCount={40}
+                    sortingMode="server"
+                    sortModel={sortModel}
+                    onSortModelChange={handleSortModelChange}
+                    paginationMode="server"
+                    onPageChange={(newPage) => {
+                        prevSelectionModel.current = selectionModel;
+                        setPage(newPage);
+                    }}
+                    onSelectionModelChange={(newSelectionModel) => {
+                        setSelectionModel(newSelectionModel);
+                    }}
+                    selectionModel={selectionModel}
+                    filterMode="server"
+                    onFilterModelChange={onFilterChange}
+                    loading = {loading}
                     autoHeight></DataGrid>
             </div>
         </div>
