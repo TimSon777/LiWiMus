@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Infrastructure.Identity;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -12,12 +13,12 @@ namespace LiWiMus.Web.Areas.User.Controllers;
 [AllowAnonymous]
 public class AccountController : Controller
 {
-    private readonly UserManager<Core.Users.User> _userManager;
-    private readonly SignInManager<Core.Users.User> _signInManager;
+    private readonly UserManager<UserIdentity> _userManager;
+    private readonly SignInManager<UserIdentity> _signInManager;
     private readonly IMailService _mailService;
 
-    public AccountController(UserManager<Core.Users.User> userManager,
-                             SignInManager<Core.Users.User> signInManager, IMailService mailService)
+    public AccountController(UserManager<UserIdentity> userManager,
+                             SignInManager<UserIdentity> signInManager, IMailService mailService)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -38,8 +39,8 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var user = new Core.Users.User {Email = model.Email, UserName = model.UserName};
-        var result = await _userManager.CreateAsync(user, model.Password);
+        var userIdentity = new UserIdentity {Email = model.Email, UserName = model.UserName};
+        var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
         if (!result.Succeeded)
         {
@@ -47,10 +48,8 @@ public class AccountController : Controller
             return View(model);
         }
 
-        await _userManager.UpdateAsync(user);
-
-        await SendConfirmEmailAsync(user);
-        await _signInManager.SignInAsync(user, false);
+        await SendConfirmEmailAsync(userIdentity);
+        await _signInManager.SignInAsync(userIdentity, false);
         return RedirectToAction("Index", "Home", new {area = ""});
     }
 
@@ -117,7 +116,7 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home", new {area = ""});
     }
 
-    private async Task SendConfirmEmailAsync(Core.Users.User user)
+    private async Task SendConfirmEmailAsync(UserIdentity user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -287,10 +286,12 @@ public class AccountController : Controller
             }
 
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+
+            // TODO: Save given name and surname
             var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
             var surName = info.Principal.FindFirstValue(ClaimTypes.Surname);
 
-            var user = new Core.Users.User {UserName = model.UserName, Email = email, FirstName = givenName, SecondName = surName};
+            var user = new UserIdentity {UserName = model.UserName, Email = email};
 
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)

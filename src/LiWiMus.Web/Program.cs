@@ -4,7 +4,6 @@ using Autofac.Extensions.DependencyInjection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
-using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
 using LiWiMus.Infrastructure;
@@ -12,7 +11,6 @@ using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.Configuration;
-using LiWiMus.Web.Hubs;
 using LiWiMus.Web.Hubs.SupportChat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -143,15 +141,15 @@ var scopedProvider = scope.ServiceProvider;
 try
 {
     var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
-    var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
-    var roleManager = scopedProvider.GetRequiredService<RoleManager<Role>>();
+    var userManager = scopedProvider.GetRequiredService<UserManager<UserIdentity>>();
+    var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
     var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
     await ApplicationContextSeed.SeedAsync(applicationContext, logger, userManager, roleManager, adminSettings);
     await ApplicationContextClear.ClearAsync(applicationContext, logger);
 }
 catch (Exception ex)
 {
-    logger.LogError(ex, "An error occurred seeding the DB.");
+    logger.LogError(ex, "An error occurred seeding the DB");
 }
 
 logger.LogInformation("LAUNCHING");
