@@ -21,15 +21,22 @@ public static class TriggersConfiguration
 
         Triggers<Transaction>.Inserting += entry => entry.Entity.User.Balance += entry.Entity.Amount;
 
-        Triggers<User, ApplicationContext>.Inserted += entry => entry.Context.Transactions.Add(new Transaction
+        Triggers<User, ApplicationContext>.Inserted += async entry =>
         {
-            User = entry.Entity,
-            Amount = 100,
-            Description = "Gift for registration"
-        });
+            entry.Context.Transactions.Add(new Transaction
+            {
+                User = entry.Entity,
+                Amount = 100,
+                Description = "Gift for registration"
+            });
+            await entry.Context.SaveChangesAsync();
+        };
 
-        Triggers<User, ApplicationContext>.GlobalInserted.Add<IAvatarService>(entry =>
-            entry.Service.SetRandomAvatarAsync(entry.Entity));
+        Triggers<User, ApplicationContext>.GlobalInserted.Add<IAvatarService>(async entry =>
+        {
+            await entry.Service.SetRandomAvatarAsync(entry.Entity);
+            await entry.Context.SaveChangesAsync();
+        });
 
         Triggers<UserIdentity, ApplicationContext>.GlobalInserted.Add<UserManager<UserIdentity>>(entry =>
             entry.Service.AddToRoleAsync(entry.Entity, Roles.User.Name));

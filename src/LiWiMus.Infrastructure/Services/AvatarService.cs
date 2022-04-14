@@ -2,6 +2,7 @@
 using LiWiMus.Core.Models;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
+using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Infrastructure.Services;
