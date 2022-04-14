@@ -15,6 +15,6 @@ public class ConfigurationWebModule : Module
         builder.RegisterType<RazorViewRenderer>().As<IRazorViewRenderer>();
         builder.RegisterType<PermissionPolicyProvider>().As<IAuthorizationPolicyProvider>().SingleInstance();
         builder.RegisterType<AuthorizationHandler>().As<IAuthorizationHandler>().InstancePerLifetimeScope();
-        builder.RegisterType<ApplicationUserValidator>().As<IUserValidator<User>>();
+        builder.RegisterType<ApplicationUserValidator>().As<IUserValidator<UserIdentity>>();
     }
 }

@@ -12,8 +12,8 @@ namespace LiWiMus.Infrastructure.Data.Migrations
                 name: "AlbumId",
                 table: "Tracks",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true,
+                defaultValue: null);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tracks_AlbumId",

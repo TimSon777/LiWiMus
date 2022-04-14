@@ -1,4 +1,6 @@
-﻿using LiWiMus.Core.Users;
+﻿using LiWiMus.Core.IdentityAggregates;
+using LiWiMus.Core.Users;
+using LiWiMus.Infrastructure.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -10,5 +12,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.Property(u => u.Gender)
                .HasConversion<string>();
+
+        builder.HasOne(u => u.IdentityAggregate)
+               .WithOne(ia => ia.User)
+               .HasForeignKey<User>(u => u.IdentityAggregateId);
     }
 }
