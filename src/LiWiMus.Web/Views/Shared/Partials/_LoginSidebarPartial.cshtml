@@ -1,18 +1,19 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LiWiMus.Core.Constants
 @using LiWiMus.Core.Users
-@inject SignInManager<User> _signInManager
-@inject UserManager<User> _userManager
+@using LiWiMus.Infrastructure.Identity
+@inject SignInManager<UserIdentity> _signInManager
+@inject UserManager<UserIdentity> _userManager
 
 @{
-    User? currentUser;
+    UserIdentity? currentUser;
     if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
     {
         if (User.IsInRole(Roles.Admin.Name))
         {
         }
         <div class="user-sidebar-nav">
-            <img id="avatar" src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 120px; border-radius: 100%"/>
+            <img id="avatar" src="~/@currentUser.Aggregate.User?.AvatarPath" alt="" class="img-fluid" style="width: 120px; border-radius: 100%"/>
             <div style="padding-top: 7%; padding-bottom : 10%">
                 <p class="text-white" style="font-weight: bold; word-wrap: break-word; text-align: center; margin: auto; width: 120px; font-size: larger">
                     // TODO: Check if it work

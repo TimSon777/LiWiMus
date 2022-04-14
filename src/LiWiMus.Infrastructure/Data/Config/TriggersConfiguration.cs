@@ -3,6 +3,7 @@ using LiWiMus.Core.Constants;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
+using LiWiMus.Infrastructure.Identity;
 using LiWiMus.SharedKernel;
 using Microsoft.AspNetCore.Identity;
 
@@ -30,7 +31,7 @@ public static class TriggersConfiguration
         Triggers<User, ApplicationContext>.GlobalInserted.Add<IAvatarService>(entry =>
             entry.Service.SetRandomAvatarAsync(entry.Entity));
 
-        Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(entry =>
+        Triggers<UserIdentity, ApplicationContext>.GlobalInserted.Add<UserManager<UserIdentity>>(entry =>
             entry.Service.AddToRoleAsync(entry.Entity, Roles.User.Name));
     }
 }

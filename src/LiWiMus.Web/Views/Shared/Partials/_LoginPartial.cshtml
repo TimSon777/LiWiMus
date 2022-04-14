@@ -1,12 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LiWiMus.Core.Constants
 @using LiWiMus.Core.Users
-@inject SignInManager<User> _signInManager
-@inject UserManager<User> _userManager
+@using LiWiMus.Infrastructure.Identity
+@inject SignInManager<UserIdentity> _signInManager
+@inject UserManager<UserIdentity> _userManager
 
 <ul class="navbar-nav">
     @{
-        User? currentUser;
+        UserIdentity? currentUser;
         if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
         {
             if (User.IsInRole(Roles.Admin.Name))
@@ -19,7 +20,7 @@
                 </li>
             }
             <li class="nav-item">
-                <img src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 42px; border-radius: 100%">
+                <img src="~/@currentUser.Aggregate.User?.AvatarPath" alt="" class="img-fluid" style="width: 42px; border-radius: 100%">
                 <a class="nav-link text-white d-inline-block" title="Manage" asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
             </li>
             <li class="nav-item">

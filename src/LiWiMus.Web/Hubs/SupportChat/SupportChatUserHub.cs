@@ -9,6 +9,7 @@ using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Specifications;
+using LiWiMus.Infrastructure.Identity;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -19,7 +20,7 @@ namespace LiWiMus.Web.Hubs.SupportChat;
 
 public class SupportChatUserHub : Hub
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserIdentity> _userManager;
     private readonly IRepository<Chat> _repositoryChat;
     private readonly IRepository<OnlineConsultant> _onlineConsultantsRepository;
     private readonly IRepository<Message> _messageRepository;
@@ -27,7 +28,7 @@ public class SupportChatUserHub : Hub
     private readonly IMapper _mapper;
     private readonly IRazorViewRenderer _razorViewRenderer;
 
-    public SupportChatUserHub(UserManager<User> userManager,
+    public SupportChatUserHub(UserManager<UserIdentity> userManager,
         IRepository<Chat> repositoryChat, IRepository<OnlineConsultant> onlineConsultantsRepository, 
         IRepository<Message> messageRepository, 
         IRepository<User> userRepository,
