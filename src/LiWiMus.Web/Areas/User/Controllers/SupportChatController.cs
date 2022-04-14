@@ -77,15 +77,12 @@ public class SupportChatController : Controller
 
         var chatVm = _mapper.Map<ChatViewModel>(chat);
         
-        return PartialView("~/Areas/User/Views/Partials/ChatPartial.cshtml", (chatVm, chatVm.Messages.Count));
+        return PartialView("~/Areas/User/Views/Partials/ChatPartial.cshtml", chatVm);
     }
 
     [HttpGet]
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var user = await _userManager.GetUserAsync(User);
-        var chat = await _chatRepository.GetBySpecAsync(new OpenChatSpec(user));
-        var chatVm = _mapper.Map<ChatViewModel>(chat);
-        return View(chatVm);
+        return View();
     }
 }

@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
-namespace LiWiMus.Web.Hubs;
+namespace LiWiMus.Web.Hubs.SupportChat;
 
 public class SupportChatUserHub : Hub
 {
@@ -131,14 +131,14 @@ public class SupportChatUserHub : Hub
         
         if (userWithoutChats is null)
         {
-            return new BadRequestResult();
+            return new BadRequestObjectResult("You aren't authorize");
         }
         
         var user = await _userRepository.GetBySpecAsync(new UserWithChatsSpec(userWithoutChats));
         
         if (user is null)
         {
-            return new BadRequestResult();
+            return new BadRequestObjectResult("You aren't authorize");
         }
         
         var chatOld = user.UserChats.FirstOrDefault(c => c.Status == ChatStatus.Opened);
@@ -149,8 +149,7 @@ public class SupportChatUserHub : Hub
         
         var chatVm = _mapper.Map<ChatViewModel>(chat);
         
-        var html = await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatPartial.cshtml",
-            (chatVm, chatVm.Messages.Count));
+        var html = await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatUserPartial.cshtml", chatVm);
 
         return new OkObjectResult(html);
     }
@@ -201,4 +200,28 @@ public class SupportChatUserHub : Hub
 
         await Clients.Group(chat.User.UserName).SendAsync("SendMessageToUser", text);
     }
+
+    public async Task DisconnectConsultant()
+    {
+        var user = await _userManager.GetUserAsync(Context.User);
+        var consultant = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantByUser(user));
+        
+        if (consultant is null)
+        {
+            return;
+        }
+        
+        var chats = consultant.Chats.Where(c => c.Status == ChatStatus.Opened);
+        foreach (var chat in chats)
+        {
+            var newConsultant = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantWithMinimalWorkload(consultant));
+
+            if (newConsultant is null)
+            {
+                return;
+            }
+
+            chat.Consultant = newConsultant;
+        }
+    } 
 }

@@ -13,6 +13,7 @@ using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.Configuration;
 using LiWiMus.Web.Hubs;
+using LiWiMus.Web.Hubs.SupportChat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
@@ -145,7 +146,8 @@ try
     var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
     var roleManager = scopedProvider.GetRequiredService<RoleManager<Role>>();
     var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
-    await ApplicationContextSeed.SeedAsync(applicationContext, app.Logger, userManager, roleManager, adminSettings);
+    await ApplicationContextSeed.SeedAsync(applicationContext, logger, userManager, roleManager, adminSettings);
+    await ApplicationContextClear.ClearAsync(applicationContext, logger);
 }
 catch (Exception ex)
 {

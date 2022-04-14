@@ -2,23 +2,19 @@
 
 @{
     ViewBag.Title = "title";
-    Layout = "_LayoutSidebar";
+    Layout = "_Layout";
 }
 
 <button class="" id="online">Start work</button>
-<button class="" id="refresh-chats">Get new chats</button>
+<button id="offline">End work</button>
+<button class="" id="refresh-chats">Refresh chats</button>
 
 <section>
-    <div id="chats">
-        @foreach (var chat in Model)
-        {
-            <partial name="~/Areas/User/Views/Partials/ChatPartial.cshtml" model="@((chat, 5))"/>
-        }
-    </div>
+    <div id="chats"></div>
 </section>
 
 @section Scripts
-{   
+{
     <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
     <script src="~/js/consultant_chat.js"></script>
 }

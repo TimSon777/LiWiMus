@@ -1,10 +1,10 @@
-﻿function refreshHandler(connection) {
-    $('.btn-send-to-user').click(async function () {
-        const connectionId = $(this).val()
-        const message = $(`textarea[id=${connectionId}]`).val()
-        await connection.invoke("SendMessageToUser", connectionId, message)
-        let id = 'messages-' + $(this).attr('id');
-        $(`#${id}`).append(`<p>I: ${message}</p>`)
+﻿function refreshHandler(btn, connection) {
+    $(btn).click(async function () {
+        const connectionId = $(this).val();
+        const message = $(`textarea[id=${connectionId}]`).val();
+        await connection.invoke("SendMessageToUser", connectionId, message);
+        let id = $(this).attr('id').split('-', 2)[1];
+        $(`#${id}`).append(`<li class="message"><p>Your: ${message}</p></li>`);
     })
 }
 
@@ -13,27 +13,24 @@ async function chatStartWithCOrOpen() {
         .withUrl("/chat")
         .build();
     
-    $('#refresh-chats').click(()=>{
+    $('#offline').click(async () => {
+        await connection.invoke("DisconnectConsultant")
+    })
+    
+    $('#refresh-chats').click(() => {
         $.ajax({
             method: 'GET',
             url: 'GetTextingUsersChats',
             success: (userNames) => {
                 userNames.forEach(userName => {
-                    const e = $(`#${userName}`)
+                    const e = $(`#chat-${userName}`)
                     if (e) {
                         $.ajax({
                             method: 'GET',
                             url: `Chat?userName=${userName}`,
                             success: (html) => {
                                 $('#chats').prepend(html)
-                                
-                                $(`#btn-${userName}`).bind( "click" , async function () {
-                                    const connectionId = $(this).val()
-                                    const message = $(`textarea[id=${connectionId}]`).val()
-                                    await connection.invoke("SendMessageToUser", connectionId, message)
-                                    let id = 'messages-' + $(this).attr('id');
-                                    $(`#${id}`).append(`<p>I: ${message}</p>`)
-                                });
+                                refreshHandler($(`#btn-${userName}`), connection)
                             },
                             error: (error) => {
                                 alert(error)
@@ -41,18 +38,20 @@ async function chatStartWithCOrOpen() {
                         })
                     }
                 })
+            },
+            error: (error) => {
+                alert(error)
             }
         })
     })
     
     connection.on("SendMessageToConsultant", function (text, userName) {
-        $(`#${userName}`).append(`<p>${text}</p>`)
+        $(`#${userName}`).append(`<li><p>${text}</p></li>`)
     });
 
-    refreshHandler(connection)
+    refreshHandler($('.btn-send-to-user'), connection)
     
     await connection.start();
-
     await connection.invoke("ConnectConsultant");
 }
 $(document).ready(function () {

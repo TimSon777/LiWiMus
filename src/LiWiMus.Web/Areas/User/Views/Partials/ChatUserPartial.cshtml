@@ -1,0 +1,18 @@
+﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel
+
+@{
+    Layout = null;
+}
+
+<div class="messages">
+    <ul id="messages-@Model.User.UserName">
+        @foreach (var message in Model.Messages)
+        {
+            <li class="message">
+                <p>
+                    @message.Text
+                </p>
+            </li>
+        }
+    </ul>
+</div>

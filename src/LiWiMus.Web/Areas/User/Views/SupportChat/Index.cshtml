@@ -1,21 +1,16 @@
-﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel?
-
-@{
-    Layout = "_LayoutSidebar";
+﻿@{
+    Layout = "_Layout";
 }
-
 
 <div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center">
     <div class="" id="chat" style="height: 100%"></div>
     <div class="textarea-send-btn" style="height: 100%">
         <textarea id="ta-send-to-consultant" cols="30" rows="10"></textarea>
         <div>
-            <button class="btn-send-to-chat" id="btn-send-to-consultant " style="text-align: center">Send</button>
+            <button class="btn-send-to-chat" id="btn-send-to-consultant" style="text-align: center">Send</button>
         </div>
     </div>
 </div>
-
-
 
 @section Scripts
 {   
