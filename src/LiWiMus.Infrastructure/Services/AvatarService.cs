@@ -45,7 +45,7 @@ public class AvatarService : IAvatarService
     {
         RemoveAvatarIfExists(user);
         var avatar = await GetRandomAvatarAsync();
-        user.AvatarPath = Path.Combine(_dataSettings.AvatarsDirectory, user.UserName + ".svg");
+        user.AvatarPath = Path.Combine(_dataSettings.AvatarsDirectory, user.Id + ".svg");
         await File.WriteAllBytesAsync(Path.Combine(_contentRootPath, user.AvatarPath), avatar);
     }
 
@@ -53,7 +53,7 @@ public class AvatarService : IAvatarService
     {
         RemoveAvatarIfExists(user);
         var (_, extension, image1) = imageInfo;
-        var newRelativePathToAvatar = Path.Combine(_dataSettings.AvatarsDirectory, user.UserName + extension);
+        var newRelativePathToAvatar = Path.Combine(_dataSettings.AvatarsDirectory, user.Id + extension);
         var newPathToAvatar = Path.Combine(_contentRootPath, newRelativePathToAvatar);
         await _imageService.SavePictureAsync(image1, newPathToAvatar);
         user.AvatarPath = newRelativePathToAvatar;

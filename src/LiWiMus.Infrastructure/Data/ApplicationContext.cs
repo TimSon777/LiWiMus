@@ -5,20 +5,16 @@ using LiWiMus.Core.Artists;
 using LiWiMus.Core.Genres;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.Playlists;
-using LiWiMus.Core.Roles;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Transactions;
-using LiWiMus.Core.UserClaims;
-using LiWiMus.Core.UserRoles;
-using LiWiMus.Core.Users;
+using LiWiMus.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace LiWiMus.Infrastructure.Data;
 
-public class ApplicationContext : IdentityDbContext<User, Role, int, UserClaim, UserRole,
-    IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>>
+public class ApplicationContext : IdentityDbContext<UserIdentity, IdentityRole<int>, int>
 {
     private readonly IServiceProvider _serviceProvider;
     public DbSet<Album> Albums => Set<Album>();

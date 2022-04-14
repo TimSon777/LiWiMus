@@ -1,16 +1,16 @@
-﻿using LiWiMus.Core.Roles;
+﻿using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Core.Constants;
 
 public static class Roles
 {
-    public static readonly Role Admin = new(nameof(Admin), "Has full access to the site", TimeSpan.MaxValue);
-    public static readonly Role Moderator = new(nameof(Moderator), "Removes obscene content", TimeSpan.MaxValue);
-    public static readonly Role Consultant = new(nameof(Consultant), "Can help users in chat", TimeSpan.MaxValue);
-    public static readonly Role Artist = new(nameof(Artist), "Advanced user", TimeSpan.MaxValue);
-    public static readonly Role User = new(nameof(User), "Basic role", TimeSpan.MaxValue);
+    public static readonly IdentityRole<int> Admin = new(nameof(Admin));
+    public static readonly IdentityRole<int> Moderator = new(nameof(Moderator));
+    public static readonly IdentityRole<int> Consultant = new(nameof(Consultant));
+    public static readonly IdentityRole<int> Artist = new(nameof(Artist));
+    public static readonly IdentityRole<int> User = new(nameof(User));
 
-    public static Dictionary<Role, List<string>> GetPreconfiguredRoles() =>
+    public static Dictionary<IdentityRole<int>, List<string>> GetPreconfiguredRoles() =>
         new()
         {
             {Admin, Permissions.GetAllPermissions()},

@@ -10,9 +10,9 @@ namespace LiWiMus.Infrastructure.Identity;
 
 public class AuthorizationHandler : IAuthorizationHandler
 {
-    private readonly UserManager<User> _userManager;
+    private readonly UserManager<UserIdentity> _userManager;
 
-    public AuthorizationHandler(UserManager<User> userManager)
+    public AuthorizationHandler(UserManager<UserIdentity> userManager)
     {
         _userManager = userManager;
     }
@@ -62,19 +62,19 @@ public class AuthorizationHandler : IAuthorizationHandler
     }
 
     private static void HandleSameAuthorRequirement(AuthorizationHandlerContext context,
-                                                    SameAuthorRequirement sameAuthorRequirement, User user)
+                                                    SameAuthorRequirement sameAuthorRequirement, UserIdentity userIdentity)
     {
         switch (context.Resource)
         {
             case IResource.WithOwner<User> singleOwnerResource
-                when user.Id == singleOwnerResource.Owner.Id:
+                when userIdentity.Aggregate.User != null && userIdentity.Aggregate.User.Id == singleOwnerResource.Owner.Id:
             case IResource.WithOwner<Artist> singleArtistOwnerResource
-                when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Owner.Id:
+                when userIdentity.Aggregate.Artist is not null && userIdentity.Aggregate.Artist.Id == singleArtistOwnerResource.Owner.Id:
             case IResource.WithMultipleOwners<User> multipleOwnersResource
-                when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
+                when multipleOwnersResource.Owners.Select(u => u.Id).Contains(userIdentity.Id):
             case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
-                when user.ArtistId is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
-                                                                              .Contains(user.ArtistId.Value):
+                when userIdentity.Aggregate.Artist is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
+                                                                              .Contains(userIdentity.Aggregate.Artist.Id):
                 context.Succeed(sameAuthorRequirement);
                 break;
         }

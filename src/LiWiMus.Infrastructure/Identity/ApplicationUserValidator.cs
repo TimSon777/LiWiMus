@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Identity;
 
-public class ApplicationUserValidator : UserValidator<User>
+public class ApplicationUserValidator : UserValidator<UserIdentity>
 {
-    public override async Task<IdentityResult> ValidateAsync(UserManager<User> manager, User user)
+    public override async Task<IdentityResult> ValidateAsync(UserManager<UserIdentity> manager, UserIdentity user)
     {
         var result = await base.ValidateAsync(manager, user);
         var errors = result.Succeeded ? new List<IdentityError>() : result.Errors.ToList();

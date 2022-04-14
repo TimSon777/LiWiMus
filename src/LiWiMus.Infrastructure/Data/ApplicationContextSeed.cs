@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Constants;
-using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
+using LiWiMus.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -13,7 +13,7 @@ public static class ApplicationContextSeed
 {
     public static async Task SeedAsync(ApplicationContext applicationContext,
                                        ILogger logger,
-                                       UserManager<User> userManager, RoleManager<Role> roleManager,
+                                       UserManager<UserIdentity> userManager, RoleManager<IdentityRole<int>> roleManager,
                                        AdminSettings adminSettings,
                                        int retry = 0)
     {
@@ -26,7 +26,7 @@ public static class ApplicationContextSeed
             }
 
             await roleManager.SeedRolesAsync();
-            await SeedAdminAsync(userManager, adminSettings);
+            //await SeedAdminAsync(userManager, adminSettings);
         }
         catch (Exception ex)
         {
@@ -40,7 +40,7 @@ public static class ApplicationContextSeed
         }
     }
 
-    private static async Task SeedRolesAsync(this RoleManager<Role> roleManager)
+    private static async Task SeedRolesAsync(this RoleManager<IdentityRole<int>> roleManager)
     {
         foreach (var (role, permissions) in Roles.GetPreconfiguredRoles())
         {
@@ -52,7 +52,8 @@ public static class ApplicationContextSeed
         }
     }
 
-    private static async Task SeedAdminAsync(UserManager<User> userManager, AdminSettings adminSettings)
+    /*
+    private static async Task SeedAdminAsync(UserManager<UserIdentity> userManager, AdminSettings adminSettings)
     {
         var admin = new User
         {
@@ -75,8 +76,9 @@ public static class ApplicationContextSeed
             await userManager.AddToRoleAsync(admin, role.Name);
         }
     }
+    */
 
-    private static async Task AddPermissionClaim(this RoleManager<Role> roleManager, Role role, List<string> permissions)
+    private static async Task AddPermissionClaim(this RoleManager<IdentityRole<int>> roleManager, IdentityRole<int> role, List<string> permissions)
     {
         var allClaims = await roleManager.GetClaimsAsync(role);
         foreach (var permission in permissions)
