@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
+using LiWiMus.Core.IdentityAggregates;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.SharedKernel.Extensions;
+using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +18,16 @@ public class AccountController : Controller
     private readonly UserManager<UserIdentity> _userManager;
     private readonly SignInManager<UserIdentity> _signInManager;
     private readonly IMailService _mailService;
+    private readonly IRepository<Core.Users.User> _userRepository;
 
     public AccountController(UserManager<UserIdentity> userManager,
-                             SignInManager<UserIdentity> signInManager, IMailService mailService)
+                             SignInManager<UserIdentity> signInManager, IMailService mailService,
+                             IRepository<Core.Users.User> userRepository)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _mailService = mailService;
+        _userRepository = userRepository;
     }
 
     [HttpGet]
@@ -39,7 +44,14 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var userIdentity = new UserIdentity {Email = model.Email, UserName = model.UserName};
+        var userIdentity = new UserIdentity
+        {
+            Email = model.Email, UserName = model.UserName,
+            Aggregate = new IdentityAggregate
+            {
+                User = new Core.Users.User()
+            }
+        };
         var result = await _userManager.CreateAsync(userIdentity, model.Password);
 
         if (!result.Succeeded)
@@ -291,7 +303,19 @@ public class AccountController : Controller
             var givenName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
             var surName = info.Principal.FindFirstValue(ClaimTypes.Surname);
 
-            var user = new UserIdentity {UserName = model.UserName, Email = email};
+            var user = new UserIdentity
+            {
+                UserName = model.UserName,
+                Email = email,
+                Aggregate = new IdentityAggregate
+                {
+                    User = new Core.Users.User
+                    {
+                        FirstName = givenName,
+                        SecondName = surName
+                    }
+                }
+            };
 
             var result = await _userManager.CreateAsync(user);
             if (result.Succeeded)
@@ -309,6 +333,7 @@ public class AccountController : Controller
                     return LocalRedirect(returnUrl);
                 }
             }
+
             AddErrors(result);
         }
 
