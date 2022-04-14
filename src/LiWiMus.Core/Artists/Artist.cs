@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Constants;
+using LiWiMus.Core.IdentityAggregates;
 using LiWiMus.Core.LikedArtists;
 using LiWiMus.Core.Tracks;
 
@@ -8,7 +9,8 @@ namespace LiWiMus.Core.Artists;
 
 public class Artist : BaseEntity
 {
-    public User? User { get; set; }
+    public IdentityAggregate IdentityAggregate { get; set; } = null!;
+    public int IdentityAggregateId { get; set; }
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
