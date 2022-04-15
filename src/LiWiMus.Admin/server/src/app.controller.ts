@@ -27,6 +27,11 @@ export class AppController {
     return User.findOne(id, {relations: ['artist', 'userRoles', 'externalLogins', 'transactions']});
   }
 
+  @Get('getusers')
+  async getUsers(): Promise<User[]> {
+    return User.find();
+  }
+  
   @Get('getuserroles')
   async getRoles(): Promise<UserRole[]> {
     return UserRole.find();
