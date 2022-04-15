@@ -1,14 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LiWiMus.Core.Constants
+@using LiWiMus.Core.IdentityAggregates
+@using LiWiMus.Core.IdentityAggregates.Specifications
 @using LiWiMus.Infrastructure.Identity
+@using LiWiMus.SharedKernel.Interfaces
 @inject SignInManager<UserIdentity> _signInManager
 @inject UserManager<UserIdentity> _userManager
+@inject IRepository<IdentityAggregate> _aggregateRepository;
 
 <ul class="navbar-nav">
     @{
         UserIdentity? currentUser;
         if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
         {
+            var aggregate = await _aggregateRepository.GetBySpecAsync(new IdentityAggregateByIdWithUserSpec(currentUser.Id));
+
             if (User.IsInRole(Roles.Admin.Name))
             {
                 <li class="nav-item">
@@ -16,7 +22,7 @@
                 </li>
             }
             <li class="nav-item">
-                <img src="~/@currentUser.Aggregate.User?.AvatarPath" alt="" class="img-fluid" style="width: 42px; border-radius: 100%">
+                <img src="~/@aggregate.User?.AvatarPath" alt="" class="img-fluid" style="width: 42px; border-radius: 100%">
                 <a class="nav-link text-white d-inline-block" title="Manage" asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
             </li>
             <li class="nav-item">
