@@ -76,7 +76,7 @@ export default function UsersPage() {
     
     useEffect(() => {
         const getUsers = async () => {
-            const res = await fetch('http://localhost:3001/admin/api/getusers');
+            const res = await fetch('https://liwimus.aslipatov.site/admin/api/getusers');
             const data = await res.json();
             setUsers(data)
         };
