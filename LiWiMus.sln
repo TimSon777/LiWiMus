@@ -12,6 +12,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.API", "src\LiWiMus.
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.API.Tests", "src\LiWiMus.API.Tests\LiWiMus.API.Tests.fsproj", "{38EE9823-20E9-4B4B-A682-96653DF878A7}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.Auth", "src\LiWiMus.Auth\LiWiMus.Auth.fsproj", "{B9EE1D71-2DA3-42ED-8DE0-D41774DDB160}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,5 +48,9 @@ Global
 		{38EE9823-20E9-4B4B-A682-96653DF878A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38EE9823-20E9-4B4B-A682-96653DF878A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38EE9823-20E9-4B4B-A682-96653DF878A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9EE1D71-2DA3-42ED-8DE0-D41774DDB160}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9EE1D71-2DA3-42ED-8DE0-D41774DDB160}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9EE1D71-2DA3-42ED-8DE0-D41774DDB160}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9EE1D71-2DA3-42ED-8DE0-D41774DDB160}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
