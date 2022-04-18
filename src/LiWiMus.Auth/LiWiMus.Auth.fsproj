@@ -7,6 +7,8 @@
     <ItemGroup>
         <Compile Include="WeatherForecast.fs" />
         <Compile Include="Controllers/WeatherForecastController.fs" />
+        <Compile Include="Controllers/ConnectController.fs" />
+        <Compile Include="Controllers\TestController.fs" />
         <Compile Include="Extensions/ServicesExtensions.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
@@ -18,7 +20,7 @@
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
       <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.4" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0-preview.3.22175.1">
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.4">
         <PrivateAssets>all</PrivateAssets>
         <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       </PackageReference>

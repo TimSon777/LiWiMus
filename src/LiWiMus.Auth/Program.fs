@@ -20,7 +20,6 @@ module Program =
         let configuration = builder.Configuration
         
         services.AddControllers()
-        
         if environment.IsDevelopment() then
             services.AddCors(fun options ->
                 options.AddDefaultPolicy(fun builder ->
@@ -40,13 +39,20 @@ module Program =
             .AddOpenIdConnect()
             
         let app = builder.Build()
+                    
+        if environment.IsDevelopment() then
+            app.UseDeveloperExceptionPage() |> ignore
         
         app
+            .UseRouting()
             .UseAuthentication()
             .UseAuthorization()
             .UseCors()
             .UseHttpsRedirection()
-        
+
+        app.UseEndpoints(fun endpoints ->
+            endpoints.MapControllerRoute("default", "{controller}/{action}/{id?}")
+            |> ignore)
         app.MapControllers()
 
         app.Run()

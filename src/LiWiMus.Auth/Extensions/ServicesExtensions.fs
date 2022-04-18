@@ -45,6 +45,7 @@ type IServiceCollection with
                     |> ignore)
                 .AddServer(fun options ->
                     options
+                        .AcceptAnonymousClients()
                         .AllowPasswordFlow()
                         .AllowRefreshTokenFlow()
                         .SetTokenEndpointUris("/connect/token")
