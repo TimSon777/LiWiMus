@@ -1,5 +1,6 @@
 ﻿using LiWiMus.Core.Users;
 using LiWiMus.Infrastructure.Data;
+using LiWiMus.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Web.Configuration;
@@ -32,7 +33,8 @@ public static class ConfigureIdentity
                     }
                 })
                 .AddDefaultTokenProviders()
-                .AddEntityFrameworkStores<ApplicationContext>();
+                .AddEntityFrameworkStores<ApplicationContext>()
+                .AddClaimsPrincipalFactory<ApplicationClaimsPrincipalFactory>();
 
         return services;
     }
