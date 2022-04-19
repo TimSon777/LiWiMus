@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Plans;
 using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Services;
 using LiWiMus.SharedKernel.Interfaces;
@@ -26,6 +27,7 @@ public class ConfigurationCoreModule : Module
         builder.RegisterType<MailRequestService>().As<IMailRequestService>();
         builder.RegisterType<ImageService>().As<IImageService>();
         builder.RegisterType<PaymentService>().As<IPaymentService>();
+        builder.RegisterType<UserPlanManager>().As<IUserPlanManager>();
         AvatarService.Configure(_contentRootPath);
     }
 }

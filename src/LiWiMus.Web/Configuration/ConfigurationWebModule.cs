@@ -13,7 +13,6 @@ public class ConfigurationWebModule : Module
     protected override void Load(ContainerBuilder builder)
     {
         builder.RegisterType<RazorViewRenderer>().As<IRazorViewRenderer>();
-        builder.RegisterType<PermissionPolicyProvider>().As<IAuthorizationPolicyProvider>().SingleInstance();
         builder.RegisterType<AuthorizationHandler>().As<IAuthorizationHandler>().InstancePerLifetimeScope();
         builder.RegisterType<ApplicationUserValidator>().As<IUserValidator<User>>();
     }

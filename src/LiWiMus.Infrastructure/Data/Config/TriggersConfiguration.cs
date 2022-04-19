@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkCore.Triggers;
 using LiWiMus.Core.Constants;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Plans;
 using LiWiMus.Core.Roles;
 using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
@@ -33,5 +34,8 @@ public static class TriggersConfiguration
 
         Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(entry =>
             entry.Service.AddToRoleAsync(entry.Entity, DefaultRoles.User.Name));
+
+        Triggers<User, ApplicationContext>.GlobalInserted.Add<IUserPlanManager>(entry =>
+            entry.Service.AddToPlan(entry.Entity, DefaultPlans.Free.Name, TimeSpan.FromDays(30)));
     }
 }

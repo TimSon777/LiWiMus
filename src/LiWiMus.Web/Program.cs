@@ -65,6 +65,8 @@ services.AddAuthentication()
 
 services.AddAuthorization(options =>
 {
+    options.AddPermissionPolicies();
+
     options.AddPolicy("SameAuthorPolicy",
         policyBuilder => policyBuilder.AddRequirements(new SameAuthorRequirement()));
     

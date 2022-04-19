@@ -1,4 +1,5 @@
-﻿using LiWiMus.Core.Tracks;
+﻿using LiWiMus.Core.Permissions;
+using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ public class TrackController : ControllerBase
     
     [HttpGet]
     [Route("{trackId:int}")]
+    [Authorize(DefaultPermissions.Track.Read)]
     public async Task<IActionResult> Get(int trackId)
     {
         var track = await _trackRepository.GetBySpecAsync(new TrackWithArtistsByIdSpecification(trackId));

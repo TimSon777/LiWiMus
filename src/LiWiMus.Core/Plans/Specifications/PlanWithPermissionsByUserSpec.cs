@@ -2,12 +2,12 @@
 
 namespace LiWiMus.Core.Plans.Specifications;
 
-public sealed class PlanWithPermissionsByUserSpec : Specification<Plan>, ISingleResultSpecification
+public sealed class PlanWithPermissionsByUserSpec : Specification<UserPlan, Plan>
 {
     public PlanWithPermissionsByUserSpec(User user)
     {
-        Query.Where(
-            plan => plan.UserPlans.Exists(userPlan => userPlan.UserId == user.Id && userPlan.End > DateTime.Now));
-        Query.Include(plan => plan.Permissions);
+        Query.Where(userPlan => userPlan.UserId == user.Id && userPlan.End > DateTime.UtcNow)
+             .Include(userPlan => userPlan.Plan.Permissions);
+        Query.Select(userPlan => userPlan.Plan);
     }
 }

@@ -11,7 +11,7 @@ public static class DefaultPlans
     {
         return new Dictionary<Plan, IEnumerable<string>>
         {
-            [Free] = new List<string> { },
+            [Free] = new List<string> { DefaultPermissions.Track.Read },
             [Premium] = new List<string> { }
         };
     }
