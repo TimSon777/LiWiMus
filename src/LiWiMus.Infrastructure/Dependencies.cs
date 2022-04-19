@@ -12,10 +12,10 @@ public static class Dependencies
         services.AddDbContext<ApplicationContext>(options =>
         {
             var connectionString = configuration.GetConnectionString("DefaultConnection");
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
-            options
+            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
                 .UseValidationCheckConstraints()
-                .UseAllCheckConstraints();
+                .UseAllCheckConstraints()
+                .UseOpenIddict();
         });
     }
 }
