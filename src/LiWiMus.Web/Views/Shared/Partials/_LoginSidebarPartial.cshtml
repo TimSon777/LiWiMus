@@ -8,9 +8,6 @@
     User? currentUser;
     if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
     {
-        if (User.IsInRole(Roles.Admin.Name))
-        {
-        }
         <div class="user-sidebar-nav">
             <img id="avatar" src="~/@currentUser.AvatarPath" alt="" class="img-fluid" style="width: 120px; border-radius: 100%"/>
             <div style="padding-top: 7%; padding-bottom : 10%">
@@ -18,6 +15,12 @@
                     @currentUser.UserName
                 </p>
             </div>
+            @if (User.IsInRole(Roles.Admin.Name))
+            {
+                <div>
+                    <a class="text-link" href="/admin">Admin</a>
+                </div>
+            }
             <div>
                 <a class="text-link" asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
             </div>
