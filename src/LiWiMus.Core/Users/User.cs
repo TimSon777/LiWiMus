@@ -7,6 +7,7 @@ using LiWiMus.Core.LikedArtists;
 using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.LikedSongs;
 using LiWiMus.Core.LikedUsers;
+using LiWiMus.Core.Plans;
 using LiWiMus.Core.Users.Enums;
 
 namespace LiWiMus.Core.Users;
@@ -34,6 +35,9 @@ public class User : BaseUserEntity
 
     public int? ArtistId { get; set; }
     public Artist Artist { get; set; } = null!;
+
+    public UserPlan UserPlan { get; set; } = null!;
+
     public List<LikedAlbum> LikedAlbums { get; set; } = new();
     public List<LikedArtist> LikedArtists { get; set; } = new();
     public List<LikedPlaylist> LikedPlaylists { get; set; } = new();
