@@ -76,7 +76,8 @@ public static class ApplicationContextSeed
         await userManager.AddToRoleAsync(admin, DefaultRoles.Admin.Name);
     }
 
-    private static async Task AddPermissionClaim(this RoleManager<IdentityRole<int>> roleManager, IdentityRole<int> role, List<string> permissions)
+    private static async Task AddPermissionClaim(this RoleManager<IdentityRole<int>> roleManager,
+                                                 IdentityRole<int> role, List<string> permissions)
     {
         var allClaims = await roleManager.GetClaimsAsync(role);
         foreach (var permission in permissions)
@@ -92,6 +93,7 @@ public static class ApplicationContextSeed
     {
         var permissions = DefaultPermissions.GetAllPermissions().Select(v => new Permission(v));
         await context.Permissions.AddRangeAsync(permissions);
+        await context.SaveChangesAsync();
     }
 
     private static async Task SeedPlansAsync(ApplicationContext context)
@@ -101,11 +103,17 @@ public static class ApplicationContextSeed
             foreach (var permissionName in permissionNames)
             {
                 var permission = await context.Permissions.FirstOrDefaultAsync(perm => perm.Name == permissionName);
-                permission ??= new Permission(permissionName);
+                if (permission is null)
+                {
+                    permission = new Permission(permissionName);
+                    await context.Permissions.AddAsync(permission);
+                }
                 plan.Permissions.Add(permission);
             }
 
             await context.Plans.AddAsync(plan);
         }
+
+        await context.SaveChangesAsync();
     }
 }
