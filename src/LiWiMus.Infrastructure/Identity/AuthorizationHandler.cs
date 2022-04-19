@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Artists;
-using LiWiMus.Core.Constants;
 using LiWiMus.Core.Shared.Interfaces;
 using LiWiMus.Core.Users;
+using LiWiMus.Core.Permissions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -50,7 +50,7 @@ public class AuthorizationHandler : IAuthorizationHandler
     private static void HandlePermissionRequirement(AuthorizationHandlerContext context,
                                                     PermissionRequirement permissionRequirement, IEnumerable<Claim> userClaims)
     {
-        var permissions = userClaims.Where(x => x.Type == Permissions.ClaimType &&
+        var permissions = userClaims.Where(x => x.Type == Permission.ClaimType &&
                                                          x.Value == permissionRequirement.Permission &&
                                                          x.Issuer == "LOCAL AUTHORITY");
         if (!permissions.Any())

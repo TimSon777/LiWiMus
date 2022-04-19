@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using LiWiMus.Core.Constants
+@using LiWiMus.Core.Roles
 @using LiWiMus.Core.Users
 @inject SignInManager<User> _signInManager
 @inject UserManager<User> _userManager
@@ -9,7 +10,7 @@
         User? currentUser;
         if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
         {
-            if (User.IsInRole(Roles.Admin.Name))
+            if (User.IsInRole(DefaultRoles.Admin.Name))
             {
                 <li class="nav-item">
                     <a class="nav-link text-white d-inline-block" title="Admin - roles" href="/admin">Admin</a>

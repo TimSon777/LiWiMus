@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LiWiMus.Core.Permissions;
+using Microsoft.AspNetCore.Identity;
 
-namespace LiWiMus.Core.Constants;
+namespace LiWiMus.Core.Roles;
 
-public static class Roles
+public static class DefaultRoles
 {
     public static readonly IdentityRole<int> Admin = new(nameof(Admin));
     public static readonly IdentityRole<int> Moderator = new(nameof(Moderator));
@@ -10,13 +11,13 @@ public static class Roles
     public static readonly IdentityRole<int> Artist = new(nameof(Artist));
     public static readonly IdentityRole<int> User = new(nameof(User));
 
-    public static Dictionary<IdentityRole<int>, List<string>> GetPreconfiguredRoles() =>
+    public static Dictionary<IdentityRole<int>, List<string>> GetRolesWithPermissions() =>
         new()
         {
-            {Admin, Permissions.GetAllPermissions()},
+            {Admin, DefaultPermissions.GetAllPermissions()},
             {Moderator, new List<string>()},
-            {Consultant, new List<string> { Permissions.Chat.Answer }},
+            {Consultant, new List<string> { DefaultPermissions.Chat.Answer }},
             {Artist, new List<string>()},
-            {User, new List<string> {Permissions.Chat.Ask}}
+            {User, new List<string> {DefaultPermissions.Chat.Ask}}
         };
 }

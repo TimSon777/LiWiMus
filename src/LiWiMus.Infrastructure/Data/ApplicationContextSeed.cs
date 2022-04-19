@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
-using LiWiMus.Core.Constants;
+using LiWiMus.Core.Permissions;
+using LiWiMus.Core.Plans;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +28,8 @@ public static class ApplicationContextSeed
 
             await roleManager.SeedRolesAsync();
             await SeedAdminAsync(userManager, adminSettings);
+            await SeedPermissionsAsync(applicationContext);
+            await SeedPlansAsync(applicationContext);
         }
         catch (Exception ex)
         {
@@ -41,7 +45,7 @@ public static class ApplicationContextSeed
 
     private static async Task SeedRolesAsync(this RoleManager<IdentityRole<int>> roleManager)
     {
-        foreach (var (role, permissions) in Roles.GetPreconfiguredRoles())
+        foreach (var (role, permissions) in DefaultRoles.GetRolesWithPermissions())
         {
             if (!await roleManager.RoleExistsAsync(role.Name))
             {
@@ -69,10 +73,7 @@ public static class ApplicationContextSeed
             admin = user;
         }
 
-        foreach (var (role, _) in Roles.GetPreconfiguredRoles())
-        {
-            await userManager.AddToRoleAsync(admin, role.Name);
-        }
+        await userManager.AddToRoleAsync(admin, DefaultRoles.Admin.Name);
     }
 
     private static async Task AddPermissionClaim(this RoleManager<IdentityRole<int>> roleManager, IdentityRole<int> role, List<string> permissions)
@@ -80,10 +81,31 @@ public static class ApplicationContextSeed
         var allClaims = await roleManager.GetClaimsAsync(role);
         foreach (var permission in permissions)
         {
-            if (!allClaims.Any(claim => claim.Type == Permissions.ClaimType && claim.Value == permission))
+            if (!allClaims.Any(claim => claim.Type == Permission.ClaimType && claim.Value == permission))
             {
-                await roleManager.AddClaimAsync(role, new Claim(Permissions.ClaimType, permission));
+                await roleManager.AddClaimAsync(role, new Claim(Permission.ClaimType, permission));
             }
+        }
+    }
+
+    private static async Task SeedPermissionsAsync(ApplicationContext context)
+    {
+        var permissions = DefaultPermissions.GetAllPermissions().Select(v => new Permission(v));
+        await context.Permissions.AddRangeAsync(permissions);
+    }
+
+    private static async Task SeedPlansAsync(ApplicationContext context)
+    {
+        foreach (var (plan, permissionNames) in DefaultPlans.GetPlansWithPermissions())
+        {
+            foreach (var permissionName in permissionNames)
+            {
+                var permission = await context.Permissions.FirstOrDefaultAsync(perm => perm.Name == permissionName);
+                permission ??= new Permission(permissionName);
+                plan.Permissions.Add(permission);
+            }
+
+            await context.Plans.AddAsync(plan);
         }
     }
 }

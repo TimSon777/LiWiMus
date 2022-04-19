@@ -1,6 +1,8 @@
-﻿namespace LiWiMus.Core.Plans;
+﻿using LiWiMus.SharedKernel.Interfaces;
 
-public class UserPlan
+namespace LiWiMus.Core.Plans;
+
+public class UserPlan : IAggregateRoot
 {
     public User User { get; set; } = null!;
     public Plan Plan { get; set; } = null!;

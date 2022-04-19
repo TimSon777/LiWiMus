@@ -4,6 +4,8 @@ using LiWiMus.Core.Albums;
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Genres;
 using LiWiMus.Core.OnlineConsultants;
+using LiWiMus.Core.Permissions;
+using LiWiMus.Core.Plans;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Transactions;
@@ -24,6 +26,8 @@ public class ApplicationContext : IdentityDbContext<User, IdentityRole<int>, int
     public DbSet<Track> Tracks => Set<Track>();
     public DbSet<Transaction> Transactions => Set<Transaction>();
     public DbSet<OnlineConsultant> OnlineConsultants => Set<OnlineConsultant>();
+    public DbSet<Permission> Permissions => Set<Permission>();
+    public DbSet<Plan> Plans => Set<Plan>();
 
     public ApplicationContext(DbContextOptions<ApplicationContext> options, IServiceProvider serviceProvider) : base(options)
     {

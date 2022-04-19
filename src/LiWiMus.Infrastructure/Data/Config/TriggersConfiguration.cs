@@ -1,6 +1,7 @@
 ﻿using EntityFrameworkCore.Triggers;
 using LiWiMus.Core.Constants;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel;
@@ -31,6 +32,6 @@ public static class TriggersConfiguration
             entry.Service.SetRandomAvatarAsync(entry.Entity));
 
         Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(entry =>
-            entry.Service.AddToRoleAsync(entry.Entity, Roles.User.Name));
+            entry.Service.AddToRoleAsync(entry.Entity, DefaultRoles.User.Name));
     }
 }

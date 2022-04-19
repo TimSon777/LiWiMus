@@ -7,6 +7,7 @@ using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Messages;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
@@ -59,7 +60,7 @@ public class SupportChatUserHub : Hub
     {
         var userClaims = Context.User;
         
-        if (userClaims?.IsInRole(Roles.Consultant.Name) == false)
+        if (userClaims?.IsInRole(DefaultRoles.Consultant.Name) == false)
         {
             return;
         }
