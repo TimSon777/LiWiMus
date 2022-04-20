@@ -13,7 +13,8 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             🔥 ${{ github.actor }} created commit:
-            📝 Commit message: ${{ github.event.commits[0].message }}
+            
+            ${{ github.event.commits[0].message }}
             
             💩 See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
           disable_web_page_preview: true
