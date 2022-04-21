@@ -7,6 +7,7 @@ import {RoleClaim} from "./roleClaims/roleClaim.entity";
 import {Track} from "./tracks/track.entity";
 import {Artist} from "./artists/artist.entity";
 import {Playlist} from "./playlists/playlist.entity";
+import {serialize} from "v8";
 
 @Controller()
 export class AppController {
@@ -65,5 +66,19 @@ export class AppController {
   @Get('sex')
   async sex(): Promise<boolean> {
     return (await User.findOne(1)).gender === "Female";
+  }
+  
+  @Get('sexwithtimur')
+  async sexwithtimur() {
+    let filter = {
+      columnName: "id",
+      operator: "eq",
+      value: 13
+    }
+    let filters = [filter];
+
+    console.log(serialize(filters));
+
+  //  await fetch(`https://localhost3001/getusers?${serialize(filters)}`)
   }
 }
