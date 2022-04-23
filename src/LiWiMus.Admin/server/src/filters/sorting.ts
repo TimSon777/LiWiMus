@@ -1,4 +1,4 @@
-﻿export class Sort {
+﻿export class Sorting {
     columnName: string;
     order: Order;
 }

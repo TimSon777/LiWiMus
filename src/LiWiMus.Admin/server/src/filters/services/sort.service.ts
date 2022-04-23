@@ -1,12 +1,12 @@
 ﻿import {Injectable} from "@nestjs/common";
-import {Sort} from "../sort";
+import {Sorting} from "../sorting";
 
 @Injectable()
 export class SortService {
-    public GetOrderObject(sorts: Sort[]) : any {
+    public GetOrderObject(sorting: Sorting[]) : any {
         let orderObj = {};
-        for(let i = 0; i < sorts.length; i++) {
-            const sort = sorts[i];
+        for(let i = 0; i < sorting.length; i++) {
+            const sort = sorting[i];
             orderObj[sort.columnName] = sort.order;
         }
         return orderObj;
