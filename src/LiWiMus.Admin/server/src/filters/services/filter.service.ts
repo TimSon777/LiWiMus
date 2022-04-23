@@ -1,15 +1,13 @@
 ﻿import {Injectable} from "@nestjs/common";
-import { MoreThan, LessThan } from "typeorm"
+import {MoreThan, LessThan, LessThanOrEqual, MoreThanOrEqual, Equal, Like} from "typeorm"
 import {Filter} from "../filter";
 
 @Injectable()
 export class FilterService {
-    //operatoro preobrazovatel'
-    //
     private static GetConditionalByOperator(operator : Operator, value : any) : any {
         switch(operator) {
             case "eq": {
-                return value;
+                return Equal(value);
             }
             case "gt": {
                 return MoreThan(value);
@@ -17,7 +15,18 @@ export class FilterService {
             case "ls": {
                 return LessThan(value);
             }
-            //lse, gte, contains, startwith
+            case "lse": {
+                return LessThanOrEqual(value);
+            }
+            case "gte": {
+                return MoreThanOrEqual(value);
+            }
+            case "cnt": {
+                return Like(`%${value}%`)
+            }
+            case "sw": {
+                return Like(`${value}%`)
+            }
             default: {
                 return null;
             }

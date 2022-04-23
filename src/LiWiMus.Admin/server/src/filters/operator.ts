@@ -1,1 +1,1 @@
-﻿type Operator = 'eq' | 'gt' | 'ls';
+﻿type Operator = 'eq' | 'gt' | 'ls' | 'lse' | 'gte' | 'cnt' | 'sw';

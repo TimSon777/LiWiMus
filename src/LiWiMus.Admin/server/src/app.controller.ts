@@ -67,18 +67,4 @@ export class AppController {
   async sex(): Promise<boolean> {
     return (await User.findOne(1)).gender === "Female";
   }
-  
-  @Get('sexwithtimur')
-  async sexwithtimur() {
-    let filter = {
-      columnName: "id",
-      operator: "eq",
-      value: 13
-    }
-    let filters = [filter];
-
-    console.log(serialize(filters));
-
-  //  await fetch(`https://localhost3001/getusers?${serialize(filters)}`)
-  }
 }
