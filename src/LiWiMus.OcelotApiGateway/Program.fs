@@ -1,4 +1,4 @@
-namespace LiWiMus.OceltotApiGateawey
+namespace LiWiMus.OcelotApiGateway
 
 #nowarn "20"
 
@@ -14,14 +14,18 @@ module Program =
     [<EntryPoint>]
     let main args =
         let builder = WebApplication.CreateBuilder(args)
+        let configuration = builder.Configuration
+        let services = builder.Services
+        
         let ocelot =
             if builder.Environment.IsDevelopment() then
                 "configuration.Development.json"
             else
                 "configuration.json"
                 
-        builder.Configuration.AddJsonFile(ocelot)
-        builder.Services.AddOcelot()
+        configuration.AddJsonFile(ocelot)
+        
+        services.AddOcelot()
 
         let app = builder.Build()
 

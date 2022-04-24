@@ -14,7 +14,7 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.API.Tests", "src\Li
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.Auth", "src\LiWiMus.Auth\LiWiMus.Auth.fsproj", "{D71F608A-0F79-42B3-B970-DAE6B3256250}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.OceltotApiGateawey", "src\LiWiMus.OceltotApiGateawey\LiWiMus.OceltotApiGateawey.fsproj", "{58DE620E-0101-4766-BCA1-5D8736A13900}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LiWiMus.OcelotApiGateway", "src\LiWiMus.OcelotApiGateway\LiWiMus.OcelotApiGateway.fsproj", "{58DE620E-0101-4766-BCA1-5D8736A13900}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
