@@ -51,7 +51,7 @@ module Program =
             .UseHttpsRedirection()
 
         app.UseEndpoints(fun endpoints ->
-            endpoints.MapControllerRoute("default", "{controller}/{action}/{id?}")
+            endpoints.MapControllerRoute("default", "/auth/{controller}/{action}/{id?}")
             |> ignore)
         app.MapControllers()
 
