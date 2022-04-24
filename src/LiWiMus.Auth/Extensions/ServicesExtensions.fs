@@ -21,7 +21,7 @@ type IServiceCollection with
     
     member services.AddIdentity() =
             services
-                .AddIdentity<User, Role>()
+                .AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders()
             |> ignore
