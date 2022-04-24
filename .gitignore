@@ -350,6 +350,6 @@ MigrationBackup/
 .ionide/
 
 .idea/
-**/appsettings.Development.json
+**/*.Development.json
 src/LiWiMus.Web/Data/*/*
 !src/LiWiMus.Web/Data/*/.gitkeep
