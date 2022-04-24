@@ -7,10 +7,19 @@
     <ItemGroup>
         <Compile Include="Controllers\TestWithoutAreaController.fs" />
         <Compile Include="Areas\TestArea\Controllers\TestController.fs" />
+        <Compile Include="Areas\User\Dto\TransactionDto.fs" />
+        <Compile Include="Areas\User\Dto\TransactionWithAmountDto.fs" />
+        <Compile Include="Areas\User\Controllers\TransactionController.fs" />
+        <Compile Include="Areas\User\Profiles\TransactionProfile.fs" />
+        <Compile Include="Configuration\AutomapperCfg.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Autofac" Version="6.3.0" />
+      <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
+      <PackageReference Include="AutoMapper" Version="11.0.1" />
+      <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
     </ItemGroup>
 
