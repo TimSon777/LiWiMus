@@ -64,19 +64,19 @@ public class AuthorizationHandler : IAuthorizationHandler
     private static void HandleSameAuthorRequirement(AuthorizationHandlerContext context,
                                                     SameAuthorRequirement sameAuthorRequirement, User user)
     {
-        switch (context.Resource)
-        {
-            case IResource.WithOwner<User> singleOwnerResource
-                when user.Id == singleOwnerResource.Owner.Id:
-            case IResource.WithOwner<Artist> singleArtistOwnerResource
-                when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Owner.Id:
-            case IResource.WithMultipleOwners<User> multipleOwnersResource
-                when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
-            case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
-                when user.ArtistId is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
-                                                                              .Contains(user.ArtistId.Value):
-                context.Succeed(sameAuthorRequirement);
-                break;
-        }
+        // switch (context.Resource)
+        // {
+        //     case IResource.WithOwner<User> singleOwnerResource
+        //         when user.Id == singleOwnerResource.Owner.Id:
+        //     case IResource.WithOwner<Artist> singleArtistOwnerResource
+        //         when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Owner.Id:
+        //     case IResource.WithMultipleOwners<User> multipleOwnersResource
+        //         when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
+        //     case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
+        //         when user.ArtistId is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
+        //                                                                       .Contains(user.ArtistId.Value):
+        //         context.Succeed(sameAuthorRequirement);
+        //         break;
+        // }
     }
 }

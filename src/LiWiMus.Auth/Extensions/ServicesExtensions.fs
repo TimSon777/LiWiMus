@@ -1,6 +1,6 @@
 ﻿module LiWiMus.Auth.Extensions.ServicesExtensions
 
-open LiWiMus.Core.Roles
+open System
 open LiWiMus.Core.Users
 open LiWiMus.Infrastructure.Data
 open Microsoft.AspNetCore.Authentication.JwtBearer
@@ -8,34 +8,34 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Identity
 open OpenIddict.Abstractions;
 
-type IServiceCollection with 
-    member services.AddAuthenticationWithJwt() =
+type IServiceCollection with
+    member public services.AddAuthenticationWithJwt() =
             services
                 .AddAuthentication(fun options ->
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme |> ignore
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme |> ignore)
+                    options.DefaultAuthenticateScheme <- JwtBearerDefaults.AuthenticationScheme
+                    options.DefaultChallengeScheme <- JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(fun options ->
-                    options.ClaimsIssuer = JwtBearerDefaults.AuthenticationScheme |> ignore)
+                    options.ClaimsIssuer <- JwtBearerDefaults.AuthenticationScheme)
             |> ignore
             services
     
-    member services.AddIdentity() =
+    member public services.AddIdentity() =
             services
-                .AddIdentity<User, IdentityRole>()
+                .AddIdentity<User, IdentityRole<int>>()
                 .AddEntityFrameworkStores<ApplicationContext>()
                 .AddDefaultTokenProviders()
             |> ignore
     
             services.Configure<IdentityOptions>(fun (options:IdentityOptions) ->
-                options.ClaimsIdentity.UserNameClaimType = OpenIddictConstants.Claims.Name |> ignore
-                options.ClaimsIdentity.UserIdClaimType = OpenIddictConstants.Claims.Subject |> ignore
-                options.ClaimsIdentity.RoleClaimType = OpenIddictConstants.Claims.Role |> ignore
-                options.ClaimsIdentity.EmailClaimType = OpenIddictConstants.Claims.Email |> ignore)
+                options.ClaimsIdentity.UserNameClaimType <- OpenIddictConstants.Claims.Name
+                options.ClaimsIdentity.UserIdClaimType <- OpenIddictConstants.Claims.Subject
+                options.ClaimsIdentity.RoleClaimType <- OpenIddictConstants.Claims.Role
+                options.ClaimsIdentity.EmailClaimType <- OpenIddictConstants.Claims.Email)
             |> ignore
                 
             services
     
-    member services.AddOpenIdConnect() =
+    member public services.AddOpenIdConnect() =
             services
                 .AddOpenIddict()
                 .AddCore(fun options ->
@@ -47,12 +47,14 @@ type IServiceCollection with
                     options
                         .AcceptAnonymousClients()
                         .AllowPasswordFlow()
-                        .AllowRefreshTokenFlow()
-                        .SetTokenEndpointUris("/connect/token")
+                        .SetTokenEndpointUris("/auth/connect/token")
+                        .SetIssuer(Uri("https://localhost:5021"))
                         .UseAspNetCore(fun builder ->
                             builder
+                                .DisableTransportSecurityRequirement()
                                 .EnableTokenEndpointPassthrough()
                             |> ignore)
+                        
                         .AddDevelopmentEncryptionCertificate()
                         .AddDevelopmentSigningCertificate()
                     |> ignore)

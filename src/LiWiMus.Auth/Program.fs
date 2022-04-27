@@ -48,7 +48,6 @@ module Program =
             .UseAuthentication()
             .UseAuthorization()
             .UseCors()
-            .UseHttpsRedirection()
 
         app.UseEndpoints(fun endpoints ->
             endpoints.MapControllerRoute("default", "/auth/{controller}/{action}/{id?}")
