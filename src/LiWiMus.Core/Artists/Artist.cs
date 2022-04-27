@@ -8,7 +8,7 @@ namespace LiWiMus.Core.Artists;
 
 public class Artist : BaseEntity
 {
-    public User? User { get; set; }
+    public List<UserArtist> Users { get; set; } = new();
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
