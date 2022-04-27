@@ -1,11 +1,13 @@
 ﻿module LiWiMus.Auth.Extensions.ServicesExtensions
 
 open System
+open System.Text
 open LiWiMus.Core.Users
 open LiWiMus.Infrastructure.Data
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Identity
+open Microsoft.IdentityModel.Tokens
 open OpenIddict.Abstractions;
 
 type IServiceCollection with
@@ -45,10 +47,9 @@ type IServiceCollection with
                     |> ignore)
                 .AddServer(fun options ->
                     options
-                        .AcceptAnonymousClients()
                         .AllowPasswordFlow()
                         .SetTokenEndpointUris("/auth/connect/token")
-                        .SetIssuer(Uri("https://localhost:5021"))
+                        .AcceptAnonymousClients()
                         .UseAspNetCore(fun builder ->
                             builder
                                 .DisableTransportSecurityRequirement()
@@ -57,6 +58,7 @@ type IServiceCollection with
                         
                         .AddDevelopmentEncryptionCertificate()
                         .AddDevelopmentSigningCertificate()
+                        .DisableAccessTokenEncryption()
                     |> ignore)
                 .AddValidation(fun options ->
                     options.UseAspNetCore() |> ignore

@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Infrastructure\Attributes\AuthorizeWithJwtAttribute.fs" />
         <Compile Include="Extensions\Automapper.Extensions.fs" />
         <Compile Include="Controllers\TestWithoutAreaController.fs" />
         <Compile Include="Areas\Artists\Dto\Artist.Dto.Read.List.fs" />

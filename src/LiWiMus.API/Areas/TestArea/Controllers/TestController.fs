@@ -1,6 +1,7 @@
 ﻿namespace LiWiMus.API.Controllers
 
 open System
+open LiWiMus.API.Infrastructure.Attributes
 open Microsoft.AspNetCore.Authentication
 open Microsoft.AspNetCore.Authorization
 open Microsoft.AspNetCore.Mvc
@@ -12,6 +13,6 @@ type TestController () =
     inherit ControllerBase()
 
     [<HttpGet>]
-    [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
+    [<AuthorizeWithJwt>]
     member _.TestGet() =
         Random.Shared.Next 5      
