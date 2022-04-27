@@ -48,11 +48,12 @@ public class AuthorizationHandler : IAuthorizationHandler
     }
 
     private static void HandlePermissionRequirement(AuthorizationHandlerContext context,
-                                                    PermissionRequirement permissionRequirement, IEnumerable<Claim> userClaims)
+                                                    PermissionRequirement permissionRequirement,
+                                                    IEnumerable<Claim> userClaims)
     {
         var permissions = userClaims.Where(x => x.Type == Permission.ClaimType &&
-                                                         x.Value == permissionRequirement.Permission &&
-                                                         x.Issuer == "LOCAL AUTHORITY");
+                                                x.Value == permissionRequirement.Permission &&
+                                                x.Issuer == "LOCAL AUTHORITY");
         if (!permissions.Any())
         {
             return;
@@ -64,19 +65,19 @@ public class AuthorizationHandler : IAuthorizationHandler
     private static void HandleSameAuthorRequirement(AuthorizationHandlerContext context,
                                                     SameAuthorRequirement sameAuthorRequirement, User user)
     {
-        // switch (context.Resource)
-        // {
-        //     case IResource.WithOwner<User> singleOwnerResource
-        //         when user.Id == singleOwnerResource.Owner.Id:
-        //     case IResource.WithOwner<Artist> singleArtistOwnerResource
-        //         when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Owner.Id:
-        //     case IResource.WithMultipleOwners<User> multipleOwnersResource
-        //         when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
-        //     case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
-        //         when user.ArtistId is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
-        //                                                                       .Contains(user.ArtistId.Value):
-        //         context.Succeed(sameAuthorRequirement);
-        //         break;
-        // }
+        switch (context.Resource)
+        {
+            case IResource.WithOwner<User> singleOwnerResource
+                when user.Id == singleOwnerResource.Owner.Id:
+            case IResource.WithOwner<Artist> singleArtistOwnerResource
+                when user.Artists.Select(a => a.ArtistId).Contains(singleArtistOwnerResource.Owner.Id):
+            case IResource.WithMultipleOwners<User> multipleOwnersResource
+                when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
+            case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
+                when multipleArtistOwnersResource.Owners.Select(a => a.Id)
+                                                 .Intersect(user.Artists.Select(a => a.ArtistId)).Any():
+                context.Succeed(sameAuthorRequirement);
+                break;
+        }
     }
 }
