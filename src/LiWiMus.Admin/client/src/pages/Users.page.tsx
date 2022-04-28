@@ -172,7 +172,7 @@ export default function UsersPage() {
                 setSortModel([{field: 'id', sort: 'asc'}])
             }
             // @ts-ignore
-            const res = await fetch('http://localhost:3500/users?_page=' + page + '&_limit=' + limitItems + '&_sort=' + sortModel[0].field.toString() + '&_order=' + sortModel[0].sort.toString());
+            const res = await fetch('/users?_page=' + page + '&_limit=' + limitItems + '&_sort=' + sortModel[0].field.toString() + '&_order=' + sortModel[0].sort.toString());
             const newRows = await res.json();
 
             if (!active) {
