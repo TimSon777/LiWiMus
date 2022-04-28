@@ -70,12 +70,12 @@ public class AuthorizationHandler : IAuthorizationHandler
             case IResource.WithOwner<User> singleOwnerResource
                 when user.Id == singleOwnerResource.Owner.Id:
             case IResource.WithOwner<Artist> singleArtistOwnerResource
-                when user.Artists.Select(a => a.ArtistId).Contains(singleArtistOwnerResource.Owner.Id):
+                when user.Artists.Select(a => a.Id).Contains(singleArtistOwnerResource.Owner.Id):
             case IResource.WithMultipleOwners<User> multipleOwnersResource
                 when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
             case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
                 when multipleArtistOwnersResource.Owners.Select(a => a.Id)
-                                                 .Intersect(user.Artists.Select(a => a.ArtistId)).Any():
+                                                 .Intersect(user.Artists.Select(a => a.Id)).Any():
                 context.Succeed(sameAuthorRequirement);
                 break;
         }

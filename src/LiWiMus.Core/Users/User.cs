@@ -33,7 +33,8 @@ public class User : BaseUserEntity
 
     public string? AvatarPath { get; set; }
 
-    public List<UserArtist> Artists { get; set; } = new();
+    public List<UserArtist> UserArtists { get; set; } = new();
+    public List<Artist> Artists { get; set; } = new();
     
     public UserPlan UserPlan { get; set; } = null!;
 

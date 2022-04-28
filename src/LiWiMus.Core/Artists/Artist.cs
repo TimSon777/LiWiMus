@@ -2,13 +2,15 @@
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Constants;
 using LiWiMus.Core.LikedArtists;
+using LiWiMus.Core.Shared.Interfaces;
 using LiWiMus.Core.Tracks;
 
 namespace LiWiMus.Core.Artists;
 
-public class Artist : BaseEntity
+public class Artist : BaseEntity, IResource.WithMultipleOwners<User>
 {
-    public List<UserArtist> Users { get; set; } = new();
+    public List<UserArtist> UserArtists { get; set; } = new();
+    public List<User> Owners { get; set; } = new();
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
