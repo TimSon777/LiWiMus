@@ -88,6 +88,16 @@ public class AlbumsController : Controller
             return Forbid();
         }
         
+        if (viewModel.ArtistsIds is not null)
+        {
+            if (viewModel.ArtistsIds.All(a => a != artistId))
+            {
+                return BadRequest();
+            }
+            var artists = await _artistRepository.ListAsync(new ArtistsByIdsSpec(viewModel.ArtistsIds));
+            album.Owners = artists;
+        }
+
         _mapper.Map(viewModel, album);
         if (viewModel.Cover is not null)
         {
