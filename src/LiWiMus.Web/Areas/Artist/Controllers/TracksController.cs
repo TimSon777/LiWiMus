@@ -107,16 +107,6 @@ public class TracksController : Controller
             {
                 return BadRequest();
             }
-        }
-
-        _mapper.Map(viewModel, track);
-        if (viewModel.File is not null)
-        {
-            track.PathToFile = await viewModel.File.SaveWithRandomNameAsync(_dataSettings.Value.TracksDirectory);
-        }
-
-        if (viewModel.ArtistsIds is not null)
-        {
             var artists = await _artistRepository.ListAsync(new ArtistsByIdsSpec(viewModel.ArtistsIds));
             track.Owners = artists;
         }
@@ -125,6 +115,12 @@ public class TracksController : Controller
         {
             var genres = await _genresRepository.ListAsync(new GenresByIdsSpec(viewModel.GenresIds));
             track.Genres = genres;
+        }
+
+        _mapper.Map(viewModel, track);
+        if (viewModel.File is not null)
+        {
+            track.PathToFile = await viewModel.File.SaveWithRandomNameAsync(_dataSettings.Value.TracksDirectory);
         }
 
         await _tracksRepository.UpdateAsync(track);
