@@ -9,7 +9,7 @@ export default function UserProfilePage() {
     
     useEffect(() => {
         (async () => {
-            const res = await fetch('http://localhost:3500/users/'+id)
+            const res = await fetch('/users/'+id)
             const data = await res.json();
             setUserInfo(data);
         })();
