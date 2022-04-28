@@ -1,19 +1,12 @@
-﻿@page
-@model LiWiMus.Web.Areas.Artist.Views.Tracks.Index
+﻿@model List<LiWiMus.Core.Tracks.Track>
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Tracks";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<ol>
+    @foreach (var track in Model)
+    {
+        <li><a asp-area="Artist" asp-controller="Tracks" asp-action="Index" asp-route-id="@track.Id">@track.Name</a></li>
+    }
+</ol>
