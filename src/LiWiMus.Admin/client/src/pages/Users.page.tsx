@@ -1,17 +1,6 @@
 import React, {useState, useEffect, useRef, useCallback} from "react";
 import {useNavigate} from 'react-router-dom'
-import {
-    DataGrid,
-    GridRowsProp,
-    GridColDef,
-    GridApi,
-    GridCellValue,
-    GridToolbar,
-    GridFilterModel,
-    GridToolbarContainer,
-    GridSelectionModel,
-    GridSortModel
-} from '@mui/x-data-grid';
+import { DataGrid,  GridRowsProp, GridColDef, GridApi, GridCellValue, GridToolbar, GridFilterModel, GridToolbarContainer, GridSelectionModel, GridSortModel} from '@mui/x-data-grid';
 import {Button, Select, MenuItem, TextField, InputLabel, FormControl} from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from '@mui/icons-material/Add';
@@ -37,15 +26,7 @@ export default function UsersPage() {
     const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
     const prevSelectionModel = useRef<GridSelectionModel>(selectionModel);
     const [sortModel, setSortModel] = useState<GridSortModel>([{field: 'id', sort: 'asc'}])
-    //const [filterItem, setFilterItem] = useState<FilterItem>(Object);
     const [filterModel, setFilterModel] = useState<FilterModel>([]);
-    /*const [filterValue, setFilterValue] = useState<string>();
-    const [filterColumn, setFilterColumn] = useState<string>()
-    const [filterOperator, setFilterOperator] = useState<string>();
-    const onFilterChange = useCallback((filterModel: GridFilterModel) => {
-        setFilterValue(filterModel.items[0].value)
-        setFilterColumn(filterModel.items[0].columnField);
-    }, []);*/
     const handleSortModelChange = (newModel: GridSortModel) => {
         setSortModel(newModel);
     }
@@ -77,7 +58,7 @@ export default function UsersPage() {
         renderCell: (params) => {
             const onClick = (e: any) => {
                 e.stopPropagation();
-                const path = "/admin/users/" + params.getValue(params.id, "id")
+                const path = "/admin/api/users/" + params.getValue(params.id, "id")
                 navigate(path)
             };
 
@@ -87,40 +68,14 @@ export default function UsersPage() {
                            onClick={onClick}>Edit</Button>;
         },
     },];
-    
-    
-    const FilterForm = ( props:FilterFormProps ) => {
-        return (
-            <form style={{width: "auto"}}>
-                <FormControl style={{margin: 10}}>
-                    <InputLabel id="selectColumn">Column</InputLabel>
-                    <SelectColumnDropdown onChange={
-                        (event: any) => setFilterModel(
-                            prevState => (prevState.map
-                                (el => 
-                                    (el.id === props.id ? 
-                                            {
-                                        ...el, filterColumn: event.target.value
-                                            }: el
-                                    )
-                                )
-                            )
-                        )
-                    }/>
-                </FormControl>
-                <FormControl style={{margin: 10}}>
-                    <InputLabel id="selectOperator">Operator</InputLabel>
-                    <SelectOperatorDropdown  /*onChange={(event) => setFilterOperator(event.target.value)*//>
-                </FormControl>
-                <FormControl style={{margin: 10}}>
-                    <TextField /*value={filterValue} onChange={(event) => setFilterValue(event.target.value)}*/
-                        label="Search for"/>
-                </FormControl>
-            </form>
-        )
-    }
+
     const filterOperators = ["Equals", "Contains", "GreaterThan", "LessThan", "StartsWith"];
     const [filters, setFilters] = useState<any[]>([]);
+    const columnsOptions: any[] =
+        columns
+            .filter(name => (name.headerName !== undefined && name.headerName !== 'Edit'))
+            .map(opt => opt.headerName);
+    const operatorsOptions: string[] = filterOperators.map(a => a);
     const addFilter = () => {
         const nextId = filterModel.length + 1
         const filterItem: FilterItem = {
@@ -132,36 +87,7 @@ export default function UsersPage() {
         setFilters(filters => [...filters, <FilterForm id={nextId}/>]);
         setFilterModel(filterModel => [...filterModel, filterItem])
     }
-    const SelectColumnDropdown = () => {
-        const renderOption = (text: string) => {
-            return <MenuItem value={text}>{text}</MenuItem>
-        }
-        const columnsOptions: any[] =
-            columns
-                .filter(name => (name.headerName !== undefined && name.headerName !== 'Edit'))
-                .map(opt => opt.headerName);
 
-        return (
-            <Select 
-                labelId="selectColumn" label="Column" sx={{minWidth: 170}}
-            >{columnsOptions.map(renderOption)}</Select>
-        )
-    }
-
-    const SelectOperatorDropdown = () => {
-        const renderOption = (text: string) => {
-            return <MenuItem value={text}>{text}</MenuItem>
-        }
-        const operatorsOptions: string[] = filterOperators.map(a => a);
-
-        return (
-            <Select
-                labelId="selectOperator" label="Operator" sx={{minWidth: 170}}
-            >{operatorsOptions.map(renderOption)}</Select>
-        )
-    }
-    
-    
     useEffect(() => {
         let active = true;
 
@@ -172,7 +98,7 @@ export default function UsersPage() {
                 setSortModel([{field: 'id', sort: 'asc'}])
             }
             // @ts-ignore
-            const res = await fetch('/users?_page=' + page + '&_limit=' + limitItems + '&_sort=' + sortModel[0].field.toString() + '&_order=' + sortModel[0].sort.toString());
+            const res = await fetch('/admin/api/users/getall?options[page][numberOfElementsOnPage]=' + limitItems + '&options[page][pageNumber]=' + page + '&options[sorting][0][columnName]' + sortModel[0].field.toString() + '&options[sorting][0][order]=' + sortModel[0].sort.toString());
             const newRows = await res.json();
 
             if (!active) {
@@ -191,8 +117,67 @@ export default function UsersPage() {
             active = false;
         };
     }, [page, limitItems, sortModel, filterModel]);
-    console.log(filters)
-    console.log(page, limitItems, sortModel, filterModel)
+    /*console.log(filters)*/
+    console.log(/*page, limitItems, sortModel,*/ filterModel)
+    const renderOption = (text: string, num: number) => {
+        return <MenuItem key={num} value={text}>{text}</MenuItem>
+    }
+    const FilterForm = ( props:FilterFormProps ) => {
+        return (
+            <form style={{width: "auto"}}>
+                <FormControl style={{margin: 10}}>
+                    <InputLabel id="selectColumn">Column</InputLabel>
+                    <Select
+                        labelId="selectColumn" label="Column" sx={{minWidth: 170}} value={filterModel.filter(el => el.id === props.id).map(e => e.filterColumn)[0]}
+                        /*onChange={(event: any) => setFilterModel(
+                            prevState => (prevState.map
+                                (el =>
+                                    (el.id === props.id ?
+                                            {
+                                                ...el, filterColumn: event.target.value
+                                            }: el
+                                    )
+                                )
+                            )
+                        )}*/
+                    ><MenuItem value=""><em>None</em></MenuItem>{columnsOptions.map(renderOption)}</Select>
+                </FormControl>
+                <FormControl style={{margin: 10}}>
+                    <InputLabel id="selectOperator">Operator</InputLabel>
+                    <Select
+                        labelId="selectOperator" label="Operator" sx={{minWidth: 170}} value={filterModel.filter(el => el.id ===props.id).map(e=> e.filterOperator)[0]}
+                        /*onChange={(event: any) => setFilterModel(
+                            prevState => (prevState.map
+                                (el => 
+                                    (el.id === props.id ?
+                                    {
+                                        ...el, filterOperator: event.target.value
+                                    }: el
+                                    )
+                                )
+                            )
+                        )}*/
+                    ><MenuItem value=""><em>None</em></MenuItem>{operatorsOptions.map(renderOption)}</Select>
+                </FormControl>
+                <FormControl style={{margin: 10}}>
+                    <TextField value={filterModel.filter(el => el.id === props.id).map(e => e.filterValue)[0]} onChange={
+                        (event: any) => setFilterModel(
+                            prevState => (prevState.map
+                                (el =>
+                                    (el.id === props.id ?
+                                            {
+                                                ...el, filterValue: event.target.value
+                                            }: el
+                                    )
+                                )
+                            )
+                        )}
+                        label="Search for"/>
+                </FormControl>
+            </form>
+        )
+    }
+    
     return (
         <div>
             <div>
@@ -205,8 +190,8 @@ export default function UsersPage() {
                         sx={{borderRadius: "20px", px: 4}}
                         style={{margin: 10}}>Add filter</Button>
                 {
-                    filters.map((item) => (
-                        <div>{item}</div>
+                    filters.map((item, number) => (
+                        <div key={number}>{item}</div>
                     )
                 )}
                 <DataGrid
