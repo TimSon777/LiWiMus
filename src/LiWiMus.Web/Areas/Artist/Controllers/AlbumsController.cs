@@ -5,6 +5,7 @@ using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Extensions;
+using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.Artist.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -101,6 +102,7 @@ public class AlbumsController : Controller
         _mapper.Map(viewModel, album);
         if (viewModel.Cover is not null)
         {
+            FileHelper.DeleteIfExists(album.CoverPath);
             album.CoverPath =
                 await viewModel.Cover.Image.SaveWithRandomNameAsync(_dataSettings.Value.CoversDirectory,
                     viewModel.Cover.Extension);
@@ -167,6 +169,7 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
+        FileHelper.DeleteIfExists(album.CoverPath);
         await _albumsRepository.DeleteAsync(album);
         return FormResult.CreateSuccessResult("Removed successfully");
     }

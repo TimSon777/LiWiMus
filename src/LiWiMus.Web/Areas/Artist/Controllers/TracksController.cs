@@ -8,7 +8,7 @@ using LiWiMus.Core.Genres.Specifications;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
-using LiWiMus.Infrastructure.Extensions;
+using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.Artist.ViewModels;
 using LiWiMus.Web.Extensions;
@@ -120,6 +120,7 @@ public class TracksController : Controller
         _mapper.Map(viewModel, track);
         if (viewModel.File is not null)
         {
+            FileHelper.DeleteIfExists(track.PathToFile);
             track.PathToFile = await viewModel.File.SaveWithRandomNameAsync(_dataSettings.Value.TracksDirectory);
         }
 
@@ -188,6 +189,7 @@ public class TracksController : Controller
             return Forbid();
         }
 
+        FileHelper.DeleteIfExists(track.PathToFile);
         await _tracksRepository.DeleteAsync(track);
         return FormResult.CreateSuccessResult("Removed successfully");
     }

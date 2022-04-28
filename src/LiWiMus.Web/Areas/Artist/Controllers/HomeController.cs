@@ -5,6 +5,7 @@ using LiWiMus.Core.Artists;
 using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Extensions;
+using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Areas.Artist.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -88,6 +89,7 @@ public class HomeController : Controller
         _mapper.Map(viewModel, artist);
         if (viewModel.Photo is not null)
         {
+            FileHelper.DeleteIfExists(artist.PhotoPath);
             artist.PhotoPath =
                 await viewModel.Photo.Image.SaveWithRandomNameAsync(_dataSettings.Value.ArtistsPhotosDirectory,
                     viewModel.Photo.Extension);
