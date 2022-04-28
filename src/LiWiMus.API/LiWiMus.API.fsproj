@@ -5,12 +5,20 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Compile Include="Infrastructure\Attributes\AuthorizeWithJwtAttribute.fs" />
+        <Compile Include="Extensions\Automapper.Extensions.fs" />
         <Compile Include="Controllers\TestWithoutAreaController.fs" />
+        <Compile Include="Areas\Artists\Dto\Artist.Dto.Read.List.fs" />
+        <Compile Include="Areas\Artists\Profiles\Artist.Profile.fs" />
         <Compile Include="Areas\TestArea\Controllers\TestController.fs" />
-        <Compile Include="Areas\User\Dto\TransactionDto.fs" />
-        <Compile Include="Areas\User\Dto\TransactionWithAmountDto.fs" />
+        <Compile Include="Areas\User\Dto\Transaction.Dto.Update.fs" />
+        <Compile Include="Areas\User\Dto\Transaction.Dto.Read.fs" />
+        <Compile Include="Areas\User\Dto\User.Dto.Create.fs" />
+        <Compile Include="Areas\User\Dto\User.Dto.Read.One.fs" />
         <Compile Include="Areas\User\Controllers\TransactionController.fs" />
-        <Compile Include="Areas\User\Profiles\TransactionProfile.fs" />
+        <Compile Include="Areas\User\Controllers\UserController.fs" />
+        <Compile Include="Areas\User\Profiles\Transaction.Profile.fs" />
+        <Compile Include="Areas\User\Profiles\User.Profile.fs" />
         <Compile Include="Configuration\AutomapperCfg.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
@@ -20,10 +28,13 @@
       <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
       <PackageReference Include="AutoMapper" Version="11.0.1" />
       <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
+      <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.4" />
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+      <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="3.1.1" />
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\LiWiMus.Auth\LiWiMus.Auth.fsproj" />
       <ProjectReference Include="..\LiWiMus.Infrastructure\LiWiMus.Infrastructure.csproj" />
     </ItemGroup>
 
