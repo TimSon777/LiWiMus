@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using FormHelper;
+using LiWiMus.Core.Artists;
 using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Extensions;
@@ -110,15 +111,14 @@ public class HomeController : Controller
 
         var photoPath = await viewModel.Photo.Image.SaveWithRandomNameAsync(_dataSettings.Value.ArtistsPhotosDirectory,
             viewModel.Photo.Extension);
-        var users = new List<Core.Users.User> {user};
 
         var artist = new Core.Artists.Artist
         {
             Name = viewModel.Name,
             About = viewModel.About,
             PhotoPath = photoPath,
-            Owners = users
         };
+        artist.UserArtists.Add(new UserArtist {User = user, Artist = artist});
         artist = await _artistRepository.AddAsync(artist);
 
         return FormResult.CreateSuccessResult("Created successfully",
