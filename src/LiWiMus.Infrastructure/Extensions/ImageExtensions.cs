@@ -10,6 +10,9 @@ public static class ImageExtensions
         var photoFileName = Path.ChangeExtension(Path.GetRandomFileName(), extension);
         var photoPath = Path.Combine(directory, photoFileName);
 
+        var file = new FileInfo(photoPath);
+        file.Directory?.Create();
+        
         var format = image.GetConfiguration().ImageFormatsManager.FindFormatByFileExtension(extension);
         var encoder = image.GetConfiguration().ImageFormatsManager.FindEncoder(format);
         await image.SaveAsync(photoPath, encoder);
