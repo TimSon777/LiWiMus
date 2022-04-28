@@ -3,6 +3,8 @@ using LiWiMus.Core.Artists;
 using LiWiMus.Core.Shared.Interfaces;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Permissions;
+using LiWiMus.Core.Users.Specifications;
+using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,16 +13,19 @@ namespace LiWiMus.Infrastructure.Identity;
 public class AuthorizationHandler : IAuthorizationHandler
 {
     private readonly UserManager<User> _userManager;
+    private readonly IRepository<User> _userRepository;
 
-    public AuthorizationHandler(UserManager<User> userManager)
+    public AuthorizationHandler(UserManager<User> userManager, IRepository<User> userRepository)
     {
         _userManager = userManager;
+        _userRepository = userRepository;
     }
 
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var pendingRequirements = context.PendingRequirements.ToList();
-        var user = await _userManager.GetUserAsync(context.User);
+        var user = await _userRepository.GetBySpecAsync(
+            new UserWithArtistsByNameSpec(context.User.Identity?.Name ?? throw new InvalidOperationException()));
 
         if (user is null)
         {
