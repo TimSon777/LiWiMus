@@ -12,7 +12,7 @@ type TransactionController(transactionRepository: IRepository<Transaction>, mapp
     inherit Controller()
 
     [<HttpPost>]
-    member this.Update([<FromBody>] transactionDto: TransactionDto) : Task<IActionResult> =
+    member this.Update([<FromBody>] transactionDto: TransactionDtoUpdate) : Task<IActionResult> =
         async {
             let! transaction =
                 transactionRepository.GetByIdAsync(transactionDto.Id)

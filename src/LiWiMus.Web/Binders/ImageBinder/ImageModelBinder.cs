@@ -1,13 +1,13 @@
 ﻿using ByteSizeLib;
 using LiWiMus.Core.Models;
-using LiWiMus.Web.Extensions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using SixLabors.ImageSharp;
 
 namespace LiWiMus.Web.Binders.ImageBinder;
 
 public class ImageModelBinder : IModelBinder
 {
-    public Task BindModelAsync(ModelBindingContext ctx)
+    public async Task BindModelAsync(ModelBindingContext ctx)
     {
         if (ctx == null)
         {
@@ -18,21 +18,24 @@ public class ImageModelBinder : IModelBinder
 
         if (!formFiles.Any())
         {
-            return Task.CompletedTask;
+            return;
         }
         
-        var isOk = formFiles[0].TryParseToImage(out var image);
-
-        if (!isOk || image is null)
+        Image image;
+        try
+        {
+            image = await Image.LoadAsync(formFiles[0].OpenReadStream());
+        }
+        catch (ImageFormatException)
         {
             ctx.Result = ModelBindingResult.Failed();
-            return Task.CompletedTask;
+            ctx.ModelState.AddModelError(ctx.FieldName, "Bad image format");
+            return;
         }
 
         var extension = Path.GetExtension(formFiles[0].FileName);
         var imageInfo = new ImageInfo(ByteSize.FromBytes(formFiles[0].Length), extension, image);
         
         ctx.Result = ModelBindingResult.Success(imageInfo);
-        return Task.CompletedTask;
     }
 }

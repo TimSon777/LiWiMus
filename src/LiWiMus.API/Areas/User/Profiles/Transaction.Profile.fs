@@ -6,10 +6,10 @@ open LiWiMus.Core.Transactions
 
 type TransactionProfile() as this =
     inherit Profile()
-    do this.CreateMap<TransactionDto, Transaction>()
+    do this.CreateMap<TransactionDtoUpdate, Transaction>()
            .ReverseMap()
        |> ignore
     
-    do this.CreateMap<TransactionWithAmountDto, Transaction>()
+    do this.CreateMap<TransactionDtoRead, Transaction>()
             .ReverseMap()
        |> ignore

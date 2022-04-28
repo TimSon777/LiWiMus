@@ -8,8 +8,8 @@ open OpenIddict.Validation.AspNetCore
 type TestController () =
     inherit Controller()
     
-    [<HttpGet("tests")>]
+    [<HttpGet>]
     [<Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)>]
-    member _.Get() =
+    member _.Get1() =
         let rng = System.Random()
         rng.Next(0,12)

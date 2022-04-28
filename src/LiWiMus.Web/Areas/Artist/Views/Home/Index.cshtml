@@ -1,0 +1,12 @@
+@model List<LiWiMus.Core.Artists.Artist>
+
+@{
+    ViewData["Title"] = "Artists";
+}
+
+<ol>
+    @foreach (var artist in Model)
+    {
+        <li><a asp-area="Artist" asp-controller="Home" asp-action="Profile" asp-route-id="@artist.Id">@artist.Name</a></li>
+    }
+</ol>

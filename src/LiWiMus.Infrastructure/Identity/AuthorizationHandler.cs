@@ -3,6 +3,8 @@ using LiWiMus.Core.Artists;
 using LiWiMus.Core.Shared.Interfaces;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Permissions;
+using LiWiMus.Core.Users.Specifications;
+using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 
@@ -11,16 +13,19 @@ namespace LiWiMus.Infrastructure.Identity;
 public class AuthorizationHandler : IAuthorizationHandler
 {
     private readonly UserManager<User> _userManager;
+    private readonly IRepository<User> _userRepository;
 
-    public AuthorizationHandler(UserManager<User> userManager)
+    public AuthorizationHandler(UserManager<User> userManager, IRepository<User> userRepository)
     {
         _userManager = userManager;
+        _userRepository = userRepository;
     }
 
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var pendingRequirements = context.PendingRequirements.ToList();
-        var user = await _userManager.GetUserAsync(context.User);
+        var user = await _userRepository.GetBySpecAsync(
+            new UserWithArtistsByNameSpec(context.User.Identity?.Name ?? throw new InvalidOperationException()));
 
         if (user is null)
         {
@@ -48,11 +53,12 @@ public class AuthorizationHandler : IAuthorizationHandler
     }
 
     private static void HandlePermissionRequirement(AuthorizationHandlerContext context,
-                                                    PermissionRequirement permissionRequirement, IEnumerable<Claim> userClaims)
+                                                    PermissionRequirement permissionRequirement,
+                                                    IEnumerable<Claim> userClaims)
     {
         var permissions = userClaims.Where(x => x.Type == Permission.ClaimType &&
-                                                         x.Value == permissionRequirement.Permission &&
-                                                         x.Issuer == "LOCAL AUTHORITY");
+                                                x.Value == permissionRequirement.Permission &&
+                                                x.Issuer == "LOCAL AUTHORITY");
         if (!permissions.Any())
         {
             return;
@@ -69,12 +75,12 @@ public class AuthorizationHandler : IAuthorizationHandler
             case IResource.WithOwner<User> singleOwnerResource
                 when user.Id == singleOwnerResource.Owner.Id:
             case IResource.WithOwner<Artist> singleArtistOwnerResource
-                when user.ArtistId is not null && user.ArtistId == singleArtistOwnerResource.Owner.Id:
+                when user.Artists.Select(a => a.Id).Contains(singleArtistOwnerResource.Owner.Id):
             case IResource.WithMultipleOwners<User> multipleOwnersResource
                 when multipleOwnersResource.Owners.Select(u => u.Id).Contains(user.Id):
             case IResource.WithMultipleOwners<Artist> multipleArtistOwnersResource
-                when user.ArtistId is not null && multipleArtistOwnersResource.Owners.Select(a => a.Id)
-                                                                              .Contains(user.ArtistId.Value):
+                when multipleArtistOwnersResource.Owners.Select(a => a.Id)
+                                                 .Intersect(user.Artists.Select(a => a.Id)).Any():
                 context.Succeed(sameAuthorRequirement);
                 break;
         }
