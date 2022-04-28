@@ -1,0 +1,33 @@
+﻿@model LiWiMus.Core.Artists.Artist
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<h1>Profile</h1>
+
+<p>@Model.Name</p>
+<p>@Model.About</p>
+<img src="/@Model.PhotoPath" alt="artist photo">
+
+<form method="put"
+      enctype="multipart/form-data"
+      asp-formhelper="true"
+      asp-action="Update">
+    <input type="text" hidden name="Id" value="@Model.Id">
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <input id="Name" name="Name" type="text" class="form-control" value="@Model.Name">
+        <span data-valmsg-for="Name" data-valmsg-replace="true"></span>
+    </div>
+    <div class="mb-3">
+        <label for="About" class="form-label">About</label>
+        <input id="About" name="About" type="text" class="form-control" value="@Model.About">
+        <span data-valmsg-for="About" data-valmsg-replace="true"></span>
+    </div>
+    <div class="mb-3">
+        <label for="Photo" class="form-label">Photo</label>
+        <input id="Photo" name="Photo" type="file">
+        <span data-valmsg-for="Photo" data-valmsg-replace="true"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

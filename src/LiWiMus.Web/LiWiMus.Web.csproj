@@ -62,4 +62,8 @@
     <ItemGroup>
       <None Remove="Areas\AdminOld\**" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Artists\Photos" />
+    </ItemGroup>
 </Project>
