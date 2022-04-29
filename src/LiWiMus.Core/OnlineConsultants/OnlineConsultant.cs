@@ -9,5 +9,4 @@ public class OnlineConsultant : BaseEntity
     public string ConnectionId { get; set; } = default!;
     
     public List<Chat> Chats { get; set; } = new();
-
 }

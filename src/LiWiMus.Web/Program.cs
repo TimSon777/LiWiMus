@@ -132,7 +132,7 @@ app.UseEndpoints(endpoints =>
         name: "default",
         pattern: "{controller=Home}/{action=Index}/{id?}");
 
-    endpoints.MapHub<SupportChatUserHub>("/chat");
+    endpoints.MapHub<SupportChatHub>("/chat");
 });
 
 logger.LogInformation("Seeding Database...");

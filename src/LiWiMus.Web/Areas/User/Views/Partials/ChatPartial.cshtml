@@ -3,7 +3,8 @@
 @{
     Layout = null;
 }
-<div id="chat-@Model.User.UserName">
+
+<div class="chats" id="chat-@Model.User.UserName">
     <div class="chat">
 
         <div class="user-name">
@@ -27,5 +28,10 @@
             <textarea class="ta-send-message-to-user" id="@Model.UserConnectionId"></textarea>
             <button id="btn-@Model.User.UserName" class="btn-send-to-user" value="@Model.UserConnectionId">Send</button>
         </div>
+        
+        <form method="post" asp-formhelper="true" asp-area="User" asp-controller="SupportChat" asp-action="CloseChatByConsultant">
+            <input type="hidden" name="userName" value="@Model.User.UserName">
+            <input type="button" value="Close chat">
+        </form>
     </div>
 </div>
