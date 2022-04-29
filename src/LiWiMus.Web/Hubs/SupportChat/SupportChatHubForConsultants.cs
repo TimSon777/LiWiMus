@@ -2,7 +2,9 @@
 using LiWiMus.Core.Messages;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
+using LiWiMus.Core.Permissions;
 using LiWiMus.Core.Roles;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LiWiMus.Web.Hubs.SupportChat;

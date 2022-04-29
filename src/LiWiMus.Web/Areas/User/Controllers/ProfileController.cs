@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LiWiMus.Web.Areas.User.Controllers;
 
 [Area("User")]
-[Route("[area]/[controller]/[action]")]
+[Route("[area]/[controller]")]
 public class ProfileController : Controller
 {
     private readonly UserManager<Core.Users.User> _userManager;
@@ -29,8 +29,7 @@ public class ProfileController : Controller
         _contentRootPath = environment.ContentRootPath;
     }
 
-    [HttpGet]
-    [Route("{userName?}")]
+    [HttpGet("{userName?}")]
     [AllowAnonymous]
     public async Task<IActionResult> Index(string userName)
     {
@@ -53,13 +52,13 @@ public class ProfileController : Controller
         return View(profile);
     }
 
-    [HttpGet]
+    [HttpGet("[action]/{userName?}")]
     public IActionResult ChangePassword()
     {
         return View();
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
     {
         if (!ModelState.IsValid)
@@ -86,7 +85,7 @@ public class ProfileController : Controller
         return View();
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     [FormValidator]
     public async Task<IActionResult> UpdateAsync(ProfileViewModel model)
     {
@@ -106,7 +105,7 @@ public class ProfileController : Controller
             : FormResult.CreateErrorResult("Fu");
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     [FormValidator]
     public async Task<IActionResult> ChangeAvatarToRandom()
     {
