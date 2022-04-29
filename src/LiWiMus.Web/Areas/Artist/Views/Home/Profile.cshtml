@@ -18,20 +18,16 @@
 <div class="p-0">
     <div class="editor-wrap">
 
-        <h2 class="your-profile-header">
-            Your artist profile
-        </h2>
-
         <div>
-            Name: @Model.Name
+                    <h2 class="your-profile-header">
+                        Your artist profile
+                    </h2>
         </div>
-        <div>
-            About: @Model.About
-        </div>
-        <div>
-            <img src="/@Model.PhotoPath" alt="artist photo">
-        </div>
+        
         <section class="edit-inputs-group">
+            <div>
+                <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.PhotoPath" alt="artist photo">
+            </div>
             <form
                 method="put"
                 enctype="multipart/form-data"
