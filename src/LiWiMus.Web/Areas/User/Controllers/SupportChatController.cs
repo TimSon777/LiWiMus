@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
+using FormHelper;
 using LiWiMus.Core.Chats;
 using LiWiMus.Core.Chats.Enums;
-using LiWiMus.Core.Chats.Specifications;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
 using LiWiMus.Core.Users.Specifications;
@@ -36,13 +36,9 @@ public class SupportChatController : Controller
 
     [HttpGet]
     [Authorize(Roles = "Consultant")]
-    public async Task<IActionResult> Chats()
+    public IActionResult Chats()
     {
-        var user = await _userManager.GetUserAsync(User);
-        var consultant = await _repositoryConsultant.GetBySpecAsync(new ConsultantByUser(user));
-        var chats = await _chatRepository.ListAsync(new ConsultantChatsSpec(consultant!));
-        var chatVms = _mapper.Map<List<ChatViewModel>>(chats);
-        return View(chatVms);
+        return View();
     }
 
     [HttpGet]
@@ -81,8 +77,53 @@ public class SupportChatController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        return View();
+        var user = await _userManager.GetUserAsync(User);
+        var userWithChats = await _userRepository.GetBySpecAsync(new UserWithChatsSpec(user));
+        var chat = userWithChats!.UserChats.FirstOrDefault(c => c.Status == ChatStatus.Opened);
+        var chatVm = _mapper.Map<ChatViewModel>(chat);
+        return View(chatVm);
+    }
+
+    [HttpPost, Authorize(Roles = "Consultant"), FormValidator]
+    public async Task<IActionResult> CloseChatByConsultant(string userName)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var consultant = await _repositoryConsultant.GetBySpecAsync(new ConsultantByUser(user));
+        var chat = consultant!.Chats.FirstOrDefault(c => c.User.UserName == userName);
+        
+        if (chat is null)
+        {
+            return FormResult.CreateErrorResult("Chat is not exists or it is not your client");
+        }
+        
+        if (chat.Status != ChatStatus.Opened)
+        {
+            return FormResult.CreateWarningResult($"Chat's status is not Opened: {chat.Status}");
+        }
+
+        chat.Status = ChatStatus.ClosedByConsultant;
+        
+        await _chatRepository.SaveChangesAsync();
+        
+        return FormResult.CreateSuccessResult("Chat' status was changed");
+    }
+
+    [HttpPost, FormValidator]
+    public async Task<IActionResult> CloseChatByUser()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        var userWithChat = await _userRepository.GetBySpecAsync(new UserWithChatsSpec(user));
+        var chat = userWithChat!.UserChats.FirstOrDefault(c => c.Status == ChatStatus.Opened);
+        
+        if (chat is null)
+        {
+            return FormResult.CreateErrorResult("Chat is not exists");
+        }
+
+        chat.Status = ChatStatus.ClosedByUser;
+        await _chatRepository.SaveChangesAsync();
+        return FormResult.CreateSuccessResult("Chat was closed", "/User/Profile/", 4000);
     }
 }

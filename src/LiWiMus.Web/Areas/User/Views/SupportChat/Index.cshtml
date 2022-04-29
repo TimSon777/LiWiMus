@@ -1,5 +1,18 @@
-﻿@{
+﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel?
+@{
     Layout = "_Layout";
+}
+
+<form method="post" asp-formhelper="true" asp-area="User" asp-controller="SupportChat" asp-action="CloseChatByUser">
+    <button type="button">Close chat</button>
+</form>
+
+@if (Model is not null)
+{
+    foreach (var message in Model.Messages)
+    {
+        <p>@message.Text</p>
+    }
 }
 
 <div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center">

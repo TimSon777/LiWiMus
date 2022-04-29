@@ -8,6 +8,6 @@ public sealed class ConsultantChatsSpec : Specification<Chat>
 {
     public ConsultantChatsSpec(OnlineConsultant consultant, ChatStatus status = ChatStatus.Opened)
     {
-        Query.Where(chat => chat.Consultant == consultant && chat.Status == status);
+        Query.Where(chat => chat.ConsultantConnectionId == consultant.ConnectionId && chat.Status == status);
     }    
 }
