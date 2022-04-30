@@ -13,6 +13,10 @@
         $('#chat').append(`<p>I:${text}</p>`)
     })
 
+    $('#btn-close-chat-by-user').click(async () => {
+        await connection.invoke("CloseChatByUser")
+    })
+    
     await connection.start();
     await connection.invoke("ConnectUser")
         .then(html => $('#chat').html(html))

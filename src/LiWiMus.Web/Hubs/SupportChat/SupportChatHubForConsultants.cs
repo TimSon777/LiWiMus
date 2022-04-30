@@ -4,7 +4,9 @@ using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
 using LiWiMus.Core.Permissions;
 using LiWiMus.Core.Roles;
+using LiWiMus.Web.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LiWiMus.Web.Hubs.SupportChat;
@@ -63,6 +65,30 @@ public partial class SupportChatHub
 
         await Clients.Group(chat.User.UserName).SendAsync("SendMessageToUser", text);
     }
+
+    public async Task<IActionResult> CloseChatByConsultant(string userName)
+    {
+        var user = await _userManager.GetUserAsync(Context.User);
+        var consultant = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantByUser(user));
+        var chat = consultant!.Chats.FirstOrDefault(c => c.User.UserName == userName);
+        
+        if (chat is null)
+        {
+            return new BadRequestResult();
+        }
+        
+        if (chat.Status != ChatStatus.Opened)
+        {
+            return new BadRequestResult();
+        }
+
+        chat.Status = ChatStatus.ClosedByConsultant;
+        
+        await _repositoryChat.SaveChangesAsync();
+
+        await SendMessageToUser(chat.UserConnectionId, "Chat was closed by cons");
+        return new OkResult();
+    }
         
     public async Task DisconnectConsultant()
     {
@@ -82,12 +108,22 @@ public partial class SupportChatHub
         {
             var newConsultant = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantWithMinimalWorkload(consultant));
 
+            
             if (newConsultant is null)
             {
                 return;
             }
+            var chatVm = _mapper.Map<ChatViewModel>(chat);
 
             chat.ConsultantConnectionId = newConsultant.ConnectionId;
+            newConsultant.Chats.Add(chat);
+            
+            var chatForConsultant = await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatPartial.cshtml", chatVm);
+            
+            await _repositoryChat.SaveChangesAsync();
+            await _onlineConsultantsRepository.SaveChangesAsync();
+            await EstablishConnection(chat.User, newConsultant, chat.UserConnectionId);
+            await Clients.Group(chat.User.UserName).SendAsync("GetNewUserChat", chatForConsultant);
         }
     } 
 }

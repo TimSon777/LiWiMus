@@ -85,45 +85,4 @@ public class SupportChatController : Controller
         var chatVm = _mapper.Map<ChatViewModel>(chat);
         return View(chatVm);
     }
-
-    [HttpPost, Authorize(Roles = "Consultant"), FormValidator]
-    public async Task<IActionResult> CloseChatByConsultant(string userName)
-    {
-        var user = await _userManager.GetUserAsync(User);
-        var consultant = await _repositoryConsultant.GetBySpecAsync(new ConsultantByUser(user));
-        var chat = consultant!.Chats.FirstOrDefault(c => c.User.UserName == userName);
-        
-        if (chat is null)
-        {
-            return FormResult.CreateErrorResult("Chat is not exists or it is not your client");
-        }
-        
-        if (chat.Status != ChatStatus.Opened)
-        {
-            return FormResult.CreateWarningResult($"Chat's status is not Opened: {chat.Status}");
-        }
-
-        chat.Status = ChatStatus.ClosedByConsultant;
-        
-        await _chatRepository.SaveChangesAsync();
-        
-        return FormResult.CreateSuccessResult("Chat' status was changed");
-    }
-
-    [HttpPost, FormValidator]
-    public async Task<IActionResult> CloseChatByUser()
-    {
-        var user = await _userManager.GetUserAsync(User);
-        var userWithChat = await _userRepository.GetBySpecAsync(new UserWithChatsSpec(user));
-        var chat = userWithChat!.UserChats.FirstOrDefault(c => c.Status == ChatStatus.Opened);
-        
-        if (chat is null)
-        {
-            return FormResult.CreateErrorResult("Chat is not exists");
-        }
-
-        chat.Status = ChatStatus.ClosedByUser;
-        await _chatRepository.SaveChangesAsync();
-        return FormResult.CreateSuccessResult("Chat was closed", "/User/Profile/", 4000);
-    }
 }

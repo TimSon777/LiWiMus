@@ -14,6 +14,23 @@ namespace LiWiMus.Web.Hubs.SupportChat;
 
 public partial class SupportChatHub : Hub
 {
+    public async Task<IActionResult> CloseChatByUser()
+    {
+        var user = await _userManager.GetUserAsync(Context.User);
+        var userWithChat = await _userRepository.GetBySpecAsync(new UserWithChatsSpec(user));
+        var chat = userWithChat!.UserChats.FirstOrDefault(c => c.Status == ChatStatus.Opened);
+        
+        if (chat is null)
+        {
+            return new BadRequestResult();
+        }
+
+        chat.Status = ChatStatus.ClosedByUser;
+        await _repositoryChat.SaveChangesAsync();
+        await Clients.Groups(user.UserName).SendAsync("CloseChatByUser", user.UserName);
+        return new RedirectResult("/User/Profile");
+    }
+    
     private async Task<Chat> ConnectUserWithExistChat(User user, Chat chat)
     {
         OnlineConsultant? consultant;
@@ -52,6 +69,8 @@ public partial class SupportChatHub : Hub
             ConsultantConnectionId = consultant!.ConnectionId
         };
         
+        consultant.Chats.Add(chat);
+        
         await _repositoryChat.AddAsync(chat);
         await _repositoryChat.SaveChangesAsync();
 
@@ -74,9 +93,11 @@ public partial class SupportChatHub : Hub
         
         var chatVm = _mapper.Map<ChatViewModel>(chat);
         
-        var html = await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatUserPartial.cshtml", chatVm);
+        var chatForUser = await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatUserPartial.cshtml", chatVm);
+        var chatForConsultant = await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatPartial.cshtml", chatVm);
 
-        return new OkObjectResult(html);
+        await Clients.Group(user.UserName).SendAsync("GetNewUserChat", chatForConsultant);
+        return new OkObjectResult(chatForUser);
     }
 
     public async Task SendMessageToConsultant(string text)

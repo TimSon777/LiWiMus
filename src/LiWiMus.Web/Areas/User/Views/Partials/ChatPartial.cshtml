@@ -1,7 +1,7 @@
 ﻿@model LiWiMus.Web.Areas.User.ViewModels.ChatViewModel
 
 @{
-    Layout = "_Layout";
+    Layout = null;
 }
 
 <div class="chats" id="chat-@Model.User.UserName">
@@ -29,9 +29,6 @@
             <button id="btn-@Model.User.UserName" class="btn-send-to-user" value="@Model.UserConnectionId">Send</button>
         </div>
         
-        <form method="post" asp-formhelper="true" asp-area="User" asp-controller="SupportChat" asp-action="CloseChatByConsultant">
-            <input type="hidden" name="userName" value="@Model.User.UserName">
-            <input type="submit" value="Close chat">
-        </form>
+        <button class="btn-close-chat-by-consultant" value="@Model.User.UserName">Close chat</button>
     </div>
 </div>

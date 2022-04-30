@@ -3,9 +3,8 @@
     Layout = "_Layout";
 }
 
-<form method="post" asp-formhelper="true" asp-area="User" asp-controller="SupportChat" asp-action="CloseChatByUser">
-    <button>Close chat</button>
-</form>
+<button id="btn-close-chat-by-user">Close chat</button>
+
 
 @if (Model is not null)
 {

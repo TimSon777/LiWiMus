@@ -147,7 +147,7 @@ try
     var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
     var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
     await ApplicationContextSeed.SeedAsync(applicationContext, logger, userManager, roleManager, adminSettings);
-    await ApplicationContextClear.ClearAsync(applicationContext, logger);
+    await ApplicationContextClear.ClearAsync(applicationContext, logger, builder.Environment.IsDevelopment());
 }
 catch (Exception ex)
 {
