@@ -5,6 +5,7 @@ import {ExternalLogin} from "../externalLogins/externalLogin.entity";
 import {Transaction} from "../transactions/transaction.entity";
 import {Playlist} from "../playlists/playlist.entity";
 import {CommonEntity} from "../shared/commonEntity";
+import {UserArtist} from "../userArtist/userArtist.entity";
 
 @Entity('aspnetusers')
 export class User extends CommonEntity {
@@ -47,19 +48,18 @@ export class User extends CommonEntity {
   @Column({ name: 'PasswordHash' })
   passwordHash: string;
 
-  @OneToOne(() => Artist)
-  @JoinColumn()
-  artist: Artist
+  @OneToMany(() => UserArtist, ua => ua.user)
+  userArtists: UserArtist[];
 
   @OneToMany(() => UserRole, userRole => userRole.user)
-  userRoles: UserRole[]
+  userRoles: UserRole[];
 
   @OneToMany(() => ExternalLogin, externalLogin => externalLogin.user)
-  externalLogins: ExternalLogin[]
+  externalLogins: ExternalLogin[];
 
   @OneToMany(() => Transaction, transaction => transaction.user)
-  transactions: Transaction[]
+  transactions: Transaction[];
 
   @OneToMany(() => Playlist, playlist => playlist.owner)
-  playlists: Playlist[]
+  playlists: Playlist[];
 }

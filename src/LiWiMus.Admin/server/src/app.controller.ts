@@ -8,6 +8,7 @@ import {Track} from "./tracks/track.entity";
 import {Artist} from "./artists/artist.entity";
 import {Playlist} from "./playlists/playlist.entity";
 import {serialize} from "v8";
+import {UserArtist} from "./userArtist/userArtist.entity";
 
 @Controller()
 export class AppController {
@@ -66,5 +67,10 @@ export class AppController {
   @Get('sex')
   async sex(): Promise<boolean> {
     return (await User.findOne(1)).gender === "Female";
+  }
+
+  @Get('ua')
+  async ua(): Promise<UserArtist[]> {
+    return UserArtist.find({relations: ['user', 'artist']});
   }
 }

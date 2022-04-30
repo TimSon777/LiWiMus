@@ -1,8 +1,8 @@
-﻿import {Column, Entity, JoinTable, ManyToMany, OneToOne} from 'typeorm';
+﻿import {Column, Entity, JoinTable, ManyToMany, OneToMany} from 'typeorm';
 import { CommonEntity } from '../shared/commonEntity';
-import {User} from "../users/user.entity";
 import {Album} from "../albums/album.entity";
 import {Track} from "../tracks/track.entity";
+import {UserArtist} from "../userArtist/userArtist.entity";
 
 @Entity('Artists')
 export class Artist extends CommonEntity {
@@ -15,8 +15,8 @@ export class Artist extends CommonEntity {
     @Column({ name: 'PhotoPath' })
     photoPath: string
 
-    @OneToOne(() => User, (user) => user.artist)
-    user: User
+    @OneToMany(() => UserArtist, ua => ua.artist)
+    userArtists: UserArtist[]
 
     @ManyToMany(() => Album, album => album.artists)
     @JoinTable({ name: 'albumartist', joinColumn: { name: 'OwnersId' } })
