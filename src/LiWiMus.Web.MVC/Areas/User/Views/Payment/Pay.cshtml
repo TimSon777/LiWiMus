@@ -1,0 +1,23 @@
+﻿@model LiWiMus.Web.MVC.Areas.User.ViewModels.PaymentViewModel
+
+@{
+    ViewData["Title"] = "Pay";
+    Layout = "_LayoutSidebar";
+}
+
+<div>
+    <h1>Pay</h1>
+
+    <form asp-formhelper="true" asp-resetFormAfterSuccess="false" method="post">
+        @Html.HiddenFor(model => model.ReturnUrl)
+        @Html.HiddenFor(model => model.Reason)
+
+        <div class="mb-3">
+            <label asp-for="Amount" class="form-label"></label>
+            <input asp-for="Amount" class="form-control">
+            <span asp-validation-for="Amount" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

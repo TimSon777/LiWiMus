@@ -351,5 +351,5 @@ MigrationBackup/
 
 .idea/
 **/*.Development.json
-src/LiWiMus.Web/Data/*/*
-!src/LiWiMus.Web/Data/*/.gitkeep
+src/LiWiMus.Web.MVC/Data/*/*
+!src/LiWiMus.Web.MVC/Data/*/.gitkeep

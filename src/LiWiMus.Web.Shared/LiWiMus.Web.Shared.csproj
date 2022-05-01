@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\LiWiMus.Core\LiWiMus.Core.csproj"/>
+        <ProjectReference Include="..\LiWiMus.Infrastructure\LiWiMus.Infrastructure.csproj"/>
+        <ProjectReference Include="..\LiWiMus.SharedKernel\LiWiMus.SharedKernel.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="11.0.1"/>
+        <PackageReference Include="FluentValidation" Version="10.4.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.16"/>
+        <PackageReference Include="OpenIddict.Validation.AspNetCore" Version="3.1.1"/>
+    </ItemGroup>
+
+</Project>
