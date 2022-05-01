@@ -14,17 +14,18 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="6.3.0"/>
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0"/>
-        <PackageReference Include="AutoMapper" Version="11.0.1"/>
-        <PackageReference Include="AutoMapper.EF6" Version="2.1.1"/>
-        <PackageReference Include="DateOnlyTimeOnly.AspNet" Version="1.0.2"/>
-        <PackageReference Include="FluentValidation" Version="10.4.0"/>
-        <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0"/>
-        <PackageReference Include="FormHelper" Version="4.0.1"/>
-        <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.357"/>
-        <PackageReference Include="LigerShark.WebOptimizer.Sass" Version="3.0.82-beta"/>
-        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3"/>
+        <PackageReference Include="Autofac" Version="6.3.0" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
+        <PackageReference Include="AutoMapper" Version="11.0.1" />
+        <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
+        <PackageReference Include="DateOnlyTimeOnly.AspNet" Version="1.0.2" />
+        <PackageReference Include="FluentValidation" Version="10.4.0" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
+        <PackageReference Include="FormHelper" Version="4.0.1" />
+        <PackageReference Include="LigerShark.WebOptimizer.Core" Version="3.0.357" />
+        <PackageReference Include="LigerShark.WebOptimizer.Sass" Version="3.0.82-beta" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.3" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.2">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

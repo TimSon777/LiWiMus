@@ -55,7 +55,7 @@ services.AddControllersWithViews(options => options.UseDateOnlyTimeOnlyStringCon
         })
         .AddFormHelper(options => { options.EmbeddedFiles = true; });
 
-services.AddMapper();
+services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 services.AddAuthentication()
         .AddGoogle(options =>
