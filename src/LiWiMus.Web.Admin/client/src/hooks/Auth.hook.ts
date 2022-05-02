@@ -1,38 +1,61 @@
 import { useState, useCallback, useEffect } from "react";
+import jwtDecode from "jwt-decode";
+import { UserData } from "../types/UserData";
 
 const storageName = "userData";
 
+type JwtPayload = {
+  sub: string,
+  name: string,
+  email: string,
+  role: string[],
+  Permission: string[]
+}
+
 export const useAuth = () => {
-  const [token, setToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [userData, setUserData] = useState<UserData | null>(null);
   const [ready, setReady] = useState<boolean>(false);
 
-  const login = useCallback((jwtToken: string, uid: string) => {
-    setToken(jwtToken);
-    setUserId(uid);
+  const login = useCallback((jwtToken: string) => {
+    const payload = jwtDecode<JwtPayload>(jwtToken);
+    if (!payload.role.includes("Admin")) {
+      return false;
+    }
+
+    const data = {
+      token: jwtToken,
+      id: payload.sub,
+      name: payload.name,
+      email: payload.email,
+      role: payload.role,
+      permissions: payload.Permission
+    };
+
+    setUserData(data);
 
     localStorage.setItem(
       storageName,
-      JSON.stringify({ userId: uid, token: jwtToken })
+      JSON.stringify(data)
     );
+    return true;
   }, []);
 
   const logout = useCallback(() => {
-    setToken(null);
-    setUserId(null);
+    setUserData(null);
     localStorage.removeItem(storageName);
   }, []);
 
   useEffect(() => {
-    const data: { token: string; userId: string } = JSON.parse(
-      localStorage.getItem(storageName) || "{}"
-    );
-
-    if (data && data.token && data.userId) {
-      login(data.token, data.userId);
+    const dataRaw = localStorage.getItem(storageName);
+    if (dataRaw) {
+      const data: UserData = JSON.parse(dataRaw);
+      if (data) {
+        login(data.token);
+      }
     }
+
     setReady(true);
   }, []);
 
-  return { login, logout, token, userId, ready };
+  return { login, logout, userData, ready };
 };

@@ -15,15 +15,17 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
 import ListButton from "../ListButton/ListButton";
 import "./SideBar.sass";
+import { UserData } from "../../types/UserData";
 
 const drawerWidth = 240;
 
 export interface SideBarProps {
+  userData: UserData | null;
   mobileOpen: boolean;
   setMobileOpen: (state: boolean) => void;
 }
 
-export default function SideBar({ mobileOpen, setMobileOpen }: SideBarProps) {
+export default function SideBar({ mobileOpen, setMobileOpen, userData }: SideBarProps) {
   const { logout } = useContext(AuthContext);
 
   const linkClickHandler = () => {
@@ -36,7 +38,7 @@ export default function SideBar({ mobileOpen, setMobileOpen }: SideBarProps) {
       <Box sx={{ overflow: "auto" }}>
         <Box sx={{ m: 2, display: "inline-flex", alignItems: "center" }}>
           <Avatar sx={{ mr: 2 }} />
-          <Typography noWrap>User name</Typography>
+          <Typography noWrap>{userData?.name || "anonym"}</Typography>
         </Box>
         <Divider />
         <List>
