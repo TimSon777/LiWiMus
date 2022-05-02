@@ -111,8 +111,6 @@ export default function UsersPage() {
                 setSelectionModel(prevSelectionModel.current)
             });
         })();
-        // @ts-ignore
-
         return () => {
             active = false;
         };
@@ -129,7 +127,7 @@ export default function UsersPage() {
                     <InputLabel id="selectColumn">Column</InputLabel>
                     <Select
                         labelId="selectColumn" label="Column" sx={{minWidth: 170}} value={filterModel.filter(el => el.id === props.id).map(e => e.filterColumn)[0]}
-                        /*onChange={(event: any) => setFilterModel(
+                        onChange={(event: any) => setFilterModel(
                             prevState => (prevState.map
                                 (el =>
                                     (el.id === props.id ?
@@ -139,14 +137,14 @@ export default function UsersPage() {
                                     )
                                 )
                             )
-                        )}*/
+                        )}
                     ><MenuItem value=""><em>None</em></MenuItem>{columnsOptions.map(renderOption)}</Select>
                 </FormControl>
                 <FormControl style={{margin: 10}}>
                     <InputLabel id="selectOperator">Operator</InputLabel>
                     <Select
                         labelId="selectOperator" label="Operator" sx={{minWidth: 170}} value={filterModel.filter(el => el.id ===props.id).map(e=> e.filterOperator)[0]}
-                        /*onChange={(event: any) => setFilterModel(
+                        onChange={(event: any) => setFilterModel(
                             prevState => (prevState.map
                                 (el => 
                                     (el.id === props.id ?
@@ -156,7 +154,7 @@ export default function UsersPage() {
                                     )
                                 )
                             )
-                        )}*/
+                        )}
                     ><MenuItem value=""><em>None</em></MenuItem>{operatorsOptions.map(renderOption)}</Select>
                 </FormControl>
                 <FormControl style={{margin: 10}}>
