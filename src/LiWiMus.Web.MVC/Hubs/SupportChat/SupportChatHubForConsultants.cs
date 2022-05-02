@@ -56,7 +56,7 @@ public partial class SupportChatHub
         {
             Chat = chat,
             Text = text,
-            Sender = user
+            Owner = user
         });
 
         await _messageRepository.SaveChangesAsync();

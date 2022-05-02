@@ -116,7 +116,7 @@ public partial class SupportChatHub : Hub
         chat.Messages.Add(new Message
         {
             Text = text,
-            Sender = user
+            Owner = user
         });
 
         await _repositoryChat.SaveChangesAsync();
