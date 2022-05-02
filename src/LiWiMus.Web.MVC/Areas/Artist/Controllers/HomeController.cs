@@ -1,17 +1,20 @@
-﻿using System.Security.Claims;
+﻿#region
+
+using System.Security.Claims;
 using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Artists.Specifications;
-using LiWiMus.Core.Settings;
-using LiWiMus.Infrastructure.Extensions;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
+using LiWiMus.Web.Shared.Extensions;
+using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+
+#endregion
 
 namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 
@@ -19,21 +22,22 @@ namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 [Route("[area]")]
 public class HomeController : Controller
 {
+    private readonly IFormFileSaver _formFileSaver;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
-    private readonly IOptions<DataSettings> _dataSettings;
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
 
     public HomeController(UserManager<Core.Users.User> userManager,
-                          IAuthorizationService authorizationService, IOptions<DataSettings> dataSettings,
-                          IMapper mapper, IRepository<Core.Artists.Artist> artistRepository)
+                          IAuthorizationService authorizationService,
+                          IMapper mapper, IRepository<Core.Artists.Artist> artistRepository,
+                          IFormFileSaver formFileSaver)
     {
         _userManager = userManager;
         _authorizationService = authorizationService;
-        _dataSettings = dataSettings;
         _mapper = mapper;
         _artistRepository = artistRepository;
+        _formFileSaver = formFileSaver;
     }
 
     [HttpGet("")]
@@ -90,9 +94,7 @@ public class HomeController : Controller
         if (viewModel.Photo is not null)
         {
             FileHelper.DeleteIfExists(artist.PhotoPath);
-            artist.PhotoPath =
-                await viewModel.Photo.Image.SaveWithRandomNameAsync(_dataSettings.Value.ArtistsPhotosDirectory,
-                    viewModel.Photo.Extension);
+            artist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
         }
 
         await _artistRepository.UpdateAsync(artist);
@@ -111,8 +113,7 @@ public class HomeController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
 
-        var photoPath = await viewModel.Photo.Image.SaveWithRandomNameAsync(_dataSettings.Value.ArtistsPhotosDirectory,
-            viewModel.Photo.Extension);
+        var photoPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
 
         var artist = new Core.Artists.Artist
         {

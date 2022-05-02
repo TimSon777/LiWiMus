@@ -1,8 +1,13 @@
-﻿using ByteSizeLib;
+﻿#region
+
+using Ardalis.GuardClauses;
+using ByteSizeLib;
 using FluentValidation;
 using FluentValidation.Results;
 using LiWiMus.Core.Constants;
-using LiWiMus.Core.Models;
+using Microsoft.AspNetCore.Http;
+
+#endregion
 
 namespace LiWiMus.Web.Shared.Extensions;
 
@@ -24,43 +29,27 @@ public static class FluentValidationExtensions
         return ruleBuilder.Matches(RegularExpressions.DisableTags);
     }
 
-    public static IRuleBuilderOptions<T, ImageInfo> MaximumDifferenceSidesInPercent<T>(
-        this IRuleBuilder<T, ImageInfo> ruleBuilder, int maximumAspectRatioPercentage)
+    public static IRuleBuilderOptions<T, ImageFormFile> SidesPercentageDifferenceMustBeLessThan<T>(
+        this IRuleBuilder<T, ImageFormFile> ruleBuilder, double maxPercentageDifference)
     {
-        if (maximumAspectRatioPercentage is < 0 or > 100)
+        Guard.Against.OutOfRange(maxPercentageDifference, nameof(maxPercentageDifference), 0, 100);
+
+        double PercentageDifference(double num1, double num2)
         {
-            throw new ArgumentOutOfRangeException(nameof(maximumAspectRatioPercentage));
+            var absoluteDifference = Math.Abs(num1 - num2);
+            var average = (num1 + num2) / 2;
+            return absoluteDifference / average * 100;
         }
 
-        return ruleBuilder.Must(imageInfo =>
-                          {
-                              if (imageInfo is null)
-                              {
-                                  return true;
-                              }
-
-                              var image = imageInfo.Image;
-                              var width = image.Width;
-                              var height = image.Height;
-                              return Math.Abs(width - height) / (double) Math.Max(width, height) * 100 <=
-                                     maximumAspectRatioPercentage;
-                          })
-                          .WithMessage(
-                              $"Image width and height must differ by no more than {maximumAspectRatioPercentage} percent");
+        return ruleBuilder
+               .Must(imageInfo => PercentageDifference(imageInfo.Width, imageInfo.Height) <= maxPercentageDifference)
+               .WithMessage($"Image width and height must differ by no more than {maxPercentageDifference} percent.");
     }
 
-    public static IRuleBuilderOptions<T, ImageInfo?> MaxSize<T>(
-        this IRuleBuilder<T, ImageInfo?> ruleBuilder, ByteSize byteSize)
+    public static IRuleBuilderOptions<T, IFormFile> MustWeightLessThan<T>(
+        this IRuleBuilder<T, IFormFile> ruleBuilder, ByteSize byteSize)
     {
-        return ruleBuilder.Must(image =>
-                          {
-                              if (image is null)
-                              {
-                                  return true;
-                              }
-
-                              return image.ByteSize <= byteSize;
-                          })
-                          .WithMessage($"The image must weigh less than {byteSize.ToString()}");
+        return ruleBuilder.Must(file => file.Length <= byteSize.Bytes)
+                          .WithMessage($"The file must weigh less than {byteSize.ToString()}.");
     }
 }

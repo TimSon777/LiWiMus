@@ -1,10 +1,15 @@
+#region
+
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using FluentValidation.AspNetCore;
 using LiWiMus.Infrastructure;
+using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +19,8 @@ builder.Host
            containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath)));
 
 Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+builder.Services.AddSharedServices();
+builder.Services.ConfigureSettings(builder.Configuration);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddFluentValidation(fv =>
 {

@@ -1,15 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
-using LiWiMus.Core.Models;
-using LiWiMus.Web.Shared.Binders.ImageBinder;
-using Microsoft.AspNetCore.Mvc;
+﻿#region
+
+using System.ComponentModel.DataAnnotations;
+using LiWiMus.Web.Shared;
+
+#endregion
 
 namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
 public class ProfileViewModel
 {
-    public string UserName { get; set; }
+    public string UserName { get; set; } = null!;
 
-    public string Email { get; set; }
+    public string Email { get; set; } = null!;
 
     public string? FirstName { get; set; }
     public string? SecondName { get; set; }
@@ -18,9 +20,7 @@ public class ProfileViewModel
     public bool IsMale { get; set; }
 
     [DataType(DataType.Date)] public DateOnly? BirthDate { get; set; }
-
     public bool IsAccountOwner { get; set; }
 
-    [ModelBinder(typeof(ImageModelBinder))]
-    public ImageInfo? Avatar { get; set; }
+    public ImageFormFile? Avatar { get; set; }
 }

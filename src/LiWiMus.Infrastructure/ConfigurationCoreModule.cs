@@ -25,9 +25,7 @@ public class ConfigurationCoreModule : Module
         builder.RegisterType<AvatarService>().As<IAvatarService>();
         builder.RegisterType<MailService>().As<IMailService>();
         builder.RegisterType<MailRequestService>().As<IMailRequestService>();
-        builder.RegisterType<ImageService>().As<IImageService>();
         builder.RegisterType<PaymentService>().As<IPaymentService>();
         builder.RegisterType<UserPlanManager>().As<IUserPlanManager>();
-        AvatarService.Configure(_contentRootPath);
     }
 }

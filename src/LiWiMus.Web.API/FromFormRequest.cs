@@ -1,11 +1,16 @@
-﻿using System.Reflection;
+﻿#region
+
+using System.Reflection;
+using LiWiMus.Web.Shared;
+
+#endregion
 
 namespace LiWiMus.Web.API;
 
 public abstract class FromFormRequest<TSelf> where TSelf : FromFormRequest<TSelf>, new()
 {
     // ReSharper disable once MemberCanBeProtected.Global
-    public static ValueTask<TSelf?> BindAsync(HttpContext httpContext)
+    public static async ValueTask<TSelf?> BindAsync(HttpContext httpContext)
     {
         var form = httpContext.Request.Form;
 
@@ -18,39 +23,57 @@ public abstract class FromFormRequest<TSelf> where TSelf : FromFormRequest<TSelf
         {
             try
             {
-                var value = GetValue(form, property);
+                var value = await GetValueAsync(form, property);
                 property.SetValue(obj, value);
             }
             catch (Exception)
             {
-                return ValueTask.FromResult<TSelf?>(null);
+                return null;
             }
         }
 
-        return ValueTask.FromResult<TSelf?>(obj);
+        return obj;
     }
 
-    private static object? GetValue(IFormCollection form, PropertyInfo property)
+    private static async Task<object?> GetValueAsync(IFormCollection form, PropertyInfo property)
     {
-        var propName = property.Name;
-        var propType = property.PropertyType;
-
-        var file = form.Files.FirstOrDefault(f => f.Name.Equals(propName, StringComparison.InvariantCultureIgnoreCase));
-        if (file is not null)
+        if (property.PropertyType.IsAssignableTo(typeof(IFormFile)))
         {
-            return file;
+            return await GetFileAsync(form, property);
         }
 
+        return GetSimpleValue(form, property);
+    }
+
+    private static async Task<IFormFile?> GetFileAsync(IFormCollection form, PropertyInfo property)
+    {
+        var file = form.Files.GetFile(property.Name);
+
+        if (file is null)
+        {
+            return null;
+        }
+
+        if (property.PropertyType == typeof(ImageFormFile))
+        {
+            return await ImageFormFile.CreateAsync(file);
+        }
+
+        return file;
+    }
+
+    private static object? GetSimpleValue(IFormCollection form, PropertyInfo property)
+    {
         string valueRaw = form[property.Name];
         object? value;
 
         if (valueRaw is null)
         {
-            value = propType.IsValueType ? Activator.CreateInstance(propType) : null;
+            value = property.PropertyType.IsValueType ? Activator.CreateInstance(property.PropertyType) : null;
         }
         else
         {
-            value = Convert.ChangeType(valueRaw, propType);
+            value = Convert.ChangeType(valueRaw, property.PropertyType);
         }
 
         return value;

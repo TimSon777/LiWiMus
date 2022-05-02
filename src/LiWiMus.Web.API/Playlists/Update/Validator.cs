@@ -1,5 +1,10 @@
-﻿using ByteSizeLib;
+﻿#region
+
+using ByteSizeLib;
 using FluentValidation;
+using LiWiMus.Web.Shared.Extensions;
+
+#endregion
 
 namespace LiWiMus.Web.API.Playlists.Update;
 
@@ -19,7 +24,10 @@ public class Validator : AbstractValidator<Request>
             .NotEmpty()
             .Must(file => file.Length < ByteSize.BytesInMegaByte);
 
-        RuleFor(request => request.PhotoInfo)
-            .NotEmpty();
+        RuleFor(request => request.Photo)
+            .Cascade(CascadeMode.Stop)
+            .NotNull()
+            .SidesPercentageDifferenceMustBeLessThan(10)
+            .MustWeightLessThan(ByteSize.FromMegaBytes(1));
     }
 }

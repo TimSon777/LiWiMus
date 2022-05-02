@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿#region
+
+using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Albums.Specifications;
@@ -11,10 +13,12 @@ using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.Shared.Extensions;
+using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+
+#endregion
 
 namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 
@@ -22,6 +26,7 @@ namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 [Route("Artist/{artistId:int}/[controller]")]
 public class TracksController : Controller
 {
+    private readonly IFormFileSaver _formFileSaver;
     private readonly IRepository<Album> _albumsRepository;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
@@ -32,7 +37,8 @@ public class TracksController : Controller
 
     public TracksController(IRepository<Core.Artists.Artist> artistRepository, IRepository<Track> tracksRepository,
                             IOptions<DataSettings> dataSettings, IAuthorizationService authorizationService,
-                            IMapper mapper, IRepository<Album> albumsRepository, IRepository<Genre> genresRepository)
+                            IMapper mapper, IRepository<Album> albumsRepository, IRepository<Genre> genresRepository,
+                            IFormFileSaver formFileSaver)
     {
         _artistRepository = artistRepository;
         _tracksRepository = tracksRepository;
@@ -41,6 +47,7 @@ public class TracksController : Controller
         _mapper = mapper;
         _albumsRepository = albumsRepository;
         _genresRepository = genresRepository;
+        _formFileSaver = formFileSaver;
     }
 
     [HttpGet("")]
@@ -122,7 +129,7 @@ public class TracksController : Controller
         if (viewModel.File is not null)
         {
             FileHelper.DeleteIfExists(track.PathToFile);
-            track.PathToFile = await viewModel.File.SaveWithRandomNameAsync(_dataSettings.Value.TracksDirectory);
+            track.PathToFile = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
         }
 
         await _tracksRepository.UpdateAsync(track);
@@ -153,7 +160,7 @@ public class TracksController : Controller
             return Forbid();
         }
 
-        var filePath = await viewModel.File.SaveWithRandomNameAsync(_dataSettings.Value.CoversDirectory);
+        var filePath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
 
         var artists = new List<Core.Artists.Artist> {artist};
 

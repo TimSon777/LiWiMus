@@ -1,16 +1,19 @@
-﻿using AutoMapper;
+﻿#region
+
+using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists.Specifications;
-using LiWiMus.Core.Settings;
-using LiWiMus.Infrastructure.Extensions;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
+using LiWiMus.Web.Shared.Extensions;
+using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+
+#endregion
 
 namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 
@@ -18,21 +21,21 @@ namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 [Route("Artist/{artistId:int}/[controller]")]
 public class AlbumsController : Controller
 {
+    private readonly IFormFileSaver _formFileSaver;
     private readonly IRepository<Album> _albumsRepository;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
-    private readonly IOptions<DataSettings> _dataSettings;
     private readonly IMapper _mapper;
 
-    public AlbumsController(IRepository<Album> albumsRepository, IOptions<DataSettings> dataSettings,
+    public AlbumsController(IRepository<Album> albumsRepository,
                             IRepository<Core.Artists.Artist> artistRepository,
-                            IAuthorizationService authorizationService, IMapper mapper)
+                            IAuthorizationService authorizationService, IMapper mapper, IFormFileSaver formFileSaver)
     {
         _albumsRepository = albumsRepository;
-        _dataSettings = dataSettings;
         _artistRepository = artistRepository;
         _authorizationService = authorizationService;
         _mapper = mapper;
+        _formFileSaver = formFileSaver;
     }
 
     [HttpGet("")]
@@ -107,8 +110,7 @@ public class AlbumsController : Controller
         {
             FileHelper.DeleteIfExists(album.CoverPath);
             album.CoverPath =
-                await viewModel.Cover.Image.SaveWithRandomNameAsync(_dataSettings.Value.CoversDirectory,
-                    viewModel.Cover.Extension);
+                await _formFileSaver.SaveWithRandomNameAsync(viewModel.Cover);
         }
 
         await _albumsRepository.UpdateAsync(album);
@@ -137,8 +139,7 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
-        var coverPath = await viewModel.Cover.Image.SaveWithRandomNameAsync(_dataSettings.Value.CoversDirectory,
-            viewModel.Cover.Extension);
+        var coverPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Cover);
 
         var artists = new List<Core.Artists.Artist> {artist};
 

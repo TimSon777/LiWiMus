@@ -2,6 +2,8 @@
 
 public class MailSettings
 {
+    public const string ConfigName = "MailSettings";
+
     public string Mail { get; set; } = null!;
     public string DisplayName { get; set; } = null!;
     public string Password { get; set; } = null!;

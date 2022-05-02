@@ -8,9 +8,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\LiWiMus.Core\LiWiMus.Core.csproj"/>
-        <ProjectReference Include="..\LiWiMus.Infrastructure\LiWiMus.Infrastructure.csproj"/>
-        <ProjectReference Include="..\LiWiMus.Web.Shared\LiWiMus.Web.Shared.csproj"/>
+        <ProjectReference Include="..\LiWiMus.Core\LiWiMus.Core.csproj" />
+        <ProjectReference Include="..\LiWiMus.Infrastructure\LiWiMus.Infrastructure.csproj" />
+        <ProjectReference Include="..\LiWiMus.Web.Shared\LiWiMus.Web.Shared.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -30,38 +30,38 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2"/>
-        <PackageReference Include="NickStrupat.EntityFrameworkCore.Triggers.AspNetCore" Version="1.0.3"/>
-        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.2" />
+        <PackageReference Include="NickStrupat.EntityFrameworkCore.Triggers.AspNetCore" Version="1.0.3" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="2.1.0" />
     </ItemGroup>
 
     <ItemGroup>
         <Content Include="Data\**\*">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
-        <Content Remove="Areas\AdminOld\**"/>
+        <Content Remove="Areas\AdminOld\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <Compile Remove="Hubs\SupportChatConsultantHub.cs"/>
-        <Compile Remove="Hubs\SupportChatHub.cs"/>
-        <Compile Remove="Areas\AdminOld\**"/>
+        <Compile Remove="Hubs\SupportChatConsultantHub.cs" />
+        <Compile Remove="Hubs\SupportChatHub.cs" />
+        <Compile Remove="Areas\AdminOld\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <_ContentIncludedByDefault Remove="Views\Shared\Components\Chat\Default.cshtml"/>
-        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Permission\Index.cshtml"/>
-        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Roles\AddRole.cshtml"/>
-        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Roles\Index.cshtml"/>
-        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\UserRoles\index.cshtml"/>
-        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Users\Index.cshtml"/>
+        <_ContentIncludedByDefault Remove="Views\Shared\Components\Chat\Default.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Permission\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Roles\AddRole.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Roles\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\UserRoles\index.cshtml" />
+        <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Users\Index.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Remove="Areas\AdminOld\**"/>
+        <EmbeddedResource Remove="Areas\AdminOld\**" />
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="Areas\AdminOld\**"/>
+        <None Remove="Areas\AdminOld\**" />
     </ItemGroup>
 </Project>

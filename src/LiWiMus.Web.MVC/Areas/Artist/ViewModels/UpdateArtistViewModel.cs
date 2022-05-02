@@ -1,6 +1,8 @@
-﻿using LiWiMus.Core.Models;
-using LiWiMus.Web.Shared.Binders.ImageBinder;
-using Microsoft.AspNetCore.Mvc;
+﻿#region
+
+using LiWiMus.Web.Shared;
+
+#endregion
 
 namespace LiWiMus.Web.MVC.Areas.Artist.ViewModels;
 
@@ -10,6 +12,5 @@ public class UpdateArtistViewModel
     public string Name { get; set; } = null!;
     public string About { get; set; } = null!;
 
-    [ModelBinder(typeof(ImageModelBinder))]
-    public ImageInfo? Photo { get; set; }
+    public ImageFormFile? Photo { get; set; }
 }

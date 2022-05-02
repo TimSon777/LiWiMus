@@ -1,10 +1,16 @@
-﻿using AutoMapper;
+﻿#region
+
+using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
+using LiWiMus.Web.Shared.Extensions;
+using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
+#endregion
 
 namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 
@@ -12,21 +18,18 @@ namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 [Route("[area]/[controller]")]
 public class ProfileController : Controller
 {
+    private readonly IFormFileSaver _formFileSaver;
     private readonly IAvatarService _avatarService;
-    private readonly string _contentRootPath;
-    private readonly HttpClient _httpClient = new();
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
 
     public ProfileController(UserManager<Core.Users.User> userManager,
-                             IMapper mapper,
-                             IHostEnvironment environment,
-                             IAvatarService avatarService)
+                             IMapper mapper, IAvatarService avatarService, IFormFileSaver formFileSaver)
     {
         _userManager = userManager;
         _mapper = mapper;
         _avatarService = avatarService;
-        _contentRootPath = environment.ContentRootPath;
+        _formFileSaver = formFileSaver;
     }
 
     [HttpGet("{userName?}")]
@@ -95,7 +98,7 @@ public class ProfileController : Controller
 
         if (model.Avatar is not null)
         {
-            await _avatarService.SetAvatarAsync(user, model.Avatar);
+            user.AvatarPath = await _formFileSaver.SaveWithRandomNameAsync(model.Avatar);
         }
 
         var result = await _userManager.UpdateAsync(user);

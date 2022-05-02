@@ -1,3 +1,5 @@
+#region
+
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -13,10 +15,13 @@ using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.MVC.Configuration;
 using LiWiMus.Web.MVC.Hubs.SupportChat;
 using LiWiMus.Web.Shared.Configuration;
+using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.FileProviders;
+
+#endregion
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -32,9 +37,8 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
            containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath))
                            .RegisterModule(new ConfigurationWebModule()));
 
-services.Configure<DataSettings>(configuration.GetSection("DataSettings"));
-services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
-
+services.AddSharedServices();
+services.ConfigureSettings(configuration);
 Dependencies.ConfigureServices(configuration, services);
 builder.Services.AddTriggers();
 TriggersConfiguration.ConfigureTriggers();
