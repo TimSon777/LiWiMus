@@ -5,7 +5,7 @@ namespace LiWiMus.Core.Permissions;
 
 public class Permission
 {
-    public const string ClaimType = "Permission";
+    public const string ClaimType = "permission";
 
     public int Id { get; set; }
     public string Name { get; set; }

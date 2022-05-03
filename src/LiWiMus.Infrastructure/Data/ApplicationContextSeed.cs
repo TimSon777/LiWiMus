@@ -91,7 +91,12 @@ public static class ApplicationContextSeed
 
     private static async Task SeedPermissionsAsync(ApplicationContext context)
     {
-        var permissions = DefaultPermissions.GetAllPermissions().Select(v => new Permission(v));
+        var permissions = DefaultPermissions
+                          .GetAllPermissions()
+                          .Where(permission => context.Permissions
+                                                      .FirstOrDefault(p => p.Name == permission) is null)
+                          .Select(p => new Permission(p));
+        
         await context.Permissions.AddRangeAsync(permissions);
         await context.SaveChangesAsync();
     }
@@ -108,6 +113,7 @@ public static class ApplicationContextSeed
                     permission = new Permission(permissionName);
                     await context.Permissions.AddAsync(permission);
                 }
+
                 plan.Permissions.Add(permission);
             }
 
