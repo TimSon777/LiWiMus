@@ -9,8 +9,8 @@ import { AuthContext } from "./contexts/Auth.context";
 import "./App.sass";
 
 function App() {
-  const { userData, login, logout, ready } = useAuth();
-  const isAuthenticated = !!userData;
+  const { token, login, logout, userId, ready } = useAuth();
+  const isAuthenticated = !!token;
   const routes = useRoutes(isAuthenticated);
 
   if (!ready) {
@@ -19,11 +19,11 @@ function App() {
 
   return (
     <AuthContext.Provider
-      value={{ userData, login, logout, isAuthenticated }}
+      value={{ token, login, logout, userId, isAuthenticated }}
     >
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Layout userData={userData}>{routes}</Layout>
+          <Layout>{routes}</Layout>
         </ThemeProvider>
       </BrowserRouter>
     </AuthContext.Provider>

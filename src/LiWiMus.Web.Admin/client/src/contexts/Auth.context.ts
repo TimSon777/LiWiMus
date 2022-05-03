@@ -1,19 +1,18 @@
 import { createContext } from "react";
-import { UserData } from "../types/UserData";
 
-function noop() {
-  return false;
-}
+function noop() {}
 
 type AuthContextInfo = {
-  userData: UserData | null;
-  login: (jwtToken: string) => boolean;
+  token: string | null;
+  userId: string | null;
+  login: (jwtToken: string, uid: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
 };
 
 export const AuthContext = createContext<AuthContextInfo>({
-  userData: null,
+  token: null,
+  userId: null,
   login: noop,
   logout: noop,
   isAuthenticated: false,

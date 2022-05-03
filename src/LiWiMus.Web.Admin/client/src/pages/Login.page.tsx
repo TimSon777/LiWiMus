@@ -5,7 +5,7 @@ import {
   Grid,
   IconButton,
   InputAdornment,
-  Stack
+  Stack,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { AuthContext } from "../contexts/Auth.context";
@@ -27,24 +27,12 @@ export default function LoginPage() {
     register,
     setError,
     formState: { errors },
-    handleSubmit
+    handleSubmit,
   } = useForm<ILoginInput>();
 
   const loginHandler: SubmitHandler<ILoginInput> = async (data) => {
-    const authUrl = process.env.REACT_APP_AUTH_URL;
-    const response = await fetch(authUrl + "auth/connect/token", {
-      method: "POST",
-      body: new URLSearchParams({...data, grant_type: "password"})
-    });
-    const result = await response.json();
-
-    if (response.ok) {
-      if (!auth.login(result.access_token)) {
-        setError("password", {message: "You don't have access here."});
-      }
-    } else {
-      setError("password", {message: result.error_description});
-    }
+    console.log(data);
+    auth.login("token", "id");
   };
 
   return (
@@ -65,7 +53,7 @@ export default function LoginPage() {
               variant="outlined"
               fullWidth
               {...register("username", {
-                required: { value: true, message: "Enter username" }
+                required: { value: true, message: "Enter username" },
               })}
               helperText={errors.username?.message}
             />
@@ -75,7 +63,7 @@ export default function LoginPage() {
               variant="outlined"
               type={showPassword ? "text" : "password"}
               {...register("password", {
-                required: { value: true, message: "Enter password" }
+                required: { value: true, message: "Enter password" },
               })}
               helperText={errors.password?.message}
               InputProps={{
@@ -90,7 +78,7 @@ export default function LoginPage() {
                       {showPassword ? <VisibilityOff /> : <Visibility />}
                     </IconButton>
                   </InputAdornment>
-                )
+                ),
               }}
             />
           </Stack>

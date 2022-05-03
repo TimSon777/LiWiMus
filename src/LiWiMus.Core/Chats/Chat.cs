@@ -11,7 +11,7 @@ public class Chat : BaseEntity
     
     public string UserConnectionId { get; set; } = "";
 
-    public string ConsultantConnectionId { get; set; } = "";
+    public string? ConsultantConnectionId { get; set; } = "";
 
     public List<Message> Messages { get; set; } = new();
 }

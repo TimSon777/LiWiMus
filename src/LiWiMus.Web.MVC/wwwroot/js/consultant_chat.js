@@ -2,81 +2,140 @@
     $(`#chat-${userName}`).remove();
 }
 
-async function refreshHandler(connection) {
-    $(".btn-send-to-user").click(async function () {
+async function refreshHandlerAsync(connection, userName) {
+    $(`#btn-${userName}`).click(async function () {
         const connectionId = $(this).val();
         const message = $(`textarea[id=${connectionId}]`).val();
-        await connection.invoke("SendMessageToUser", connectionId, message);
-        let id = $(this).attr('id').split('-', 2)[1];
-        $(`#${id}`).append(`<li class="message"><p>Your: ${message}</p></li>`);
-    })
+        const id = $(this).attr('id').split('-', 2)[1];
 
-    $(".btn-close-chat-by-consultant").click(async function () {
+        await connection
+            .invoke("SendMessageToUser", connectionId, message)
+            .then((result) => {
+                if (result.isSuccess) {
+                    displayMessage(result.value, true, id)
+                } else {
+                    alert(result.error)
+                }
+            });
+    });
+
+    $(`.btn-close-chat-by-consultant-${userName}`).click(async function () {
         const userName = $(this).val();
-        await connection.invoke("CloseChatByConsultant", userName);
+        await connection.invoke("CloseChatByConsultant", userName)
+            .catch(error => alert(error));
+        
         removeChatBy(userName);
     })
 }
 
-async function chatStartWithCOrOpen() {
-    const connection = new signalR.HubConnectionBuilder()
-        .withUrl("/chat")
+function establishConnection(url) {
+    return new signalR.HubConnectionBuilder()
+        .withUrl(url)
         .build();
+}
 
+async function disconnectByClick(connection) {
     $('#offline').click(async () => {
-        await connection.invoke("DisconnectConsultant")
+        await connection.stop()
     })
+}
 
+async function refreshChatsByClick(connection) {
     $('#refresh-chats').click(() => {
-        $.ajax({
-            method: 'GET',
+        $.get({
             url: 'GetTextingUsersChats',
             success: (userNames) => {
                 $('#chats').empty()
                 userNames.forEach(userName => {
-                    $.ajax({
-                        method: 'GET',
-                        url: `Chat?userName=${userName}`,
+                    $.get({
+                        url: `ChatForConsultant?userName=${userName}`,
                         success: async (html) => {
                             $('#chats').prepend(html)
-                            await refreshHandler(connection)
+                            await refreshHandlerAsync(connection, userName)
                         },
-                        error: (error) => {
-                            alert(error)
+                        error: (jqXHR, exception) => {
+                            alert(`Status code: ${jqXHR} with message ${exception}`);
                         }
-                    })
-                })
+                    });
+                });
             },
-            error: (error) => {
-                alert(error)
+            error: (jqXHR, exception) => {
+                alert(`Status code: ${jqXHR} with message ${exception}`);
             }
-        })
-    })
-
-    connection.on("SendMessageToConsultant", function (text, userName) {
-        $(`#${userName}`).append(`<li><p>${text}</p></li>`)
+        });
     });
+}
 
-    connection.on("GetNewUserChat", async function (html) {
-        $('#chats').html(html);
-        await refreshHandler(connection)
+function displayMessage(messageId, isOwner, id) {
+    $.get({
+        url: `/User/SupportChat/MessageForConsultant?messageId=${messageId}&isOwner=${isOwner}`,
+        success: (html) => {
+            $(`#${id}`).append(html)
+        },
+        error: (jqXHR, exception) => {
+            alert(`Status code: ${jqXHR} with message ${exception}`);
+        }
     });
+}
 
-    connection.on("DeleteChat", function (userName) {
-        removeChatBy(userName);
+function displayUserMessage(connection) {
+    connection.on("GetMessageIdAndUserNameForConsultant",
+        (messageId, userName) => displayMessage(messageId, false, userName));
+}
+
+async function displayNewChat(connection) {
+    connection.on("GetNewUserName", async function (userName) {
+        if (!$(`chat-${userName}`).length) {
+            $.ajax({
+                method: 'GET',
+                url: `/User/SupportChat/ChatForConsultant?userName=${userName}`,
+                success: async (html) => {
+                    $('#chats').html(html);
+                    await refreshHandlerAsync(connection, userName);
+                },
+                error: (jqXHR, exception) => {
+                    alert(`Status code: ${jqXHR} with message ${exception}`);
+                }
+            });
+
+
+        }
+
+        $(`#delete-chat-${userName}`).hide();
     });
+}
 
-    connection.on("CloseChatByUser", function (userName) {
+function notifyWhenUserCloseChat(connection) {
+    connection.on("GetUserNameWhenCloseByUser", function (userName) {
         removeChatBy(userName);
         alert(userName + " close chat");
     });
+}
 
-    await connection.start();
+async function connectConsultant(connection) {
     await connection.invoke("ConnectConsultant");
+}
+
+function displayButtonToDeleteChat(connection) {
+    connection.on("GetUserNameWhenLeft", function (userName) {
+        $(`#delete-chat-${userName}`).show();
+    });
+}
+
+async function startChatAsync() {
+    const connection = establishConnection('/chat');
+    await disconnectByClick(connection);
+    await refreshChatsByClick(connection);
+    displayUserMessage(connection);
+    await displayNewChat(connection);
+    displayButtonToDeleteChat(connection);
+    notifyWhenUserCloseChat(connection);
+    await connection.start();
+    await connectConsultant(connection);
 }
 
 $(document).ready(function () {
     $('#online').click(async () => {
-        await chatStartWithCOrOpen()
-    })
-})
+        await startChatAsync();
+    });
+});
