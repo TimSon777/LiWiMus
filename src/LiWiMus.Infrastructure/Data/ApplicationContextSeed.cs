@@ -96,7 +96,7 @@ public static class ApplicationContextSeed
                           .Where(permission => context.Permissions
                                                       .FirstOrDefault(p => p.Name == permission) is null)
                           .Select(p => new Permission(p));
-        
+
         await context.Permissions.AddRangeAsync(permissions);
         await context.SaveChangesAsync();
     }
@@ -105,6 +105,12 @@ public static class ApplicationContextSeed
     {
         foreach (var (plan, permissionNames) in DefaultPlans.GetPlansWithPermissions())
         {
+            if (await context.Plans.AnyAsync(p => p.Name == plan.Name))
+            {
+                continue;
+            }
+            
+
             foreach (var permissionName in permissionNames)
             {
                 var permission = await context.Permissions.FirstOrDefaultAsync(perm => perm.Name == permissionName);
@@ -116,7 +122,7 @@ public static class ApplicationContextSeed
 
                 plan.Permissions.Add(permission);
             }
-
+            
             await context.Plans.AddAsync(plan);
         }
 
