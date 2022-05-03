@@ -2,8 +2,8 @@
 using LiWiMus.Core.Messages;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
-using LiWiMus.Core.Roles;
-using LiWiMus.Web.MVC.Areas.User.ViewModels;
+using LiWiMus.Core.Permissions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -11,34 +11,31 @@ namespace LiWiMus.Web.MVC.Hubs.SupportChat;
 
 public partial class SupportChatHub
 {
+    //[Authorize(DefaultPermissions.Chat.Answer)]
     public async Task ConnectConsultant()
     {
-        var userClaims = Context.User;
+        var user = await _userManager.GetUserAsync(Context.User);
+        var oldCons = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantByUser(user));
 
-        if (userClaims?.IsInRole(DefaultRoles.Consultant.Name) == false)
+        if (oldCons is not null)
         {
             return;
         }
 
-        var user = await _userManager.GetUserAsync(userClaims);
-
-        var oldCons = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantByUser(user));
-
-        if (oldCons is null)
+        var consultant = new OnlineConsultant
         {
-            var consultant = new OnlineConsultant
-            {
-                Consultant = user,
-                ConnectionId = Context.ConnectionId
-            };
+            Consultant = user,
+            ConnectionId = Context.ConnectionId
+        };
 
-
-            await _onlineConsultantsRepository.AddAsync(consultant);
-            await _onlineConsultantsRepository.SaveChangesAsync();
-        }
+        await _onlineConsultantsRepository.AddAsync(consultant);
+        await _onlineConsultantsRepository.SaveChangesAsync();
     }
 
-    public async Task SendMessageToUser(string connectionId, string text)
+    //[Authorize(DefaultPermissions.Chat.Answer)]
+    // ReSharper disable once MemberCanBePrivate.Global
+    // ReSharper disable once UnusedMethodReturnValue.Global
+    public async Task<Result> SendMessageToUser(string connectionId, string text)
     {
         var user = await _userManager.GetUserAsync(Context.User);
 
@@ -49,10 +46,10 @@ public partial class SupportChatHub
 
         if (chat is null)
         {
-            return;
+            return Result.Failure("Chat is not found.");
         }
 
-        await _messageRepository.AddAsync(new Message
+        var message = await _messageRepository.AddAsync(new Message
         {
             Chat = chat,
             Text = text,
@@ -61,33 +58,35 @@ public partial class SupportChatHub
 
         await _messageRepository.SaveChangesAsync();
 
-        await Clients.Group(chat.User.UserName).SendAsync("SendMessageToUser", text);
+        await Clients
+            .Group(chat.User.UserName)
+            .SendAsync(GetMessageIdForUser, message.Id);
+        
+        return Result.Success(message.Id);
     }
 
-    public async Task<IActionResult> CloseChatByConsultant(string userName)
+    //[Authorize(DefaultPermissions.Chat.Answer)]
+    public async Task<Result> CloseChatByConsultant(string userName)
     {
         var user = await _userManager.GetUserAsync(Context.User);
         var consultant = await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantByUser(user));
-        var chat = consultant!.Chats.FirstOrDefault(c => c.User.UserName == userName);
+        var chat = consultant!.Chats.FirstOrDefault(c => c.User.UserName == userName && c.Status == ChatStatus.Opened);
 
         if (chat is null)
         {
-            return new BadRequestResult();
+            return Result.Failure($"Chat with {userName} is not found or is not opened.");
         }
-
-        if (chat.Status != ChatStatus.Opened)
-        {
-            return new BadRequestResult();
-        }
-
+        
         chat.Status = ChatStatus.ClosedByConsultant;
 
-        await _repositoryChat.SaveChangesAsync();
+        await _chatRepository.SaveChangesAsync();
 
         await SendMessageToUser(chat.UserConnectionId, "Chat was closed by cons");
-        return new OkResult();
+        return Result.Success();
     }
 
+    //[Authorize(DefaultPermissions.Chat.Answer)]
+    // ReSharper disable once MemberCanBePrivate.Global
     public async Task DisconnectConsultant()
     {
         var user = await _userManager.GetUserAsync(Context.User);
@@ -107,24 +106,18 @@ public partial class SupportChatHub
             var newConsultant =
                 await _onlineConsultantsRepository.GetBySpecAsync(new ConsultantWithMinimalWorkload(consultant));
 
-
             if (newConsultant is null)
             {
                 return;
             }
 
-            var chatVm = _mapper.Map<ChatViewModel>(chat);
-
             chat.ConsultantConnectionId = newConsultant.ConnectionId;
             newConsultant.Chats.Add(chat);
-
-            var chatForConsultant =
-                await _razorViewRenderer.RenderViewAsync("/Areas/User/Views/Partials/ChatPartial.cshtml", chatVm);
-
-            await _repositoryChat.SaveChangesAsync();
+            
+            await _chatRepository.SaveChangesAsync();
             await _onlineConsultantsRepository.SaveChangesAsync();
-            await EstablishConnection(chat.User, newConsultant, chat.UserConnectionId);
-            await Clients.Group(chat.User.UserName).SendAsync("GetNewUserChat", chatForConsultant);
+            await EstablishConnection(chat.User.UserName, newConsultant.ConnectionId, chat.UserConnectionId);
+            await Clients.Group(chat.User.UserName).SendAsync(GetNewUserName, user.UserName);
         }
     }
 }

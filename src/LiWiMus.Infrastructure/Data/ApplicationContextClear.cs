@@ -12,7 +12,7 @@ public static class ApplicationContextClear
         
         if (isDevelopment)
         {
-            await DeleteOpenedChats(applicationContext, logger);
+            await DeleteOpenedChatsAsync(applicationContext, logger);
         }
     }
     
@@ -24,7 +24,7 @@ public static class ApplicationContextClear
         logger.LogInformation("Online consultants were removed");
     }
 
-    private static async Task DeleteOpenedChats(ApplicationContext applicationContext, ILogger logger)
+    private static async Task DeleteOpenedChatsAsync(ApplicationContext applicationContext, ILogger logger)
     {
         var chats = applicationContext.Users
             .Include(u => u.UserChats)
