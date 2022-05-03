@@ -1,9 +1,14 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post, Query} from '@nestjs/common';
+import {Body, Controller, Get, HttpException, HttpStatus, Post, Query, UsePipes, ValidationPipe} from '@nestjs/common';
 import {User} from "./user.entity";
 import {FilterOptions} from "../filters/filter.options";
 import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {UsersService} from "./users.service";
 import {UpdateUserPersonalDto} from "./dto/updateUserPersonal.dto";
+import {UpdateUserRoleDto} from "./dto/updateUserRole.dto";
+import {UpdateUserSiteInformationDto} from "./dto/updateUserSiteInformation.dto";
+import {UpdateUserPlaylistsDto} from "./dto/updateUserPlaylists.dto";
+import {UpdateUserArtistDto} from "./dto/updateUserArtist.dto";
+import {UserArtist} from "../userArtist/userArtist.entity";
 
 
 @Controller("users")
@@ -23,13 +28,64 @@ export class UsersController {
     }
     
     @Post('updateUserPersonal')
-    async updateUser(@Body() dto: UpdateUserPersonalDto){
+    @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    async updateUserPersonal(@Body() dto: UpdateUserPersonalDto){
         return await this.userService.updateUserPersonal(dto)
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
+    }
+
+    @Post('updateUserRole')
+    @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    async updateUserRole(@Body() dto: UpdateUserRoleDto){
+        return await this.userService.updateUserRole(dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+    }
+
+    @Post('updateUserSiteInformation')
+    @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    async updateUserSiteInformation(@Body() dto: UpdateUserSiteInformationDto){
+        return await this.userService.updateUserSiteInformation(dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+    }
+
+    @Post('updateUserPlaylists')
+    @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    async updateUserPlaylists(@Body() dto: UpdateUserPlaylistsDto){
+        return await this.userService.updateUserPlaylists(dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+    }
+
+    @Post('updateUserArtist')
+    @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    async updateUserArtist(@Body() dto: UpdateUserArtistDto){
+       
+       const userArtist = UserArtist.create({
+           artist: {id: 1}, 
+           user: {id: 13}
+       });
+        await UserArtist.save(userArtist);
+    /*    return await this.userService.updateUserArtist(dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });*/
     }
 }
 

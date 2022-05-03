@@ -1,3 +1,6 @@
-﻿export class IdDto {
-    id: number;
+﻿import {IsDefined} from "class-validator";
+
+export class IdDto {
+   @IsDefined()
+   id: number;
 }
