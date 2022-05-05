@@ -3,12 +3,15 @@
 using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Settings;
+using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
 using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 #endregion
 
@@ -22,14 +25,17 @@ public class ProfileController : Controller
     private readonly IAvatarService _avatarService;
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
+    private readonly SharedSettings _settings;
 
     public ProfileController(UserManager<Core.Users.User> userManager,
-                             IMapper mapper, IAvatarService avatarService, IFormFileSaver formFileSaver)
+                             IMapper mapper, IAvatarService avatarService, IFormFileSaver formFileSaver,
+                             IOptions<SharedSettings> settings)
     {
         _userManager = userManager;
         _mapper = mapper;
         _avatarService = avatarService;
         _formFileSaver = formFileSaver;
+        _settings = settings.Value;
     }
 
     [HttpGet("{userName?}")]
@@ -98,6 +104,10 @@ public class ProfileController : Controller
 
         if (model.Avatar is not null)
         {
+            if (user.AvatarPath is not null)
+            {
+                FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, user.AvatarPath));
+            }
             user.AvatarPath = await _formFileSaver.SaveWithRandomNameAsync(model.Avatar);
         }
 

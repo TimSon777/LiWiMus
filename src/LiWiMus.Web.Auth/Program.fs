@@ -7,6 +7,8 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open LiWiMus.Web.Auth.Extensions.ServicesExtensions
+open LiWiMus.Web.Shared.Extensions
+
 
 module Program =
     let exitCode = 0
@@ -20,6 +22,8 @@ module Program =
         let services = builder.Services
         let environment = builder.Environment
         let configuration = builder.Configuration
+
+        builder.Configuration.AddSharedSettings(builder.Environment)
 
         services.AddControllers()
 

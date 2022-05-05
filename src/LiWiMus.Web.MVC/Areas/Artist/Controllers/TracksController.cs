@@ -30,19 +30,19 @@ public class TracksController : Controller
     private readonly IRepository<Album> _albumsRepository;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
-    private readonly IOptions<DataSettings> _dataSettings;
+    private readonly SharedSettings _settings;
     private readonly IRepository<Genre> _genresRepository;
     private readonly IMapper _mapper;
     private readonly IRepository<Track> _tracksRepository;
 
     public TracksController(IRepository<Core.Artists.Artist> artistRepository, IRepository<Track> tracksRepository,
-                            IOptions<DataSettings> dataSettings, IAuthorizationService authorizationService,
+                            IOptions<SharedSettings> settings, IAuthorizationService authorizationService,
                             IMapper mapper, IRepository<Album> albumsRepository, IRepository<Genre> genresRepository,
                             IFormFileSaver formFileSaver)
     {
         _artistRepository = artistRepository;
         _tracksRepository = tracksRepository;
-        _dataSettings = dataSettings;
+        _settings = settings.Value;
         _authorizationService = authorizationService;
         _mapper = mapper;
         _albumsRepository = albumsRepository;
@@ -128,7 +128,7 @@ public class TracksController : Controller
         _mapper.Map(viewModel, track);
         if (viewModel.File is not null)
         {
-            FileHelper.DeleteIfExists(track.PathToFile);
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.PathToFile));
             track.PathToFile = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
         }
 
@@ -197,7 +197,7 @@ public class TracksController : Controller
             return Forbid();
         }
 
-        FileHelper.DeleteIfExists(track.PathToFile);
+        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.PathToFile));
         await _tracksRepository.DeleteAsync(track);
         return FormResult.CreateSuccessResult("Removed successfully");
     }

@@ -5,6 +5,7 @@ using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Artists.Specifications;
+using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
@@ -13,6 +14,7 @@ using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 #endregion
 
@@ -27,17 +29,19 @@ public class HomeController : Controller
     private readonly IAuthorizationService _authorizationService;
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
+    private readonly SharedSettings _settings;
 
     public HomeController(UserManager<Core.Users.User> userManager,
                           IAuthorizationService authorizationService,
                           IMapper mapper, IRepository<Core.Artists.Artist> artistRepository,
-                          IFormFileSaver formFileSaver)
+                          IFormFileSaver formFileSaver, IOptions<SharedSettings> settings)
     {
         _userManager = userManager;
         _authorizationService = authorizationService;
         _mapper = mapper;
         _artistRepository = artistRepository;
         _formFileSaver = formFileSaver;
+        _settings = settings.Value;
     }
 
     [HttpGet("")]
@@ -93,7 +97,7 @@ public class HomeController : Controller
         _mapper.Map(viewModel, artist);
         if (viewModel.Photo is not null)
         {
-            FileHelper.DeleteIfExists(artist.PhotoPath);
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, artist.PhotoPath));
             artist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
         }
 

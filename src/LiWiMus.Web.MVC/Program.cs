@@ -13,7 +13,6 @@ using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -29,6 +28,7 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
            containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath))
                            .RegisterModule(new ConfigurationWebModule()));
 
+configuration.AddSharedSettings(builder.Environment);
 services.AddSharedServices();
 services.ConfigureSettings(configuration);
 Dependencies.ConfigureServices(configuration, services);
@@ -106,11 +106,8 @@ app.UseHttpsRedirection();
 app.UseWebOptimizer();
 
 app.UseStaticFiles();
-app.UseStaticFiles(new StaticFileOptions
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(builder.Environment.ContentRootPath, "Data")),
-    RequestPath = "/Data"
-});
+
+app.UseSharedStaticFiles(builder.Environment);
 
 app.UseRouting();
 

@@ -14,12 +14,12 @@ public class AvatarService : IAvatarService
     private readonly IHttpClientFactory _httpClientFactory;
     private const string ApiUriFormat = "https://avatars.dicebear.com/api/adventurer/{0}.svg?background=%23EF6817";
 
-    private readonly DataSettings _dataSettings;
+    private readonly SharedSettings _settings;
 
-    public AvatarService(IOptions<DataSettings> dataSettingsOptions, IHttpClientFactory httpClientFactory)
+    public AvatarService(IOptions<SharedSettings> settingsOptions, IHttpClientFactory httpClientFactory)
     {
         _httpClientFactory = httpClientFactory;
-        _dataSettings = dataSettingsOptions.Value;
+        _settings = settingsOptions.Value;
     }
 
     private async Task<byte[]> GetRandomAvatarAsync()
@@ -39,17 +39,32 @@ public class AvatarService : IAvatarService
     {
         RemoveAvatarIfExists(user);
         var avatar = await GetRandomAvatarAsync();
-        user.AvatarPath = Path.Combine(_dataSettings.PicturesDirectory, user.UserName + ".svg");
-        await File.WriteAllBytesAsync(user.AvatarPath, avatar);
+
+        var fakeDirectory = _settings.DataSettings.PicturesDirectory;
+
+        var fileName = Path.ChangeExtension(Path.GetRandomFileName(), "svg");
+
+        var fakePath = Path.Combine(fakeDirectory, fileName);
+        var realPath = GetRealPath(fakePath);
+
+        user.AvatarPath = Path.Combine(fakePath);
+        await File.WriteAllBytesAsync(realPath, avatar);
     }
 
-    private static void RemoveAvatarIfExists(User user)
+    private string GetRealPath(string fakePath)
+    {
+        return Path.Combine(_settings.SharedDirectory, fakePath);
+    }
+
+    private void RemoveAvatarIfExists(User user)
     {
         if (user.AvatarPath is null) return;
 
-        if (File.Exists(user.AvatarPath))
+        var realPath = GetRealPath(user.AvatarPath);
+
+        if (File.Exists(realPath))
         {
-            File.Delete(user.AvatarPath);
+            File.Delete(realPath);
         }
     }
 }

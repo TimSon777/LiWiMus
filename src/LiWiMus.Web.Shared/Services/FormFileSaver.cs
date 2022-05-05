@@ -11,27 +11,30 @@ namespace LiWiMus.Web.Shared.Services;
 
 public class FormFileSaver : IFormFileSaver
 {
-    private readonly DataSettings _dataSettings;
+    private readonly SharedSettings _settings;
 
-    public FormFileSaver(IOptions<DataSettings> dataSettings)
+    public FormFileSaver(IOptions<SharedSettings> settings)
     {
-        _dataSettings = dataSettings.Value;
+        _settings = settings.Value;
     }
 
     public async Task<string> SaveWithRandomNameAsync(IFormFile file, DataType type)
     {
-        var directory = type switch
+        var fakeDirectory = type switch
         {
-            DataType.Music => _dataSettings.MusicDirectory,
-            DataType.Picture => _dataSettings.PicturesDirectory,
+            DataType.Music => _settings.DataSettings.MusicDirectory,
+            DataType.Picture => _settings.DataSettings.PicturesDirectory,
             _ => throw new ArgumentOutOfRangeException(nameof(type))
         };
 
-        var newFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.FileName));
-        var newPath = Path.Combine(directory, newFileName);
+        var realDirectory = Path.Combine(_settings.SharedDirectory, fakeDirectory);
 
-        await SaveAsync(file, newPath);
-        return newPath;
+        var fileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.FileName));
+        var realPath = Path.Combine(realDirectory, fileName);
+        var fakePath = Path.Combine(fakeDirectory, fileName);
+
+        await SaveAsync(file, realPath);
+        return fakePath;
     }
 
     private static async Task SaveAsync(IFormFile file, string path)

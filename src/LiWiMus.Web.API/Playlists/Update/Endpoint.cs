@@ -3,10 +3,12 @@
 using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Playlists;
+using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
+using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 #endregion
@@ -19,14 +21,16 @@ public class Endpoint : IEndpoint<IResult, Request>
     private readonly IMapper _mapper;
     private readonly IRepository<Playlist> _repository;
     private readonly IValidator<Request> _validator;
+    private readonly SharedSettings _settings;
 
     public Endpoint(IValidator<Request> validator, IRepository<Playlist> repository, IMapper mapper,
-                    IFormFileSaver formFileSaver)
+                    IFormFileSaver formFileSaver, IOptions<SharedSettings> settings)
     {
         _validator = validator;
         _repository = repository;
         _mapper = mapper;
         _formFileSaver = formFileSaver;
+        _settings = settings.Value;
     }
 
     public async Task<IResult> HandleAsync(Request request)
@@ -47,7 +51,7 @@ public class Endpoint : IEndpoint<IResult, Request>
         _mapper.Map(request, playlist);
         if (playlist.PhotoPath is not null)
         {
-            FileHelper.DeleteIfExists(playlist.PhotoPath);
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoPath));
         }
 
         playlist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(request.Photo);

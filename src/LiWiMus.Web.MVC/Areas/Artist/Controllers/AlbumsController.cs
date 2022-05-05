@@ -5,6 +5,7 @@ using FormHelper;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists.Specifications;
+using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
@@ -12,6 +13,7 @@ using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 #endregion
 
@@ -26,16 +28,19 @@ public class AlbumsController : Controller
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
     private readonly IMapper _mapper;
+    private readonly SharedSettings _settings;
 
     public AlbumsController(IRepository<Album> albumsRepository,
                             IRepository<Core.Artists.Artist> artistRepository,
-                            IAuthorizationService authorizationService, IMapper mapper, IFormFileSaver formFileSaver)
+                            IAuthorizationService authorizationService, IMapper mapper, IFormFileSaver formFileSaver,
+                            IOptions<SharedSettings> settings)
     {
         _albumsRepository = albumsRepository;
         _artistRepository = artistRepository;
         _authorizationService = authorizationService;
         _mapper = mapper;
         _formFileSaver = formFileSaver;
+        _settings = settings.Value;
     }
 
     [HttpGet("")]
@@ -108,7 +113,7 @@ public class AlbumsController : Controller
         _mapper.Map(viewModel, album);
         if (viewModel.Cover is not null)
         {
-            FileHelper.DeleteIfExists(album.CoverPath);
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverPath));
             album.CoverPath =
                 await _formFileSaver.SaveWithRandomNameAsync(viewModel.Cover);
         }
@@ -174,7 +179,7 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
-        FileHelper.DeleteIfExists(album.CoverPath);
+        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverPath));
         await _albumsRepository.DeleteAsync(album);
         return FormResult.CreateSuccessResult("Removed successfully");
     }

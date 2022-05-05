@@ -1,5 +1,3 @@
-#region
-
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -10,8 +8,6 @@ using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
 
-#endregion
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Host
@@ -19,6 +15,7 @@ builder.Host
        .ConfigureContainer<ContainerBuilder>(containerBuilder =>
            containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath)));
 
+builder.Configuration.AddSharedSettings(builder.Environment);
 Dependencies.ConfigureServices(builder.Configuration, builder.Services);
 builder.Services.AddSharedServices();
 builder.Services.ConfigureSettings(builder.Configuration);
@@ -45,6 +42,8 @@ builder.Services
        });
 
 var app = builder.Build();
+
+app.UseSharedStaticFiles(builder.Environment);
 
 app.UseAuthentication();
 app.UseAuthorization();
