@@ -8,7 +8,7 @@
     <div class="chat">
 
         <button id="delete-chat-@Model.chat.User.UserName"
-                onclick="$('#chat-@Model.chat.User.UserName').remove();">
+                onclick="$('#chat-@Model.chat.User.UserName').remove();" style="display: none"> 
             Delete chat
         </button>
         
@@ -21,7 +21,7 @@
         <div id="@Model.chat.User.UserName">
             @foreach (var message in Model.chat.Messages)
             {
-                <partial name="MessageConsultantPartial" model="@((message, message.Sender.UserName == Model.ownerUserName))"/>
+                <partial name="MessageConsultantPartial" model="@((message, message.Owner.UserName == Model.ownerUserName))"/>
             }
         </div>
 

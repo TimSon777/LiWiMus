@@ -7,6 +7,6 @@
 <div id="user-messages">
     @foreach (var message in Model.chat.Messages)
     {
-        <partial name="MessageUserPartial" model="@((message, message.Sender.UserName == Model.ownerUserName))"/>
+        <partial name="MessageUserPartial" model="@((message, message.Owner.UserName == Model.ownerUserName))"/>
     }
 </div>

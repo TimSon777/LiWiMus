@@ -5,15 +5,6 @@
 
 <button id="btn-close-chat-by-user">Close chat</button>
 
-
-@if (Model is not null)
-{
-    foreach (var message in Model.Messages)
-    {
-        <p>@message.Text</p>
-    }
-}
-
 <div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center">
     <div class="" id="chat" style="height: 100%"></div>
     <div class="textarea-send-btn" style="height: 100%">

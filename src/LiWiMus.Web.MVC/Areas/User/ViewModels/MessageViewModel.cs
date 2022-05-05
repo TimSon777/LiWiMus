@@ -2,6 +2,6 @@
 
 public class MessageViewModel
 {
-    public UserChatViewModel Sender { get; set; }
+    public UserChatViewModel Owner { get; set; }
     public string Text { get; set; }
 }

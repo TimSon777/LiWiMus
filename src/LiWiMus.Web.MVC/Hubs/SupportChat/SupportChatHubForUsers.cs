@@ -3,10 +3,10 @@ using LiWiMus.Core.Chats;
 using LiWiMus.Core.Chats.Enums;
 using LiWiMus.Core.Chats.Specifications;
 using LiWiMus.Core.Messages;
+using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Extensions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LiWiMus.Web.MVC.Hubs.SupportChat;
@@ -32,7 +32,7 @@ public partial class SupportChatHub : Hub
         
         return Result.Success();
     }
-
+    
     private async Task ConnectUserWithExistChat(User user, Chat chat)
     {
         var consultant = chat.ConsultantConnectionId is null
@@ -48,7 +48,8 @@ public partial class SupportChatHub : Hub
 
         chat.UserConnectionId = Context.ConnectionId;
         await _chatRepository.SaveChangesAsync();
-        await EstablishConnectionWhenConnectionsNotNull(user.UserName, consultant?.ConnectionId, Context.ConnectionId);
+        await EstablishConnectionWhenConnectionsNotNull(user.UserName, 
+            consultant?.ConnectionId, Context.ConnectionId);
     }
 
     private async Task ConnectUserWithoutExistChat(User user)
@@ -62,11 +63,19 @@ public partial class SupportChatHub : Hub
             ConsultantConnectionId = consultant?.ConnectionId
         };
 
-        consultant?.Chats.Add(chat);
+        if (consultant is null)
+        {
+            await _chatRepository.AddAsync(chat);
+        }
+        else
+        {
+            consultant.Chats.Add(chat);
+        }
 
         await _chatRepository.SaveChangesAsync();
 
-        await EstablishConnectionWhenConnectionsNotNull(user.UserName, consultant?.ConnectionId, Context.ConnectionId);
+        await EstablishConnectionWhenConnectionsNotNull(user.UserName, 
+            consultant?.ConnectionId, Context.ConnectionId);
     }
 
     public async Task ConnectUser()
@@ -101,7 +110,7 @@ public partial class SupportChatHub : Hub
         var message = await _messageRepository.AddAsync(new Message
         {
             Text = text,
-            Sender = user,
+            Owner = user,
             Chat = chat
         });
         

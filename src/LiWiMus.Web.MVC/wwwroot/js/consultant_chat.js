@@ -21,8 +21,15 @@ async function refreshHandlerAsync(connection, userName) {
 
     $(`.btn-close-chat-by-consultant-${userName}`).click(async function () {
         const userName = $(this).val();
-        await connection.invoke("CloseChatByConsultant", userName)
-            .catch(error => alert(error));
+        await connection
+            .invoke("CloseChatByConsultant", userName)
+            .then(result => {
+                if (result.isSuccess) {
+                    alert("Chat was closed");
+                } else {
+                    alert(result.error);
+                }
+            });
         
         removeChatBy(userName);
     })
@@ -97,8 +104,6 @@ async function displayNewChat(connection) {
                     alert(`Status code: ${jqXHR} with message ${exception}`);
                 }
             });
-
-
         }
 
         $(`#delete-chat-${userName}`).hide();

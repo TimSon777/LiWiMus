@@ -3,5 +3,5 @@
 <p>
     @(Model.isForOwner 
         ? "Your message: " + Model.message.Text 
-        : $"{Model.message.Sender.UserName} message: " + Model.message.Text)
+        : $"{Model.message.Owner.UserName} message: " + Model.message.Text)
 </p>

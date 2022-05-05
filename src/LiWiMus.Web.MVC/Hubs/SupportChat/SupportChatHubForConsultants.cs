@@ -2,9 +2,6 @@
 using LiWiMus.Core.Messages;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
-using LiWiMus.Core.Permissions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
 namespace LiWiMus.Web.MVC.Hubs.SupportChat;
@@ -53,7 +50,7 @@ public partial class SupportChatHub
         {
             Chat = chat,
             Text = text,
-            Sender = user
+            Owner = user
         });
 
         await _messageRepository.SaveChangesAsync();
@@ -108,16 +105,19 @@ public partial class SupportChatHub
 
             if (newConsultant is null)
             {
-                return;
+                await SendMessageToUser(chat.UserConnectionId,
+                    "Your consultant leave chat, but we dont have available consultant for you");
+                continue;
             }
 
             chat.ConsultantConnectionId = newConsultant.ConnectionId;
             newConsultant.Chats.Add(chat);
             
             await _chatRepository.SaveChangesAsync();
-            await _onlineConsultantsRepository.SaveChangesAsync();
             await EstablishConnection(chat.User.UserName, newConsultant.ConnectionId, chat.UserConnectionId);
             await Clients.Group(chat.User.UserName).SendAsync(GetNewUserName, user.UserName);
+            await SendMessageToUser(chat.UserConnectionId,
+                "Your consultant leave chat, we found for you new consultant");
         }
     }
 }

@@ -33,8 +33,13 @@ async function sendAndDisplayMessageAsync(connection) {
 async function closeChatAsync(connection) {
     $('#btn-close-chat-by-user').click(async () => {
         await connection.invoke("CloseChatByUser")
-            .then(message => alert(message))
-            .catch(error => alert(error));
+            .then(result => {
+                if (result.isSuccess) {
+                    alert("Chat was closed");
+                } else {
+                    alert(result.error);
+                }
+            });
     })
 }
 
