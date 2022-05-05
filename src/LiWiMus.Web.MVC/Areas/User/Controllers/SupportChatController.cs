@@ -65,7 +65,7 @@ public class SupportChatController : Controller
         var user = await _userManager.GetUserAsync(User);
         var consultant = await _repositoryConsultant.GetBySpecAsync(new ConsultantByUser(user));
 
-        var chat = consultant?.Chats.FirstOrDefault(ch => ch.User.UserName == userName);
+        var chat = consultant?.Chats.FirstOrDefault(ch => ch.User.UserName == userName && ch.Status == ChatStatus.Opened);
 
         if (chat is null)
         {

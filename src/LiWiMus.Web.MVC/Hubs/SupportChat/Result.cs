@@ -13,7 +13,6 @@ public class Success<T> : Result
 
 public class Success : Result
 {
-
     public Success()
     {
         IsSuccess = true;

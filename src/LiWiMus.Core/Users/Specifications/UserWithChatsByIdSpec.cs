@@ -9,6 +9,7 @@ public sealed class UserWithChatsByIdSpec : Specification<User>, ISingleResultSp
         Query
             .Where(u => u.Id == id)
             .Include(u => u.UserChats)
-            .ThenInclude(c => c.Messages);
+            .ThenInclude(c => c.Messages)
+            .ThenInclude(m => m.Owner);
     }
 }

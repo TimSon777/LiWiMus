@@ -8,6 +8,6 @@ public sealed class MessageWithSenderByIdSpec : Specification<Message>, ISingleR
     {
         Query
             .Where(m => m.Id == id)
-            .Include(m => m.Sender);
+            .Include(m => m.Owner);
     }
 }
