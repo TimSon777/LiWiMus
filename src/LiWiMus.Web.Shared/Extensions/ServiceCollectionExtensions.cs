@@ -31,6 +31,7 @@ public static class ServiceCollectionExtensions
             var relativeDataDir = PathHelper.ReplaceWithDirectorySeparatorChar(settings.DataSettings.DataDirectory);
             settings.DataSettings.MusicDirectory = Path.Combine(relativeDataDir, DataSettings.MusicDirectoryName);
             settings.DataSettings.PicturesDirectory = Path.Combine(relativeDataDir, DataSettings.PicturesDirectoryName);
+            settings.CreateDirectories();
         });
 
         var settings = services.BuildServiceProvider().GetRequiredService<IOptions<SharedSettings>>().Value;
@@ -41,7 +42,6 @@ public static class ServiceCollectionExtensions
             dataSettings.MusicDirectory = settings.DataSettings.MusicDirectory;
             dataSettings.PicturesDirectory = settings.DataSettings.PicturesDirectory;
         });
-        services.PostConfigure<DataSettings>(dataSettings => dataSettings.CreateDirectories());
 
         services.Configure<MailSettings>(configuration.GetSection(MailSettings.ConfigName));
 
