@@ -175,10 +175,9 @@ public class TracksController : Controller
         track = await _tracksRepository.AddAsync(track);
 
         return FormResult.CreateSuccessResult("Created successfully",
-            Url.Action("Details", "Tracks", new {Area = "Artist", track.Id}));
+            Url.Action("Details", "Tracks", new {Area = "Artist", track.Id, artistId}));
     }
-
-
+    
     [HttpDelete("{id:int}")]
     [FormValidator]
     public async Task<IActionResult> Delete(int artistId, int id)
