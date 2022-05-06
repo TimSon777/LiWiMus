@@ -1,0 +1,32 @@
+@model LiWiMus.Web.MVC.Areas.Artist.ViewModels.CreateTrackViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create track</h1>
+
+<form method="post" enctype="multipart/form-data"
+      asp-formhelper="true"
+      asp-action="Create">
+    <div class="mb-3">
+        <label asp-for="AlbumId" class="form-label">Album Id</label>
+        <input type="number" class="form-control" asp-for="AlbumId">
+        <span asp-validation-for="AlbumId"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Name</label>
+        <input type="text" class="form-control" asp-for="Name">
+        <span asp-validation-for="Name"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PublishedAt" class="form-label">Published At</label>
+        <input type="date" class="form-control" asp-for="PublishedAt"/>
+        <span asp-validation-for="PublishedAt"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="File" class="form-label">File</label>
+        <input asp-for="File" class="form-control" type="file">
+        <span asp-validation-for="File"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

@@ -1,7 +1,54 @@
 ﻿@model LiWiMus.Core.Albums.Album
-
 @{
     ViewData["Title"] = "Details";
+    Layout = "_LayoutSidebar";
 }
 
-<h1>Details</h1>
+@section Header{
+    <partial name="Partials/_PlainHeaderPartial"/>
+}
+
+<div class="p-0">
+    <div class="editor-wrap">
+        <div>
+            <h2 class="your-profile-header">
+                Your album profile
+            </h2>
+            <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Tracks" asp-action="Index">
+                Manage tracks
+            </a>
+        </div>
+
+        <section class="edit-inputs-group">
+            <div>
+                <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.CoverPath" alt="album cover">
+            </div>
+            <form method="put"
+                  enctype="multipart/form-data"
+                  asp-formhelper="true"
+                  asp-action="Update">
+                <input type="text" hidden name="Id" value="@Model.Id">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                    <div class="label-input">
+                        <label for="Name" class="form-label">Title</label>
+                        <input id="Name" name="Name" type="text" class="form-control" value="@Model.Title">
+                        <span data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="label-input">
+                        <label for="About" class="form-label">Published At</label>
+                        <input id="About" name="About" type="date" class="form-control" value="@Model.PublishedAt">
+                        <span data-valmsg-for="About" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="label-input">
+                        <label for="Cover" class="form-label">Change cover</label>
+                        <input name="Cover" class="form-control" type="file">
+                        <span data-valmsg-for="Cover" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="" style="text-align: center">
+                        <button class="edit-button" type="submit" id="btn-edit-profile-info">Edit</button>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+</div>

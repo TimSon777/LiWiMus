@@ -2,13 +2,25 @@
 
 @{
     ViewData["Title"] = "Albums";
+    Layout = "_LayoutSidebar";
 }
-
-<ol>
-    @foreach (var album in Model)
-    {
-        <li>
-            <a asp-area="Artist" asp-controller="Albums" asp-action="Details" asp-route-id="@album.Id">@album.Title</a>
-        </li>
-    }
-</ol>
+<div class="p-0">
+    <div class="editor-wrap">
+        <div>
+            <h2 class="your-profile-header">
+                Your albums
+            </h2>
+        </div>
+        <div style="margin-left: 3%">
+            <a class="text-link" style="font-size: larger" asp-area="Artist" asp-controller="Albums" asp-action="Create">Create new album</a>
+        </div>
+        <ol style="margin: 2% 0 0 2%">
+            @foreach (var album in Model)
+            {
+                <li>
+                    <a class="text-link" asp-area="Artist" asp-controller="Albums" asp-action="Details" asp-route-id="@album.Id">@album.Title</a>
+                </li>
+            }
+        </ol>
+    </div>
+</div>

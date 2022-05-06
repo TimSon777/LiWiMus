@@ -17,22 +17,23 @@
 
 <div class="p-0">
     <div class="editor-wrap">
-
         <div>
             <h2 class="your-profile-header">
                 Your artist profile
             </h2>
+            <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Albums" asp-action="Index">
+                Manage albums
+            </a>
         </div>
 
         <section class="edit-inputs-group">
             <div>
                 <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.PhotoPath" alt="artist photo">
             </div>
-            <form
-                method="put"
-                enctype="multipart/form-data"
-                asp-formhelper="true"
-                asp-action="Update">
+            <form method="put"
+                  enctype="multipart/form-data"
+                  asp-formhelper="true"
+                  asp-action="Update">
                 <input type="text" hidden name="Id" value="@Model.Id">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
@@ -40,24 +41,19 @@
                         <input id="Name" name="Name" type="text" class="form-control" value="@Model.Name">
                         <span data-valmsg-for="Name" data-valmsg-replace="true"></span>
                     </div>
-
                     <div class="label-input">
                         <label for="About" class="form-label">About</label>
                         <input id="About" name="About" type="text" class="form-control" value="@Model.About">
                         <span data-valmsg-for="About" data-valmsg-replace="true"></span>
                     </div>
-
-                    <div class="mb-3">
-                        <label for="Photo" class="form-label">Photo</label>
-                        <input id="Photo" name="Photo" type="file">
+                    <div class="label-input">
+                        <label for="Photo" class="form-label">Change photo</label>
+                        <input name="Photo" class="form-control" type="file">
                         <span data-valmsg-for="Photo" data-valmsg-replace="true"></span>
                     </div>
                     <div class="" style="text-align: center">
                         <button class="edit-button" type="submit" id="btn-edit-profile-info">Edit</button>
                     </div>
-                    @*
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                *@
                 </div>
             </form>
         </section>
