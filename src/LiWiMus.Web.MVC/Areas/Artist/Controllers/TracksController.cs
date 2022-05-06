@@ -66,7 +66,7 @@ public class TracksController : Controller
             return Forbid();
         }
 
-        return View(artist.Tracks);
+        return View(artist.Tracks.ToList());
     }
 
     [HttpGet("{id:int}")]

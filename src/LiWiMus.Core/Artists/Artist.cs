@@ -9,8 +9,8 @@ namespace LiWiMus.Core.Artists;
 
 public class Artist : BaseEntity, IResource.WithMultipleOwners<User>
 {
-    public List<UserArtist> UserArtists { get; set; } = new();
-    public List<User> Owners { get; set; } = new();
+    public virtual ICollection<UserArtist> UserArtists { get; set; } = null!;
+    public virtual ICollection<User> Owners { get; set; } = null!;
 
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
@@ -21,7 +21,7 @@ public class Artist : BaseEntity, IResource.WithMultipleOwners<User>
 
     public string PhotoPath { get; set; } = null!;
 
-    public List<Track> Tracks { get; set; } = new();
-    public List<LikedArtist> Subscribers { get; set; } = new();
-    public List<Album> Albums { get; set; } = new();
+    public virtual ICollection<Track> Tracks { get; set; } = null!;
+    public virtual ICollection<LikedArtist> Subscribers { get; set; } = null!;
+    public virtual ICollection<Album> Albums { get; set; } = null!;
 }

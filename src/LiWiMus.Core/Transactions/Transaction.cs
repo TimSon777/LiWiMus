@@ -4,7 +4,7 @@ namespace LiWiMus.Core.Transactions;
 
 public class Transaction : BaseEntity
 {
-    public User User { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
     public decimal Amount { get; set; }
 
     [StringLength(100)]

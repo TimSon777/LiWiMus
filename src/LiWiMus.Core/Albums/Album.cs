@@ -9,7 +9,6 @@ namespace LiWiMus.Core.Albums;
 
 public class Album : BaseEntity, IResource.WithMultipleOwners<Artist>
 {
-
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
     public string Title { get; set; } = null!;
@@ -17,7 +16,7 @@ public class Album : BaseEntity, IResource.WithMultipleOwners<Artist>
     public DateOnly PublishedAt { get; set; }
     public string CoverPath { get; set; } = null!;
 
-    public List<LikedAlbum> Subscribers { get; set; } = new();
-    public List<Artist> Owners { get; set; } = new();
-    public List<Track> Tracks { get; set; } = new();
+    public virtual ICollection<LikedAlbum> Subscribers { get; set; } = null!;
+    public virtual ICollection<Artist> Owners { get; set; } = null!;
+    public virtual ICollection<Track> Tracks { get; set; } = null!;
 }

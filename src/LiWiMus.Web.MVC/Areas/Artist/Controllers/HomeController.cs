@@ -125,7 +125,7 @@ public class HomeController : Controller
             About = viewModel.About,
             PhotoPath = photoPath
         };
-        artist.UserArtists.Add(new UserArtist {User = user, Artist = artist});
+        artist.UserArtists = new List<UserArtist> {new() {User = user, Artist = artist}};
         artist = await _artistRepository.AddAsync(artist);
 
         return FormResult.CreateSuccessResult("Created successfully",

@@ -58,7 +58,7 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
-        return View(artist.Albums);
+        return View(artist.Albums.ToList());
     }
 
     [HttpGet("{id:int}")]

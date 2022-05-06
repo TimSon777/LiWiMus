@@ -11,10 +11,10 @@ namespace LiWiMus.Core.Tracks;
 
 public class Track : BaseEntity, IResource.WithMultipleOwners<Artist>
 {
-    public List<Artist> Owners { get; set; } = new();
-    public List<Genre> Genres { get; set; } = new();
+    public virtual ICollection<Artist> Owners { get; set; } = null!;
+    public virtual ICollection<Genre> Genres { get; set; } = null!;
 
-    public Album Album { get; set; } = null!;
+    public virtual Album Album { get; set; } = null!;
     
     [StringLength(50, MinimumLength = 5)]
     [RegularExpression(RegularExpressions.DisableTags)]
@@ -23,6 +23,6 @@ public class Track : BaseEntity, IResource.WithMultipleOwners<Artist>
     public DateOnly PublishedAt { get; set; }
     public string PathToFile { get; set; } = null!;
 
-    public List<LikedSong> Subscribers { get; set; } = new();
-    public List<PlaylistTrack> Playlists { get; set; } = new();
+    public virtual List<LikedSong> Subscribers { get; set; } = null!;
+    public virtual List<PlaylistTrack> Playlists { get; set; } = null!;
 }

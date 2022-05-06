@@ -4,8 +4,8 @@ namespace LiWiMus.Core.Plans;
 
 public class UserPlan : IAggregateRoot
 {
-    public User User { get; set; } = null!;
-    public Plan Plan { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
+    public virtual Plan Plan { get; set; } = null!;
 
     public int UserId { get; set; }
     public int PlanId { get; set; }

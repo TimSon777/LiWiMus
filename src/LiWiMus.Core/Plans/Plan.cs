@@ -10,8 +10,8 @@ public class Plan : BaseEntity
     public string Name { get; set; }
     public decimal PricePerMonth { get; set; }
 
-    public List<Permission> Permissions { get; set; } = new();
-    public List<UserPlan> UserPlans { get; set; } = new();
+    public virtual ICollection<Permission> Permissions { get; set; } = null!;
+    public virtual ICollection<UserPlan> UserPlans { get; set; } = null!;
 
     public Plan(string name, decimal pricePerMonth)
     {

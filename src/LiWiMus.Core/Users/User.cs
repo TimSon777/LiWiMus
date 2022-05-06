@@ -2,11 +2,11 @@
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Chats;
 using LiWiMus.Core.Constants;
+using LiWiMus.Core.FollowingUsers;
 using LiWiMus.Core.LikedAlbums;
 using LiWiMus.Core.LikedArtists;
 using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.LikedSongs;
-using LiWiMus.Core.LikedUsers;
 using LiWiMus.Core.Plans;
 using LiWiMus.Core.Users.Enums;
 
@@ -27,22 +27,22 @@ public class User : BaseUserEntity
     public string? Patronymic { get; set; }
     
     public DateOnly? BirthDate { get; set; }
-    public Gender? Gender { get; set; }
+    public virtual Gender? Gender { get; set; }
 
     public decimal Balance { get; set; }
 
     public string? AvatarPath { get; set; }
 
-    public List<UserArtist> UserArtists { get; set; } = new();
-    public List<Artist> Artists { get; set; } = new();
-    
-    public UserPlan UserPlan { get; set; } = null!;
+    public virtual ICollection<UserArtist> UserArtists { get; set; } = null!;
+    public virtual ICollection<Artist> Artists { get; set; } = null!;
 
-    public List<LikedAlbum> LikedAlbums { get; set; } = new();
-    public List<LikedArtist> LikedArtists { get; set; } = new();
-    public List<LikedPlaylist> LikedPlaylists { get; set; } = new();
-    public List<LikedSong> LikedSongs { get; set; } = new();
-    public List<LikedUser> Subscribers { get; set; } = new();
-    public List<LikedUser> LikedUsers { get; set; } = new();
-    public List<Chat> UserChats { get; set; } = new();
+    public virtual UserPlan UserPlan { get; set; } = null!;
+
+    public virtual ICollection<LikedAlbum> LikedAlbums { get; set; } = null!;
+    public virtual ICollection<LikedArtist> LikedArtists { get; set; } = null!;
+    public virtual ICollection<LikedPlaylist> LikedPlaylists { get; set; } = null!;
+    public virtual ICollection<LikedSong> LikedSongs { get; set; } = null!;
+    public virtual ICollection<FollowingUser> Followers { get; set; } = null!;
+    public virtual ICollection<FollowingUser> Following { get; set; } = null!;
+    public virtual ICollection<Chat> UserChats { get; set; } = null!;
 }
