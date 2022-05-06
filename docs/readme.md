@@ -16,15 +16,15 @@
 ## Команды
 * Добавление миграции:
   ```
-  dotnet ef --startup-project ..\LiWiMus.Web\ migrations add <name> -o "Data/Migrations"
+  dotnet ef migrations add <name> -s ..\LiWiMus.Web.MVC\ -o "Data/Migrations"
   ```
 * Удаление последней миграции:
   ```
-  dotnet ef --startup-project ..\LiWiMus.Web\ migrations remove
+  dotnet ef migrations remove -s ..\LiWiMus.Web.MVC\
   ```
 * Обновление бд:
   ```
-  dotnet ef --startup-project ..\LiWiMus.Web\ database update
+  dotnet ef database update -s ..\LiWiMus.Web.MVC\
   ```
   *запускать из папки LiWiMus.Infrastructure* 
   
