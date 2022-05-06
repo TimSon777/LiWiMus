@@ -1,0 +1,12 @@
+﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.Areas.Search.ViewModels.TrackListViewModel>
+
+@{
+    Layout = null;
+}
+
+@foreach (var e in Model)
+{
+    <p>@e.Name</p>
+    <p>@e.Album.Title</p>
+    <p>@e.Owners.First().Name</p>
+}

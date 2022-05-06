@@ -1,0 +1,29 @@
+﻿@using LiWiMus.Web.MVC.Areas.Search.ViewModels
+
+@{
+    Layout = "_Layout";
+}
+
+<section>
+    <form method="get" 
+          asp-action="ShowMore" 
+          id="form-search">
+        <input type="text" name="@nameof(SearchViewModel.Title)">
+        <input type="hidden" name="@nameof(SearchViewModel.Page)" id="input-page-search" value="2">
+    </form>
+</section>
+
+<section>
+    <div id="search-items">
+        @RenderBody()
+    </div>
+</section>
+
+<section>
+    <button form="form-search">Show more</button>
+</section>
+
+@section Scripts
+{
+    <script src="~/js/search.js"></script>
+}

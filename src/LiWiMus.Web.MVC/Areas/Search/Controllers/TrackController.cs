@@ -1,27 +1,50 @@
-﻿using LiWiMus.Core.Permissions;
+﻿using AutoMapper;
+using LiWiMus.Core.Permissions;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.Shared.Extensions;
 
-namespace LiWiMus.Web.MVC.Areas.Music.Controllers;
+namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
-[Area("Music")]
-[ApiController]
-[Route("[area]/[controller]/[action]")]
-public class TrackController : ControllerBase
+[Area("Search")]
+public class TrackController : Controller
 {
     private readonly IAuthorizationService _authorizationService;
     private readonly IWebHostEnvironment _environment;
     private readonly IRepository<Track> _trackRepository;
+    private readonly IMapper _mapper;
 
     public TrackController(IRepository<Track> trackRepository, IWebHostEnvironment environment,
-                           IAuthorizationService authorizationService)
+                           IAuthorizationService authorizationService, IMapper mapper)
     {
         _trackRepository = trackRepository;
         _environment = environment;
         _authorizationService = authorizationService;
+        _mapper = mapper;
+    }
+
+    private async Task<IEnumerable<TrackListViewModel>> GetTracks(SearchViewModel searchVm)
+    {
+        var tracks = await _trackRepository
+            .ListAsync(new TracksByTitleSpec(searchVm.Title, searchVm.Skip, searchVm.Take));
+
+        return _mapper.MapList<Track, TrackListViewModel>(tracks);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        return View(await GetTracks(SearchViewModel.Default));
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
+    {
+        return PartialView("TracksPartial", await GetTracks(searchVm));
     }
 
     [HttpGet]
