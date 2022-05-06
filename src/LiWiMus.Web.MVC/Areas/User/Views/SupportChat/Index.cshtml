@@ -3,17 +3,19 @@
     Layout = "_Layout";
 }
 
-<button id="btn-close-chat-by-user">Close chat</button>
+<button class="btn-send-to-chat m-3" id="btn-close-chat-by-user">Close chat</button>
 
-<div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center">
-    <div class="" id="chat" style="height: 100%"></div>
-    <div class="textarea-send-btn" style="height: 100%">
-        <textarea id="ta-send-to-consultant" cols="30" rows="10"></textarea>
+<div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center; ">
+    <div class="" id="chat" style="height: 68vh; width: 75%; overflow: auto"></div>
+    <div class="textarea-send-btn" style="height: 100%; width: 75%">
+        <textarea class="form-control text-area-custom" id="ta-send-to-consultant" rows="4" style="background: none;"></textarea>
         <div>
-            <button class="btn-send-to-chat" id="btn-send-to-consultant" style="text-align: center">Send</button>
+            <button class="btn-send-to-chat m-3" id="btn-send-to-consultant" style="text-align: center">Send</button>
         </div>
     </div>
 </div>
+
+
 
 @section Scripts
 {

@@ -12,8 +12,13 @@ export class FilterOptionsService {
                 private readonly  paginationService: PaginationService) {
     }
     
-    public GetFindOptionsObject(options : FilterOptions) : any {
+    public GetFindOptionsObject(options : FilterOptions, includes : string[] = null) : any {
         let optionsObj = {};
+        
+        if (includes) {
+            optionsObj['relations'] = includes;
+        }
+        
         optionsObj['where'] = this.filterService
             .GetWhereObject(FilterOptionsService.DefineObjectProperty(options.filters, []));
         

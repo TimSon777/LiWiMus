@@ -6,14 +6,13 @@
 
 <div class="chats" id="chat-@Model.chat.User.UserName">
     <div class="chat">
-
         <button id="delete-chat-@Model.chat.User.UserName"
                 onclick="$('#chat-@Model.chat.User.UserName').remove();" style="display: none"> 
             Delete chat
         </button>
         
         <div class="user-name">
-            <h3>
+            <h3 class="m-2">
                 @Model.chat.User.UserName
             </h3>
         </div>
@@ -24,12 +23,12 @@
                 <partial name="MessageConsultantPartial" model="@((message, message.Owner.UserName == Model.ownerUserName))"/>
             }
         </div>
-
+        
         <div class="send-message">
             <textarea class="ta-send-message-to-user" id="@Model.chat.UserConnectionId"></textarea>
-            <button id="btn-@Model.chat.User.UserName" class="btn-send-to-user" value="@Model.chat.UserConnectionId">Send</button>
+            <button id="btn-@Model.chat.User.UserName" class="btn-send-to-user m-3" value="@Model.chat.UserConnectionId">Send</button>
         </div>
 
-        <button class="btn-close-chat-by-consultant-@Model.chat.User.UserName" value="@Model.chat.User.UserName">Close chat</button>
+        <button class="btn-close-chat-by-consultant-@Model.chat.User.UserName btn-send-to-chat" value="@Model.chat.User.UserName" style="outline: 1px solid red">Close chat</button>
     </div>
 </div>

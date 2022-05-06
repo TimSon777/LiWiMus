@@ -194,3 +194,70 @@ body {
 .textarea-send-btn {
   grid-column: 2/3;
 }
+
+.manage-chat-btns {
+  display: flex; 
+  justify-content: center; 
+  outline: 1px solid white;
+  padding: 20px; 
+  margin: 3% auto 0;
+  border-radius: 10px; 
+  width: fit-content; 
+  background-color: rgba(68,68,68,0.15); 
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.btn-send-to-user {
+  @extend .btn-send-to-chat;
+}
+
+.chat {
+  outline: 1px solid #fff7f7;
+  margin: 20px;
+  max-height: 400px;
+  overflow: auto;
+  padding: 6px;
+  border-radius: 10px;
+  width: fit-content;
+  background-color: rgba(68,68,68,0.15);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  max-width: 100%;
+  color: white;
+}
+
+.send-message {
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap;
+}
+
+.ta-send-message-to-user {
+  width: 100%;
+  background: none;
+}
+
+
+div::-webkit-scrollbar {
+  width: 10px;
+}
+
+div::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: #f9f9fd;
+  border-radius: 10px;
+}
+
+div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: linear-gradient(180deg, #EF6817, #EF6817);
+}
+
+.text-area-custom {
+  background: none;
+  width: 75%;
+}
+
+.textarea-send-btn {
+  display: flex;
+  flex-wrap: wrap;  
+}

@@ -5,12 +5,14 @@
     Layout = "_Layout";
 }
 
-<button class="" id="online">Start work</button>
-<button id="offline">End work</button>
-<button class="" id="refresh-chats">Refresh chats</button>
-<button class="" id="get-offline-chat">Refresh chats</button>
+<div class="row manage-chat-btns">
+    <button class="btn-send-to-chat col-1 m-2" id="online">Start work</button>
+    <button class="btn-send-to-chat col-1 m-2" id="offline">End work</button>
+    <button class="btn-send-to-chat col-1 m-2" id="refresh-chats">Refresh chats</button>
+</div>
+
 <section>
-    <div id="chats"></div>
+    <div id="chats" class="chats row-cols-2"></div>
 </section>
 
 @section Scripts

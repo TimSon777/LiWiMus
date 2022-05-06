@@ -5,6 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import {UsersModule} from "./users/users.module";
+import { ArtistsController } from './artists/artists.controller';
+import { ArtistsModule } from './artists/artists.module';
+import { TracksModule } from './tracks/tracks.module';
 
 @Module({
   imports: [
@@ -13,7 +16,9 @@ import {UsersModule} from "./users/users.module";
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/admin',
     }),
-    UsersModule
+    UsersModule,
+    ArtistsModule,
+    TracksModule
   ],
   controllers: [AppController],
   providers: [AppService],
