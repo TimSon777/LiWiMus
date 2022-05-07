@@ -261,3 +261,51 @@ div::-webkit-scrollbar-thumb {
   display: flex;
   flex-wrap: wrap;  
 }
+
+.track-form-search{
+  position: relative;
+  box-shadow: 0 0 40px rgba(51, 51, 51, .1);
+}
+
+.track-form-search input{
+  height: 50px;
+  text-indent: 25px;
+  border: 2px solid #d6d4d4;
+}
+
+.track-form-search input:focus{
+  box-shadow: none;
+  border: 2px solid $color_1;
+}
+
+.track-information {
+  display: flex;
+  flex-wrap: wrap;
+  border: 1px solid white;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+  background-color: rgb(138 138 138 / 36%);
+}
+
+.track-text {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.track-text p {
+  margin: 0 0 3px;
+}
+
+.track-section {
+  width: max-content;
+  min-width: 50%;
+}
+
+.show-more-button {
+  @extend .edit-button;
+  @media screen {
+    width: 50%;
+  }
+}
