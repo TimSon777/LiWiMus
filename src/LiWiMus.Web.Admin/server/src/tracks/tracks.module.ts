@@ -5,9 +5,10 @@ import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterService} from "../filters/services/filter.service";
 import {SortService} from "../filters/services/sort.service";
 import {PaginationService} from "../pagination/pagination.service";
+import { TracksService } from './tracks.service';
 
 @Module({
   controllers: [TracksController],
-  providers: [FilterOptionsService, FilterService, SortService, PaginationService]
+  providers: [FilterOptionsService, FilterService, SortService, PaginationService, TracksService]
 })
 export class TracksModule {}

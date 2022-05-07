@@ -12,5 +12,5 @@ export class Transaction extends CommonEntity {
     amount: number;
 
     @Column({ name: 'Description' })
-    description: number;
+    description: string;
 }

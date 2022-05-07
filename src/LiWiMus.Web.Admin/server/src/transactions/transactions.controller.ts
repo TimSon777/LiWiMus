@@ -1,19 +1,16 @@
 import {Controller, Get, HttpException, HttpStatus, Query} from '@nestjs/common';
 import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterOptions} from "../filters/filter.options";
-import {Track} from "./track.entity";
+import {Transaction} from "./transaction.entity";
 
-@Controller('tracks')
-export class TracksController {
+@Controller('transactions')
+export class TransactionsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
     @Get('getall')
-    async getTracks(@Query('options') options : FilterOptions)
-        : Promise<Track[]> {
-        return Track.find(
-            //    this.filterOptionsService.GetFindOptionsObject(options, ["genres", "artists", "playlists"])
-            {relations: ["album", "artists", "genres", "playlists"]}
-                )
-
+    async getUsers(@Query('options') options : FilterOptions)
+        : Promise<Transaction[]> {
+        return Transaction.find(
+            this.filterOptionsService.GetFindOptionsObject(options))
             .catch(err => {
                 throw new HttpException({
                     message: err.message

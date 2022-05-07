@@ -51,15 +51,15 @@ export class User extends CommonEntity {
   @OneToMany(() => UserArtist, ua => ua.user)
   userArtists: UserArtist[];
 
-  @OneToMany(() => UserRole, userRole => userRole.user)
+  @OneToMany(() => UserRole, userRole => userRole.user, {onDelete: "CASCADE"})
   userRoles: UserRole[];
 
-  @OneToMany(() => ExternalLogin, externalLogin => externalLogin.user)
+  @OneToMany(() => ExternalLogin, externalLogin => externalLogin.user, {onDelete: "CASCADE"})
   externalLogins: ExternalLogin[];
 
-  @OneToMany(() => Transaction, transaction => transaction.user)
+  @OneToMany(() => Transaction, transaction => transaction.user, {onDelete: "CASCADE"})
   transactions: Transaction[];
 
-  @OneToMany(() => Playlist, playlist => playlist.owner)
+  @OneToMany(() => Playlist, playlist => playlist.owner, {onDelete: "CASCADE"})
   playlists: Playlist[];
 }
