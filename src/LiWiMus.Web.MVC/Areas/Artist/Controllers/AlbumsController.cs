@@ -158,7 +158,7 @@ public class AlbumsController : Controller
         album = await _albumsRepository.AddAsync(album);
 
         return FormResult.CreateSuccessResult("Created successfully",
-            Url.Action("Details", "Albums", new {Area = "Artist", album.Id}));
+            Url.Action("Details", "Albums", new {Area = "Artist", album.Id, artistId}));
     }
 
     [HttpDelete("{id:int}")]
