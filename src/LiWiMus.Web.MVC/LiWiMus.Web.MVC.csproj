@@ -64,4 +64,8 @@
     <ItemGroup>
         <None Remove="Areas\AdminOld\**" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Areas\Music\Views" />
+    </ItemGroup>
 </Project>

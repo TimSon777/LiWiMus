@@ -1,9 +1,9 @@
-﻿namespace LiWiMus.Web.MVC.Areas.Search.ViewModels;
+﻿using LiWiMus.Web.MVC.ViewModels;
+
+namespace LiWiMus.Web.MVC.Areas.Search.ViewModels;
 
 public class TrackListViewModel
 {
-    public string Name { get; set; }
-    public string PathToFile { get; set; }
-    public IEnumerable<ArtistForTrackListViewModel> Owners { get; set; }
-    public AlbumForTrackViewModel Album { get; set; }
+    public IEnumerable<TrackViewModel> Tracks { get; set; }
+    public IEnumerable<PlaylistGeneralInfoViewModel> Playlists { get; set; }
 }

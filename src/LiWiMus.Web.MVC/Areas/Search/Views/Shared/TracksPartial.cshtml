@@ -1,10 +1,10 @@
-﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.Areas.Search.ViewModels.TrackListViewModel>
+﻿@model LiWiMus.Web.MVC.Areas.Search.ViewModels.TrackListViewModel
 
 @{
     Layout = null;
 }
 
-@foreach (var e in Model)
+@foreach (var e in Model.Tracks)
 {
     <div class="track-information m-2 mb-3 p-2">
         <img src="../images/logo.jpg" alt="Track cover." width="60px" height="60px" style="border-radius: 10px"/>
@@ -14,5 +14,7 @@
             <p>@e.Album.Title</p>
         </div>
     </div>
+    
+    <partial name="FormAddingTrackToPlaylist" model="@((e.Id, Model.Playlists))"/>
     
 }

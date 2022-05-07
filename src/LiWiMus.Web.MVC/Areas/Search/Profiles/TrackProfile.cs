@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Albums;
+using LiWiMus.Core.PlaylistTracks;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.MVC.ViewModels;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Profiles;
 
@@ -12,6 +14,7 @@ public class TrackProfile : Profile
     {
         CreateMap<Album, AlbumForTrackViewModel>();
         CreateMap<Core.Artists.Artist, ArtistForTrackListViewModel>();
-        CreateMap<Track, TrackListViewModel>();
+        CreateMap<PlaylistTrack, PlaylistGeneralInfoViewModel>();
+        CreateMap<Track, TrackViewModel>();
     }
 }

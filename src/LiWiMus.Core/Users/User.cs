@@ -8,6 +8,7 @@ using LiWiMus.Core.LikedArtists;
 using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.LikedSongs;
 using LiWiMus.Core.Plans;
+using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Users.Enums;
 
 namespace LiWiMus.Core.Users;
@@ -45,4 +46,5 @@ public class User : BaseUserEntity
     public virtual ICollection<FollowingUser> Followers { get; set; } = null!;
     public virtual ICollection<FollowingUser> Following { get; set; } = null!;
     public virtual ICollection<Chat> UserChats { get; set; } = null!;
+    public virtual ICollection<Playlist> Playlists { get; set; } = null!;
 }

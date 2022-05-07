@@ -1,0 +1,51 @@
+﻿@model LiWiMus.Web.MVC.Areas.Music.ViewModels.PlaylistViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_LayoutSidebar";
+}
+
+<section>
+    <h3>
+        @Model.Name
+    </h3>
+    <a asp-area="User"
+       asp-controller="Profile"
+       asp-action="Index"
+       asp-route-userName="@Model.Owner.UserName">
+        Owner: @Model.Owner.UserName
+    </a>
+    
+    <div>
+        Count Subscribers: @Model.CountSubscribers
+    </div>
+    
+    @foreach (var e in Model.Tracks)
+    {
+        <div>
+            @e.Name
+        </div>
+        
+        <div>
+            <a href="#">@e.Album.Name</a>  
+        </div>
+        
+        <div>
+            @foreach (var genre in e.Genres)
+            {
+                <p>
+                    @genre
+                </p>
+            }
+        </div>
+        
+        <div>
+            @foreach (var owner in e.Owners)
+            {
+                <p>
+                    <a href="#">@owner.Name</a>  
+                </p>
+            }
+        </div>
+    }
+</section>

@@ -1,0 +1,29 @@
+﻿@model LiWiMus.Web.MVC.Areas.User.ViewModels.CreatePlaylistViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+<section>
+    <form asp-formhelper="true" method="post" asp-action="Create" enctype="multipart/form-data">
+        <div>
+            <label asp-for="Name"></label>
+            <input asp-for="Name">
+            <span asp-validation-for="Name"></span>
+        </div>
+        <div>
+            <label asp-for="IsPublic"></label>
+            <input asp-for="IsPublic">
+            <span asp-validation-for="IsPublic"></span>
+        </div>
+        <div>
+            <label asp-for="Picture"></label>
+            <input asp-for="Picture" type="file">
+            <span asp-validation-for="Picture"></span>
+        </div>
+        
+        <div>
+            <button>Create</button>
+        </div>
+    </form>
+</section>
