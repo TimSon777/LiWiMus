@@ -12,3 +12,8 @@
 </form>
 
 <a asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.track.Id" download="@Model.track.Name">Download</a>
+
+<form asp-formhelper="true" asp-area="User" asp-controller="Track" asp-action="Like">
+    <input type="hidden" value="@Model.track.Id" name="trackId">
+    <button>Like</button>
+</form>
