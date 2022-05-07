@@ -8,13 +8,19 @@
     <partial name="Partials/_PlainHeaderPartial"/>
 }
 
+<style>
+    .img-container img {
+      max-width: 100%;
+    }
+</style>
+
 <div class="p-0">
     <div class="editor-wrap">
         <div>
             <h2 class="your-profile-header">
                 Your album profile
             </h2>
-            <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Tracks" asp-action="Index">
+            <a class="text-link your-profile-header" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-area="Artist" asp-controller="Tracks" asp-action="Index">
                 Manage tracks
             </a>
         </div>
@@ -26,7 +32,7 @@
             <form method="put"
                   enctype="multipart/form-data"
                   asp-formhelper="true"
-                  asp-action="Update">
+                  asp-action="Update" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]">
                 <input type="text" hidden name="Id" value="@Model.Id">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
@@ -52,3 +58,8 @@
         </section>
     </div>
 </div>
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js" integrity="sha512-IlZV3863HqEgMeFLVllRjbNOoh8uVj0kgx0aYxgt4rdBABTZCl/h5MfshHD9BrnVs6Rs9yNN7kUQpzhcLkNmHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="/js/update_profile.js"></script>
+}

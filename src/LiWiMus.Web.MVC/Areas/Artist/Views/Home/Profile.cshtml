@@ -14,14 +14,13 @@
     }
 </style>
 
-
 <div class="p-0">
     <div class="editor-wrap">
         <div>
             <h2 class="your-profile-header">
                 Your artist profile
             </h2>
-            <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Albums" asp-action="Index">
+            <a class="text-link your-profile-header" asp-route-artistId="@Model.Id" asp-area="Artist" asp-controller="Albums" asp-action="Index">
                 Manage albums
             </a>
         </div>
