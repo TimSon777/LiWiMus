@@ -20,14 +20,14 @@
         Count Subscribers: @Model.CountSubscribers
     </div>
     
-    @foreach (var e in Model.Tracks)
+    @foreach (var e in Model.Tracks.Select(t => t.Track))
     {
         <div>
             @e.Name
         </div>
         
         <div>
-            <a href="#">@e.Album.Name</a>  
+            <a href="#">@e.Album.Title</a>  
         </div>
         
         <div>

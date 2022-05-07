@@ -4,5 +4,5 @@ namespace LiWiMus.Web.MVC.ViewModels;
 
 public class AlbumGeneralInfoViewModel : HaveId
 {
-    public string Name { get; set; }
+    public string Title { get; set; }
 }

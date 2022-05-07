@@ -10,7 +10,7 @@ public class PlaylistViewModel
     public bool IsPublic { get; set; }
     public string? PhotoPath { get; set; }
 
-    public List<TrackForPlaylistViewModel> Tracks { get; set; } = null!;
+    public List<PlayListTrackViewMode> Tracks { get; set; } = null!;
     public int CountSubscribers { get; set; }
     public bool IsOwner { get; set; }
 }
