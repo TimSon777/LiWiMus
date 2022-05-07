@@ -73,4 +73,9 @@ export class AppController {
   async ua(): Promise<UserArtist[]> {
     return UserArtist.find({relations: ['user', 'artist']});
   }
+
+  @Get('uaa')
+  async aa(): Promise<Track[]> {
+    return Track.find({relations: ['artists']});
+  }
 }
