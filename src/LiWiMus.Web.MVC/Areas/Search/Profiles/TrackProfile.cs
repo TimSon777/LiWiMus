@@ -10,7 +10,6 @@ public class TrackProfile : Profile
 {
     public TrackProfile()
     {
-        CreateMap<Album, AlbumForTrackViewModel>();
         CreateMap<Core.Artists.Artist, ArtistForTrackListViewModel>();
         CreateMap<Track, TrackViewModel>();
     }
