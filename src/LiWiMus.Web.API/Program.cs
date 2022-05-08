@@ -1,10 +1,12 @@
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
 using LiWiMus.Infrastructure;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
+using Microsoft.AspNetCore.Http.Json;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
 
@@ -27,6 +29,12 @@ builder.Services.AddFluentValidation(fv =>
     fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
 builder.Services.AddEndpoints();
+builder.Services.Configure<JsonOptions>(
+    options =>
+    {
+        options.SerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+        options.SerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
+    });
 
 builder.Services.AddAuthentication(options =>
     options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
