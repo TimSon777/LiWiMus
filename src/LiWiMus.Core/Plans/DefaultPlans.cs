@@ -4,15 +4,26 @@ namespace LiWiMus.Core.Plans;
 
 public static class DefaultPlans
 {
-    public static readonly Plan Free = new("Free", decimal.Zero);
-    public static readonly Plan Premium = new("Premium", 100);
+    public const string Free = "Free";
+    public const string Premium = "Premium";
 
-    public static Dictionary<Plan, IEnumerable<string>> GetPlansWithPermissions()
+    public static IEnumerable<Plan> GetAll()
     {
-        return new Dictionary<Plan, IEnumerable<string>>
+        return new List<Plan>
         {
-            [Free] = new List<string> { DefaultPermissions.Track.Read },
-            [Premium] = new List<string> { }
+            new()
+            {
+                Id = 1,
+                Name = Free,
+                PricePerMonth = 0
+            },
+            new()
+            {
+                Id = 2,
+                Name = Premium,
+                PricePerMonth = 100500,
+                Permissions = DefaultPermissions.GetPublic()
+            }
         };
     }
 }

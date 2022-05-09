@@ -14,10 +14,10 @@ public static class DefaultRoles
     public static Dictionary<IdentityRole<int>, List<string>> GetRolesWithPermissions() =>
         new()
         {
-            {Admin, DefaultPermissions.GetAllPermissions()},
+            {Admin, DefaultPermissions.GetAll().Select(p => p.Name).ToList()},
             {Moderator, new List<string>()},
-            {Consultant, new List<string> { DefaultPermissions.Chat.Answer }},
+            {Consultant, new List<string> {DefaultPermissions.Chat.Answer.Name}},
             {Artist, new List<string>()},
-            {User, new List<string> {DefaultPermissions.Chat.Ask}}
+            {User, new List<string> {DefaultPermissions.Chat.Ask.Name}}
         };
 }

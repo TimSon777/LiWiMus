@@ -8,7 +8,7 @@ public static class ConfigurePolicies
 {
     public static void AddPermissionPolicies(this AuthorizationOptions options)
     {
-        var permissionNames = DefaultPermissions.GetAllPermissions();
+        var permissionNames = DefaultPermissions.GetAll().Select(p => p.Name);
 
         foreach (var permissionName in permissionNames)
         {

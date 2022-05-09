@@ -1,9 +1,9 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Permissions;
-using LiWiMus.Core.Plans;
 using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
+using LiWiMus.Infrastructure.Data.Seed;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -28,8 +28,7 @@ public static class ApplicationContextSeed
 
             await roleManager.SeedRolesAsync();
             await SeedAdminAsync(userManager, adminSettings);
-            await SeedPermissionsAsync(applicationContext);
-            await SeedPlansAsync(applicationContext);
+            await applicationContext.SeedPlansAndPermissionsAsync();
         }
         catch (Exception ex)
         {
@@ -87,45 +86,5 @@ public static class ApplicationContextSeed
                 await roleManager.AddClaimAsync(role, new Claim(Permission.ClaimType, permission));
             }
         }
-    }
-
-    private static async Task SeedPermissionsAsync(ApplicationContext context)
-    {
-        var permissions = DefaultPermissions
-                          .GetAllPermissions()
-                          .Where(permission => context.Permissions
-                                                      .FirstOrDefault(p => p.Name == permission) is null)
-                          .Select(p => new Permission(p));
-
-        await context.Permissions.AddRangeAsync(permissions);
-        await context.SaveChangesAsync();
-    }
-
-    private static async Task SeedPlansAsync(ApplicationContext context)
-    {
-        foreach (var (plan, permissionNames) in DefaultPlans.GetPlansWithPermissions())
-        {
-            if (await context.Plans.AnyAsync(p => p.Name == plan.Name))
-            {
-                continue;
-            }
-            
-
-            foreach (var permissionName in permissionNames)
-            {
-                var permission = await context.Permissions.FirstOrDefaultAsync(perm => perm.Name == permissionName);
-                if (permission is null)
-                {
-                    permission = new Permission(permissionName);
-                    await context.Permissions.AddAsync(permission);
-                }
-
-                plan.Permissions.Add(permission);
-            }
-            
-            await context.Plans.AddAsync(plan);
-        }
-
-        await context.SaveChangesAsync();
     }
 }

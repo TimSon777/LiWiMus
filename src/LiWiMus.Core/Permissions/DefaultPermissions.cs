@@ -1,101 +1,110 @@
-﻿using System.Reflection;
-
-namespace LiWiMus.Core.Permissions;
+﻿namespace LiWiMus.Core.Permissions;
 
 public static class DefaultPermissions
 {
-    private static List<string>? _allPermissions;
-
-    public static List<string> GetAllPermissions()
+    public static List<Permission> GetPublic()
     {
-        if (_allPermissions is not null)
+        return new List<Permission>
         {
-            return _allPermissions;
-        }
+            Track.Download.Permission,
+            Track.HighQuality.Permission,
+            Track.WithoutAds.Permission,
+            Playlist.Cover.Permission,
+            Playlist.Private.Permission,
+            Avatar.Upload.Permission
+        };
+    }
 
-        _allPermissions = new List<string>();
-        var type = typeof(DefaultPermissions);
-        var nestedTypes = type.GetNestedTypes();
-        foreach (var nestedType in nestedTypes)
+    public static List<Permission> GetPrivate()
+    {
+        return new List<Permission>
         {
-            var constants =
-                nestedType.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
-                          .Where(fi => fi.IsLiteral && !fi.IsInitOnly)
-                          .Select(x => x.GetRawConstantValue() as string)
-                          .Where(x => !string.IsNullOrEmpty(x));
-            _allPermissions.AddRange(constants!);
-        }
-
-        return _allPermissions;
-    }
-
-    public static class Artist
-    {
-        public const string Create = $"{nameof(Artist)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Artist)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Artist)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Artist)}.{nameof(Delete)}";
-    }
-
-    public static class Album
-    {
-        public const string Create = $"{nameof(Album)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Album)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Album)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Album)}.{nameof(Delete)}";
-    }
-
-    public static class Genre
-    {
-        public const string Create = $"{nameof(Genre)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Genre)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Genre)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Genre)}.{nameof(Delete)}";
-    }
-
-    public static class Playlist
-    {
-        public const string Create = $"{nameof(Playlist)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Playlist)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Playlist)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Playlist)}.{nameof(Delete)}";
-    }
-
-    public static class Role
-    {
-        public const string Create = $"{nameof(Role)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Role)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Role)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Role)}.{nameof(Delete)}";
+            Chat.Answer.Permission,
+            Chat.Ask.Permission,
+            Admin.Access.Permission
+        };
     }
 
     public static class Track
     {
-        public const string Create = $"{nameof(Track)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Track)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Track)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Track)}.{nameof(Delete)}";
+        public static class Download
+        {
+            public static readonly Permission Permission = new(1, Name, Description);
+            public const string Name = $"{nameof(Track)}.{nameof(Download)}";
+            public const string Description = "Download songs";
+        }
+
+        public static class WithoutAds
+        {
+            public static readonly Permission Permission = new(2, Name, Description);
+            public const string Name = $"{nameof(Track)}.{nameof(WithoutAds)}";
+            public const string Description = "Listen without ads";
+        }
+
+        public static class HighQuality
+        {
+            public static readonly Permission Permission = new(3, Name, Description);
+            public const string Name = $"{nameof(Track)}.{nameof(HighQuality)}";
+            public const string Description = "Listen in high quality";
+        }
     }
 
-    public static class User
+    public static class Playlist
     {
-        public const string Create = $"{nameof(User)}.{nameof(Create)}";
-        public const string Read = $"{nameof(User)}.{nameof(Read)}";
-        public const string Update = $"{nameof(User)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(User)}.{nameof(Delete)}";
+        public static class Private
+        {
+            public static readonly Permission Permission = new(4, Name, Description);
+            public const string Name = $"{nameof(Playlist)}.{nameof(Private)}";
+            public const string Description = "Have private playlists";
+        }
+
+        public static class Cover
+        {
+            public static readonly Permission Permission = new(5, Name, Description);
+            public const string Name = $"{nameof(Playlist)}.{nameof(Cover)}";
+            public const string Description = "Upload cover for playlists";
+        }
     }
 
-    public static class Transaction
+    public static class Avatar
     {
-        public const string Create = $"{nameof(Transaction)}.{nameof(Create)}";
-        public const string Read = $"{nameof(Transaction)}.{nameof(Read)}";
-        public const string Update = $"{nameof(Transaction)}.{nameof(Update)}";
-        public const string Delete = $"{nameof(Transaction)}.{nameof(Delete)}";
+        public static class Upload
+        {
+            public static readonly Permission Permission = new(6, Name, Description);
+            public const string Name = $"{nameof(Avatar)}.{nameof(Upload)}";
+            public const string Description = "Upload your own avatar";
+        }
     }
 
     public static class Chat
     {
-        public const string Ask = $"{nameof(Chat)}.{nameof(Ask)}";
-        public const string Answer = $"{nameof(Chat)}.{nameof(Answer)}";
+        public static class Ask
+        {
+            public static readonly Permission Permission = new(7, Name, Description);
+            public const string Name = $"{nameof(Chat)}.{nameof(Ask)}";
+            public const string Description = "System permission";
+        }
+
+        public static class Answer
+        {
+            public static readonly Permission Permission = new(8, Name, Description);
+            public const string Name = $"{nameof(Chat)}.{nameof(Answer)}";
+            public const string Description = "System permission";
+        }
+    }
+
+    public static class Admin
+    {
+        public static class Access
+        {
+            public static readonly Permission Permission = new(9, Name, Description);
+            public const string Name = $"{nameof(Admin)}.{nameof(Access)}";
+            public const string Description = "System permission";
+        }
+    }
+
+    public static List<Permission> GetAll()
+    {
+        return GetPrivate().Union(GetPublic()).ToList();
     }
 }
