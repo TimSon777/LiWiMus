@@ -1,11 +1,11 @@
 ﻿import {CommonEntity} from "../shared/commonEntity";
-import {Column, Entity, ManyToOne} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToOne} from "typeorm";
 import {User} from "../users/user.entity";
 
 @Entity('transactions')
 export class Transaction extends CommonEntity {
-    @Column({ name: 'UserId', type: 'int' })
     @ManyToOne(() => User, user => user.transactions)
+    @JoinColumn({ name: 'UserId', referencedColumnName: 'id' })
     user: User
 
     @Column({ type: 'decimal', name: 'Amount' })

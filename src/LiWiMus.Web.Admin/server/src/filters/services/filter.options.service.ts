@@ -13,6 +13,9 @@ export class FilterOptionsService {
     }
     
     public GetFindOptionsObject(options : FilterOptions, includes : string[] = null) : any {
+        if (!options) {
+            options = new FilterOptions();
+        }
         let optionsObj = {};
         
         if (includes) {

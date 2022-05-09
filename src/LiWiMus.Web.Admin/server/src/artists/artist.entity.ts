@@ -19,10 +19,18 @@ export class Artist extends CommonEntity {
     userArtists: UserArtist[]
 
     @ManyToMany(() => Album, album => album.artists)
-    @JoinTable({ name: 'albumartist', joinColumn: { name: 'OwnersId' } })
+    @JoinTable({ 
+        name: 'albumartist', 
+        joinColumn: { name: 'OwnersId', referencedColumnName: 'id' },
+        inverseJoinColumn: {name: 'AlbumsId', referencedColumnName: 'id' }
+    })
     albums: Album[];
 
     @ManyToMany(() => Track, track => track.artists)
-    @JoinTable({ name: 'artisttrack', joinColumn: { name: 'OwnersId' } })
+    @JoinTable({ 
+        name: 'artisttrack', 
+        joinColumn: { name: 'OwnersId', referencedColumnName: 'id' },
+        inverseJoinColumn: {name: 'TracksId', referencedColumnName: 'id' }
+    })
     tracks: Track[];
 }

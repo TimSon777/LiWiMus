@@ -8,6 +8,5 @@ export class Genre extends CommonEntity {
     name: string;
     
     @ManyToMany(() => Track, track => track.genres)
-    @JoinTable({ name: 'genretrack', joinColumn: { name: 'GenresId'} })
     tracks: Track[];
 }

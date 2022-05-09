@@ -1,4 +1,4 @@
-﻿import {BaseEntity, Column, Entity, ManyToOne, PrimaryColumn} from "typeorm";
+﻿import {BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from "typeorm";
 import {User} from "../users/user.entity";
 
 @Entity('aspnetuserlogins')
@@ -12,7 +12,7 @@ export class ExternalLogin extends BaseEntity {
     @Column({ name: 'ProviderDisplayName'})
     providerDisplayName: string;
 
-    @Column({ name: 'UserId', type: 'int' })
     @ManyToOne(() => User, user => user.externalLogins)
+    @JoinColumn({ name: 'UserId', referencedColumnName: 'id' })
     user: User;
 }

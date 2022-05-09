@@ -18,6 +18,5 @@ export class Album extends CommonEntity {
     coverPath: string;
 
     @ManyToMany(() => Artist, artist => artist.albums)
-    @JoinTable({ name: 'albumartist', joinColumn: { name: 'AlbumsId' } })
     artists: Artist[];
 }

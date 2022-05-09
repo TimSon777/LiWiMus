@@ -4,8 +4,9 @@ import {Role} from "../roles/role.entity";
 
 @Entity('aspnetuserroles')
 export class UserRole extends BaseEntity {
-    @PrimaryColumn({ name: 'UserId', type: 'int' })
     @ManyToOne(() => User, user => user.userRoles)
+    @PrimaryColumn({ name: 'UserId', type: 'int' })
+    @JoinColumn({ name: 'UserId', referencedColumnName: 'id' })
     user: User;
 
     @PrimaryColumn({ name: 'RoleId', type: 'int' })

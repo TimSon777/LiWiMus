@@ -7,12 +7,16 @@ import {PlaylistTrack} from "../playlistTracks/playlistTrack.entity";
 
 @Entity('tracks')
 export class Track extends CommonEntity {
-    @Column({ name: 'AlbumId', type: 'int' })
     @ManyToOne(() => Album, album => album.tracks)
+    @JoinColumn({ name: 'AlbumId', referencedColumnName: 'id' })
     album: Album
 
     @ManyToMany(() => Genre, genre => genre.tracks)
-    @JoinTable({ name: 'genretrack', joinColumn: { name: 'TracksId' } })
+    @JoinTable({
+        name: 'genretrack',
+        joinColumn: { name: 'TracksId', referencedColumnName: 'id' },
+        inverseJoinColumn: {name: 'GenresId', referencedColumnName: 'id' }
+    })
     genres: Genre[];
     
     @Column({ name: 'Name', length: 50 })
@@ -25,7 +29,6 @@ export class Track extends CommonEntity {
     pathToFile: string;
 
     @ManyToMany(() => Artist, artist => artist.tracks)
-    @JoinColumn({name: 'TracksId'})
     artists: Artist[];
     
     @OneToMany(() => PlaylistTrack, playlistTrack => playlistTrack.track)

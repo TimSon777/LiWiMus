@@ -1,5 +1,5 @@
 ﻿import {CommonEntity} from "../shared/commonEntity";
-import {Column, Entity, ManyToMany, ManyToOne, OneToMany} from "typeorm";
+import {Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany} from "typeorm";
 import {User} from "../users/user.entity";
 import {Track} from "../tracks/track.entity";
 import {PlaylistTrack} from "../playlistTracks/playlistTrack.entity";
@@ -7,7 +7,7 @@ import {PlaylistTrack} from "../playlistTracks/playlistTrack.entity";
 @Entity('playlists')
 export class Playlist extends CommonEntity {
     @ManyToOne(() => User, user => user.playlists)
-    @Column({ name: 'OwnerId', type: 'int' })
+    @JoinColumn({ name: 'OwnerId', referencedColumnName: 'id' })
     owner: User;
 
     @Column({ name: 'Name', length: 50 })

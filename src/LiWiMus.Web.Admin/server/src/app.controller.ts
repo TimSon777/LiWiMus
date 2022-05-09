@@ -9,6 +9,7 @@ import {Artist} from "./artists/artist.entity";
 import {Playlist} from "./playlists/playlist.entity";
 import {serialize} from "v8";
 import {UserArtist} from "./userArtist/userArtist.entity";
+import {MoreThan} from "typeorm";
 
 @Controller()
 export class AppController {
@@ -77,5 +78,49 @@ export class AppController {
   @Get('uaa')
   async aa(): Promise<Track[]> {
     return Track.find({relations: ['artists']});
+  }
+
+  @Get('uaaa')
+  async aaa(): Promise<Artist[]> {
+    return Artist.find({ relations: ["userArtists", "albums", "tracks"]});
+  }
+
+  @Get('uaaaa')
+  async aaaa(): Promise<Artist[]> {
+    // return Artist.find({
+    //   join: {
+    //     alias: 'A',
+    //     leftJoin: {
+    //       userArtists: 'userArtists'
+    //     }
+    //   } 
+    // })
+    return Artist.find({ skip: 0, take:10, relations: ["userArtists", "albums", "tracks"]});
+  }
+
+  @Get('qq')
+  async qq(): Promise<Track[]> {
+    // return Artist.find({
+    //   join: {
+    //     alias: 'A',
+    //     leftJoin: {
+    //       userArtists: 'userArtists'
+    //     }
+    //   } 
+    // })
+    return Track.find({ skip: 0, take:10, relations: ["artists", "album", "genres", "playlists"]});
+  }
+  
+  @Get('q')
+  async q(): Promise<User[]> {
+    // return Artist.find({
+    //   join: {
+    //     alias: 'A',
+    //     leftJoin: {
+    //       userArtists: 'userArtists'
+    //     }
+    //   } 
+    // })
+    return User.find({ skip: 0, take:10, relations: ["userArtists", "externalLogins", "transactions", "playlists"]});
   }
 }
