@@ -3,16 +3,18 @@ using System;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LiWiMus.Infrastructure.Migrations
+namespace LiWiMus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220508232614_Offices")]
+    partial class Offices
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -398,43 +400,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Offices");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Developer main headquarters"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Developer office branch 1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Developer office branch 2"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Developer office branch 3"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            ModifiedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Developer office branch 4"
-                        });
                 });
 
             modelBuilder.Entity("LiWiMus.Core.OnlineConsultants.OnlineConsultant", b =>
@@ -1315,53 +1280,6 @@ namespace LiWiMus.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("OfficeId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    OfficeId = 1,
-                                    BuildingNumber = "35",
-                                    City = "Kazan",
-                                    Country = "Russia",
-                                    Region = "Tatarstan",
-                                    Street = "Kremlyovskaya"
-                                },
-                                new
-                                {
-                                    OfficeId = 2,
-                                    BuildingNumber = "32",
-                                    City = "Kazan",
-                                    Country = "Russia",
-                                    Region = "Tatarstan",
-                                    Street = "Pushkina Street"
-                                },
-                                new
-                                {
-                                    OfficeId = 3,
-                                    BuildingNumber = "18",
-                                    City = "Kazan",
-                                    Country = "Russia",
-                                    Region = "Tatarstan",
-                                    Street = "Derevnya Universiady"
-                                },
-                                new
-                                {
-                                    OfficeId = 4,
-                                    BuildingNumber = "10к4",
-                                    City = "Kazan",
-                                    Country = "Russia",
-                                    Region = "Tatarstan",
-                                    Street = "Professora Kamaya"
-                                },
-                                new
-                                {
-                                    OfficeId = 5,
-                                    BuildingNumber = "8",
-                                    City = "Kazan",
-                                    Country = "Russia",
-                                    Region = "Tatarstan",
-                                    Street = "Chingiza Aytmatova"
-                                });
                         });
 
                     b.OwnsOne("LiWiMus.SharedKernel.Coordinate", "Coordinate", b1 =>
@@ -1381,38 +1299,6 @@ namespace LiWiMus.Infrastructure.Migrations
 
                             b1.WithOwner()
                                 .HasForeignKey("OfficeId");
-
-                            b1.HasData(
-                                new
-                                {
-                                    OfficeId = 1,
-                                    Latitude = 55.792099999999998,
-                                    Longitude = 49.122100000000003
-                                },
-                                new
-                                {
-                                    OfficeId = 2,
-                                    Latitude = 55.792037999999998,
-                                    Longitude = 49.126168
-                                },
-                                new
-                                {
-                                    OfficeId = 3,
-                                    Latitude = 55.742711,
-                                    Longitude = 49.181801
-                                },
-                                new
-                                {
-                                    OfficeId = 4,
-                                    Latitude = 55.748767000000001,
-                                    Longitude = 49.182088
-                                },
-                                new
-                                {
-                                    OfficeId = 5,
-                                    Latitude = 55.764302999999998,
-                                    Longitude = 49.234765000000003
-                                });
                         });
 
                     b.Navigation("Address")
