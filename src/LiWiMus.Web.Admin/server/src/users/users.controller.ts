@@ -9,6 +9,8 @@ import {UpdateUserSiteInformationDto} from "./dto/updateUserSiteInformation.dto"
 import {UpdateUserPlaylistsDto} from "./dto/updateUserPlaylists.dto";
 import {UpdateUserArtistDto} from "./dto/updateUserArtist.dto";
 import {UserArtist} from "../userArtist/userArtist.entity";
+import {Artist} from "../artists/artist.entity";
+import {Track} from "../tracks/track.entity";
 
 
 @Controller("users")
@@ -19,7 +21,7 @@ export class UsersController {
     async getUsers(@Query('options') options : FilterOptions)
         : Promise<User[]> {
         return User.find(
-            this.filterOptionsService.GetFindOptionsObject(options))
+            this.filterOptionsService.GetFindOptionsObject(options, ['userArtists', 'userRoles', 'transactions', 'playlists']))
             .catch(err => {
                 throw new HttpException({
                     message: err.message
@@ -29,7 +31,13 @@ export class UsersController {
 
     @Post('deleteUser')
     async deleteUser(@Body() id: number){
-        await User.delete(id);
+        let user = await User.findOne(id);
+        await User.remove(user)
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
         return true;
     }
     
@@ -81,18 +89,27 @@ export class UsersController {
     @UsePipes(new ValidationPipe({skipMissingProperties: true}))
     async updateUserArtist(@Body() dto: UpdateUserArtistDto){
 
-        return await UserArtist.create({
-                artist: {id: 17,},
-                user: {id: 13}
-            })
-            .save();
-            //await UserArtist.save(userArtist);
-            /*    return await this.userService.updateUserArtist(dto)
-                    .catch(err => {
-                        throw new HttpException({
-                            message: err.message
-                        }, HttpStatus.BAD_REQUEST)
-                    });*/
+        let user = await User.findOne(dto.id);
+        let artists = await Artist.find({
+            where: dto.artistsId.map((id) => ({id} as Artist))
+        });
+        let userArtists: UserArtist[] = [];
+        
+        artists.forEach(artist => {
+            let userArtist = UserArtist.create({user: user, artist: artist});
+            userArtists.push(userArtist)
+        })
+        
+        await UserArtist.save(userArtists);
+        
+        let updatedUser = User.create({id: dto.id, userArtists: userArtists});
+        
+        return await User.save(updatedUser)
+              .catch(err => {
+              throw new HttpException({
+                   message: err.message
+                   }, HttpStatus.BAD_REQUEST)
+              });
         }
     }
 

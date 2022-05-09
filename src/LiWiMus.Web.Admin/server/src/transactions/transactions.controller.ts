@@ -10,7 +10,7 @@ export class TransactionsController {
     async getUsers(@Query('options') options : FilterOptions)
         : Promise<Transaction[]> {
         return Transaction.find(
-            this.filterOptionsService.GetFindOptionsObject(options))
+            this.filterOptionsService.GetFindOptionsObject(options, ['user']))
             .catch(err => {
                 throw new HttpException({
                     message: err.message

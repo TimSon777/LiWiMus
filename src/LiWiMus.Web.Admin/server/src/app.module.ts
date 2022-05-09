@@ -9,6 +9,7 @@ import { ArtistsController } from './artists/artists.controller';
 import { ArtistsModule } from './artists/artists.module';
 import { TracksModule } from './tracks/tracks.module';
 import { TransactionsModule } from './transactions/transactions.module';
+import { GenresModule } from './genres/genres.module';
 
 @Module({
   imports: [
@@ -20,7 +21,8 @@ import { TransactionsModule } from './transactions/transactions.module';
     UsersModule,
     ArtistsModule,
     TracksModule,
-    TransactionsModule
+    TransactionsModule,
+    GenresModule
   ],
   controllers: [AppController],
   providers: [AppService],
