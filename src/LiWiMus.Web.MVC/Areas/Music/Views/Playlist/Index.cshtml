@@ -6,6 +6,13 @@
 }
 
 <section>
+    <form asp-formhelper="true" asp-area="User" asp-controller="Playlist" asp-action="Like">
+        <input type="hidden" value="@Model.Id" name="playlistId">
+        <button>Like</button>
+    </form>
+</section>
+
+<section>
     <h3>
         @Model.Name
     </h3>

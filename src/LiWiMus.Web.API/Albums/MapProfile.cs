@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Users;
-
-namespace LiWiMus.Web.API.Users.Create;
+using LiWiMus.Core.Albums;
+namespace LiWiMus.Web.API.Albums;
 
 // ReSharper disable once UnusedType.Global
 public class MapProfile : Profile
 {
     public MapProfile()
     {
-        CreateMap<Request, User>();
+        CreateMap<Create.Request, Album>();
     }
 }

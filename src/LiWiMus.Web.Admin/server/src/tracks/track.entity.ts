@@ -1,5 +1,5 @@
 ﻿import {CommonEntity} from '../shared/commonEntity';
-import {Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany} from 'typeorm';
+import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany} from 'typeorm';
 import {Album} from "../albums/album.entity";
 import {Genre} from "../genres/genre.entity";
 import {Artist} from "../artists/artist.entity";
@@ -25,7 +25,7 @@ export class Track extends CommonEntity {
     pathToFile: string;
 
     @ManyToMany(() => Artist, artist => artist.tracks)
-    @JoinTable({ name: 'artisttrack', joinColumn: { name: 'TracksId' } })
+    @JoinColumn({name: 'TracksId'})
     artists: Artist[];
     
     @OneToMany(() => PlaylistTrack, playlistTrack => playlistTrack.track)

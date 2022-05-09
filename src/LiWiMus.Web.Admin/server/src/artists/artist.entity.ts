@@ -4,7 +4,7 @@ import {Album} from "../albums/album.entity";
 import {Track} from "../tracks/track.entity";
 import {UserArtist} from "../userArtist/userArtist.entity";
 
-@Entity('Artists')
+@Entity('artists')
 export class Artist extends CommonEntity {
     @Column({ name: 'Name', length: 50 })
     name: string

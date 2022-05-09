@@ -10,7 +10,7 @@ export class ArtistsController {
     async getArtists(@Query('options') options : FilterOptions)
         : Promise<Artist[]> {
         return Artist.find(
-            this.filterOptionsService.GetFindOptionsObject(options))
+            this.filterOptionsService.GetFindOptionsObject(options, ["userArtists", "albums", "tracks" ]))
             
             .catch(err => {
                 throw new HttpException({

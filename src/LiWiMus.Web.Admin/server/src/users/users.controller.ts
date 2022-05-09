@@ -27,6 +27,12 @@ export class UsersController {
             });
     }
 
+    @Post('deleteUser')
+    async deleteUser(@Body() id: number){
+        await User.delete(id);
+        return true;
+    }
+    
     @Post('updateUserPersonal')
     @UsePipes(new ValidationPipe({skipMissingProperties: true}))
     async updateUserPersonal(@Body() dto: UpdateUserPersonalDto){

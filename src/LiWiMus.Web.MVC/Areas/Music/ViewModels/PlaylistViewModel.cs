@@ -1,8 +1,9 @@
-﻿using LiWiMus.Web.MVC.ViewModels;
+﻿using LiWiMus.SharedKernel;
+using LiWiMus.Web.MVC.ViewModels;
 
 namespace LiWiMus.Web.MVC.Areas.Music.ViewModels;
 
-public class PlaylistViewModel
+public class PlaylistViewModel : HaveId
 {
     public UserGeneralInfoViewModel Owner { get; set; } = null!;
     public string Name { get; set; } = null!;

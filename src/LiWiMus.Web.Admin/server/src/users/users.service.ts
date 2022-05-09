@@ -13,7 +13,7 @@ export class UsersService {
             await User.update({id: dto.id}, dto);
             return User.findOne(dto.id)
         }
-
+        
         async updateUserPersonal(dto: UpdateUserPersonalDto){
             return this.updateUser(dto);
         }
