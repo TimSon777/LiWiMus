@@ -3,7 +3,7 @@ using LiWiMus.Web.MVC.ViewModels;
 
 namespace LiWiMus.Web.MVC.Areas.Search.ViewModels;
 
-public class TrackViewModel : HaveId
+public class TrackViewModel : HasId
 {
     public string Name { get; set; }
     public string PathToFile { get; set; }

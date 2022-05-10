@@ -2,7 +2,7 @@
 
 namespace LiWiMus.Web.MVC.ViewModels;
 
-public class UserGeneralInfoViewModel : HaveId
+public class UserGeneralInfoViewModel : HasId
 {
     public string UserName { get; set; }
 }

@@ -33,7 +33,7 @@ public static class FluentValidationExtensions
         this IRuleBuilder<T, ImageFormFile> ruleBuilder, double maxPercentageDifference)
     {
         Guard.Against.OutOfRange(maxPercentageDifference, nameof(maxPercentageDifference), 0, 100);
-
+        
         double PercentageDifference(double num1, double num2)
         {
             var absoluteDifference = Math.Abs(num1 - num2);
@@ -42,14 +42,30 @@ public static class FluentValidationExtensions
         }
 
         return ruleBuilder
-               .Must(imageInfo => PercentageDifference(imageInfo.Width, imageInfo.Height) <= maxPercentageDifference)
+               .Must(imageInfo =>
+               {
+                   if (imageInfo is null)
+                   {
+                       return true;
+                   }
+                   
+                   return PercentageDifference(imageInfo.Width, imageInfo.Height) <= maxPercentageDifference;
+               })
                .WithMessage($"Image width and height must differ by no more than {maxPercentageDifference} percent.");
     }
 
     public static IRuleBuilderOptions<T, IFormFile> MustWeightLessThan<T>(
         this IRuleBuilder<T, IFormFile> ruleBuilder, ByteSize byteSize)
     {
-        return ruleBuilder.Must(file => file.Length <= byteSize.Bytes)
+        return ruleBuilder.Must(file =>
+            {
+                if (file is null)
+                {
+                    return true;
+                }
+                
+                return file.Length <= byteSize.Bytes;
+            })
                           .WithMessage($"The file must weigh less than {byteSize.ToString()}.");
     }
 }

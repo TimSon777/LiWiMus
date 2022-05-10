@@ -3,7 +3,7 @@ using LiWiMus.Web.MVC.ViewModels;
 
 namespace LiWiMus.Web.MVC.Areas.Music.ViewModels;
 
-public class PlaylistViewModel : HaveId
+public class PlaylistViewModel : HasId
 {
     public UserGeneralInfoViewModel Owner { get; set; } = null!;
     public string Name { get; set; } = null!;

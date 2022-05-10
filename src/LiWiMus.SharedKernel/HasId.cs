@@ -5,4 +5,4 @@ public class HaveId<T>
     public T Id { get; set; }
 }
 
-public class HaveId : HaveId<int> { }
+public class HasId : HaveId<int> { }

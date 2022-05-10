@@ -2,7 +2,7 @@
 
 namespace LiWiMus.Web.MVC.ViewModels;
 
-public class PlaylistGeneralInfoViewModel : HaveId
+public class PlaylistGeneralInfoViewModel : HasId
 {
     public string Name { get; set; }
 }
