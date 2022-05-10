@@ -21,7 +21,7 @@ export class UsersController {
     async getUsers(@Query('options') options : FilterOptions)
         : Promise<User[]> {
         return User.find(
-            this.filterOptionsService.GetFindOptionsObject(options, ['userArtists', 'userRoles', 'transactions', 'playlists']))
+            this.filterOptionsService.GetFindOptionsObject(options, ['userArtists', 'transactions', 'playlists']))
             .catch(err => {
                 throw new HttpException({
                     message: err.message
