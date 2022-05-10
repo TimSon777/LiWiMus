@@ -1,5 +1,6 @@
 ﻿using ByteSizeLib;
 using FluentValidation;
+using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.Shared.Extensions;
 
 namespace LiWiMus.Web.API.Albums.Create;
@@ -15,7 +16,7 @@ public class Validator : AbstractValidator<Request>
 
         RuleFor(r => r.PublishedAt)
             .Must(d => d <= DateOnly.FromDateTime(DateTime.UtcNow))
-            .WithMessage("The publication date must be less than or equal to the current date in Utc format");
+            .WithMessage(ValidationConstants.DateLessThenNow);
         
         RuleFor(r => r.Cover)
             .Cascade(CascadeMode.Stop)

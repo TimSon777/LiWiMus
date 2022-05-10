@@ -3,6 +3,7 @@ using FluentValidation;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
+using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using MinimalApi.Endpoint;
@@ -59,6 +60,6 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/albums", HandleAsync);
+        app.MapPost(RouteConstants.Albums.Create, HandleAsync);
     }
 }
