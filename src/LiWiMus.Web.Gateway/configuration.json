@@ -25,7 +25,7 @@
           "Port": 5010
         }
       ],
-      "UpstreamPathTemplate": "/api/f/{everything}",
+      "UpstreamPathTemplate": "/api/c/{everything}",
       "UpstreamHttpMethod": [
         "POST",
         "PUT",
