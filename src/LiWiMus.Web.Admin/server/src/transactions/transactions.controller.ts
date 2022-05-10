@@ -7,7 +7,7 @@ import {Transaction} from "./transaction.entity";
 export class TransactionsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
     @Get('getall')
-    async getUsers(@Query('options') options : FilterOptions)
+    async getUsers(@Query() options : FilterOptions)
         : Promise<Transaction[]> {
         return Transaction.find(
             this.filterOptionsService.GetFindOptionsObject(options, ['user']))

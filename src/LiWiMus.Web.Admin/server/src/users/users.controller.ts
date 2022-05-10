@@ -18,7 +18,7 @@ export class UsersController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly userService: UsersService){}
     @Get('getall')
-    async getUsers(@Query('options') options : FilterOptions)
+    async getUsers(@Query() options : FilterOptions)
         : Promise<User[]> {
         return User.find(
             this.filterOptionsService.GetFindOptionsObject(options, ['userArtists', 'transactions', 'playlists']))

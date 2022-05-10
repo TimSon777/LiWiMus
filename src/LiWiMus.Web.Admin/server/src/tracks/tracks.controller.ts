@@ -7,7 +7,7 @@ import {Track} from "./track.entity";
 export class TracksController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
     @Get('getall')
-    async getTracks(@Query('options') options : FilterOptions)
+    async getTracks(@Query() options : FilterOptions)
         : Promise<Track[]> {
         return Track.find(
                 this.filterOptionsService.GetFindOptionsObject(options, ["genres", "artists", "playlists"]))

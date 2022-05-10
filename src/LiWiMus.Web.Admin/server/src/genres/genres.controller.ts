@@ -11,7 +11,7 @@ export class GenresController {
     constructor(private readonly filterOptionsService: FilterOptionsService) {
     }
     @Get("getall")
-    async getAll(@Query('options') options : FilterOptions) {
+    async getAll(@Query() options : FilterOptions) {
         return await Genre
             .find(this.filterOptionsService.GetFindOptionsObject(options, ['tracks']));
     }

@@ -15,7 +15,7 @@ import {Album} from "../albums/album.entity";
 export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
     @Get('getall')
-    async getArtists(@Query('options') options : FilterOptions)
+    async getArtists(@Query() options : FilterOptions)
         : Promise<Artist[]> {
         return Artist.find(
             this.filterOptionsService.GetFindOptionsObject(options, ["userArtists", "albums", "tracks" ]))
