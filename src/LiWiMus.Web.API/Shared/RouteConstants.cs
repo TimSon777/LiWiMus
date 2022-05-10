@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.API;
+﻿namespace LiWiMus.Web.API.Shared;
 
 public static class RouteConstants
 {
@@ -11,5 +11,11 @@ public static class RouteConstants
         public const string Delete = $"{Prefix}/{nameof(Albums)}/{{id:int}}";
         public const string Update = $"{Prefix}/{nameof(Albums)}";
         //public const string ReadList = $"{Prefix}/{nameof(Albums)}";
+
+        public static class Owners
+        {
+            public const string Add = $"{Prefix}/{nameof(Albums)}/{nameof(Owners)}/{nameof(Add)}";
+            public const string Remove = $"{Prefix}/{nameof(Albums)}/{nameof(Owners)}/{nameof(Remove)}";
+        }
     }
 }
