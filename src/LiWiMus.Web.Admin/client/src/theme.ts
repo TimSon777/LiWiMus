@@ -17,6 +17,9 @@ const theme = createTheme({
       paper: "#21201f",
       paperLight: "#444444",
     },
+    secondary: {
+      main: "#ffffff",
+    },
   },
   typography: {
     fontFamily: "'Overpass', sans-serif",

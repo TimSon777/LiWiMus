@@ -6,6 +6,7 @@ import theme from "./theme";
 import { BrowserRouter } from "react-router-dom";
 import { useAuth } from "./hooks/Auth.hook";
 import { AuthContext } from "./contexts/Auth.context";
+import { SnackbarProvider } from "notistack";
 import "./App.sass";
 
 function App() {
@@ -18,12 +19,20 @@ function App() {
   }
 
   return (
-    <AuthContext.Provider
-      value={{ userData, login, logout, isAuthenticated }}
-    >
+    <AuthContext.Provider value={{ userData, login, logout, isAuthenticated }}>
       <BrowserRouter>
         <ThemeProvider theme={theme}>
-          <Layout userData={userData}>{routes}</Layout>
+          <SnackbarProvider
+            maxSnack={3}
+            preventDuplicate
+            autoHideDuration={2000}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+          >
+            <Layout userData={userData}>{routes}</Layout>
+          </SnackbarProvider>
         </ThemeProvider>
       </BrowserRouter>
     </AuthContext.Provider>
