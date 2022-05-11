@@ -6,6 +6,8 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.Extensions.Logging
+
 
 open Ocelot.DependencyInjection
 open Ocelot.Middleware
@@ -18,6 +20,9 @@ module Program =
         let builder =
             WebApplication.CreateBuilder(args)
 
+        builder.Logging.AddSimpleConsole()
+
+        let configuration = build
         let configuration = builder.Configuration
         let services = builder.Services
 
@@ -46,7 +51,8 @@ module Program =
         //app.UseHttpsRedirection()
         app.UseCors()
 
-        app.UseOcelot()
+        app.UseOcelot().Wait()
+
         app.Run()
 
         exitCode

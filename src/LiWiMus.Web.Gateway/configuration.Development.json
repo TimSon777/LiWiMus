@@ -9,23 +9,9 @@
           "Port": 5010
         }
       ],
-      "UpstreamPathTemplate": "api/data/{everything}",
+      "UpstreamPathTemplate": "/api/data/{everything}",
       "UpstreamHttpMethod": [
         "GET"
-      ]
-    },
-    {
-      "DownstreamPathTemplate": "/api/playlists",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5010
-        }
-      ],
-      "UpstreamPathTemplate": "/api/playlists",
-      "UpstreamHttpMethod": [
-        "PATCH"
       ]
     },
     {
@@ -86,6 +72,20 @@
       "UpstreamPathTemplate": "/api/playlists/{id}",
       "UpstreamHttpMethod": [
         "GET"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/playlists",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/playlists",
+      "UpstreamHttpMethod": [
+        "PATCH"
       ]
     }
   ],
