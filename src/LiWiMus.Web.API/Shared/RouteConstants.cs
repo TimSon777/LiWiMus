@@ -25,4 +25,9 @@ public static class RouteConstants
         public const string Update = $"{Prefix}/{nameof(Playlists)}";
         public const string RemovePhoto = $"{Prefix}/{nameof(Playlists)}/{{id:int}}/{nameof(RemovePhoto)}";
     }
+
+    public static class Tracks
+    {
+        public const string Create = $"{Prefix}/{nameof(Tracks)}";
+    }
 }
