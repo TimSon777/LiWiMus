@@ -3,6 +3,7 @@ using FluentValidation;
 using LiWiMus.Core.Albums;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.API.Shared.Extensions;
 using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 
@@ -35,7 +36,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         if (album is null)
         {
-            return Results.UnprocessableEntity(new { detail = $"No albums with Id {request.Id}." });
+            return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
         _mapper.Map(request, album);

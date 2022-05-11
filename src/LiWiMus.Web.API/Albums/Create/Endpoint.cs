@@ -4,6 +4,7 @@ using LiWiMus.Core.Albums;
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.API.Shared.Extensions;
 using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 
@@ -43,7 +44,7 @@ public class Endpoint : IEndpoint<IResult, Request>
             
             if (artist is null)
             {
-                return Results.UnprocessableEntity(new {detail = $"No artists with Id {artistId}."});
+                return Results.Extensions.NotFoundById(EntityType.Artists, artistId);
             }
             
             album.Owners.Add(artist);

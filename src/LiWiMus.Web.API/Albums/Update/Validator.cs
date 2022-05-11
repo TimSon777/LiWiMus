@@ -15,6 +15,6 @@ public class Validator : AbstractValidator<Request>
         
         RuleFor(r => r.PublishedAt)
             .Must(d => d is null || d <= DateTime.UtcNow)
-            .WithMessage(ValidationConstants.DateLessThenNow);
+            .WithMessage(ValidationMessages.DateLessThenNow);
     }
 }

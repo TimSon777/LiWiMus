@@ -4,6 +4,7 @@ using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using MinimalApi.Endpoint;
 using LiWiMus.Web.API.Shared.Add;
+using LiWiMus.Web.API.Shared.Extensions;
 
 namespace LiWiMus.Web.API.Albums.Owners.Add;
 
@@ -29,7 +30,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         if (album is null)
         {
-            return Results.UnprocessableEntity(new { detail = $"No albums with Id {request.Id}." });
+            return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
         var count = 0;
@@ -39,14 +40,16 @@ public class Endpoint : IEndpoint<IResult, Request>
             
             if (artist is null)
             {
-                return Results.UnprocessableEntity(new { detail = $"No artists with Id {request.Id}." });
+                return Results.Extensions.NotFoundById(EntityType.Artists, id);
             }
 
-            if (!album.Owners.Contains(artist))
+            if (album.Owners.Contains(artist))
             {
-                album.Owners.Add(artist);
-                count++;
+                continue;
             }
+            
+            album.Owners.Add(artist);
+            count++;
         }
 
         await _albumRepository.SaveChangesAsync();
