@@ -18,4 +18,11 @@ public static class RouteConstants
             public const string Remove = $"{Prefix}/{nameof(Albums)}/{nameof(Owners)}/{nameof(Remove)}";
         }
     }
+
+    public static class Playlists
+    {
+        public const string Read = $"{Prefix}/{nameof(Playlists)}/{{id:int}}";
+        public const string Update = $"{Prefix}/{nameof(Playlists)}";
+        public const string RemovePhoto = $"{Prefix}/{nameof(Playlists)}/{{id:int}}/{nameof(RemovePhoto)}";
+    }
 }

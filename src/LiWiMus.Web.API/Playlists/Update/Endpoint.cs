@@ -1,17 +1,15 @@
-﻿#region
-
-using AutoMapper;
+﻿using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
+using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.Shared;
 using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
-
-#endregion
 
 namespace LiWiMus.Web.API.Playlists.Update;
 
@@ -42,26 +40,35 @@ public class Endpoint : IEndpoint<IResult, Request>
         }
 
         var playlist = await _repository.GetByIdAsync(request.Id);
-
         if (playlist is null)
         {
             return Results.UnprocessableEntity(new {detail = $"No playlists with Id {request.Id}."});
         }
 
         _mapper.Map(request, playlist);
+        if (request.Photo is not null)
+        {
+            await UpdatePhoto(playlist, request.Photo);
+        }
+        
+        await _repository.UpdateAsync(playlist);
+
+        var dto = _mapper.Map<Dto>(playlist);
+        return Results.Ok(dto);
+    }
+
+    private async Task UpdatePhoto(Playlist playlist, ImageFormFile photo)
+    {
         if (playlist.PhotoPath is not null)
         {
             FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoPath));
         }
 
-        playlist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(request.Photo);
-
-        await _repository.UpdateAsync(playlist);
-        return Results.NoContent();
+        playlist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(photo);
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/playlists", HandleAsync);
+        app.MapPatch(RouteConstants.Playlists.Update, HandleAsync);
     }
 }

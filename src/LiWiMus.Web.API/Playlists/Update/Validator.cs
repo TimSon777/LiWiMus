@@ -13,21 +13,14 @@ public class Validator : AbstractValidator<Request>
     public Validator()
     {
         RuleFor(request => request.Id)
-            .NotEmpty()
-            .GreaterThan(0);
+            .NotEmpty();
 
         RuleFor(request => request.Name)
-            .NotEmpty()
             .MaximumLength(100);
 
-        RuleFor(request => request.Photo)
-            .NotEmpty()
-            .Must(file => file.Length < ByteSize.BytesInMegaByte);
-
-        RuleFor(request => request.Photo)
-            .Cascade(CascadeMode.Stop)
-            .NotNull()
+        RuleFor(request => request.Photo!)
             .SidesPercentageDifferenceMustBeLessThan(10)
-            .MustWeightLessThan(ByteSize.FromMegaBytes(1));
+            .MustWeightLessThan(ByteSize.FromMegaBytes(1))
+            .When(request => request.Photo is not null);
     }
 }

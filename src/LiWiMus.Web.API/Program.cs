@@ -49,12 +49,21 @@ builder.Services
            options.UseAspNetCore();
        });
 
+// TODO: Remove cors
+builder.Services.AddCors(options => options
+    .AddDefaultPolicy(policyBuilder => policyBuilder
+                                       .AllowAnyHeader()
+                                       .AllowAnyMethod()
+                                       .AllowAnyOrigin()));
+
 var app = builder.Build();
 
 app.UseSharedStaticFiles(builder.Environment);
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseCors();
 
 app.MapEndpoints();
 
