@@ -30,10 +30,10 @@ public class Endpoint : IEndpoint<IResult, int>
             return Results.UnprocessableEntity(new {detail = $"No playlists with Id {id}."});
         }
 
-        if (playlist.PhotoPath is not null)
+        if (playlist.PhotoLocation is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoPath));
-            playlist.PhotoPath = null;
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoLocation));
+            playlist.PhotoLocation = null;
         }
 
         await _repository.UpdateAsync(playlist);

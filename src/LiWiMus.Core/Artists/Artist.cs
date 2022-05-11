@@ -19,7 +19,7 @@ public class Artist : BaseEntity, IResource.WithMultipleOwners<User>
     [StringLength(500)]
     public string About { get; set; } = null!;
 
-    public string PhotoPath { get; set; } = null!;
+    public string PhotoLocation { get; set; } = null!;
 
     public virtual ICollection<Track> Tracks { get; set; } = null!;
     public virtual ICollection<LikedArtist> Subscribers { get; set; } = null!;

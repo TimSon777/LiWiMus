@@ -104,11 +104,11 @@ public class ProfileController : Controller
 
         if (model.Avatar is not null)
         {
-            if (user.AvatarPath is not null)
+            if (user.AvatarLocation is not null)
             {
-                FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, user.AvatarPath));
+                FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, user.AvatarLocation));
             }
-            user.AvatarPath = await _formFileSaver.SaveWithRandomNameAsync(model.Avatar);
+            user.AvatarLocation = await _formFileSaver.SaveWithRandomNameAsync(model.Avatar);
         }
 
         var result = await _userManager.UpdateAsync(user);

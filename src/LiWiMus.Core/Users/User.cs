@@ -32,7 +32,7 @@ public class User : BaseUserEntity
 
     public decimal Balance { get; set; }
 
-    public string? AvatarPath { get; set; }
+    public string? AvatarLocation { get; set; }
 
     public virtual ICollection<UserArtist> UserArtists { get; set; } = null!;
     public virtual ICollection<Artist> Artists { get; set; } = null!;

@@ -14,7 +14,7 @@ public class Playlist : BaseEntity, IResource.WithOwner<User>
     public string Name { get; set; } = null!;
 
     public bool IsPublic { get; set; }
-    public string? PhotoPath { get; set; }
+    public string? PhotoLocation { get; set; }
 
     public virtual ICollection<PlaylistTrack> Tracks { get; set; } = null!;
     public virtual ICollection<LikedPlaylist> Subscribers { get; set; } = null!;

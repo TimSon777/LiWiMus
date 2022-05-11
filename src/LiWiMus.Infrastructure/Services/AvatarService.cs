@@ -47,7 +47,7 @@ public class AvatarService : IAvatarService
         var fakePath = Path.Combine(fakeDirectory, fileName);
         var realPath = GetRealPath(fakePath);
 
-        user.AvatarPath = Path.Combine(fakePath);
+        user.AvatarLocation = Path.Combine(fakePath);
         await File.WriteAllBytesAsync(realPath, avatar);
     }
 
@@ -58,9 +58,9 @@ public class AvatarService : IAvatarService
 
     private void RemoveAvatarIfExists(User user)
     {
-        if (user.AvatarPath is null) return;
+        if (user.AvatarLocation is null) return;
 
-        var realPath = GetRealPath(user.AvatarPath);
+        var realPath = GetRealPath(user.AvatarLocation);
 
         if (File.Exists(realPath))
         {

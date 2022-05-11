@@ -38,7 +38,7 @@ public class Endpoint : IEndpoint<IResult, Request>
         }
 
         var album = _mapper.Map<Album>(request);
-        album.CoverPath = await _formFileSaver.SaveWithRandomNameAsync(request.Cover);
+        album.CoverLocation = await _formFileSaver.SaveWithRandomNameAsync(request.Cover);
         album.Owners = new List<Artist>();
         
         foreach (var artistId in request.ArtistIds)

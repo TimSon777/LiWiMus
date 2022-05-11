@@ -22,6 +22,7 @@ public class Track : BaseEntity, IResource.WithMultipleOwners<Artist>
 
     public DateOnly PublishedAt { get; set; }
     public string PathToFile { get; set; } = null!;
+    public double Duration { get; set; }
 
     public virtual List<LikedSong> Subscribers { get; set; } = null!;
     public virtual List<PlaylistTrack> Playlists { get; set; } = null!;

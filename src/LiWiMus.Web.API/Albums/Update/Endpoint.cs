@@ -48,9 +48,9 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         _mapper.Map(request, album);
         
-        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverPath));
+        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverLocation));
 
-        album.CoverPath = await _formFileSaver.SaveWithRandomNameAsync(request.Cover);
+        album.CoverLocation = await _formFileSaver.SaveWithRandomNameAsync(request.Cover);
         
         await _albumRepository.UpdateAsync(album);
         
