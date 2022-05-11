@@ -41,15 +41,11 @@ module Program =
         else
             services.AddCors()
 
-
-        let app = builder.Bu
-
         let app = builder.Build()
 
         //app.UseHttpsRedirection()
         app.UseCors()
 
-        app.UseOcelo
         app.UseOcelot()
         app.Run()
 
