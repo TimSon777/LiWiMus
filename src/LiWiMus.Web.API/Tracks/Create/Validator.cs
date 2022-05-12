@@ -13,11 +13,11 @@ public class Validator : AbstractValidator<Request>
             .Length(2, 50);
 
         RuleFor(r => r.GenreIds)
-            .Must(genres => genres.Any())
+            .NotEmpty()
             .WithMessage(ValidationMessages.MustHas("Track", "genres"));
         
         RuleFor(r => r.OwnerIds)
-            .Must(genres => genres.Any())
+            .NotEmpty()
             .WithMessage(ValidationMessages.MustHas("Track", "owners (artists)"));
         
         RuleFor(r => r.PublishedAt)

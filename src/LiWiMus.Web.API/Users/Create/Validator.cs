@@ -13,6 +13,7 @@ public class Validator : AbstractValidator<Request>
 
         RuleFor(u => u.Email)
             .NotEmpty()
+            .EmailAddress()
             .Length(1, 256);
 
         RuleFor(u => u.Password)

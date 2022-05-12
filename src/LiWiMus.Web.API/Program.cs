@@ -5,8 +5,10 @@ using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.OpenApi.Models;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
+using Swashbuckle.AspNetCore.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,7 @@ builder.Services.AddFluentValidation(fv =>
     fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
 builder.Services.AddEndpoints();
+
 builder.Services.Configure<JsonOptions>(
     options =>
     {
@@ -51,13 +54,26 @@ builder.Services.AddCors(options => options
                                        .AllowAnyMethod()
                                        .AllowAnyOrigin()));
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", new OpenApiInfo { Title = builder.Environment.ApplicationName });
+    o.CustomSchemaIds(type => type.ToString());
+    o.AddFluentValidationRulesScoped();
+});
+
 var app = builder.Build();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseCors();
-
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", builder.Environment.ApplicationName);
+    c.RoutePrefix = "api/swagger";
+});
 app.MapEndpoints();
 
 app.Run();
