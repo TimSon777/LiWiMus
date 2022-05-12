@@ -10,6 +10,7 @@ import axios from "../../shared/services/Axios";
 import PlaylistImageEditor from "../components/PlaylistImageEditor/PlaylistImageEditor";
 import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEditor";
 import PlaylistPublicityEditor from "../components/PlaylistPublicityEditor/PlaylistPublicityEditor";
+import InfoCard from "../../shared/components/InfoCard/InfoCard";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -53,7 +54,12 @@ export default function PlaylistDetailsPage() {
         {playlist.name} #{playlist.id}
       </h1>
 
-      <Grid container spacing={2} justifyContent={"center"}>
+      <Grid
+        container
+        spacing={10}
+        justifyContent={"space-around"}
+        sx={{ mb: 10 }}
+      >
         <Grid
           item
           xs={12}
@@ -90,7 +96,10 @@ export default function PlaylistDetailsPage() {
           </Stack>
         </Grid>
         <Grid item xs={12} md={8} lg={4}>
-          test
+          <Stack spacing={4}>
+            <InfoCard title={"Tracks"} value={"24"} />
+            <InfoCard title={"Listeners"} value={"123"} />
+          </Stack>
         </Grid>
       </Grid>
     </>

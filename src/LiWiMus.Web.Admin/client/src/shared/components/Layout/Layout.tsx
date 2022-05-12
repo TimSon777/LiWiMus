@@ -30,7 +30,9 @@ export function Layout(
             setMobileOpen={setMobileOpen}
           />
         )}
-        <Box sx={{ m: 3, width: "100%" }}>{props.children}</Box>
+        <Box sx={{ px: { md: 7, xs: 2, sm: 4 }, py: 2, width: "100%" }}>
+          {props.children}
+        </Box>
       </Box>
     </>
   );
