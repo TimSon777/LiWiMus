@@ -355,3 +355,4 @@ src/LiWiMus.Web.Shared/Data/Pictures/*
 src/LiWiMus.Web.Shared/sharedsettings.Development.json
 src/LiWiMus.Web.FileServer/Files/*
 src/LiWiMus.Web.FileServer/appsettings.Development.json
+src/LiWiMus.Web.MailServer/appsettings.Development.json
