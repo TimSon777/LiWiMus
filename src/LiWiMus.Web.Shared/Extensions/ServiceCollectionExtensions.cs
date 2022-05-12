@@ -1,5 +1,6 @@
 ﻿#region
 
+using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.Web.Shared.Services;
@@ -17,7 +18,7 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSharedServices(this IServiceCollection services)
     {
         services.AddTransient<IFormFileSaver, FormFileSaver>();
-
+        services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
         return services;
     }
 

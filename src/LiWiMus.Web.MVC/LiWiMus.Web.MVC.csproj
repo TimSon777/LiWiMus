@@ -14,10 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Autofac" Version="6.3.0" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
         <PackageReference Include="AutoMapper" Version="11.0.1" />
-        <PackageReference Include="AutoMapper.EF6" Version="2.1.1" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
         <PackageReference Include="DateOnlyTimeOnly.AspNet" Version="1.0.2" />
         <PackageReference Include="FluentValidation" Version="10.4.0" />
@@ -67,5 +64,6 @@
 
     <ItemGroup>
       <Folder Include="Areas\Music\Views" />
+      <Folder Include="Services" />
     </ItemGroup>
 </Project>
