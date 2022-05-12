@@ -1,64 +1,50 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback } from "react";
 import styles from "./ImageEditor.module.sass";
 import { Box, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import { IWithPhoto } from "../../types/IWithPhoto";
-
-const API_URL = process.env.REACT_APP_API_URL;
 
 export type ImageEditorProps = {
-  src?: string | null;
+  src?: string | undefined;
+  alt?: string | undefined;
   width: number;
-  updatePhoto: (photo: File) => Promise<IWithPhoto>;
-  removePhoto: () => Promise<IWithPhoto>;
-  imagePlaceholderSrc: string;
+  handler1: (input: HTMLInputElement) => void;
+  handler2?: (input: HTMLInputElement) => void;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  button1Text?: string;
+  button2Text?: string;
 };
 
-export default function ImageEditor(props: ImageEditorProps) {
-  const [src, setSrc] = useState<string | undefined>();
-
-  const updateSrc = useCallback(
-    (newSrc: string | null | undefined) => {
-      if (!newSrc) {
-        setSrc(props.imagePlaceholderSrc);
-      } else {
-        setSrc(`${API_URL}${newSrc}`);
-      }
+export default function ImageEditor({
+  src,
+  alt,
+  width,
+  handler1,
+  handler2,
+  onChange,
+  button1Text = "Choose photo",
+  button2Text = "Remove photo",
+}: ImageEditorProps) {
+  const callHandler = useCallback(
+    (handler: (input: HTMLInputElement) => void) => {
+      const input = document.getElementById(styles.input) as HTMLInputElement;
+      handler(input);
     },
-    [props.imagePlaceholderSrc]
+    []
   );
 
-  useEffect(() => updateSrc(props.src), [updateSrc, props.src]);
-
   const size = {
-    xs: props.width * 0.75,
-    md: props.width * 0.875,
-    lg: props.width,
-  };
-
-  async function changeImage(event: React.ChangeEvent<HTMLInputElement>) {
-    if (event.target.files && event.target.files[0]) {
-      const file = event.target.files[0];
-      event.target.form?.reset();
-      const res = await props.updatePhoto(file);
-      updateSrc(res.photoLocation);
-    }
-  }
-
-  const removePhotoHandler = async () => {
-    const input = document.getElementById(styles.input) as HTMLInputElement;
-    input.value = "";
-    const response = await props.removePhoto();
-    updateSrc(response.photoLocation);
+    xs: width * 0.75,
+    md: width * 0.875,
+    lg: width,
   };
 
   return (
     <Box className={styles.container} width={size} height={size}>
-      <img src={src} alt="" className={styles.image} />
+      <img src={src} alt={alt ?? "Image editor"} className={styles.image} />
       <input
         type="file"
         id={styles.input}
-        onChange={changeImage}
+        onChange={onChange}
         name={"file"}
         accept={"image/png, image/gif, image/jpeg"}
       />
@@ -66,16 +52,25 @@ export default function ImageEditor(props: ImageEditorProps) {
         <Button
           variant="text"
           color={"secondary"}
-          onClick={() => {
-            document.getElementById(styles.input)?.click();
-          }}
+          onClick={() => callHandler(handler1)}
         >
-          Choose photo
+          {button1Text}
         </Button>
-        <EditIcon className={styles.icon} />
-        <Button variant="text" color={"secondary"} onClick={removePhotoHandler}>
-          Remove photo
-        </Button>
+        {handler2 ? (
+          <>
+            <EditIcon className={styles.icon} />
+            <Button
+              variant="text"
+              color={"secondary"}
+              // @ts-ignore
+              onClick={() => callHandler(handler2)}
+            >
+              {button2Text}
+            </Button>
+          </>
+        ) : (
+          ""
+        )}
       </div>
     </Box>
   );
