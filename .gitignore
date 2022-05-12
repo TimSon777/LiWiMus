@@ -353,3 +353,5 @@ MigrationBackup/
 src/LiWiMus.Web.Shared/Data/Music/*
 src/LiWiMus.Web.Shared/Data/Pictures/*
 src/LiWiMus.Web.Shared/sharedsettings.Development.json
+src/LiWiMus.Web.FileServer/Files/*
+src/LiWiMus.Web.FileServer/appsettings.Development.json
