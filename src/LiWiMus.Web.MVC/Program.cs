@@ -2,14 +2,18 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
+using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Interfaces.Mail;
 using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.MVC.Hubs.SupportChat;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -25,7 +29,12 @@ services.AddSharedServices();
 services.ConfigureSettings(configuration);
 services.AddDbContext(configuration);
 services.AddCoreServices();
-builder.Services.AddTriggers();
+services.AddTriggers();
+var pullUrls = configuration.GetRequiredSection(nameof(PullUrls)).Get<PullUrls>();
+services
+    .AddRefitClient<IMailService>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(pullUrls.GatewayUrl));
+
 TriggersConfiguration.ConfigureTriggers();
 
 services.AddHttpClient();

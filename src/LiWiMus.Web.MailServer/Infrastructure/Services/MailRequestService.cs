@@ -1,7 +1,7 @@
-﻿using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Models;
+﻿using LiWiMus.Web.MailServer.Core.Interfaces;
+using LiWiMus.Web.MailServer.Core.Models;
 
-namespace LiWiMus.Infrastructure.Services;
+namespace LiWiMus.Web.MailServer.Infrastructure.Services;
 
 public class MailRequestService : IMailRequestService
 {

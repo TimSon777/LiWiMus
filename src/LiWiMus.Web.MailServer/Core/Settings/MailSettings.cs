@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Core.Settings;
+﻿namespace LiWiMus.Web.MailServer.Core.Settings;
 
 public class MailSettings
 {

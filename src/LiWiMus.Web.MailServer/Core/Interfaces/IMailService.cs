@@ -1,6 +1,6 @@
-﻿using LiWiMus.Core.Models;
+﻿using LiWiMus.Web.MailServer.Core.Models;
 
-namespace LiWiMus.Core.Interfaces;
+namespace LiWiMus.Web.MailServer.Core.Interfaces;
 
 public interface IMailService
 {

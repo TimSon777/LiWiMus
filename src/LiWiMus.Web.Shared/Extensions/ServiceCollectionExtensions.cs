@@ -18,7 +18,6 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddSharedServices(this IServiceCollection services)
     {
         services.AddTransient<IFormFileSaver, FormFileSaver>();
-        services.AddTransient<IRazorViewRenderer, RazorViewRenderer>();
         return services;
     }
 
@@ -44,7 +43,7 @@ public static class ServiceCollectionExtensions
             dataSettings.PicturesDirectory = settings.DataSettings.PicturesDirectory;
         });
 
-        services.Configure<MailSettings>(configuration.GetSection(MailSettings.ConfigName));
+        
 
         return services;
     }

@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Core.Interfaces;
+﻿namespace LiWiMus.Web.MailServer.Core.Interfaces;
 
 public interface IRazorViewRenderer
 {

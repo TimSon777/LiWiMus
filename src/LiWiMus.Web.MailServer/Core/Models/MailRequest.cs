@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Core.Models;
+﻿namespace LiWiMus.Web.MailServer.Core.Models;
 
 public class MailRequest
 {

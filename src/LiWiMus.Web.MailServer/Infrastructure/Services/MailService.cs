@@ -1,11 +1,11 @@
-﻿using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Models;
-using LiWiMus.Core.Settings;
+﻿using LiWiMus.Web.MailServer.Core.Interfaces;
+using LiWiMus.Web.MailServer.Core.Models;
+using LiWiMus.Web.MailServer.Core.Settings;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace LiWiMus.Infrastructure.Services;
+namespace LiWiMus.Web.MailServer.Infrastructure.Services;
 
 public class MailService : IMailService
 {

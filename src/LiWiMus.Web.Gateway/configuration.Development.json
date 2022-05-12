@@ -1,6 +1,20 @@
 ﻿{
   "Routes": [
     {
+      "DownstreamPathTemplate": "/mail/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5193
+        }
+      ],
+      "UpstreamPathTemplate": "/api/mail/{everything}",
+      "UpstreamHttpMethod": [
+        "POST"
+      ]
+    },
+    {
       "DownstreamPathTemplate": "/files/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
