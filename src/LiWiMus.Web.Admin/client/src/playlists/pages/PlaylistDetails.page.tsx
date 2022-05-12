@@ -8,6 +8,7 @@ import playlistCover from "../images/playlist-cover-negative.png";
 import { useSnackbar } from "notistack";
 import axios from "../../shared/services/Axios";
 import PlaylistImageEditor from "../components/PlaylistImageEditor/PlaylistImageEditor";
+import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEditor";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -47,6 +48,10 @@ export default function PlaylistDetailsPage() {
 
   return (
     <>
+      <h1>
+        {playlist.name} #{playlist.id}
+      </h1>
+
       <Grid container spacing={2} justifyContent={"center"}>
         <Grid
           item
@@ -64,10 +69,9 @@ export default function PlaylistDetailsPage() {
             playlistPhoto={playlistPhoto}
             setPlaylistWithPhoto={setPlaylistWithPhoto}
           />
-          <h1>{playlist.name}</h1>
         </Grid>
         <Grid item xs={12} md={8} lg={4}>
-          test
+          <PlaylistInfoEditor playlist={playlist} setPlaylist={setPlaylist} />
         </Grid>
         <Grid item xs={12} md={8} lg={4}>
           test
