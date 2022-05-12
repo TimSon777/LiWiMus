@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Playlists;
-using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
 using LiWiMus.Web.Shared.Extensions;
-using Microsoft.Extensions.Options;
 using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Playlists.Update;
@@ -17,8 +15,7 @@ public class Endpoint : IEndpoint<IResult, Request>
     private readonly IRepository<Playlist> _repository;
     private readonly IValidator<Request> _validator;
 
-    public Endpoint(IValidator<Request> validator, IRepository<Playlist> repository, IMapper mapper,
-                    IOptions<SharedSettings> settings)
+    public Endpoint(IValidator<Request> validator, IRepository<Playlist> repository, IMapper mapper)
     {
         _validator = validator;
         _repository = repository;
