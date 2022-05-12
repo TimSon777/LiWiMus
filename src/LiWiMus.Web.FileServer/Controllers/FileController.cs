@@ -39,6 +39,7 @@ public class FilesController : ControllerBase
         return new FileDto(location!);
     }
 
+    // ReSharper disable once RouteTemplates.ActionRoutePrefixCanBeExtractedToControllerRoute
     [HttpGet("{hashId}")]
     public async Task<IActionResult> Get(string hashId)
     {
@@ -58,5 +59,29 @@ public class FilesController : ControllerBase
         _context.Files.Remove(fileInfo);
         await _context.SaveChangesAsync();
         return UnprocessableEntity();
+    }
+
+    // ReSharper disable once RouteTemplates.ActionRoutePrefixCanBeExtractedToControllerRoute
+    [HttpDelete("{hashId}")]
+    public async Task<IActionResult> Delete(string hashId)
+    {
+        var id = _hashids.DecodeSingle(hashId);
+        var fileInfo = await _context.Files.FindAsync(id);
+        if (fileInfo is null)
+        {
+            return UnprocessableEntity();
+        }
+
+        _context.Files.Remove(fileInfo);
+        await _context.SaveChangesAsync();
+
+        var path = Path.Combine(_filesPath, hashId);
+        if (!System.IO.File.Exists(path))
+        {
+            return UnprocessableEntity();
+        }
+
+        System.IO.File.Delete(path);
+        return NoContent();
     }
 }
