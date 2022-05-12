@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.Auth.Controllers
+﻿namespace LiWiMus.Web.Auth.Controllers.ConnectController
 
 open System.Collections.Generic
 open System.Security.Claims
