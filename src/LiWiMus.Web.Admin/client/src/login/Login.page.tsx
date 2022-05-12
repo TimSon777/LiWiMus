@@ -8,9 +8,9 @@ import {
   Stack,
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-import { AuthContext } from "../contexts/Auth.context";
+import { AuthContext } from "../shared/contexts/Auth.context";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ContrastTextField from "../components/ContrastTextField/ContrastTextField";
+import ContrastTextField from "../shared/components/ContrastTextField/ContrastTextField";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface ILoginInput {

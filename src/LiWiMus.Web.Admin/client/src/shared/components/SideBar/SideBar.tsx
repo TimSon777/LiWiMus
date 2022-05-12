@@ -25,7 +25,11 @@ export interface SideBarProps {
   setMobileOpen: (state: boolean) => void;
 }
 
-export default function SideBar({ mobileOpen, setMobileOpen, userData }: SideBarProps) {
+export default function SideBar({
+  mobileOpen,
+  setMobileOpen,
+  userData,
+}: SideBarProps) {
   const { logout } = useContext(AuthContext);
 
   const linkClickHandler = () => {

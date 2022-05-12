@@ -1,11 +1,11 @@
 import React from "react";
-import { Layout } from "./components/Layout/Layout";
-import { useRoutes } from "./routes";
+import { Layout } from "./shared/components/Layout/Layout";
+import { useRoutes } from "./shared/routes";
 import { ThemeProvider } from "@mui/material";
-import theme from "./theme";
+import theme from "./shared/theme";
 import { BrowserRouter } from "react-router-dom";
-import { useAuth } from "./hooks/Auth.hook";
-import { AuthContext } from "./contexts/Auth.context";
+import { useAuth } from "./shared/hooks/Auth.hook";
+import { AuthContext } from "./shared/contexts/Auth.context";
 import { SnackbarProvider } from "notistack";
 import "./App.sass";
 

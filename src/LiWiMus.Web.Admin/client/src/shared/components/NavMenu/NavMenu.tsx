@@ -6,7 +6,7 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import logo from "../../images/logo.jpg";
-import "../../App.sass";
+import "../../../App.sass";
 import { AuthContext } from "../../contexts/Auth.context";
 
 export interface NavMenuProps {

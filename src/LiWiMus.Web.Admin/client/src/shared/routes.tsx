@@ -1,11 +1,11 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/Login.page";
-import UsersPage from "./pages/Users.page";
-import DashboardPage from "./pages/Dashboard.page";
-import ArtistsPage from "./pages/Artists.page";
-import UserProfilePage from "./pages/UserProfile.page";
-import PlaylistDetailsPage from "./pages/PlaylistDetails.page";
+import LoginPage from "../login/Login.page";
+import UsersPage from "../users/Users.page";
+import DashboardPage from "../dashboard/Dashboard.page";
+import ArtistsPage from "../artists/Artists.page";
+import UserProfilePage from "../users/UserProfile.page";
+import PlaylistDetailsPage from "../playlists/pages/PlaylistDetails.page";
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Playlist } from "../types/Playlist";
-import Loading from "../components/Loading/Loading";
-import NotFound from "../components/NotFound/NotFound";
+import Loading from "../../shared/components/Loading/Loading";
+import NotFound from "../../shared/components/NotFound/NotFound";
 import { Grid } from "@mui/material";
-import ImageEditor from "../components/ImageEditor/ImageEditor";
+import ImageEditor from "../../shared/components/ImageEditor/ImageEditor";
 import playlistCover from "../images/playlist-cover-negative.png";
 import { useSnackbar } from "notistack";
-import axios from "../services/Axios";
+import axios from "../../shared/services/Axios";
 
 const API_URL = process.env.REACT_APP_API_URL;
 

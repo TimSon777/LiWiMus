@@ -1,16 +1,16 @@
-import { useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { UserData } from "../types/UserData";
 
 const storageName = "userData";
 
 type JwtPayload = {
-  sub: string,
-  name: string,
-  email: string,
-  role: string[],
-  permission: string[]
-}
+  sub: string;
+  name: string;
+  email: string;
+  role: string[];
+  permission: string[];
+};
 
 export const useAuth = () => {
   const [userData, setUserData] = useState<UserData | null>(null);
@@ -28,15 +28,12 @@ export const useAuth = () => {
       name: payload.name,
       email: payload.email,
       role: payload.role,
-      permissions: payload.permission
+      permissions: payload.permission,
     };
 
     setUserData(data);
 
-    localStorage.setItem(
-      storageName,
-      JSON.stringify(data)
-    );
+    localStorage.setItem(storageName, JSON.stringify(data));
     return true;
   }, []);
 
