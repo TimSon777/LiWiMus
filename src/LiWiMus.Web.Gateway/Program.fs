@@ -22,7 +22,6 @@ module Program =
 
         builder.Logging.AddSimpleConsole()
 
-        let configuration = build
         let configuration = builder.Configuration
         let services = builder.Services
 
