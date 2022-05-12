@@ -1,10 +1,13 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Interfaces.Mail;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 
@@ -12,9 +15,9 @@ namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 [AllowAnonymous]
 public class AccountController : Controller
 {
-    private readonly IMailService _mailService;
     private readonly SignInManager<Core.Users.User> _signInManager;
     private readonly UserManager<Core.Users.User> _userManager;
+    private readonly IMailService _mailService;
 
     public AccountController(UserManager<Core.Users.User> userManager,
                              SignInManager<Core.Users.User> signInManager, IMailService mailService)
@@ -117,7 +120,7 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home", new {area = ""});
     }
 
-    private async Task SendConfirmEmailAsync(Core.Users.User user)
+    private async Task<IActionResult> SendConfirmEmailAsync(Core.Users.User user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
 
@@ -127,7 +130,12 @@ public class AccountController : Controller
             new {userId = user.Id, code = token},
             HttpContext.Request.Scheme);
 
-        await _mailService.SendConfirmEmailAsync(user.UserName, user.Email, confirmUrl!);
+        var response = await _mailService.SendMailToConfirmAccountAsync(
+            new ConfirmAccountRequest(user.UserName, user.Email, confirmUrl!));
+        
+        return response.IsSuccessStatusCode 
+            ? Ok("Проверьте почтовый ящик")
+            : BadRequest(response.Error);
     }
 
     [HttpPost]
@@ -158,9 +166,12 @@ public class AccountController : Controller
             new {area = "User", userId = user.Id, token},
             HttpContext.Request.Scheme);
 
-        await _mailService.SendResetPasswordAsync(userName, user.Email, resetUrl!);
+        var response = await _mailService
+            .SendMailToResetPasswordAsync(new ResetPasswordRequest(user.UserName, user.Email, resetUrl!));
 
-        return Ok("Проверьте почтовый ящик");
+        return response.IsSuccessStatusCode 
+            ? Ok("Проверьте почтовый ящик")
+            : BadRequest(response.Error);
     }
 
     [HttpGet]

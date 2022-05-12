@@ -1,5 +1,4 @@
-﻿using LiWiMus.Core.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using LiWiMus.Web.MailServer.Core.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -7,9 +6,8 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Routing;
 
-namespace LiWiMus.Web.Shared.Services;
+namespace LiWiMus.Web.MailServer.Infrastructure.Services;
 
 public class RazorViewRenderer : IRazorViewRenderer
 {

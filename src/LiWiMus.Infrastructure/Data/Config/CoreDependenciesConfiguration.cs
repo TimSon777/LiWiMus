@@ -17,8 +17,6 @@ public static class CoreDependenciesConfiguration
         services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddTransient<IAvatarService, AvatarService>();
-        services.AddTransient<IMailService, MailService>();
-        services.AddTransient<IMailRequestService, MailRequestService>();
         services.AddTransient<IPaymentService, PaymentService>();
         services.AddTransient<IUserPlanManager, UserPlanManager>();
         services.AddTransient<IUserValidator<User>, ApplicationUserValidator>();

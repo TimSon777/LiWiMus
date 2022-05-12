@@ -52,6 +52,9 @@
         <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Roles\Index.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\UserRoles\index.cshtml" />
         <_ContentIncludedByDefault Remove="Areas\AdminOld\Views\Users\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Emails\ConfirmAccount\ConfirmAccount.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Emails\ResetPassword\ResetPassword.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Emails\_ViewStart.cshtml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -64,6 +67,11 @@
 
     <ItemGroup>
       <Folder Include="Areas\Music\Views" />
-      <Folder Include="Services" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="Refit.HttpClientFactory, Version=6.3.0.0, Culture=neutral, PublicKeyToken=2f9b1262776509f5">
+        <HintPath>..\..\..\..\.nuget\packages\refit.httpclientfactory\6.3.2\lib\net6.0\Refit.HttpClientFactory.dll</HintPath>
+      </Reference>
     </ItemGroup>
 </Project>

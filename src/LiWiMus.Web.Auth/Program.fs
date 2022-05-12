@@ -2,7 +2,7 @@ namespace LiWiMus.Web.Auth
 
 #nowarn "20"
 
-open LiWiMus.Infrastructure
+open LiWiMus.Infrastructure.Data.Config
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
@@ -42,7 +42,7 @@ module Program =
             .AddAuthenticationWithJwt()
             .AddAuthorization()
 
-        Dependencies.ConfigureServices(configuration, services)
+        services.AddDbContext(configuration)
 
         services.AddIdentity().AddOpenIdConnect()
 
