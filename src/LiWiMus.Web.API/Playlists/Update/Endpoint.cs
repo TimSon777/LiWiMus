@@ -59,12 +59,12 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     private async Task UpdatePhoto(Playlist playlist, ImageFormFile photo)
     {
-        if (playlist.PhotoPath is not null)
+        if (playlist.PhotoLocation is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoPath));
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoLocation));
         }
 
-        playlist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(photo);
+        playlist.PhotoLocation = await _formFileSaver.SaveWithRandomNameAsync(photo);
     }
 
     public void AddRoute(IEndpointRouteBuilder app)

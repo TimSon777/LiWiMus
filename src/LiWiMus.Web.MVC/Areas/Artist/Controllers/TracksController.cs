@@ -128,8 +128,8 @@ public class TracksController : Controller
         _mapper.Map(viewModel, track);
         if (viewModel.File is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.PathToFile));
-            track.PathToFile = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.FileLocation));
+            track.FileLocation = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
         }
 
         await _tracksRepository.UpdateAsync(track);
@@ -169,7 +169,7 @@ public class TracksController : Controller
             Name = viewModel.Name,
             PublishedAt = viewModel.PublishedAt,
             Owners = artists,
-            PathToFile = filePath,
+            FileLocation = filePath,
             Album = album
         };
         track = await _tracksRepository.AddAsync(track);
@@ -196,7 +196,7 @@ public class TracksController : Controller
             return Forbid();
         }
 
-        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.PathToFile));
+        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.FileLocation));
         await _tracksRepository.DeleteAsync(track);
         return FormResult.CreateSuccessResult("Removed successfully");
     }

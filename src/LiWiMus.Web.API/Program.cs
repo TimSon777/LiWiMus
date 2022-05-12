@@ -1,9 +1,8 @@
 using System.Reflection;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
 using LiWiMus.Infrastructure;
+using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
@@ -12,16 +11,13 @@ using OpenIddict.Validation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Host
-       .UseServiceProviderFactory(new AutofacServiceProviderFactory())
-       .ConfigureContainer<ContainerBuilder>(containerBuilder =>
-           containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath)));
-
 builder.Configuration.AddSharedSettings(builder.Environment);
-Dependencies.ConfigureServices(builder.Configuration, builder.Services);
+builder.Services.AddDbContext(builder.Configuration);
+builder.Services.AddCoreServices();
 builder.Services.AddSharedServices();
 builder.Services.ConfigureSettings(builder.Configuration);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+TriggersConfiguration.ConfigureTriggers();
 builder.Services.AddIdentity(builder.Environment);
 builder.Services.AddFluentValidation(fv =>
 {

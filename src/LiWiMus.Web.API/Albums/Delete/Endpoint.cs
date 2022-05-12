@@ -1,6 +1,7 @@
 ﻿using LiWiMus.Core.Albums;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.API.Shared.Extensions;
 using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Albums.Delete;
@@ -21,7 +22,7 @@ public class Endpoint : IEndpoint<IResult, int>
 
         if (album is null)
         {
-            return Results.UnprocessableEntity(new { detail = $"No albums with Id {id}." });
+            return Results.Extensions.NotFoundById(EntityType.Albums, id);
         }
         
         await _albumRepository.DeleteAsync(album);

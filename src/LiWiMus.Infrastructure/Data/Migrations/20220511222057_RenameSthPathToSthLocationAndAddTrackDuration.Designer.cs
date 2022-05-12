@@ -3,16 +3,18 @@ using System;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LiWiMus.Infrastructure.Migrations
+namespace LiWiMus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220511222057_RenameSthPathToSthLocationAndAddTrackDuration")]
+    partial class RenameSthPathToSthLocationAndAddTrackDuration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -609,10 +611,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.Property<double>("Duration")
                         .HasColumnType("double");
 
-                    b.Property<string>("FileLocation")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
 
@@ -620,6 +618,10 @@ namespace LiWiMus.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<string>("PathToFile")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateOnly>("PublishedAt")
                         .HasColumnType("date");

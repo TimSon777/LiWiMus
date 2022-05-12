@@ -47,7 +47,7 @@ public class PlaylistController : Controller
 
         var mappedPlaylist = _mapper.Map<Playlist>(vm);
         var path = await _formFileSaver.SaveWithRandomNameAsync(vm.Picture, DataType.Picture);
-        mappedPlaylist.PhotoPath = path;
+        mappedPlaylist.PhotoLocation = path;
         mappedPlaylist.Owner = user;
         var playlist = await _playlistRepository.AddAsync(mappedPlaylist);
         return FormResult.CreateSuccessResult("Ok", $"/Music/Playlist/Index?playlistId={playlist.Id}");

@@ -113,8 +113,8 @@ public class AlbumsController : Controller
         _mapper.Map(viewModel, album);
         if (viewModel.Cover is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverPath));
-            album.CoverPath =
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverLocation));
+            album.CoverLocation =
                 await _formFileSaver.SaveWithRandomNameAsync(viewModel.Cover);
         }
 
@@ -151,7 +151,7 @@ public class AlbumsController : Controller
         var album = new Album
         {
             Title = viewModel.Title,
-            CoverPath = coverPath,
+            CoverLocation = coverPath,
             Owners = artists,
             PublishedAt = viewModel.PublishedAt
         };
@@ -179,7 +179,7 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
-        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverPath));
+        FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverLocation));
         await _albumsRepository.DeleteAsync(album);
         return FormResult.CreateSuccessResult("Removed successfully");
     }

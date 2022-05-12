@@ -13,4 +13,9 @@ public static class FormFileSaverExtensions
     {
         return formFileSaver.SaveWithRandomNameAsync(picture, DataType.Picture);
     }
+    
+    public static Task<string> SaveTrackWithRandomNameAsync(this IFormFileSaver formFileSaver, ImageFormFile picture)
+    {
+        return formFileSaver.SaveWithRandomNameAsync(picture, DataType.Music);
+    }
 }

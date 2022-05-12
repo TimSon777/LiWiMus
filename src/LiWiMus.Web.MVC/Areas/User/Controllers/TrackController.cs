@@ -97,7 +97,7 @@ public class TrackController : Controller
         //     return new ChallengeResult();
         // }
 
-        var pathToTrack = Path.Combine(_environment.ContentRootPath, track.PathToFile);
+        var pathToTrack = Path.Combine(_environment.ContentRootPath, track.FileLocation);
 
         if (!System.IO.File.Exists(pathToTrack))
         {

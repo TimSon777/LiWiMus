@@ -97,8 +97,8 @@ public class HomeController : Controller
         _mapper.Map(viewModel, artist);
         if (viewModel.Photo is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, artist.PhotoPath));
-            artist.PhotoPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
+            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, artist.PhotoLocation));
+            artist.PhotoLocation = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
         }
 
         await _artistRepository.UpdateAsync(artist);
@@ -123,7 +123,7 @@ public class HomeController : Controller
         {
             Name = viewModel.Name,
             About = viewModel.About,
-            PhotoPath = photoPath
+            PhotoLocation = photoPath
         };
         artist.UserArtists = new List<UserArtist> {new() {User = user, Artist = artist}};
         artist = await _artistRepository.AddAsync(artist);

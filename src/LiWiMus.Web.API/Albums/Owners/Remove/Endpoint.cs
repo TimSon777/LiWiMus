@@ -2,6 +2,7 @@
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.API.Shared.Extensions;
 using MinimalApi.Endpoint;
 using LiWiMus.Web.API.Shared.Remove;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         if (album is null)
         {
-            return Results.UnprocessableEntity(new { detail = $"No albums with Id {request.Id}." });
+            return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
         var artist = album.Owners.FirstOrDefault(owner => owner.Id == request.DeletedId);

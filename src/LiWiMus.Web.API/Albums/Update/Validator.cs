@@ -1,5 +1,4 @@
-﻿using ByteSizeLib;
-using FluentValidation;
+﻿using FluentValidation;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.Shared.Extensions;
 
@@ -15,11 +14,7 @@ public class Validator : AbstractValidator<Request>
             .DisableTags();
         
         RuleFor(r => r.PublishedAt)
-            .Must(d => d is null || d <= DateOnly.FromDateTime(DateTime.UtcNow))
-            .WithMessage(ValidationConstants.DateLessThenNow);
-        
-        RuleFor(r => r.Cover)
-            .SidesPercentageDifferenceMustBeLessThan(10)
-            .MustWeightLessThan(ByteSize.FromMegaBytes(1));
+            .Must(d => d is null || d <= DateTime.UtcNow)
+            .WithMessage(ValidationMessages.DateLessThenNow);
     }
 }

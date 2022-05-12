@@ -1,13 +1,12 @@
-﻿using LiWiMus.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LiWiMus.Infrastructure;
+namespace LiWiMus.Infrastructure.Data.Config;
 
-public static class Dependencies
+public static class DbContextConfiguration
 {
-    public static void ConfigureServices(IConfiguration configuration, IServiceCollection services)
+    public static void AddDbContext(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<ApplicationContext>(options =>
         {

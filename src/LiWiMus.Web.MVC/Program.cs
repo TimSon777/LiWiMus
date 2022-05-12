@@ -1,13 +1,10 @@
 using System.Reflection;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
 using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
-using LiWiMus.Web.MVC.Configuration;
 using LiWiMus.Web.MVC.Hubs.SupportChat;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
@@ -23,15 +20,11 @@ configuration.AddEnvironmentVariables();
 
 var services = builder.Services;
 
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-       .ConfigureContainer<ContainerBuilder>(containerBuilder =>
-           containerBuilder.RegisterModule(new ConfigurationCoreModule(builder.Environment.ContentRootPath))
-                           .RegisterModule(new ConfigurationWebModule()));
-
 configuration.AddSharedSettings(builder.Environment);
 services.AddSharedServices();
 services.ConfigureSettings(configuration);
-Dependencies.ConfigureServices(configuration, services);
+services.AddDbContext(configuration);
+services.AddCoreServices();
 builder.Services.AddTriggers();
 TriggersConfiguration.ConfigureTriggers();
 
