@@ -28,14 +28,12 @@ public class FilesController : ControllerBase
         _context.Files.Add(fileInfo);
         await _context.SaveChangesAsync();
 
-        var id = _hashids.Encode(fileInfo.Id);
-
-        var path = Path.Combine(_filesPath, id);
+        var path = Path.Combine(_filesPath, fileInfo.Id.ToString());
 
         await using var stream = System.IO.File.Create(path);
         await file.CopyToAsync(stream);
 
-        var location = Url.Action(nameof(Get), new {hashId = id});
+        var location = Url.Action(nameof(Get), new {hashId = _hashids.Encode(fileInfo.Id)});
         return new FileDto(location!);
     }
 
@@ -54,7 +52,7 @@ public class FilesController : ControllerBase
             return UnprocessableEntity();
         }
 
-        var path = Path.Combine(_filesPath, hashId);
+        var path = Path.Combine(_filesPath, id.ToString());
         if (System.IO.File.Exists(path))
         {
             return File(System.IO.File.OpenRead(path), fileInfo.ContentType, fileInfo.DownloadName);
@@ -83,7 +81,7 @@ public class FilesController : ControllerBase
         _context.Files.Remove(fileInfo);
         await _context.SaveChangesAsync();
 
-        var path = Path.Combine(_filesPath, hashId);
+        var path = Path.Combine(_filesPath, id.ToString());
         if (!System.IO.File.Exists(path))
         {
             return UnprocessableEntity();
