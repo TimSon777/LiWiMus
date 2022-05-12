@@ -21,8 +21,17 @@ export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
+    reset,
   } = useForm<Inputs>({ defaultValues: dto });
+
+  const actual = watch();
+  const isChanged = JSON.stringify(actual) !== JSON.stringify(dto);
+
+  const rollbackHandler = () => {
+    reset(dto);
+  };
 
   const saveHandler: SubmitHandler<Inputs> = async (data) => {
     if (JSON.stringify(data) === JSON.stringify(dto)) {
@@ -52,13 +61,25 @@ export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
             required: { value: true, message: "Enter playlist name" },
           })}
         />
-        <Button
-          onClick={handleSubmit(saveHandler)}
-          variant="contained"
-          sx={{ borderRadius: "20px", px: 4, alignSelf: "flex-end" }}
-        >
-          Save
-        </Button>
+        {isChanged && (
+          <Stack direction={"row"} sx={{ alignSelf: "flex-end" }} spacing={2}>
+            <Button
+              onClick={rollbackHandler}
+              variant="text"
+              color={"secondary"}
+              sx={{ borderRadius: "20px", px: 4 }}
+            >
+              Rollback
+            </Button>
+            <Button
+              onClick={handleSubmit(saveHandler)}
+              variant="contained"
+              sx={{ borderRadius: "20px", px: 4 }}
+            >
+              Save
+            </Button>
+          </Stack>
+        )}
       </Stack>
     </Box>
   );
