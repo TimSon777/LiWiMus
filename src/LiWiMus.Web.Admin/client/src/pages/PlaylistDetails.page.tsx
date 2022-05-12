@@ -35,6 +35,10 @@ export default function PlaylistDetailsPage() {
 
   const updatePlaylistPhoto = async (photo: File) => {
     try {
+      if (playlist.photoLocation) {
+        await axios.delete(playlist.photoLocation);
+      }
+
       const formData = new FormData();
       formData.append("file", photo);
       const { data } = await axios.post("/files", formData, {
