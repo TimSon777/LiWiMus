@@ -1,33 +1,34 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useSnackbar } from "notistack";
 import styles from "./ImageEditor.module.sass";
 import { Box, Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { IWithPhoto } from "../../types/IWithPhoto";
 
-const DATA_URL = process.env.REACT_APP_DATA_URL;
+const API_URL = process.env.REACT_APP_API_URL;
 
 export type ImageEditorProps = {
   src?: string | null;
   width: number;
-  updatePhoto: (data: FormData) => Promise<IWithPhoto | null>;
-  removePhoto: () => Promise<IWithPhoto | null>;
+  updatePhoto: (photo: File) => Promise<IWithPhoto>;
+  removePhoto: () => Promise<IWithPhoto>;
   imagePlaceholderSrc: string;
 };
 
 export default function ImageEditor(props: ImageEditorProps) {
   const [src, setSrc] = useState<string | undefined>();
-  const { enqueueSnackbar } = useSnackbar();
 
-  const updateSrc = useCallback((newSrc: string | null | undefined) => {
-    if (!newSrc) {
-      setSrc(props.imagePlaceholderSrc);
-    } else {
-      setSrc(`${DATA_URL}/${newSrc}`);
-    }
-  }, []);
+  const updateSrc = useCallback(
+    (newSrc: string | null | undefined) => {
+      if (!newSrc) {
+        setSrc(props.imagePlaceholderSrc);
+      } else {
+        setSrc(`${API_URL}${newSrc}`);
+      }
+    },
+    [props.imagePlaceholderSrc]
+  );
 
-  useEffect(() => updateSrc(props.src), [props.src]);
+  useEffect(() => updateSrc(props.src), [updateSrc, props.src]);
 
   const size = {
     xs: props.width * 0.75,
@@ -37,44 +38,30 @@ export default function ImageEditor(props: ImageEditorProps) {
 
   async function changeImage(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.files && event.target.files[0]) {
-      let reader = new FileReader();
-      reader.readAsDataURL(event.target.files[0]);
-      const form = document.getElementById(styles.form) as HTMLFormElement;
-      const formData = new FormData(form);
-      // @ts-ignore
-      const response = await props.updatePhoto(formData);
-      if (response) {
-        updateSrc(response.photoPath);
-        enqueueSnackbar("Photo successfully updated", { variant: "success" });
-      } else {
-        enqueueSnackbar("Something went wrong", { variant: "error" });
-      }
+      const file = event.target.files[0];
+      event.target.form?.reset();
+      const res = await props.updatePhoto(file);
+      updateSrc(res.photoLocation);
     }
   }
 
   const removePhotoHandler = async () => {
     const input = document.getElementById(styles.input) as HTMLInputElement;
-    input.form?.reset();
+    input.value = "";
     const response = await props.removePhoto();
-    if (response) {
-      updateSrc(response.photoPath);
-      enqueueSnackbar("Photo successfully deleted", { variant: "success" });
-    } else {
-      enqueueSnackbar("Something went wrong", { variant: "error" });
-    }
+    updateSrc(response.photoLocation);
   };
 
   return (
     <Box className={styles.container} width={size} height={size}>
       <img src={src} alt="" className={styles.image} />
-      <form id={styles.form}>
-        <input
-          type="file"
-          id={styles.input}
-          onChange={changeImage}
-          name={"photo"}
-        />
-      </form>
+      <input
+        type="file"
+        id={styles.input}
+        onChange={changeImage}
+        name={"file"}
+        accept={"image/png, image/gif, image/jpeg"}
+      />
       <div className={styles.controls}>
         <Button
           variant="text"

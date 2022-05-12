@@ -5,5 +5,5 @@ export type Playlist = {
   id: string;
   name: string;
   isPublic: boolean;
-  photoPath: string | null;
+  photoLocation: string | null;
 };

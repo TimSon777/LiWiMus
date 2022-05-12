@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import PlaylistsService from "../services/Playlists.service";
 import { Playlist } from "../types/Playlist";
 import Loading from "../components/Loading/Loading";
 import NotFound from "../components/NotFound/NotFound";
 import { Grid } from "@mui/material";
 import ImageEditor from "../components/ImageEditor/ImageEditor";
 import playlistCover from "../images/playlist-cover-negative.png";
+import { useSnackbar } from "notistack";
+import axios from "../services/Axios";
 
 export default function PlaylistDetailsPage() {
   const { id } = useParams() as { id: string };
   const [playlist, setPlaylist] = useState<Playlist | null>();
   const [loading, setLoading] = useState(true);
-
-  async function fetchData(promise: Promise<Playlist | null>) {
-    const res = await promise;
-    if (res) {
-      setPlaylist(res);
-    }
-  }
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
-    fetchData(PlaylistsService.getById(id)).then(() => setLoading(false));
+    axios
+      .get(`/playlists/${id}`)
+      .then((response) => {
+        setPlaylist(response.data as Playlist);
+      })
+      .catch((error) => enqueueSnackbar(error.message, { variant: "error" }))
+      .then(() => setLoading(false));
   }, [id]);
 
   if (loading) {
@@ -32,14 +33,38 @@ export default function PlaylistDetailsPage() {
     return <NotFound />;
   }
 
-  const updatePlaylistPhoto = async (formData: FormData) => {
-    formData.append("id", id);
-    await fetchData(PlaylistsService.update(formData));
+  const updatePlaylistPhoto = async (photo: File) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", photo);
+      const { data } = await axios.post("/files", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      const photoLocation = data.location as string;
+      const updateDto = { id, photoLocation };
+      const response = await axios.patch("/playlists", updateDto);
+      setPlaylist(response.data as Playlist);
+      enqueueSnackbar("Photo updated", { variant: "success" });
+    } catch (error) {
+      // @ts-ignore
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
     return playlist;
   };
 
   const removePlaylistPhoto = async () => {
-    await fetchData(PlaylistsService.removePhoto(id));
+    if (!playlist.photoLocation) {
+      return playlist;
+    }
+    try {
+      await axios.delete(playlist.photoLocation);
+      const response = await axios.post(`/playlists/${id}/removePhoto`);
+      setPlaylist(response.data as Playlist);
+      enqueueSnackbar("Photo removed", { variant: "success" });
+    } catch (error) {
+      // @ts-ignore
+      enqueueSnackbar(error.message, { variant: "error" });
+    }
     return playlist;
   };
 
@@ -59,7 +84,7 @@ export default function PlaylistDetailsPage() {
         >
           <ImageEditor
             width={250}
-            src={playlist.photoPath}
+            src={playlist.photoLocation}
             imagePlaceholderSrc={playlistCover}
             updatePhoto={updatePlaylistPhoto}
             removePhoto={removePlaylistPhoto}

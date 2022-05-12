@@ -1,3 +1,3 @@
 export interface IWithPhoto {
-  photoPath: string | null;
+  photoLocation: string | null;
 }
