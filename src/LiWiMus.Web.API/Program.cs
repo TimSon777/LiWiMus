@@ -1,7 +1,6 @@
 using System.Reflection;
 using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
-using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
@@ -53,8 +52,6 @@ builder.Services.AddCors(options => options
                                        .AllowAnyOrigin()));
 
 var app = builder.Build();
-
-app.UseSharedStaticFiles(builder.Environment);
 
 app.UseAuthentication();
 app.UseAuthorization();

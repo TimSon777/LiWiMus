@@ -1,10 +1,8 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Playlists;
-using LiWiMus.Core.Settings;
-using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
-using Microsoft.Extensions.Options;
+using LiWiMus.Web.API.Shared.Extensions;
 using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Playlists.RemovePhoto;
@@ -13,12 +11,10 @@ public class Endpoint : IEndpoint<IResult, int>
 {
     private readonly IMapper _mapper;
     private readonly IRepository<Playlist> _repository;
-    private readonly SharedSettings _settings;
 
-    public Endpoint(IRepository<Playlist> repository, IOptions<SharedSettings> settings, IMapper mapper)
+    public Endpoint(IRepository<Playlist> repository, IMapper mapper)
     {
         _repository = repository;
-        _settings = settings.Value;
         _mapper = mapper;
     }
 
@@ -27,14 +23,10 @@ public class Endpoint : IEndpoint<IResult, int>
         var playlist = await _repository.GetByIdAsync(id);
         if (playlist is null)
         {
-            return Results.UnprocessableEntity(new {detail = $"No playlists with Id {id}."});
+            return Results.Extensions.NotFoundById(EntityType.Playlists, id);
         }
 
-        if (playlist.PhotoLocation is not null)
-        {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, playlist.PhotoLocation));
-            playlist.PhotoLocation = null;
-        }
+        playlist.PhotoLocation = null;
 
         await _repository.UpdateAsync(playlist);
 

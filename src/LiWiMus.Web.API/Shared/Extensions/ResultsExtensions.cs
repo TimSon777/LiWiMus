@@ -14,4 +14,5 @@ public enum EntityType : byte
     Tracks,
     Genres,
     Albums,
+    Playlists
 }

@@ -9,7 +9,7 @@
           "Port": 5223
         }
       ],
-      "UpstreamPathTemplate": "/files/{id}",
+      "UpstreamPathTemplate": "/api/files/{id}",
       "UpstreamHttpMethod": [
         "GET",
         "DELETE"
@@ -24,23 +24,9 @@
           "Port": 5223
         }
       ],
-      "UpstreamPathTemplate": "/files",
+      "UpstreamPathTemplate": "/api/files",
       "UpstreamHttpMethod": [
         "POST"
-      ]
-    },
-    {
-      "DownstreamPathTemplate": "/data/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5010
-        }
-      ],
-      "UpstreamPathTemplate": "/api/data/{everything}",
-      "UpstreamHttpMethod": [
-        "GET"
       ]
     },
     {
@@ -85,6 +71,20 @@
         }
       ],
       "UpstreamPathTemplate": "/api/auth/{everything}",
+      "UpstreamHttpMethod": [
+        "POST"
+      ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/playlists/{id}/removePhoto",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/playlists/{id}/removePhoto",
       "UpstreamHttpMethod": [
         "POST"
       ]

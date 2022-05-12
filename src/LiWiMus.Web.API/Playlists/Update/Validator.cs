@@ -1,8 +1,6 @@
 ﻿#region
 
-using ByteSizeLib;
 using FluentValidation;
-using LiWiMus.Web.Shared.Extensions;
 
 #endregion
 
@@ -17,10 +15,5 @@ public class Validator : AbstractValidator<Request>
 
         RuleFor(request => request.Name)
             .MaximumLength(100);
-
-        RuleFor(request => request.Photo!)
-            .SidesPercentageDifferenceMustBeLessThan(10)
-            .MustWeightLessThan(ByteSize.FromMegaBytes(1))
-            .When(request => request.Photo is not null);
     }
 }

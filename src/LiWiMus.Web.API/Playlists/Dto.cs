@@ -9,5 +9,5 @@ public class Dto : BaseDto
 
     public string Name { get; set; } = null!;
     public bool IsPublic { get; set; }
-    public string? PhotoPath { get; set; }
+    public string? PhotoLocation { get; set; }
 }
