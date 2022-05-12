@@ -43,7 +43,11 @@ public class FilesController : ControllerBase
     [HttpGet("{hashId}")]
     public async Task<IActionResult> Get(string hashId)
     {
-        var id = _hashids.DecodeSingle(hashId);
+        if (!_hashids.TryDecodeSingle(hashId, out var id))
+        {
+            return UnprocessableEntity();
+        }
+        
         var fileInfo = await _context.Files.FindAsync(id);
         if (fileInfo is null)
         {
@@ -65,7 +69,11 @@ public class FilesController : ControllerBase
     [HttpDelete("{hashId}")]
     public async Task<IActionResult> Delete(string hashId)
     {
-        var id = _hashids.DecodeSingle(hashId);
+        if (!_hashids.TryDecodeSingle(hashId, out var id))
+        {
+            return UnprocessableEntity();
+        }
+        
         var fileInfo = await _context.Files.FindAsync(id);
         if (fileInfo is null)
         {
