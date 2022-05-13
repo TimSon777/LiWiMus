@@ -101,7 +101,7 @@ module Program =
         app.UseSwagger()
         app.UseSwaggerUI(fun c ->
             c.SwaggerEndpoint("/swagger/v1/swagger.json", builder.Environment.ApplicationName)
-            c.RoutePrefix <- "auth/swagger")
+            c.RoutePrefix <- "api/auth/swagger")
         
         app.MapControllers()
 
