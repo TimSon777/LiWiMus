@@ -11,8 +11,9 @@ import {UsersService} from "../users/users.service";
 @Module({
   imports: [],
   controllers: [GenresController],
-  providers: [FilterService, SortService, PaginationService, FilterOptionsService, GenresController],
+  providers: [FilterService, SortService, PaginationService, FilterOptionsService, GenresService],
 })
+
 export class GenresModule {
   
 }
