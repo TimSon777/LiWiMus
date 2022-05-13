@@ -19,13 +19,9 @@ public class Endpoint : IEndpoint<IResult, Request>
         _albumRepository = albumRepository;
         _artistRepository = artistRepository;
     }
+
     public async Task<IResult> HandleAsync(Request request)
     {
-        if (!request.Ids.Any())
-        {
-            return Results.Ok(new { detail = "0 lines have been changed" });
-        }
-
         var album = await _albumRepository.GetByIdAsync(request.Id);
 
         if (album is null)
@@ -33,27 +29,21 @@ public class Endpoint : IEndpoint<IResult, Request>
             return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
-        var count = 0;
-        foreach (var id in request.Ids)
-        {
-            var artist = await _artistRepository.GetByIdAsync(id);
-            
-            if (artist is null)
-            {
-                return Results.Extensions.NotFoundById(EntityType.Artists, id);
-            }
+        var artist = await _artistRepository.GetByIdAsync(request.AddedId);
 
-            if (album.Owners.Contains(artist))
-            {
-                continue;
-            }
-            
-            album.Owners.Add(artist);
-            count++;
+        if (artist is null)
+        {
+            return Results.Extensions.NotFoundById(EntityType.Artists, request.AddedId);
         }
 
+        if (album.Owners.Contains(artist))
+        {
+            return Results.Ok("Artist has already added");
+        }
+        
+        album.Owners.Add(artist);
         await _albumRepository.SaveChangesAsync();
-        return Results.Ok(new { detail = $"{count} lines have been changed" });
+        return Results.Ok();
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
