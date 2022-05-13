@@ -7,11 +7,12 @@ import {PaginationService} from "../pagination/pagination.service";
 import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {UsersController} from "../users/users.controller";
 import {UsersService} from "../users/users.service";
+import {DateSetterService} from "../shared/update.modifiedAt/set.date";
 
 @Module({
   imports: [],
   controllers: [GenresController],
-  providers: [FilterService, SortService, PaginationService, FilterOptionsService, GenresService],
+  providers: [FilterService, SortService, PaginationService, FilterOptionsService, GenresService, DateSetterService],
 })
 
 export class GenresModule {

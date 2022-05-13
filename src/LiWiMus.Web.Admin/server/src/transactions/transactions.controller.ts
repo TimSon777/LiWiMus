@@ -20,7 +20,5 @@ export class TransactionsController {
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
-        
-        
     }
 }
