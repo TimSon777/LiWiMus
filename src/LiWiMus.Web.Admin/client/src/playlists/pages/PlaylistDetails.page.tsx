@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link as RouterLink, useParams } from "react-router-dom";
 import { Playlist } from "../types/Playlist";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import { Grid, Stack } from "@mui/material";
+import { Grid, Link, Stack } from "@mui/material";
 import playlistCover from "../images/playlist-cover-negative.png";
 import { useSnackbar } from "notistack";
 import axios from "../../shared/services/Axios";
@@ -12,6 +12,7 @@ import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEdi
 import PlaylistPublicityEditor from "../components/PlaylistPublicityEditor/PlaylistPublicityEditor";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import PlaylistDeleter from "../components/PlaylistDeleter/PlaylistDeleter";
+import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -51,9 +52,7 @@ export default function PlaylistDetailsPage() {
 
   return (
     <>
-      <h1>
-        {playlist.name} #{playlist.id}
-      </h1>
+      <h1>{playlist.name}</h1>
 
       <Grid
         container
@@ -79,7 +78,21 @@ export default function PlaylistDetailsPage() {
           />
         </Grid>
         <Grid item xs={12} md={8} lg={4}>
-          <Stack direction={"column"} spacing={2} alignItems={"end"}>
+          <Stack direction={"column"} spacing={3} alignItems={"end"}>
+            <ReadonlyInfo name={"ID"} value={playlist.id} />
+            <ReadonlyInfo
+              name={"User"}
+              value={
+                <Link
+                  component={RouterLink}
+                  to={`/admin/users/${playlist.userId}`}
+                  underline="none"
+                  color={"secondary"}
+                >
+                  {playlist.userName}
+                </Link>
+              }
+            />
             <PlaylistInfoEditor
               id={id}
               dto={{ name: playlist.name }}
