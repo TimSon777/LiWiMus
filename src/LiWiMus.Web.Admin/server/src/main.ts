@@ -8,11 +8,12 @@ async function bootstrap() {
   
   const config = new DocumentBuilder()
       .setTitle("LiWiMus.Admin.Web.API.Nest")
+      .addServer("http://localhost:3001")
       .build();
   
   const document = SwaggerModule.createDocument(app, config);
   
-  SwaggerModule.setup('api/swagger/index.html', app, document);
+  SwaggerModule.setup('swagger', app, document);
   
   await app.listen(3001);
 }

@@ -12,7 +12,8 @@
       "UpstreamPathTemplate": "/api/mail/{everything}",
       "UpstreamHttpMethod": [
         "POST"
-      ]
+      ],
+      "SwaggerKey" : "MailServer"
     },
     {
       "DownstreamPathTemplate": "/files/{id}",
@@ -27,7 +28,8 @@
       "UpstreamHttpMethod": [
         "GET",
         "DELETE"
-      ]
+      ],
+      "SwaggerKey" : "FileServer"
     },
     {
       "DownstreamPathTemplate": "/files",
@@ -41,7 +43,8 @@
       "UpstreamPathTemplate": "/api/files",
       "UpstreamHttpMethod": [
         "POST"
-      ]
+      ],
+      "SwaggerKey" : "FileServer"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -57,7 +60,8 @@
         "POST",
         "PUT",
         "GET"
-      ]
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
     },
     {
       "DownstreamPathTemplate": "/api/{everything}",
@@ -68,12 +72,13 @@
           "Port": 5010
         }
       ],
-      "UpstreamPathTemplate": "/api/f/{everything}",
+      "UpstreamPathTemplate": "/api/c/{everything}",
       "UpstreamHttpMethod": [
         "POST",
         "PUT",
         "GET"
-      ]
+      ],
+      "SwaggerKey" : "Admin.API.C#"
     },
     {
       "DownstreamPathTemplate": "/auth/{everything}",
@@ -87,7 +92,8 @@
       "UpstreamPathTemplate": "/api/auth/{everything}",
       "UpstreamHttpMethod": [
         "POST"
-      ]
+      ],
+      "SwaggerKey" : "Auth"
     },
     {
       "DownstreamPathTemplate": "/api/playlists/{id}/removePhoto",
@@ -101,7 +107,8 @@
       "UpstreamPathTemplate": "/api/playlists/{id}/removePhoto",
       "UpstreamHttpMethod": [
         "POST"
-      ]
+      ],
+      "SwaggerKey" : "Admin.API.C#"
     },
     {
       "DownstreamPathTemplate": "/api/playlists/{id}",
@@ -116,7 +123,8 @@
       "UpstreamHttpMethod": [
         "GET",
         "DELETE"
-      ]
+      ],
+      "SwaggerKey" : "Admin.API.C#"
     },
     {
       "DownstreamPathTemplate": "/api/playlists",
@@ -130,6 +138,54 @@
       "UpstreamPathTemplate": "/api/playlists",
       "UpstreamHttpMethod": [
         "PATCH"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "FileServer",
+      "Config": [
+        {
+          "Name": "Web.FileServer",
+          "Url": "http://localhost:5223/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "MailServer",
+      "Config": [
+        {
+          "Name": "Web.MailServer",
+          "Url": "http://localhost:5193/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Admin.API.Nest",
+      "Config": [
+        {
+          "Name": "Web.Admin.API.Nest",
+          "Url": "http://localhost:3001/swagger-json"
+        }
+      ]
+    },
+    {
+      "Key": "Auth",
+      "Config": [
+        {
+          "Name": "Web.Auth",
+          "Url": "http://localhost:5020/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "Admin.API.C#",
+      "Config": [
+        {
+          "Name": "Web.Admin.API.C#",
+          "Url": "http://localhost:5010/swagger/v1/swagger.json"
+        }
       ]
     }
   ],

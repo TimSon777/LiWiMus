@@ -9,6 +9,7 @@ open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
 
 
+open Microsoft.OpenApi.Models
 open Ocelot.DependencyInjection
 open Ocelot.Middleware
 
@@ -45,13 +46,33 @@ module Program =
         else
             services.AddCors()
 
+        services.AddControllers()
+        
+        let info = OpenApiInfo()
+        info.Title <- builder.Environment.ApplicationName
+        
+        services.AddSwaggerGen(fun o->
+            o.SwaggerDoc("v1", info)
+            o.CustomSchemaIds(fun t -> t.ToString()))
+        
+        services.AddSwaggerForOcelot(configuration)
         let app = builder.Build()
 
+        if app.Environment.IsDevelopment() then
+            app.UseDeveloperExceptionPage() |> ignore
         //app.UseHttpsRedirection()
         app.UseCors()
 
-        app.UseOcelot().Wait()
+        app.UseSwagger()
+        app.UseSwaggerForOcelotUI(fun o ->
+            o.PathToSwaggerGenerator <- "/swagger/docs"
+            o.SwaggerEndpoint("/swagger/v1/swagger.json", builder.Environment.ApplicationName))
+        
+        app
+            .UseOcelot()
+            .Wait()
 
+        app.MapControllers()
         app.Run()
 
         exitCode
