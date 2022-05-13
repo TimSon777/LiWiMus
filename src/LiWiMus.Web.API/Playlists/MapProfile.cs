@@ -15,6 +15,10 @@ public class MapProfile : Profile
             .ForMember(dto => dto.UserId, expression => expression
                 .MapFrom(playlist => playlist.Owner.Id))
             .ForMember(dto => dto.UserName, expression => expression
-                .MapFrom(playlist => playlist.Owner.UserName));
+                .MapFrom(playlist => playlist.Owner.UserName))
+            .ForMember(dto => dto.TracksCount, expression => expression
+                .MapFrom(playlist => playlist.Tracks.Count))
+            .ForMember(dto => dto.ListenersCount, expression => expression
+                .MapFrom(playlist => playlist.Subscribers.Count));
     }
 }
