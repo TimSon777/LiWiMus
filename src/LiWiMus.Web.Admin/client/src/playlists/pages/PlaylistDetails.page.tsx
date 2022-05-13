@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {Playlist} from "../types/Playlist";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Playlist } from "../types/Playlist";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import {Grid, Stack} from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import playlistCover from "../images/playlist-cover-negative.png";
-import {useSnackbar} from "notistack";
+import { useSnackbar } from "notistack";
 import axios from "../../shared/services/Axios";
 import PlaylistImageEditor from "../components/PlaylistImageEditor/PlaylistImageEditor";
 import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEditor";
 import PlaylistPublicityEditor from "../components/PlaylistPublicityEditor/PlaylistPublicityEditor";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
+import PlaylistDeleter from "../components/PlaylistDeleter/PlaylistDeleter";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -93,6 +94,7 @@ export default function PlaylistDetailsPage() {
                 setPlaylist({ ...playlist, ...dto });
               }}
             />
+            <PlaylistDeleter playlist={playlist} setPlaylist={setPlaylist} />
           </Stack>
         </Grid>
         <Grid item xs={12} md={8} lg={4}>

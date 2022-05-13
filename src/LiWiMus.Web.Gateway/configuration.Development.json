@@ -114,7 +114,8 @@
       ],
       "UpstreamPathTemplate": "/api/playlists/{id}",
       "UpstreamHttpMethod": [
-        "GET"
+        "GET",
+        "DELETE"
       ]
     },
     {
