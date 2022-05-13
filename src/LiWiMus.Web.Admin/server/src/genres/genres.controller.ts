@@ -1,34 +1,46 @@
-import {Body, Controller, Get, HttpException, HttpStatus, Post, Query, UsePipes, ValidationPipe} from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpException,
+    HttpStatus,
+    Post,
+    Query,
+    UseInterceptors,
+    UsePipes,
+    ValidationPipe
+} from '@nestjs/common';
 import {GenreDto} from "./dto/genre.dto";
 import {Track} from "../tracks/track.entity";
 import {Genre} from "./genre.entity";
 import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterOptions} from "../filters/filter.options";
 import {getRepository} from "typeorm";
+import {GenresService} from "./genres.service";
+import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
+import {TrackDto} from "../tracks/dto/track.dto";
 
 @Controller('genres')
 export class GenresController {
-    constructor(private readonly filterOptionsService: FilterOptionsService) {
+    constructor(private readonly filterOptionsService: FilterOptionsService,
+                private readonly genreService: GenresService) {
     }
+    
     @Get("getall")
-    async getAll(@Query() options : FilterOptions) {
+    @UseInterceptors(new TransformInterceptor(GenreDto))
+    async getAll(@Query() options : FilterOptions) : Promise<GenreDto[]> {
         return await Genre
             .find(this.filterOptionsService.GetFindOptionsObject(options, ['tracks']));
     }
     
     @Post("updateGenre")
-    @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist:true}))
     async updateGenres(@Body() dto: GenreDto) : Promise<Genre> {
-        let tracks = await Track.find({
-            where: dto.tracksId.map((id) => ({ id } as Track))
-        })
-        let updatedGenre = Genre.create({id: dto.id, name: dto.name, tracks: tracks});
-        await Genre.save(updatedGenre)
+        return this.genreService.updateGenre(dto)
             .catch(err => {
             throw new HttpException({
                 message: err.message
             }, HttpStatus.BAD_REQUEST)
         });
-        return Genre.findOne(dto.id, {relations: ['tracks']})
     }
 }

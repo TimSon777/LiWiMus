@@ -6,6 +6,7 @@ import {Transaction} from "../transactions/transaction.entity";
 import {Playlist} from "../playlists/playlist.entity";
 import {CommonEntity} from "../shared/commonEntity";
 import {UserArtist} from "../userArtist/userArtist.entity";
+import {Exclude} from "class-transformer";
 
 @Entity('aspnetusers')
 export class User extends CommonEntity {
@@ -26,7 +27,8 @@ export class User extends CommonEntity {
   
   @Column({ type: 'decimal',name: 'Balance' })
   balance: number;
-  
+
+  @Exclude()
   @Column({ name: 'AvatarPath' })
   avatarPath: string;
   
@@ -35,16 +37,19 @@ export class User extends CommonEntity {
   
   @Column({ name: 'EmailConfirmed' })
   emailConfirmed: boolean;
-  
+
+  @Exclude()
   @Column({ name: 'NormalizedEmail', length: 256 })
   normalizedEmail: string;
 
+  @Exclude()
   @Column({ name: 'NormalizedUserName', length: 20 })
   normalizedUserName: string;
 
   @Column({ name: 'UserName', length: 20 })
   userName: string;
   
+  @Exclude()
   @Column({ name: 'PasswordHash' })
   passwordHash: string;
 
@@ -54,6 +59,7 @@ export class User extends CommonEntity {
   @OneToMany(() => UserRole, userRole => userRole.user, {onDelete: "CASCADE"})
   userRoles: UserRole[];
 
+  @Exclude()
   @OneToMany(() => ExternalLogin, externalLogin => externalLogin.user, {onDelete: "CASCADE"})
   externalLogins: ExternalLogin[];
 
