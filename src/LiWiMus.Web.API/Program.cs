@@ -77,3 +77,5 @@ app.UseSwaggerUI(c =>
 app.MapEndpoints();
 
 app.Run();
+
+public partial class Program { }

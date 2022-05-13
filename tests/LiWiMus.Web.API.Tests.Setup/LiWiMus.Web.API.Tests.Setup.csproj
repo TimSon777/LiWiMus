@@ -2,18 +2,14 @@
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
-        <GenerateProgramFile>false</GenerateProgramFile>
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Tests.fs" />
-        <Compile Include="Program.fs" />
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.5" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
         <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -27,8 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\LiWiMus.Web.API\LiWiMus.Web.API.csproj" />
-        <ProjectReference Include="..\LiWiMus.Web.API.Tests.Setup\LiWiMus.Web.API.Tests.Setup.csproj" />
+      <ProjectReference Include="..\..\src\LiWiMus.Web.API\LiWiMus.Web.API.csproj" />
     </ItemGroup>
 
 </Project>
