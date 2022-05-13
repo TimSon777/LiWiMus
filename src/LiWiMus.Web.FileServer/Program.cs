@@ -3,6 +3,8 @@ using FluentValidation.AspNetCore;
 using HashidsNet;
 using LiWiMus.Web.FileServer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,9 +24,23 @@ builder.Services.AddFluentValidation(options =>
     options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
 
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", new OpenApiInfo { Title = builder.Environment.ApplicationName });
+    o.CustomSchemaIds(type => type.ToString());
+    o.AddFluentValidationRulesScoped();
+});
+
 var app = builder.Build();
 
 app.UseAuthorization();
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", builder.Environment.ApplicationName);
+    c.RoutePrefix = "api/swagger";
+});
 
 app.MapControllers();
 
