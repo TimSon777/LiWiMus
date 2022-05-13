@@ -55,10 +55,17 @@ export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
           error={!!errors.name && !!errors.name.message}
           helperText={errors.name?.message}
           label="Name"
+          InputLabelProps={{
+            shrink: true,
+          }}
           variant="outlined"
           fullWidth
           {...register("name", {
             required: { value: true, message: "Enter playlist name" },
+            maxLength: {
+              value: 100,
+              message: "Maximum length - 100 characters",
+            },
           })}
         />
         {isChanged && (
