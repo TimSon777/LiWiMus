@@ -3,7 +3,7 @@ import {
     Controller,
     Get,
     HttpException,
-    HttpStatus,
+    HttpStatus, Patch,
     Post,
     Query,
     UseInterceptors,
@@ -17,39 +17,32 @@ import {UsersService} from "./users.service";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {UserDto} from "./dto/user.dto";
 import {UpdateUserDto} from "./dto/update.user.dto";
+import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 
 
 @Controller("users")
+@ApiTags('users')
 export class UsersController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly userService: UsersService){}
+    
     @Get('getall')
     @UseInterceptors(new TransformInterceptor(UserDto))
+    @ApiOkResponse({ type: [User] })
     async getUsers(@Query() options : FilterOptions)
         : Promise<User[]> {
         return User.find(
-            this.filterOptionsService.GetFindOptionsObject(options, ['userArtists', 'transactions', 'playlists']))
+            this.filterOptionsService.GetFindOptionsObject(options))
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
     }
-
-    @Post('deleteUser')
-    async deleteUser(@Body() id: number){
-        let user = await User.findOne(id);
-        await User.remove(user)
-            .catch(err => {
-            throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
-        return true;
-    }
     
-    @Post('updateUser')
+    @Patch('updateUser')
     @UsePipes(new ValidationPipe({skipMissingProperties: true}))
+    @ApiCreatedResponse({ type: User })
     @UseInterceptors(new TransformInterceptor(UserDto))
     async updateUserPersonal(@Body() dto: UpdateUserDto){
             return await this.userService.updateUser(dto)

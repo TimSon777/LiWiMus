@@ -5,7 +5,7 @@ import {SortService} from "../filters/services/sort.service";
 import {PaginationService} from "../pagination/pagination.service";
 import {FilterOptionsService} from "../filters/services/filter.options.service";
 import { UsersService } from './users.service';
-import {DateSetterService} from "../shared/update.modifiedAt/set.date";
+import {DateSetterService} from "../shared/setDate/set.date";
 
 @Module({
     imports: [],
