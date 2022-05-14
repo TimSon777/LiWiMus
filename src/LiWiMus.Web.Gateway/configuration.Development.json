@@ -96,6 +96,51 @@
       "SwaggerKey" : "Auth"
     },
     {
+      "DownstreamPathTemplate": "/api/albums/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/albums/{id}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/tracks/{id}/artists",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/tracks/{id}/artists",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/playlists/{playlistId}/tracks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/playlists/{playlistId}/tracks",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
       "DownstreamPathTemplate": "/api/playlists/tracks",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

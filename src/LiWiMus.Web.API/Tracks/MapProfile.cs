@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Tracks;
+using LiWiMus.Web.API.Tracks.Create;
 
 namespace LiWiMus.Web.API.Tracks;
 
@@ -8,6 +9,10 @@ public class MapProfile : Profile
 {
     public MapProfile()
     {
-        CreateMap<Create.Request, Track>();
+        CreateMap<Request, Track>();
+
+        CreateMap<Track, Dto>()
+            .ForMember(dto => dto.AlbumId, expression => expression
+                .MapFrom(track => track.Album.Id));
     }
 }
