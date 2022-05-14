@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Button, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import axios from "../../../shared/services/Axios";
 import { useSnackbar } from "notistack";
+import PlaylistService from "../../Playlist.service";
 
 type Inputs = {
   name: string;
@@ -39,7 +39,7 @@ export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
     }
     try {
       const req = { ...data, id };
-      const response = (await axios.patch("/playlists", req)).data as Inputs;
+      const response = (await PlaylistService.update(req)) as Inputs;
       enqueueSnackbar("Info updated", { variant: "success" });
       setDto(response);
     } catch (error) {

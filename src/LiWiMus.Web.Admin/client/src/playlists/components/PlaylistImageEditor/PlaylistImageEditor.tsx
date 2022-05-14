@@ -1,8 +1,8 @@
 import React from "react";
 import ImageEditor from "../../../shared/components/ImageEditor/ImageEditor";
-import axios from "../../../shared/services/Axios";
 import { Playlist } from "../../types/Playlist";
 import { useSnackbar } from "notistack";
+import PlaylistService from "../../Playlist.service";
 
 type Props = {
   playlist: Playlist;
@@ -26,11 +26,8 @@ export default function PlaylistImageEditor({
       return;
     }
     try {
-      await axios.delete(playlist.photoLocation);
-      const response = await axios.post(
-        `/playlists/${playlist.id}/removePhoto`
-      );
-      setPlaylistWithPhoto(response.data as Playlist);
+      const response = await PlaylistService.removePhoto(playlist);
+      setPlaylistWithPhoto(response);
       enqueueSnackbar("Photo removed", { variant: "success" });
     } catch (error) {
       // @ts-ignore
@@ -48,19 +45,8 @@ export default function PlaylistImageEditor({
     try {
       const photo = input.files[0];
 
-      if (playlist.photoLocation) {
-        await axios.delete(playlist.photoLocation);
-      }
-
-      const formData = new FormData();
-      formData.append("file", photo);
-      const { data } = await axios.post("/files", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      const photoLocation = data.location as string;
-      const updateDto = { id: playlist.id, photoLocation };
-      const response = await axios.patch("/playlists", updateDto);
-      setPlaylistWithPhoto(response.data as Playlist);
+      const response = await PlaylistService.changePhoto(playlist, photo);
+      setPlaylistWithPhoto(response);
       enqueueSnackbar("Photo updated", { variant: "success" });
     } catch (error) {
       // @ts-ignore

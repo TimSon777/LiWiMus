@@ -3,16 +3,18 @@ import { Link as RouterLink, useParams } from "react-router-dom";
 import { Playlist } from "../types/Playlist";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import { Grid, Link, Stack } from "@mui/material";
+import { Grid, Link, Stack, Typography } from "@mui/material";
 import playlistCover from "../images/playlist-cover-negative.png";
 import { useSnackbar } from "notistack";
-import axios from "../../shared/services/Axios";
 import PlaylistImageEditor from "../components/PlaylistImageEditor/PlaylistImageEditor";
 import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEditor";
 import PlaylistPublicityEditor from "../components/PlaylistPublicityEditor/PlaylistPublicityEditor";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import PlaylistDeleter from "../components/PlaylistDeleter/PlaylistDeleter";
+import PlaylistService from "../Playlist.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
+import PlaylistTracks from "../components/PlaylistTracks/PlaylistTracks";
+import { Track } from "../../tracks/types/Track";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -32,15 +34,13 @@ export default function PlaylistDetailsPage() {
   };
 
   useEffect(() => {
-    axios
-      .get(`/playlists/${id}`)
-      .then((response) => {
-        const playlist = response.data as Playlist;
-        setPlaylistWithPhoto(playlist);
-      })
+    PlaylistService.get(id)
+      .then((playlist) => setPlaylistWithPhoto(playlist))
       .catch((error) => enqueueSnackbar(error.message, { variant: "error" }))
       .then(() => setLoading(false));
   }, [id]);
+
+  useEffect(() => {});
 
   if (loading) {
     return <Loading />;

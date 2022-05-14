@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
-import axios from "../../../shared/services/Axios";
 import { useSnackbar } from "notistack";
+import PlaylistService from "../../Playlist.service";
 
 type Inputs = {
   isPublic: boolean;
@@ -19,8 +19,7 @@ export default function PlaylistPublicityEditor({ id, dto, setDto }: Props) {
   const publicityHandler = async () => {
     const req = { id, isPublic: !dto.isPublic };
     try {
-      const response = await axios.patch("/playlists", req);
-      let data = response.data as Inputs;
+      const data = (await PlaylistService.update(req)) as Inputs;
       setDto(data);
       enqueueSnackbar(`Playlist is ${data.isPublic ? "public" : "private"}`, {
         variant: "success",

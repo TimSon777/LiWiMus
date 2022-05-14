@@ -1,9 +1,9 @@
 import React from "react";
 import Deleter from "../../../shared/components/Deleter/Deleter";
 import { Playlist } from "../../types/Playlist";
-import axios from "../../../shared/services/Axios";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
+import PlaylistService from "../../Playlist.service";
 
 type Props = {
   playlist: Playlist;
@@ -16,10 +16,7 @@ export default function PlaylistDeleter({ playlist, setPlaylist }: Props) {
 
   const deleteHandler = async () => {
     try {
-      if (playlist.photoLocation) {
-        await axios.delete(playlist.photoLocation);
-      }
-      await axios.delete(`/playlists/${playlist.id}`);
+      await PlaylistService.remove(playlist);
       setPlaylist(undefined);
       enqueueSnackbar("Playlist deleted", { variant: "success" });
 
