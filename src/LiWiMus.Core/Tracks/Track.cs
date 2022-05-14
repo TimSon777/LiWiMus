@@ -4,6 +4,7 @@ using LiWiMus.Core.Artists;
 using LiWiMus.Core.Constants;
 using LiWiMus.Core.Genres;
 using LiWiMus.Core.LikedSongs;
+using LiWiMus.Core.Playlists;
 using LiWiMus.Core.PlaylistTracks;
 using LiWiMus.Core.Shared.Interfaces;
 
@@ -25,5 +26,6 @@ public class Track : BaseEntity, IResource.WithMultipleOwners<Artist>
     public double Duration { get; set; }
 
     public virtual List<LikedSong> Subscribers { get; set; } = null!;
-    public virtual List<PlaylistTrack> Playlists { get; set; } = null!;
+    public virtual List<Playlist> Playlists { get; set; } = null!;
+    public virtual List<PlaylistTrack> PlaylistTracks { get; set; } = null!;
 }
