@@ -25,6 +25,13 @@ public static class RouteConstants
         public const string Update = $"{Prefix}/{nameof(Playlists)}";
         public const string RemovePhoto = $"{Prefix}/{nameof(Playlists)}/{{id:int}}/{nameof(RemovePhoto)}";
         public const string Delete = $"{Prefix}/{nameof(Playlists)}/{{id:int}}";
+
+        // ReSharper disable once MemberHidesStaticFromOuterClass
+        public static class Tracks
+        {
+            public const string Add = $"{Prefix}/{nameof(Playlists)}/{nameof(Tracks)}";
+            public const string Remove = $"{Prefix}/{nameof(Playlists)}/{nameof(Tracks)}";
+        }
     }
 
     public static class Tracks

@@ -96,6 +96,22 @@
       "SwaggerKey" : "Auth"
     },
     {
+      "DownstreamPathTemplate": "/api/playlists/tracks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/playlists/tracks",
+      "UpstreamHttpMethod": [
+        "POST",
+        "DELETE"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
       "DownstreamPathTemplate": "/api/playlists/{id}/removePhoto",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
