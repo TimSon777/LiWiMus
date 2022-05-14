@@ -3,7 +3,7 @@ import {
     Controller,
     Get,
     HttpException,
-    HttpStatus,
+    HttpStatus, Patch,
     Post,
     Query,
     UseInterceptors,
@@ -19,8 +19,11 @@ import {getRepository} from "typeorm";
 import {GenresService} from "./genres.service";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {TrackDto} from "../tracks/dto/track.dto";
+import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {Artist} from "../artists/artist.entity";
 
 @Controller('genres')
+@ApiTags('genres')
 export class GenresController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly genreService: GenresService) {
@@ -28,12 +31,13 @@ export class GenresController {
     
     @Get("getall")
     @UseInterceptors(new TransformInterceptor(GenreDto))
-    async getAll(@Query() options : FilterOptions) : Promise<GenreDto[]> {
+    @ApiOkResponse({ type: [Genre] })
+    async getGenres(@Query() options : FilterOptions) : Promise<Genre[]> {
         return await Genre
-            .find(this.filterOptionsService.GetFindOptionsObject(options, ['tracks']));
+            .find(this.filterOptionsService.GetFindOptionsObject(options));
     }
     
-    @Post("updateGenre")
+    @Patch("updateGenre")
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist:true}))
     async updateGenres(@Body() dto: GenreDto) : Promise<Genre> {
         return this.genreService.updateGenre(dto)

@@ -2,6 +2,7 @@
 import {Column, Entity, JoinTable, ManyToMany, OneToMany} from "typeorm";
 import {Track} from "../tracks/track.entity";
 import {Artist} from "../artists/artist.entity";
+import {Exclude} from "class-transformer";
 
 @Entity("albums")
 export class Album extends CommonEntity {
@@ -14,6 +15,7 @@ export class Album extends CommonEntity {
     @Column({ name: 'PublishedAt', type: 'date' })
     publishedAt: string;
 
+    @Exclude()
     @Column({ name: 'CoverPath' })
     coverPath: string;
 

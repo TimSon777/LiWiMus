@@ -1,9 +1,9 @@
 import {
     Body,
-    Controller,
+    Controller, Delete,
     Get,
     HttpException,
-    HttpStatus,
+    HttpStatus, Patch,
     Post,
     Query,
     UseInterceptors,
@@ -14,25 +14,25 @@ import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterOptions} from "../filters/filter.options";
 import {Artist} from "./artist.entity";
 import {User} from "../users/user.entity";
-import {ArtistsPersonalDto} from "./dto/artists.personal.dto";
-import {UserArtistDto} from "./dto/user.artist.dto";
 import {Track} from "../tracks/track.entity";
 import {UserArtist} from "../userArtist/userArtist.entity";
-import {ArtistsAlbumTracksDto} from "./dto/artists.album.tracks.dto";
 import {Album} from "../albums/album.entity";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {TrackDto} from "../tracks/dto/track.dto";
 import {ArtistsDto} from "./dto/artists.dto";
+import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 
 @Controller('artists')
+@ApiTags('artists')
 export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
     @Get('getall')
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
+    @ApiOkResponse({ type: [Artist] })
     async getArtists(@Query() options : FilterOptions)
-        : Promise<ArtistsDto[]> {
+        : Promise<Artist[]> {
         return Artist.find(
-            this.filterOptionsService.GetFindOptionsObject(options, ["userArtists", "albums", "tracks" ]))
+            this.filterOptionsService.GetFindOptionsObject(options))
             
             .catch(err => {
                 throw new HttpException({
@@ -41,7 +41,7 @@ export class ArtistsController {
             });
     }
 
-    @Post('deleteArtist')
+    @Delete('deleteArtist')
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
     async deleteUser(@Body() id: number){
         let artist = await Artist.findOne(id);
@@ -54,17 +54,17 @@ export class ArtistsController {
         return true;
     }
 
-    @Post('updateArtist')
+    @Patch('updateArtist')
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
-    async updateArtist(@Body() dto: ArtistsPersonalDto) : Promise<ArtistsDto> {
+    async updateArtist(@Body() dto: any) : Promise<ArtistsDto> {
         await Artist.update({id: dto.id}, dto);
         return Artist.findOne(dto.id);
     }
 
-    @Post('updateUserArtist')
+   /* @Post('updateUserArtist')
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
-    async updateUserArtist(@Body() dto: UserArtistDto)   {
+    async updateUserArtist(@Body() dto: any)   {
         let artist = await Artist.findOne(dto.id);
         let users = await User.find({
             where: dto.userArtistsId.map((id) => ({id} as User))
@@ -92,7 +92,7 @@ export class ArtistsController {
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
     
-    async updateArtistsAlbumTracks(@Body() dto: ArtistsAlbumTracksDto)  {
+    async updateArtistsAlbumTracks(@Body() dto: any)  {
         let tracks = await Track.find({
             where: dto.tracksId.map((id) => ({id} as Track))
         });
@@ -102,6 +102,6 @@ export class ArtistsController {
         });
         
         
-    }
+    }*/
 }
 //http://localhost:3001/api/artists/getall?options[page][numberOfElementsOnPage]=3&options[page][pageNumber]=1&options[sorting][0][columnName]=id&options[sorting][0][order]=DESC&options[filters][0][columnName]=name&options[filters][0][operator]=cnt&options[filters][0][value]=n

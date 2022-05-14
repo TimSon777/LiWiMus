@@ -2,21 +2,15 @@
 import {Track} from "../../tracks/track.entity";
 import {IsArray, IsPositive, IsString, MaxLength} from "class-validator";
 import {Exclude, Expose, Type} from "class-transformer";
+import {ApiProperty} from "@nestjs/swagger";
+import {TrackDto} from "../../tracks/dto/track.dto";
 
 
 @Exclude()
 export class GenreDto extends IdDto {
+    @ApiProperty()
     @MaxLength(50)
     @IsString()
     @Expose()
     name: string;
-
-    @Expose()
-    tracks: Track[];
-
-    @Expose()
-    createdAt: Date;
-
-    @Expose()
-    modifiedAt: Date;
 }

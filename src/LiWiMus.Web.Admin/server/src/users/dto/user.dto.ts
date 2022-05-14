@@ -1,83 +1,71 @@
 ﻿import {IdDto} from "../../shared/dto/id.dto";
 import {
-    IsArray,
     IsBoolean,
     IsDateString,
     IsEmail,
     IsEnum,
-    IsPositive,
     IsString,
     MaxLength
 } from "class-validator";
 import {Gender} from "../gender/gender";
 import {Exclude, Expose} from "class-transformer";
-import {Playlist} from "../../playlists/playlist.entity";
-import {Transaction} from "../../transactions/transaction.entity";
-import {UserRole} from "../../userRoles/userRoles.entity";
-import {UserArtist} from "../../userArtist/userArtist.entity";
+import {ApiProperty} from "@nestjs/swagger";
 
 
 @Exclude()
 export class UserDto extends IdDto {
-    
+
+    @ApiProperty()
     @Expose()
     @MaxLength(50)
     @IsString()
     firstName: string;
 
+    @ApiProperty()
     @Expose()
     @MaxLength(50)
     @IsString()
     secondName: string;
 
+    @ApiProperty()
     @Expose()
     @MaxLength(50)
     @IsString()
     patronymic: string;
 
+    @ApiProperty()
     @Expose()
     @IsEnum(Gender)
     gender: Gender;
 
+    @ApiProperty()
     @Expose()
     @IsDateString()
     birthDate: Date;
 
+    @ApiProperty()
     @Expose()
     @MaxLength(256)
     @IsString()
     @IsEmail()
     email: string;
 
+    @ApiProperty()
     @Expose()
     @IsBoolean()
     emailConfirmed: boolean;
 
+    @ApiProperty()
     @Expose()
     @MaxLength(20)
     @IsString()
     userName: string;
 
-    @Expose()
-    userRoles: UserRole[];
-
-    @Expose()
-    playlists: Playlist[];
-
-    @Expose()
-    @IsArray()
-    @IsPositive({each: true})
-    artistsId: number[];
-
-    @Expose()
-    transactions: Transaction[];
-    
-    @Expose()
-    userArtists: UserArtist[];
-
+    @ApiProperty()
     @Expose()
     createdAt: Date;
 
+    @ApiProperty()
     @Expose()
     modifiedAt: Date;
 }

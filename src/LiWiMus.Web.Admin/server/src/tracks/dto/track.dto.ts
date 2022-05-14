@@ -6,57 +6,30 @@ import {PlaylistTrack} from "../../playlistTracks/playlistTrack.entity";
 import {Exclude, Expose} from "class-transformer";
 import {Album} from "../../albums/album.entity";
 import {GenreDto} from "../../genres/dto/genre.dto";
-import {IsNotEmpty, ValidateNested} from "class-validator";
+import {IsDateString, IsNotEmpty, IsString, MaxLength, ValidateNested} from "class-validator";
+import {ApiProperty} from "@nestjs/swagger";
+import {ArtistsDto} from "../../artists/dto/artists.dto";
+import {AlbumDto} from "../../albums/dto/album.dto";
 
 @Exclude()
 export class TrackDto extends IdDto{
-/*    @Expose()
-    albumName: string;
-
-    @Expose()
-    albumId: number;
-
-    @Expose()
-    genre: string[];
-    
-    @Expose()
-    genreId: number[];
-
-    @Expose()
-    publishedAt: Date;
-
-    @Expose()
-    artistsId: number[];
-
-    @Expose()
-    artistsName: string[];
-
-    @Expose()
-    playlistsId: number[];
-
-    @Expose()
-    playlistsName: string[];*/
-
+    @ApiProperty()
     @Expose()
     name: string;
-    
+
+    @ApiProperty()
     @Expose()
-    @ValidateNested()
-    @IsNotEmpty()
-    genres: Genre[];
-    
+    genres: GenreDto[];
+
+    @ApiProperty()
     @Expose()
-    album: Album;
-    
+    album: AlbumDto; 
+
+    @ApiProperty()
     @Expose()
     publishedAt: Date;
 
+    @ApiProperty()
     @Expose()
-    pathToFile: string;
-
-    @Expose()
-    artists: Artist[];
-
-    @Expose()
-    playlists: PlaylistTrack[];
+    artists: ArtistsDto;
 }

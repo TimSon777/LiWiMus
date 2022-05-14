@@ -3,6 +3,7 @@ import { CommonEntity } from '../shared/commonEntity';
 import {Album} from "../albums/album.entity";
 import {Track} from "../tracks/track.entity";
 import {UserArtist} from "../userArtist/userArtist.entity";
+import {Exclude} from "class-transformer";
 
 @Entity('artists')
 export class Artist extends CommonEntity {
@@ -12,6 +13,7 @@ export class Artist extends CommonEntity {
     @Column({ name: 'About', length: 500 })
     about: string
     
+    @Exclude()
     @Column({ name: 'PhotoPath' })
     photoPath: string
 
