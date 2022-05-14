@@ -31,11 +31,17 @@ public static class RouteConstants
         {
             public const string Add = $"{Prefix}/{nameof(Playlists)}/{nameof(Tracks)}";
             public const string Remove = $"{Prefix}/{nameof(Playlists)}/{nameof(Tracks)}";
+            public const string List = $"{Prefix}/{nameof(Playlists)}/{{playlistId:int}}/{nameof(Tracks)}";
         }
     }
 
     public static class Tracks
     {
         public const string Create = $"{Prefix}/{nameof(Tracks)}";
+
+        public static class Owners
+        {
+            public const string List = $"{Prefix}/{nameof(Tracks)}/{{id:int}}/artists";
+        }
     }
 }
