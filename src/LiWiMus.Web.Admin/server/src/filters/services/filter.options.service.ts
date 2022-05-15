@@ -12,37 +12,43 @@ export class FilterOptionsService {
                 private readonly  paginationService: PaginationService) {
     }
     
-    public GetFindOptionsObject(options : FilterOptions, includes : string[] = null) : any {
+    public NormalizeOptions(options : FilterOptions) : FilterOptions {
+        
         if (!options) {
             options = new FilterOptions();
         }
+        
+        if (!options.filters) {
+            options.filters = [];
+        }
+        
+        if (!options.page) {
+            options.page = {numberOfElementsOnPage: 10, pageNumber: 1};
+        }
+        
+        if (!options.sorting) {
+            options.sorting = [{columnName: "id", order: "ASC"}];
+        }
+        
+        return options;
+    }
+    
+    public GetFindOptionsObject(normalizeOptions : FilterOptions, includes : string[] = null) : any {
+        
         let optionsObj = {};
         
         if (includes) {
             optionsObj['relations'] = includes;
         }
         
-        optionsObj['where'] = this.filterService
-            .GetWhereObject(FilterOptionsService.DefineObjectProperty(options.filters, []));
+        optionsObj['where'] = this.filterService.GetWhereObject(normalizeOptions.filters);
         
-        optionsObj['skip'] = this.paginationService
-            .GetSkipObject(FilterOptionsService.DefineObjectProperty(options.page, 
-                {numberOfElementsOnPage: 10, pageNumber: 1}));
+        optionsObj['skip'] = this.paginationService.GetSkipObject(normalizeOptions.page);
         
-        optionsObj['take'] = this.paginationService
-            .GetTakeObject(FilterOptionsService.DefineObjectProperty(options.page,
-            {numberOfElementsOnPage: 10, pageNumber: 1}));
+        optionsObj['take'] = this.paginationService.GetTakeObject(normalizeOptions.page);
         
-        optionsObj['order'] = this.sortService
-            .GetOrderObject(FilterOptionsService.DefineObjectProperty(options.sorting, 
-                [{columnName: "id", order: "ASC"}]));
+        optionsObj['order'] = this.sortService.GetOrderObject(normalizeOptions.sorting);
         
         return optionsObj;
-    }
-    
-    private static DefineObjectProperty(property : any, defaultProperty : any) : any {
-        return property 
-            ? property 
-            : defaultProperty;
     }
 }

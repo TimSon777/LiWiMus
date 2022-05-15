@@ -25,7 +25,7 @@ export class AlbumsController {
                 private readonly albumsService: AlbumsService) {
     }
 
-    @Get("getall")
+    @Get("getList")
     @UseInterceptors(new TransformInterceptor(AlbumDto))
     @ApiOkResponse({ type: [Album] })
     async getGenres(@Query() options : FilterOptions) : Promise<Album[]> {

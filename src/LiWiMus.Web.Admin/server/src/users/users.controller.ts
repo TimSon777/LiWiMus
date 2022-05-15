@@ -18,6 +18,7 @@ import {TransformInterceptor} from "../transformInterceptor/transform.intercepto
 import {UserDto} from "./dto/user.dto";
 import {UpdateUserDto} from "./dto/update.user.dto";
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {PaginatedData} from "../pagination/paginatied.data";
 
 
 @Controller("users")
@@ -26,19 +27,41 @@ export class UsersController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly userService: UsersService){}
     
-    @Get('getall')
-    @UseInterceptors(new TransformInterceptor(UserDto))
-    @ApiOkResponse({ type: [User] })
+    @Get('getList')
+    //@UseInterceptors(new TransformInterceptor(UserDto))
+    @ApiOkResponse({ type: [PaginatedData] })
     async getUsers(@Query() options : FilterOptions)
-        : Promise<User[]> {
-        return User.find(
-            this.filterOptionsService.GetFindOptionsObject(options))
+        : Promise<PaginatedData<UserDto>> {
+        
+        let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
+        let obj = this.filterOptionsService.GetFindOptionsObject(normalizedOptions);
+
+
+        let data = await User.find(obj)
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
+        
+        let k = data.map(data => data as UserDto)
+        
+        let count = await User.count({where: obj.where});
+        let itemsPerPage = normalizedOptions.page.numberOfElementsOnPage;
+        let totalPages = count === itemsPerPage ? 1 : 1 + Math.floor( count / itemsPerPage);
+        let actualPage = normalizedOptions.page.pageNumber;
+        
+        let response = new PaginatedData<UserDto>();
+        response.data = k;
+        response.actualPage = actualPage;
+        response.itemsPerPage = itemsPerPage;
+        response.totalItems = count;
+        response.totalPages = totalPages;
+        response.hasMore = actualPage < totalPages;
+        
+        return response;
     }
+    
     
     @Patch('updateUser')
     @UsePipes(new ValidationPipe({skipMissingProperties: true}))

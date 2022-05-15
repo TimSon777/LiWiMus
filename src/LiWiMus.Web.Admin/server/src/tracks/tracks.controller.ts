@@ -6,23 +6,44 @@ import {TransformInterceptor} from "../transformInterceptor/transform.intercepto
 import {TrackDto} from "./dto/track.dto";
 import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {Artist} from "../artists/artist.entity";
+import {User} from "../users/user.entity";
+import {UserDto} from "../users/dto/user.dto";
+import {PaginatedData} from "../pagination/paginatied.data";
 
 @Controller('tracks')
 @ApiTags('tracks')
 export class TracksController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
-    @Get('getall')
-    @UseInterceptors(new TransformInterceptor(TrackDto))
+    @Get('getList')
+   // @UseInterceptors(new TransformInterceptor(TrackDto))
     @ApiOkResponse({ type: [Track] })
     async getTracks(@Query() options : FilterOptions)
-        : Promise<Track[]> {
-        return Track.find(
-                this.filterOptionsService.GetFindOptionsObject(options, ['genres', 'artists', 'album']))
+        : Promise<PaginatedData<TrackDto>> {
+        
+        let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
+        let obj = this.filterOptionsService.GetFindOptionsObject(options, ['artists', 'album']);
 
+        let data = await Track.find(obj)
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
+
+        let count = await Track.count({where: obj.where});
+        let itemsPerPage = normalizedOptions.page.numberOfElementsOnPage;
+        let totalPages = count === itemsPerPage ? 1 : 1 + Math.floor( count / itemsPerPage);
+        let actualPage = normalizedOptions.page.pageNumber;
+
+        let response = new PaginatedData<TrackDto>();
+        response.data = data;
+        response.actualPage = actualPage;
+        response.itemsPerPage = itemsPerPage;
+        response.totalItems = count;
+        response.totalPages = totalPages;
+        response.hasMore = actualPage < totalPages;
+
+        return response;
+         
     }
 }
