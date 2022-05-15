@@ -13,7 +13,8 @@ public static class DbContextConfiguration
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             options
                 .UseLazyLoadingProxies()
-                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+                .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+                    options => options.EnableRetryOnFailure())
                 .UseValidationCheckConstraints()
                 .UseAllCheckConstraints()
                 .UseOpenIddict();
