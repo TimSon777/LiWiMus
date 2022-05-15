@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@mui/material";
-import { useSnackbar } from "notistack";
 import PlaylistService from "../../Playlist.service";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 
 type Inputs = {
   isPublic: boolean;
@@ -14,19 +14,17 @@ type Props = {
 };
 
 export default function PlaylistPublicityEditor({ id, dto, setDto }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { showError, showSuccess } = useNotifier();
 
   const publicityHandler = async () => {
     const req = { id, isPublic: !dto.isPublic };
     try {
       const data = (await PlaylistService.update(req)) as Inputs;
       setDto(data);
-      enqueueSnackbar(`Playlist is ${data.isPublic ? "public" : "private"}`, {
-        variant: "success",
-      });
+      showSuccess(`Playlist is ${data.isPublic ? "public" : "private"}`);
     } catch (error) {
       // @ts-ignore
-      enqueueSnackbar(error.message, { variant: "error" });
+      showError(error);
     }
   };
 

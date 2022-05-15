@@ -1,8 +1,8 @@
 import React from "react";
 import ImageEditor from "../../../shared/components/ImageEditor/ImageEditor";
 import { Playlist } from "../../types/Playlist";
-import { useSnackbar } from "notistack";
 import PlaylistService from "../../Playlist.service";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 
 type Props = {
   playlist: Playlist;
@@ -15,7 +15,7 @@ export default function PlaylistImageEditor({
   playlistPhoto,
   setPlaylistWithPhoto,
 }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSuccess, showError } = useNotifier();
 
   const updatePhotoHandler = (input: HTMLInputElement) => {
     input.click();
@@ -28,10 +28,10 @@ export default function PlaylistImageEditor({
     try {
       const response = await PlaylistService.removePhoto(playlist);
       setPlaylistWithPhoto(response);
-      enqueueSnackbar("Photo removed", { variant: "success" });
+      showSuccess("Photo removed");
     } catch (error) {
       // @ts-ignore
-      enqueueSnackbar(error.message, { variant: "error" });
+      showError(error);
     }
   };
 
@@ -47,10 +47,10 @@ export default function PlaylistImageEditor({
 
       const response = await PlaylistService.changePhoto(playlist, photo);
       setPlaylistWithPhoto(response);
-      enqueueSnackbar("Photo updated", { variant: "success" });
+      showSuccess("Photo updated");
     } catch (error) {
       // @ts-ignore
-      enqueueSnackbar(error.message, { variant: "error" });
+      showError(error);
     }
   };
 

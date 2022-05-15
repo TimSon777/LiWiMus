@@ -5,7 +5,6 @@ import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
 import { Grid, Link, Stack, Typography } from "@mui/material";
 import playlistCover from "../images/playlist-cover-negative.png";
-import { useSnackbar } from "notistack";
 import PlaylistImageEditor from "../components/PlaylistImageEditor/PlaylistImageEditor";
 import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEditor";
 import PlaylistPublicityEditor from "../components/PlaylistPublicityEditor/PlaylistPublicityEditor";
@@ -13,8 +12,8 @@ import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import PlaylistDeleter from "../components/PlaylistDeleter/PlaylistDeleter";
 import PlaylistService from "../Playlist.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
+import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import PlaylistTracks from "../components/PlaylistTracks/PlaylistTracks";
-import { Track } from "../../tracks/types/Track";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -23,7 +22,7 @@ export default function PlaylistDetailsPage() {
   const [playlist, setPlaylist] = useState<Playlist>();
   const [playlistPhoto, setPlaylistPhoto] = useState<string>("");
   const [loading, setLoading] = useState(true);
-  const { enqueueSnackbar } = useSnackbar();
+  const { showError } = useNotifier();
 
   const setPlaylistWithPhoto = (playlist: Playlist) => {
     const photoLocation = playlist.photoLocation
@@ -35,12 +34,12 @@ export default function PlaylistDetailsPage() {
 
   useEffect(() => {
     PlaylistService.get(id)
-      .then((playlist) => setPlaylistWithPhoto(playlist))
-      .catch((error) => enqueueSnackbar(error.message, { variant: "error" }))
+      .then((playlist) => {
+        setPlaylistWithPhoto(playlist);
+      })
+      .catch((error) => showError(error))
       .then(() => setLoading(false));
   }, [id]);
-
-  useEffect(() => {});
 
   if (loading) {
     return <Loading />;

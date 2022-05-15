@@ -2,8 +2,8 @@ import React from "react";
 import Deleter from "../../../shared/components/Deleter/Deleter";
 import { Playlist } from "../../types/Playlist";
 import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
 import PlaylistService from "../../Playlist.service";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 
 type Props = {
   playlist: Playlist;
@@ -12,18 +12,18 @@ type Props = {
 
 export default function PlaylistDeleter({ playlist, setPlaylist }: Props) {
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSuccess, showError } = useNotifier();
 
   const deleteHandler = async () => {
     try {
       await PlaylistService.remove(playlist);
       setPlaylist(undefined);
-      enqueueSnackbar("Playlist deleted", { variant: "success" });
+      showSuccess("Playlist deleted");
 
       navigate("/admin/playlists");
     } catch (error) {
       // @ts-ignore
-      enqueueSnackbar(error.message, { variant: "error" });
+      showError(error);
     }
   };
 

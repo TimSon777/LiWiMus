@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Button, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useSnackbar } from "notistack";
 import PlaylistService from "../../Playlist.service";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 
 type Inputs = {
   name: string;
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const { showSuccess, showError } = useNotifier();
 
   const {
     register,
@@ -40,11 +40,11 @@ export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
     try {
       const req = { ...data, id };
       const response = (await PlaylistService.update(req)) as Inputs;
-      enqueueSnackbar("Info updated", { variant: "success" });
+      showSuccess("Info updated");
       setDto(response);
     } catch (error) {
       // @ts-ignore
-      enqueueSnackbar(error.message, { variant: "error" });
+      showError(error);
     }
   };
 
