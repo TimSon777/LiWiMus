@@ -90,9 +90,9 @@ module Program =
 
         app
             .UseRouting()
+            .UseCors()
             .UseAuthentication()
             .UseAuthorization()
-            .UseCors()
 
         app.UseEndpoints (fun endpoints ->
             endpoints.MapControllerRoute("default", "/auth/{controller}/{action}/{id?}")
