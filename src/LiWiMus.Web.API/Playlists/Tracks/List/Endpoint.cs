@@ -14,13 +14,12 @@ namespace LiWiMus.Web.API.Playlists.Tracks.List;
 
 public class Endpoint : IEndpoint<IResult, int, int, int>
 {
-    private readonly IRepository<Playlist> _repository;
+    private IRepository<Playlist> _repository = null!;
     private readonly IValidator<Request> _validator;
     private readonly IMapper _mapper;
 
-    public Endpoint(IRepository<Playlist> repository, IValidator<Request> validator, IMapper mapper)
+    public Endpoint(IValidator<Request> validator, IMapper mapper)
     {
-        _repository = repository;
         _validator = validator;
         _mapper = mapper;
     }
@@ -54,6 +53,11 @@ public class Endpoint : IEndpoint<IResult, int, int, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet(RouteConstants.Playlists.Tracks.List, HandleAsync);
+        app.MapGet(RouteConstants.Playlists.Tracks.List,
+            async (int playlistId, int page, int itemsPerPage, IRepository<Playlist> repository) =>
+            {
+                _repository = repository;
+                return await HandleAsync(playlistId, page, itemsPerPage);
+            });
     }
 }

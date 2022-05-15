@@ -9,12 +9,7 @@ namespace LiWiMus.Web.API.Albums.Delete;
 // ReSharper disable once UnusedType.Global
 public class Endpoint : IEndpoint<IResult, int>
 {
-    private readonly IRepository<Album> _albumRepository;
-
-    public Endpoint(IRepository<Album> albumRepository)
-    {
-        _albumRepository = albumRepository;
-    }
+    private IRepository<Album> _albumRepository = null!;
 
     public async Task<IResult> HandleAsync(int id)
     {
@@ -32,6 +27,10 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapDelete(RouteConstants.Albums.Delete, HandleAsync);
+        app.MapDelete(RouteConstants.Albums.Delete, async (int id, IRepository<Album> repository) =>
+        {
+            _albumRepository = repository;
+            return await HandleAsync(id);
+        });
     }
 }

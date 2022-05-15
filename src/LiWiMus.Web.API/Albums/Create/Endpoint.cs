@@ -15,18 +15,15 @@ public class Endpoint : IEndpoint<IResult, Request>
 {
     private readonly IValidator<Request> _validator;
     private readonly IMapper _mapper;
-    private readonly IRepository<Album> _albumRepository;
-    private readonly IRepository<Artist> _artistRepository;
+    private IRepository<Album> _albumRepository = null!;
+    private IRepository<Artist> _artistRepository = null!;
 
-    public Endpoint(IValidator<Request> validator, IMapper mapper, 
-        IRepository<Album> albumRepository, IRepository<Artist> artistRepository)
+    public Endpoint(IValidator<Request> validator, IMapper mapper)
     {
         _validator = validator;
         _mapper = mapper;
-        _albumRepository = albumRepository;
-        _artistRepository = artistRepository;
     }
-    
+
     public async Task<IResult> HandleAsync(Request request)
     {
         var validationResult = await _validator.ValidateAsync(request);
@@ -37,26 +34,32 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         var album = _mapper.Map<Album>(request);
         album.Owners = new List<Artist>();
-        
+
         foreach (var artistId in request.ArtistIds)
         {
             var artist = await _artistRepository.GetByIdAsync(artistId);
-            
+
             if (artist is null)
             {
                 return Results.Extensions.NotFoundById(EntityType.Artists, artistId);
             }
-            
+
             album.Owners.Add(artist);
         }
 
         await _albumRepository.AddAsync(album);
-        
+
         return Results.NoContent();
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost(RouteConstants.Albums.Create, HandleAsync);
+        app.MapPost(RouteConstants.Albums.Create,
+            async (Request request, IRepository<Album> albumRepository, IRepository<Artist> artistRepository) =>
+            {
+                _albumRepository = albumRepository;
+                _artistRepository = artistRepository;
+                return await HandleAsync(request);
+            });
     }
 }

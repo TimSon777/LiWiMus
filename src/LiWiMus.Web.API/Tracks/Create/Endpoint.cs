@@ -17,19 +17,15 @@ public class Endpoint : IEndpoint<IResult, Request>
 {
     private readonly IValidator<Request> _validator;
     private readonly IMapper _mapper;
-    private readonly IRepository<Track> _trackRepository;
-    private readonly IRepository<Album> _albumRepository;
-    private readonly IRepository<Genre> _genreRepository;
-    private readonly IRepository<Artist> _artistRepository;
+    private IRepository<Track> _trackRepository = null!;
+    private IRepository<Album> _albumRepository = null!;
+    private IRepository<Genre> _genreRepository = null!;
+    private IRepository<Artist> _artistRepository = null!;
 
-    public Endpoint(IValidator<Request> validator, IMapper mapper, IRepository<Track> trackRepository, IRepository<Album> albumRepository, IRepository<Genre> genreRepository, IRepository<Artist> artistRepository)
+    public Endpoint(IValidator<Request> validator, IMapper mapper)
     {
         _validator = validator;
         _mapper = mapper;
-        _trackRepository = trackRepository;
-        _albumRepository = albumRepository;
-        _genreRepository = genreRepository;
-        _artistRepository = artistRepository;
     }
 
     public async Task<IResult> HandleAsync(Request request)
@@ -43,7 +39,7 @@ public class Endpoint : IEndpoint<IResult, Request>
         var track = _mapper.Map<Track>(request);
 
         var album = await _albumRepository.GetByIdAsync(request.AlbumId);
-        
+
         if (album is null)
         {
             return Results.Extensions.NotFoundById(EntityType.Albums, request.AlbumId);
@@ -55,12 +51,12 @@ public class Endpoint : IEndpoint<IResult, Request>
         foreach (var genreId in request.GenreIds)
         {
             var genre = await _genreRepository.GetByIdAsync(genreId);
-            
+
             if (genre is null)
             {
                 return Results.Extensions.NotFoundById(EntityType.Genres, genreId);
             }
-            
+
             track.Genres.Add(genre);
         }
 
@@ -68,12 +64,12 @@ public class Endpoint : IEndpoint<IResult, Request>
         foreach (var ownerId in request.OwnerIds)
         {
             var artist = await _artistRepository.GetByIdAsync(ownerId);
-            
+
             if (artist is null)
             {
                 return Results.Extensions.NotFoundById(EntityType.Artists, ownerId);
             }
-            
+
             track.Owners.Add(artist);
         }
 
@@ -83,6 +79,16 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost(RouteConstants.Tracks.Create, HandleAsync);
+        app.MapPost(RouteConstants.Tracks.Create, async (Request request, IRepository<Track> trackRepository,
+                                                         IRepository<Album> albumRepository,
+                                                         IRepository<Genre> genreRepository,
+                                                         IRepository<Artist> artistRepository) =>
+        {
+            _trackRepository = trackRepository;
+            _albumRepository = albumRepository;
+            _genreRepository = genreRepository;
+            _artistRepository = artistRepository;
+            return await HandleAsync(request);
+        });
     }
 }

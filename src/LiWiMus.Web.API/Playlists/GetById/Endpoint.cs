@@ -9,12 +9,11 @@ namespace LiWiMus.Web.API.Playlists.GetById;
 public class Endpoint : IEndpoint<IResult, int>
 {
     private readonly IMapper _mapper;
-    private readonly IRepository<Playlist> _repository;
+    private IRepository<Playlist> _repository = null!;
 
-    public Endpoint(IMapper mapper, IRepository<Playlist> repository)
+    public Endpoint(IMapper mapper)
     {
         _mapper = mapper;
-        _repository = repository;
     }
 
     public async Task<IResult> HandleAsync(int id)
@@ -31,6 +30,10 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet(RouteConstants.Playlists.Read, HandleAsync);
+        app.MapGet(RouteConstants.Playlists.Read, async (int id, IRepository<Playlist> repository) =>
+        {
+            _repository = repository;
+            return await HandleAsync(id);
+        });
     }
 }

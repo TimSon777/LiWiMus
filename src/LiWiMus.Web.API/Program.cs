@@ -12,6 +12,8 @@ using Swashbuckle.AspNetCore.Swagger;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddEndpoints();
+
 builder.Configuration.AddSharedSettings(builder.Environment);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddCoreServices();
@@ -25,7 +27,6 @@ builder.Services.AddFluentValidation(fv =>
     fv.LocalizationEnabled = false;
     fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
-builder.Services.AddEndpoints();
 
 builder.Services.Configure<JsonOptions>(
     options =>
@@ -57,7 +58,7 @@ builder.Services.AddCors(options => options
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(o =>
 {
-    o.SwaggerDoc("v1", new OpenApiInfo { Title = builder.Environment.ApplicationName });
+    o.SwaggerDoc("v1", new OpenApiInfo {Title = builder.Environment.ApplicationName});
     o.CustomSchemaIds(type => type.ToString());
     o.AddFluentValidationRulesScoped();
 });
@@ -78,4 +79,6 @@ app.MapEndpoints();
 
 app.Run();
 
-public partial class Program { }
+public partial class Program
+{
+}

@@ -11,12 +11,11 @@ namespace LiWiMus.Web.API.Tracks.Owners.List;
 
 public class Endpoint : IEndpoint<IResult, int>
 {
-    private readonly IRepository<Track> _repository;
+    private IRepository<Track> _repository = null!;
     private readonly IMapper _mapper;
 
-    public Endpoint(IRepository<Track> repository, IMapper mapper)
+    public Endpoint(IMapper mapper)
     {
-        _repository = repository;
         _mapper = mapper;
     }
 
@@ -34,6 +33,10 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet(RouteConstants.Tracks.Owners.List, HandleAsync);
+        app.MapGet(RouteConstants.Tracks.Owners.List, async (int id, IRepository<Track> repository) =>
+        {
+            _repository = repository;
+            return await HandleAsync(id);
+        });
     }
 }

@@ -13,13 +13,12 @@ namespace LiWiMus.Web.API.Albums.Update;
 public class Endpoint : IEndpoint<IResult, Request>
 {
     private readonly IValidator<Request> _validator;
-    private readonly IRepository<Album> _albumRepository;
+    private IRepository<Album> _albumRepository = null!;
     private readonly IMapper _mapper;
 
-    public Endpoint(IValidator<Request> validator, IRepository<Album> albumRepository, IMapper mapper)
+    public Endpoint(IValidator<Request> validator, IMapper mapper)
     {
         _validator = validator;
-        _albumRepository = albumRepository;
         _mapper = mapper;
     }
 
@@ -50,6 +49,10 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPatch(RouteConstants.Albums.Update, HandleAsync);
+        app.MapPatch(RouteConstants.Albums.Update, async (Request request, IRepository<Album> repository) =>
+        {
+            _albumRepository = repository;
+            return await HandleAsync(request);
+        });
     }
 }

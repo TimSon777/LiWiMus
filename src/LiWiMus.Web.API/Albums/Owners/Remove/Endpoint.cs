@@ -1,25 +1,19 @@
 ﻿using LiWiMus.Core.Albums;
-using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
-using MinimalApi.Endpoint;
 using LiWiMus.Web.API.Shared.Remove;
 using Microsoft.AspNetCore.Mvc;
+using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Albums.Owners.Remove;
 
 // ReSharper disable once UnusedType.Global
 public class Endpoint : IEndpoint<IResult, Request>
 {
-    private readonly IRepository<Album> _albumRepository;
+    private IRepository<Album> _albumRepository = null!;
 
-    public Endpoint(IRepository<Album> albumRepository)
-    {
-        _albumRepository = albumRepository;
-    }
-
-    public async Task<IResult> HandleAsync([FromBody] Request request)
+    public async Task<IResult> HandleAsync(Request request)
     {
         var album = await _albumRepository.GetByIdAsync(request.Id);
 
@@ -44,6 +38,11 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapDelete(RouteConstants.Albums.Owners.Remove, HandleAsync);
+        app.MapDelete(RouteConstants.Albums.Owners.Remove,
+            async ([FromBody] Request request, IRepository<Album> repository) =>
+            {
+                _albumRepository = repository;
+                return await HandleAsync(request);
+            });
     }
 }
