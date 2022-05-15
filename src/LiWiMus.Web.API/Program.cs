@@ -3,7 +3,6 @@ using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Shared.Configuration;
-using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using MinimalApi.Endpoint.Extensions;
@@ -14,11 +13,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpoints();
 
-builder.Configuration.AddSharedSettings(builder.Environment);
 builder.Services.AddDbContext(builder.Configuration);
 builder.Services.AddCoreServices();
-builder.Services.AddSharedServices();
-builder.Services.ConfigureSettings(builder.Configuration);
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 TriggersConfiguration.ConfigureTriggers();
 builder.Services.AddIdentity(builder.Environment);

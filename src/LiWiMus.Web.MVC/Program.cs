@@ -2,9 +2,7 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
-using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Interfaces.Mail;
-using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.MVC.Hubs.SupportChat;
@@ -24,9 +22,7 @@ configuration.AddEnvironmentVariables();
 
 var services = builder.Services;
 
-configuration.AddSharedSettings(builder.Environment);
 services.AddSharedServices();
-services.ConfigureSettings(configuration);
 services.AddDbContext(configuration);
 services.AddCoreServices();
 services.AddTriggers();
@@ -108,8 +104,6 @@ app.UseHttpsRedirection();
 app.UseWebOptimizer();
 
 app.UseStaticFiles();
-
-app.UseSharedStaticFiles(builder.Environment);
 
 app.UseRouting();
 
