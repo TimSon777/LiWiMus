@@ -10,14 +10,13 @@ namespace LiWiMus.Web.API.Transactions.Update;
 public class Endpoint : IEndpoint<IResult, Request>
 {
     private readonly IMapper _mapper;
-    private readonly IRepository<Transaction> _repository;
+    private IRepository<Transaction> _repository = null!;
     private readonly IValidator<Request> _validator;
 
-    public Endpoint(IMapper mapper, IValidator<Request> validator, IRepository<Transaction> repository)
+    public Endpoint(IMapper mapper, IValidator<Request> validator)
     {
         _mapper = mapper;
         _validator = validator;
-        _repository = repository;
     }
 
     public async Task<IResult> HandleAsync(Request request)
@@ -42,6 +41,10 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/transactions", HandleAsync);
+        app.MapPut("/api/transactions", async (Request request, IRepository<Transaction> repository) =>
+        {
+            _repository = repository;
+            return await HandleAsync(request);
+        });
     }
 }

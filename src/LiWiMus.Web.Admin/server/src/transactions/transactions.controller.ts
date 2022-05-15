@@ -12,7 +12,7 @@ import {Artist} from "../artists/artist.entity";
 @ApiTags('transactions')
 export class TransactionsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
-    @Get('getall')
+    @Get('getList')
     @UseInterceptors(new TransformInterceptor(TransactionDto))
     @ApiOkResponse({ type: [Transaction] })
     async getTransactions(@Query() options : FilterOptions) : Promise<Transaction[]>

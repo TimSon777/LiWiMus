@@ -10,12 +10,11 @@ namespace LiWiMus.Web.API.Albums.Read;
 // ReSharper disable once UnusedType.Global
 public class Endpoint : IEndpoint<IResult, int>
 {
-    private readonly IRepository<Album> _albumRepository;
+    private IRepository<Album> _albumRepository = null!;
     private readonly IMapper _mapper;
 
-    public Endpoint(IRepository<Album> albumRepository, IMapper mapper)
+    public Endpoint(IMapper mapper)
     {
-        _albumRepository = albumRepository;
         _mapper = mapper;
     }
 
@@ -35,6 +34,10 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapGet(RouteConstants.Albums.Read, HandleAsync);
+        app.MapGet(RouteConstants.Albums.Read, async (int id, IRepository<Album> repository) =>
+        {
+            _albumRepository = repository;
+            return await HandleAsync(id);
+        });
     }
 }

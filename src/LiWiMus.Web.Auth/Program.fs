@@ -3,7 +3,6 @@ namespace LiWiMus.Web.Auth
 #nowarn "20"
 
 open System
-open System.Collections.Generic
 open System.IdentityModel.Tokens.Jwt
 open LiWiMus.Infrastructure.Data.Config
 open Microsoft.AspNetCore.Authentication.JwtBearer
@@ -11,7 +10,6 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open LiWiMus.Web.Auth.Extensions.ServicesExtensions
-open LiWiMus.Web.Shared.Extensions
 open Microsoft.Net.Http.Headers
 open Microsoft.OpenApi.Models
 
@@ -28,8 +26,6 @@ module Program =
         let services = builder.Services
         let environment = builder.Environment
         let configuration = builder.Configuration
-
-        builder.Configuration.AddSharedSettings(builder.Environment)
 
         services.AddControllers()
 

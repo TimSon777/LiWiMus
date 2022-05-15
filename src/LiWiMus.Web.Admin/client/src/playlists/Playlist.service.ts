@@ -1,9 +1,9 @@
 import axios from "../shared/services/Axios";
-import { Playlist } from "./types/Playlist";
+import {Playlist} from "./types/Playlist";
 import FileService from "../shared/services/File.service";
-import { UpdatePlaylistDto } from "./types/UpdatePlaylistDto";
-import { Track } from "../tracks/types/Track";
-import { PaginatedDate } from "../shared/types/PaginatedDate";
+import {UpdatePlaylistDto} from "./types/UpdatePlaylistDto";
+import {Track} from "../tracks/types/Track";
+import {PaginatedData} from "../shared/types/PaginatedData";
 
 const PlaylistService = {
   get: async (id: string | number) =>
@@ -68,7 +68,7 @@ const PlaylistService = {
         itemsPerPage,
       },
     });
-    return response.data as PaginatedDate<Track>;
+    return response.data as PaginatedData<Track>;
   },
 };
 

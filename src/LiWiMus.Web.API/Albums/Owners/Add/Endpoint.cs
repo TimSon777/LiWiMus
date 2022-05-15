@@ -2,23 +2,17 @@
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
-using MinimalApi.Endpoint;
 using LiWiMus.Web.API.Shared.Add;
 using LiWiMus.Web.API.Shared.Extensions;
+using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Albums.Owners.Add;
 
 // ReSharper disable once UnusedType.Global
 public class Endpoint : IEndpoint<IResult, Request>
 {
-    private readonly IRepository<Album> _albumRepository;
-    private readonly IRepository<Artist> _artistRepository;
-
-    public Endpoint(IRepository<Album> albumRepository, IRepository<Artist> artistRepository)
-    {
-        _albumRepository = albumRepository;
-        _artistRepository = artistRepository;
-    }
+    private IRepository<Album> _albumRepository = null!;
+    private IRepository<Artist> _artistRepository = null!;
 
     public async Task<IResult> HandleAsync(Request request)
     {
@@ -48,6 +42,12 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost(RouteConstants.Albums.Owners.Add, HandleAsync);
+        app.MapPost(RouteConstants.Albums.Owners.Add,
+            async (Request request, IRepository<Album> albumRepository, IRepository<Artist> artistRepository) =>
+            {
+                _albumRepository = albumRepository;
+                _artistRepository = artistRepository;
+                return await HandleAsync(request);
+            });
     }
 }

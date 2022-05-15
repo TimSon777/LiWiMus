@@ -26,7 +26,7 @@ import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 @ApiTags('artists')
 export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
-    @Get('getall')
+    @Get('getList')
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
     @ApiOkResponse({ type: [Artist] })
     async getArtists(@Query() options : FilterOptions)

@@ -12,7 +12,7 @@ public class MapProfile : Profile
         CreateMap<Request, Track>();
 
         CreateMap<Track, Dto>()
-            .ForMember(dto => dto.AlbumId, expression => expression
-                .MapFrom(track => track.Album.Id));
+            .ForMember(dto => dto.Artists, expression => expression
+                .MapFrom(track => track.Owners));
     }
 }

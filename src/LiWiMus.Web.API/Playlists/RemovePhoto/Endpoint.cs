@@ -10,11 +10,10 @@ namespace LiWiMus.Web.API.Playlists.RemovePhoto;
 public class Endpoint : IEndpoint<IResult, int>
 {
     private readonly IMapper _mapper;
-    private readonly IRepository<Playlist> _repository;
+    private IRepository<Playlist> _repository = null!;
 
-    public Endpoint(IRepository<Playlist> repository, IMapper mapper)
+    public Endpoint(IMapper mapper)
     {
-        _repository = repository;
         _mapper = mapper;
     }
 
@@ -36,6 +35,10 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost(RouteConstants.Playlists.RemovePhoto, HandleAsync);
+        app.MapPost(RouteConstants.Playlists.RemovePhoto, async (int id, IRepository<Playlist> repository) =>
+        {
+            _repository = repository;
+            return await HandleAsync(id);
+        });
     }
 }

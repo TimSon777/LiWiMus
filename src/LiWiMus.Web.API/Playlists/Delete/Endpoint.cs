@@ -8,12 +8,7 @@ namespace LiWiMus.Web.API.Playlists.Delete;
 
 public class Endpoint : IEndpoint<IResult, int>
 {
-    private readonly IRepository<Playlist> _repository;
-
-    public Endpoint(IRepository<Playlist> repository)
-    {
-        _repository = repository;
-    }
+    private IRepository<Playlist> _repository = null!;
 
     public async Task<IResult> HandleAsync(int id)
     {
@@ -30,6 +25,10 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapDelete(RouteConstants.Playlists.Delete, HandleAsync);
+        app.MapDelete(RouteConstants.Playlists.Delete, async (int id, IRepository<Playlist> repository) =>
+        {
+            _repository = repository;
+            return await HandleAsync(id);
+        });
     }
 }
