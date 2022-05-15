@@ -3,8 +3,8 @@ import {
     Controller,
     Get,
     HttpException,
-    HttpStatus, Patch,
-    Post,
+    HttpStatus,
+    Patch,
     Query,
     UseInterceptors,
     UsePipes,
@@ -19,7 +19,7 @@ import {UserDto} from "./dto/user.dto";
 import {UpdateUserDto} from "./dto/update.user.dto";
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {PaginatedData} from "../pagination/paginatied.data";
-import {plainToClass, plainToInstance} from "class-transformer";
+import {plainToInstance} from "class-transformer";
 
 
 @Controller("users")
@@ -47,19 +47,8 @@ export class UsersController {
             });
         
         let count = await User.count({where: obj.where});
-        let itemsPerPage = normalizedOptions.page.numberOfElementsOnPage;
-        let totalPages = count === itemsPerPage ? 1 : 1 + Math.floor( count / itemsPerPage);
-        let actualPage = normalizedOptions.page.pageNumber;
-        
-        let response = new PaginatedData<UserDto>();
-        response.data = data;
-        response.actualPage = actualPage;
-        response.itemsPerPage = itemsPerPage;
-        response.totalItems = count;
-        response.totalPages = totalPages;
-        response.hasMore = actualPage < totalPages;
-        
-        return response;
+
+        return new PaginatedData<UserDto>(data, normalizedOptions, count);
         
         //return await this.repo.find()
         //       .then(items => items.map(e=>plainToClass(ItemDTO, classToPlain(e), { excludeExtraneousValues: true })));

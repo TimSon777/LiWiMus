@@ -33,19 +33,7 @@ export class TracksController {
             });
 
         let count = await Track.count({where: obj.where});
-        let itemsPerPage = normalizedOptions.page.numberOfElementsOnPage;
-        let totalPages = count === itemsPerPage ? 1 : 1 + Math.floor( count / itemsPerPage);
-        let actualPage = normalizedOptions.page.pageNumber;
-
-        let response = new PaginatedData<TrackDto>();
-        response.data = data;
-        response.actualPage = actualPage;
-        response.itemsPerPage = itemsPerPage;
-        response.totalItems = count;
-        response.totalPages = totalPages;
-        response.hasMore = actualPage < totalPages;
-
-        return response;
+        return new PaginatedData<TrackDto>(data, normalizedOptions, count);
          
     }
 }

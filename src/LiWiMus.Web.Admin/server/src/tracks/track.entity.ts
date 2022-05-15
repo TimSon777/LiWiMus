@@ -25,8 +25,8 @@ export class Track extends CommonEntity {
     @Column({ name: 'PublishedAt', type: 'date' })
     publishedAt: Date;
 
-    @Column({ name: 'PathToFile' })
-    pathToFile: string;
+    @Column({ name: 'FileLocation' })
+    fileLocation: string;
 
     @ManyToMany(() => Artist, artist => artist.tracks)
     artists: Artist[];

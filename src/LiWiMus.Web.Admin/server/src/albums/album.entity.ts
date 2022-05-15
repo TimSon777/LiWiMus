@@ -16,8 +16,8 @@ export class Album extends CommonEntity {
     publishedAt: string;
 
     @Exclude()
-    @Column({ name: 'CoverPath' })
-    coverPath: string;
+    @Column({ name: 'CoverLocation' })
+    coverLocation: string;
 
     @ManyToMany(() => Artist, artist => artist.albums)
     artists: Artist[];

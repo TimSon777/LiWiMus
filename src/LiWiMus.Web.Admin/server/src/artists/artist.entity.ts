@@ -14,8 +14,8 @@ export class Artist extends CommonEntity {
     about: string
     
     @Exclude()
-    @Column({ name: 'PhotoPath' })
-    photoPath: string
+    @Column({ name: 'PhotoLocation' })
+    photoLocation: string
 
     @OneToMany(() => UserArtist, ua => ua.artist)
     userArtists: UserArtist[]
