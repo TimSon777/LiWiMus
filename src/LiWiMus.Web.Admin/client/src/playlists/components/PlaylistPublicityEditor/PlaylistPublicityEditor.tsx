@@ -1,7 +1,7 @@
 import React from "react";
-import { Button } from "@mui/material";
+import {Button} from "@mui/material";
 import PlaylistService from "../../Playlist.service";
-import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import {useNotifier} from "../../../shared/hooks/Notifier.hook";
 
 type Inputs = {
   isPublic: boolean;

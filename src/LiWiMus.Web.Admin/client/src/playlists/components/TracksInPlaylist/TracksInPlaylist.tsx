@@ -32,7 +32,7 @@ export default function TracksInPlaylist({ playlist, setPlaylist }: Props) {
       const newTracks = await PlaylistService.getTracks(
         playlist,
         tracks.actualPage + 1,
-        5
+        10
       );
       setTracks({
         ...newTracks,
@@ -55,9 +55,10 @@ export default function TracksInPlaylist({ playlist, setPlaylist }: Props) {
   const removeTrack = async (track: Track) => {
     try {
       await PlaylistService.removeTrack(playlist, track);
+      setPlaylist({ ...playlist, tracksCount: tracks.totalItems - 1 });
       setTracks({
         ...tracks,
-        data: [...tracks.data.filter((t) => t.id !== track.id)],
+        data: tracks.data.filter((t) => t.id !== track.id),
         totalItems: tracks.totalItems - 1,
       });
       showSuccess("Track removed from playlist");

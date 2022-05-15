@@ -12,7 +12,7 @@ using TrackDto = LiWiMus.Web.API.Tracks.Dto;
 
 namespace LiWiMus.Web.API.Playlists.Tracks.List;
 
-public class Endpoint : IEndpoint<IResult, int, int, int>
+public class Endpoint : IEndpoint<IResult, Request>
 {
     private IRepository<Playlist> _repository = null!;
     private readonly IValidator<Request> _validator;
@@ -24,9 +24,8 @@ public class Endpoint : IEndpoint<IResult, int, int, int>
         _mapper = mapper;
     }
 
-    public async Task<IResult> HandleAsync(int playlistId, int page, int itemsPerPage)
+    public async Task<IResult> HandleAsync(Request request)
     {
-        var request = new Request(playlistId, page, itemsPerPage);
         var validationResult = await _validator.ValidateAsync(request);
         if (!validationResult.IsValid)
         {
@@ -47,7 +46,7 @@ public class Endpoint : IEndpoint<IResult, int, int, int>
                              .ToList();
 
         var trackDtos = _mapper.MapList<Track, TrackDto>(tracks);
-        var result = new PaginatedData<TrackDto>(page, itemsPerPage, playlist.Tracks.Count, trackDtos);
+        var result = new PaginatedData<TrackDto>(request.Page, request.ItemsPerPage, playlist.Tracks.Count, trackDtos);
         return Results.Ok(result);
     }
 
@@ -57,7 +56,7 @@ public class Endpoint : IEndpoint<IResult, int, int, int>
             async (int playlistId, int page, int itemsPerPage, IRepository<Playlist> repository) =>
             {
                 _repository = repository;
-                return await HandleAsync(playlistId, page, itemsPerPage);
+                return await HandleAsync(new Request(playlistId, page, itemsPerPage));
             });
     }
 }

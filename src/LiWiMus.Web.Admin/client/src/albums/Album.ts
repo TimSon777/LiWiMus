@@ -1,7 +1,7 @@
 export type Album = {
   id: string;
   title: string;
-  publishedAt: string;
+  publishedAt: Date;
   coverLocation: string;
 
   createdAt: Date;

@@ -1,10 +1,13 @@
 import axios from "axios";
+import axiosRetry from "axios-retry";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
 const instance = axios.create({
   baseURL: baseUrl,
 });
+
+axiosRetry(instance, { retries: 3, retryDelay: () => 100 });
 
 export default instance;
 

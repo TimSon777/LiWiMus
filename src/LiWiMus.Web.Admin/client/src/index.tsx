@@ -1,6 +1,6 @@
 import React from "react";
 import App from "./App";
-import { createRoot } from "react-dom/client";
+import {createRoot} from "react-dom/client";
 import "./index.sass";
 
 const container = document.getElementById("root") as HTMLElement;
