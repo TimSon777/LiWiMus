@@ -9,6 +9,7 @@ import {Artist} from "../artists/artist.entity";
 import {User} from "../users/user.entity";
 import {UserDto} from "../users/dto/user.dto";
 import {PaginatedData} from "../pagination/paginatied.data";
+import {plainToInstance} from "class-transformer";
 
 @Controller('tracks')
 @ApiTags('tracks')
@@ -24,6 +25,7 @@ export class TracksController {
         let obj = this.filterOptionsService.GetFindOptionsObject(options, ['artists', 'album']);
 
         let data = await Track.find(obj)
+            .then(items => items.map(data => plainToInstance(TrackDto, data)))
             .catch(err => {
                 throw new HttpException({
                     message: err.message
