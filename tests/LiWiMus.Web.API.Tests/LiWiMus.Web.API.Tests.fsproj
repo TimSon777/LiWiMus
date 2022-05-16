@@ -8,8 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Tests.fs" />
-        <Compile Include="Program.fs" />
+        <Compile Include="JsonHelpers.fs" />
+        <Compile Include="UrlSettings.fs" />
+        <Compile Include="TestApplicationFactory.fs" />
+        <Compile Include="Albums\CreateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>
