@@ -1,5 +1,5 @@
 ﻿import {Injectable} from "@nestjs/common";
-import {MoreThan, LessThan, LessThanOrEqual, MoreThanOrEqual, Equal, Like} from "typeorm"
+import {MoreThan, LessThan, LessThanOrEqual, MoreThanOrEqual, Equal, Like, Not, In} from "typeorm"
 import {Filter} from "../filter";
 
 @Injectable()
@@ -26,6 +26,9 @@ export class FilterService {
             }
             case "sw": {
                 return Like(`${value}%`)
+            }
+            case "ncnt": {
+                return Not(In(value))
             }
             default: {
                 return null;
