@@ -16,7 +16,7 @@ public static class ConfigureIdentity
                 {
                     options.SignIn.RequireConfirmedEmail = false;
 
-                    if (environment.IsDevelopment())
+                    if (environment.IsDevelopment() || environment.EnvironmentName == "Testing")
                     {
                         options.Password.RequireDigit = false;
                         options.Password.RequiredLength = 3;

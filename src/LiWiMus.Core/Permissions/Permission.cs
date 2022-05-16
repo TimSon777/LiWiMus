@@ -1,9 +1,10 @@
 ﻿using System.Security.Claims;
 using LiWiMus.Core.Plans;
+using LiWiMus.SharedKernel.Interfaces;
 
 namespace LiWiMus.Core.Permissions;
 
-public class Permission
+public class Permission : IAggregateRoot
 {
     public const string ClaimType = "permission";
 

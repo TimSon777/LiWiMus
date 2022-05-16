@@ -1,8 +1,10 @@
 using System.Reflection;
 using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
+using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Shared.Configuration;
+using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.OpenApi.Models;
 using MinimalApi.Endpoint.Extensions;
@@ -31,6 +33,8 @@ builder.Services.Configure<JsonOptions>(
         options.SerializerOptions.Converters.Add(new TimeOnlyJsonConverter());
     });
 
+builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection(nameof(AdminSettings)));
+
 builder.Services.AddAuthentication(options =>
     options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
 builder.Services.AddAuthorization();
@@ -43,6 +47,8 @@ builder.Services
            options.UseSystemNetHttp();
            options.UseAspNetCore();
        });
+
+builder.Services.AddSeeders();
 
 // TODO: Remove cors
 builder.Services.AddCors(options => options
@@ -72,7 +78,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "api/swagger";
 });
 app.MapEndpoints();
-
+await app.SeedDatabaseAsync(app.Logger);
 app.Run();
 
 public partial class Program

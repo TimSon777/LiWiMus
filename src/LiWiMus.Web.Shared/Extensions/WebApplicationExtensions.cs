@@ -1,9 +1,7 @@
-﻿using LiWiMus.Core.Settings;
-using LiWiMus.Core.Users;
+﻿using LiWiMus.Infrastructure;
 using LiWiMus.Infrastructure.Data;
+using LiWiMus.Infrastructure.Data.Seeders;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,17 +13,15 @@ public static class WebApplicationExtensions
     public static async Task SeedDatabaseAsync(this WebApplication app, ILogger logger)
     {
         logger.LogInformation("Seeding Database...");
-
+        
         using var scope = app.Services.CreateScope();
         var scopedProvider = scope.ServiceProvider;
 
         try
         {
             var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
-            var userManager = scopedProvider.GetRequiredService<UserManager<User>>();
-            var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
-            var adminSettings = app.Configuration.GetSection("AdminSettings").Get<AdminSettings>();
-            await ApplicationContextSeed.SeedAsync(applicationContext, logger, userManager, roleManager, adminSettings);
+            var envType = Enum.Parse<EnvironmentType>(app.Environment.EnvironmentName);
+            await ApplicationContextSeed.SeedAsync(applicationContext, envType, logger, scopedProvider);
             await ApplicationContextClear.ClearAsync(applicationContext, logger, app.Environment.IsDevelopment());
         }
         catch (Exception ex)

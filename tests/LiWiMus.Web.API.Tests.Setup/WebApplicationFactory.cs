@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using DateOnlyTimeOnly.AspNet.Converters;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
@@ -26,31 +28,16 @@ public class WebApplicationFactory : WebApplicationFactory<Program>
 
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
+        builder.UseEnvironment("Testing");
         builder.ConfigureServices(services =>
         {
-            var descriptor = services
-                .SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<ApplicationContext>));
-
-            if (descriptor is null)
-            {
-                throw new SystemException();
-            }
-            
-            services.Remove(descriptor);
-
-            services.AddDbContext<ApplicationContext>(options =>
-            {
-                options.UseInMemoryDatabase("InMemoryTestingDb");
-            });
-
             var serviceProvider = services.BuildServiceProvider();
             using var scope = serviceProvider.CreateScope();
             var scopedServices = scope.ServiceProvider;
             var db = scopedServices.GetRequiredService<ApplicationContext>();
-            var logger = scopedServices
-                .GetRequiredService<ILogger<WebApplicationFactory>>();
-
-            db.Database.EnsureCreated();
+            var logger = scopedServices.GetRequiredService<ILogger<WebApplicationFactory>>();
+            var isDeleted = db.Database.EnsureDeleted();
+            logger.LogInformation(isDeleted ? "Database was removed" : "Database wasn't removed");
         });
         
         base.ConfigureWebHost(builder);
