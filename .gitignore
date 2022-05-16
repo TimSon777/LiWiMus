@@ -352,3 +352,4 @@ MigrationBackup/
 .idea/
 src/LiWiMus.Web.FileServer/Files/*
 src/*/appsettings.Development.json
+src/*/appsettings.Testing.json
