@@ -5,6 +5,11 @@ import {Filter} from "../filter";
 @Injectable()
 export class FilterService {
     private static GetConditionalByOperator(operator : Operator, value : any) : any {
+        if (operator[0] === '-') {
+            let positiveOperator = operator.substring(1, operator.length) as Operator
+            return Not(FilterService.GetConditionalByOperator(positiveOperator, value))
+        }
+        
         switch(operator) {
             case "eq": {
                 return Equal(value);
@@ -27,8 +32,8 @@ export class FilterService {
             case "sw": {
                 return Like(`${value}%`)
             }
-            case "ncnt": {
-                return Not(In(value))
+            case "in": {
+                return In(value)
             }
             default: {
                 return null;

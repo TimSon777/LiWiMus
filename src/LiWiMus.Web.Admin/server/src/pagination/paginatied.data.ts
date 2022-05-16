@@ -6,7 +6,7 @@ export class PaginatedData<T> {
         this.actualPage = parseInt(options.page.pageNumber.toString());
         this.itemsPerPage = parseInt(options.page.numberOfElementsOnPage.toString());
         this.totalItems = totalItems;
-        this.totalPages = Math.floor( totalItems / this.itemsPerPage);
+        this.totalPages = Math.ceil( totalItems / this.itemsPerPage);
         this.hasMore = this.actualPage < this.totalPages
     }
     
