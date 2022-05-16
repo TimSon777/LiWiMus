@@ -15,7 +15,6 @@ export class Album extends CommonEntity {
     @Column({ name: 'PublishedAt', type: 'date' })
     publishedAt: string;
 
-    @Exclude()
     @Column({ name: 'CoverLocation' })
     coverLocation: string;
 
