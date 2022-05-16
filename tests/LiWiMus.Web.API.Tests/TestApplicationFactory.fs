@@ -1,7 +1,6 @@
 ﻿module LiWiMus.Web.API.Tests.WebApplicationFactory
 
 open LiWiMus.Infrastructure.Data
-open LiWiMus.Web.API
 open Microsoft.AspNetCore.Mvc.Testing
 open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Hosting

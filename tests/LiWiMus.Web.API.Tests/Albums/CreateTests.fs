@@ -32,8 +32,9 @@ type CreateTests(
             PublishedAt = DateOnly(),
             ArtistIds = [|1|])
         
-        //Act
         task {
+            
+            //Act
             let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
             
             //Assert
@@ -57,8 +58,9 @@ type CreateTests(
             PublishedAt = DateOnly(),
             ArtistIds = [|1|])
         
-        //Act
         task {
+            
+            //Act
             let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
             
             //Assert
@@ -80,8 +82,9 @@ type CreateTests(
             PublishedAt = DateOnly.MaxValue,
             ArtistIds = [|1|])
         
-        //Act
         task {
+            
+            //Act
             let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
             
             //Assert
@@ -104,8 +107,9 @@ type CreateTests(
             PublishedAt = DateOnly(),
             ArtistIds = [||])
         
-        //Act
         task {
+            
+            //Act
             let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
             
             //Assert
@@ -128,8 +132,9 @@ type CreateTests(
             PublishedAt = DateOnly(),
             ArtistIds = [|777|])
         
-        //Act
         task {
+            
+            //Act
             let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
             
             //Assert
