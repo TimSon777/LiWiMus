@@ -1,9 +1,9 @@
-import React, {ReactElement} from "react";
-import {TableCell, TableRow} from "@mui/material";
-import TrackLink from "../../../tracks/components/TrackLink/TrackLink";
-import {Track} from "../../../tracks/types/Track";
-import TrackArtists from "../../../tracks/components/TrackArtists/TrackArtists";
-import AlbumLink from "../../../albums/components/AlbumLink";
+import React, { ReactElement } from "react";
+import { TableCell, TableRow } from "@mui/material";
+import TrackLink from "../../../../tracks/components/TrackLink/TrackLink";
+import { Track } from "../../../../tracks/types/Track";
+import TrackArtists from "../../../../tracks/components/TrackArtists/TrackArtists";
+import AlbumLink from "../../../../albums/components/AlbumLink";
 
 type Props = {
   track: Track;

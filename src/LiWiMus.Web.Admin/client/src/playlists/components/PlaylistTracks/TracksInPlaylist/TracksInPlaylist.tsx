@@ -1,33 +1,40 @@
-import React, {useEffect, useState} from "react";
-import {Track} from "../../../tracks/types/Track";
-import {Playlist} from "../../types/Playlist";
-import PlaylistService from "../../Playlist.service";
-import Loading from "../../../shared/components/Loading/Loading";
-import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,} from "@mui/material";
-import AlertDialog from "../../../shared/components/AlertDialog/AlertDialog";
+import React, { useEffect, useState } from "react";
+import { Track } from "../../../../tracks/types/Track";
+import { Playlist } from "../../../types/Playlist";
+import PlaylistService from "../../../Playlist.service";
+import Loading from "../../../../shared/components/Loading/Loading";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import AlertDialog from "../../../../shared/components/AlertDialog/AlertDialog";
 import PlaylistTrackItem from "../PlaylistTrackItem/PlaylistTrackItem";
-import {useNotifier} from "../../../shared/hooks/Notifier.hook";
+import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {PaginatedData} from "../../../shared/types/PaginatedData";
+import { PaginatedData } from "../../../../shared/types/PaginatedData";
 
 type Props = {
   playlist: Playlist;
   setPlaylist: (playlist: Playlist) => void;
+  tracks: PaginatedData<Track>;
+  setTracks: (tracks: PaginatedData<Track>) => void;
 };
 
-export default function TracksInPlaylist({ playlist, setPlaylist }: Props) {
-  const [tracks, setTracks] = useState<PaginatedData<Track>>({
-    actualPage: 0,
-    totalPages: 0,
-    totalItems: 0,
-    itemsPerPage: 0,
-    data: [],
-    hasMore: true,
-  });
-  const [loading, setLoading] = useState<boolean>(true);
+export default function TracksInPlaylist({
+  playlist,
+  setPlaylist,
+  tracks,
+  setTracks,
+}: Props) {
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const { showError, showSuccess } = useNotifier();
 
-  const fetchMoreTracks = async () => {
+  const fetchMore = async () => {
     try {
       const newTracks = await PlaylistService.getTracks(
         playlist,
@@ -46,16 +53,23 @@ export default function TracksInPlaylist({ playlist, setPlaylist }: Props) {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchMoreTracks().then(() => {
-      setLoading(false);
-    });
+    if (tracks.hasMore) {
+      setIsLoading(true);
+      fetchMore().then(() => {
+        setIsLoading(false);
+      });
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   const removeTrack = async (track: Track) => {
     try {
       await PlaylistService.removeTrack(playlist, track);
-      setPlaylist({ ...playlist, tracksCount: tracks.totalItems - 1 });
+      setPlaylist({
+        ...playlist,
+        tracksCount: tracks.totalItems - 1,
+      });
       setTracks({
         ...tracks,
         data: tracks.data.filter((t) => t.id !== track.id),
@@ -67,7 +81,7 @@ export default function TracksInPlaylist({ playlist, setPlaylist }: Props) {
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
   }
 
@@ -80,7 +94,7 @@ export default function TracksInPlaylist({ playlist, setPlaylist }: Props) {
       dataLength={tracks.data.length}
       hasMore={tracks.hasMore}
       loader={<Loading />}
-      next={fetchMoreTracks}
+      next={fetchMore}
     >
       <TableContainer component={Paper}>
         <Table>

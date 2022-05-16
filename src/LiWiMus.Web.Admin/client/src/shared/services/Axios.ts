@@ -1,10 +1,17 @@
 import axios from "axios";
 import axiosRetry from "axios-retry";
+import Qs from "qs";
 
 const baseUrl = process.env.REACT_APP_API_URL;
 
 const instance = axios.create({
   baseURL: baseUrl,
+  paramsSerializer: (params) => {
+    return Qs.stringify(params, {
+      arrayFormat: "indices",
+      encode: false,
+    });
+  },
 });
 
 axiosRetry(instance, { retries: 3, retryDelay: () => 100 });

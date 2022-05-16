@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import {Link as RouterLink, useParams} from "react-router-dom";
-import {Playlist} from "../types/Playlist";
+import React, { useEffect, useState } from "react";
+import { Link as RouterLink, useParams } from "react-router-dom";
+import { Playlist } from "../types/Playlist";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import {Grid, Link, Stack, Typography} from "@mui/material";
+import { Grid, Link, Stack, Typography } from "@mui/material";
 import playlistCover from "../images/playlist-cover-negative.png";
 import PlaylistImageEditor from "../components/PlaylistImageEditor/PlaylistImageEditor";
 import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEditor";
@@ -12,7 +12,7 @@ import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import PlaylistDeleter from "../components/PlaylistDeleter/PlaylistDeleter";
 import PlaylistService from "../Playlist.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
-import {useNotifier} from "../../shared/hooks/Notifier.hook";
+import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import PlaylistTracks from "../components/PlaylistTracks/PlaylistTracks";
 
 const API_URL = process.env.REACT_APP_API_URL;
