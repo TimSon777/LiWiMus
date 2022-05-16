@@ -33,4 +33,7 @@ export class Track extends CommonEntity {
     
     @OneToMany(() => PlaylistTrack, playlistTrack => playlistTrack.track)
     playlists: PlaylistTrack[];
+
+    @Column({ name: 'Duration' })
+    duration: number;
 }

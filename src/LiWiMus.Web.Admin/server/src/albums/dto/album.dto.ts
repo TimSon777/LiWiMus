@@ -28,4 +28,8 @@ export class AlbumDto extends IdDto {
     @Expose()
     @IsNotEmpty()
     artists: ArtistDto[];
+
+    @ApiProperty()
+    @Expose()
+    coverLocation: string;
 }
