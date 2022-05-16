@@ -171,6 +171,21 @@
       "SwaggerKey" : "Admin.API.C#"
     },
     {
+      "DownstreamPathTemplate": "/api/tracks/getList",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/tracks",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
       "DownstreamPathTemplate": "/api/tracks/{id}/artists",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
