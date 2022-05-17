@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { PaginatedData } from "../../../../shared/types/PaginatedData";
 import { Track } from "../../../../tracks/types/Track";
 import TrackService from "../../../../tracks/Track.service";
 import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
+import { Filter } from "../../../../shared/types/Filter";
 
 type Props = {
   tracksInPlaylist: Track[];
@@ -26,21 +27,20 @@ export default function PlaylistTrackSearchInput({
   const { showError } = useNotifier();
 
   const handler = async () => {
-    if (!value) {
-      return;
-    }
-
     setLoading(true);
     try {
+      const filters: Filter<Track>[] = [
+        {
+          columnName: "id",
+          operator: "-in",
+          value: [0, ...tracksInPlaylist.map((track) => track.id)],
+        },
+      ];
+      if (value) {
+        filters.push({ columnName: "name", operator: "cnt", value });
+      }
       const tracks = await TrackService.getTracks({
-        filters: [
-          { columnName: "name", operator: "cnt", value },
-          {
-            columnName: "id",
-            operator: "-in",
-            value: tracksInPlaylist.map((track) => track.id),
-          },
-        ],
+        filters,
         page: { pageNumber: 1, numberOfElementsOnPage: 10 },
       });
       setTracks(tracks);
@@ -50,6 +50,10 @@ export default function PlaylistTrackSearchInput({
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    handler();
+  }, []);
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
