@@ -117,6 +117,7 @@ export default function TracksInPlaylist({
                   <AlertDialog
                     onAgree={() => removeTrack(track)}
                     title={"Remove track from playlist?"}
+                    text={"You can add it back later"}
                     agreeText={"Remove"}
                     disagreeText={"Cancel"}
                     buttonText={"Remove"}

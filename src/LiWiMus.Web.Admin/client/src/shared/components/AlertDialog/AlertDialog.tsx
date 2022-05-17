@@ -66,7 +66,7 @@ export default function AlertDialog({
         <DialogContent>
           <DialogContentText>{text}</DialogContentText>
         </DialogContent>
-        <DialogActions>
+        <DialogActions sx={{ justifyContent: "center" }}>
           <Button
             onClick={handleDisagree}
             color={"secondary"}
