@@ -12,6 +12,12 @@
         <Compile Include="UrlSettings.fs" />
         <Compile Include="TestApplicationFactory.fs" />
         <Compile Include="Albums\CreateTests.fs" />
+        <Compile Include="Playlists\UpdateTests.fs" />
+        <Compile Include="Playlists\ReadTests.fs" />
+        <Compile Include="Playlists\DeleteTests.fs" />
+        <Compile Include="Playlists\RemovePhotoTests.fs" />
+        <Compile Include="Playlists\AddTrackTests.fs" />
+        <Compile Include="Playlists\RemoveTrackTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

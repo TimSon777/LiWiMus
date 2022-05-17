@@ -24,6 +24,12 @@ public class UserSeeder : ISeeder
     
     private async Task SeedAdminAsync()
     {
+        var oldAdmin = await _userManager.FindByNameAsync(_adminSettings.UserName);
+        if (oldAdmin is not null)
+        {
+            return;
+        }
+        
         var admin = new User
         {
             UserName = _adminSettings.UserName,

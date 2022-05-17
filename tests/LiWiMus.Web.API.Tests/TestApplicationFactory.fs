@@ -7,6 +7,7 @@ open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.TestHost
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
+open Microsoft.EntityFrameworkCore
 
 type TestApplicationFactory() =
     inherit WebApplicationFactory<Program>()
@@ -37,8 +38,7 @@ type TestApplicationFactory() =
                 let logger =
                     scopedServices.GetRequiredService<ILogger<TestApplicationFactory>>()
 
-                db.Database.EnsureDeleted()
-                |> ignore)
+                db.Database.EnsureDeleted() |> ignore)
         |> ignore
 
         base.ConfigureWebHost(builder)

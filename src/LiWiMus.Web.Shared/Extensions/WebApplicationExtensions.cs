@@ -21,7 +21,7 @@ public static class WebApplicationExtensions
         {
             var applicationContext = scopedProvider.GetRequiredService<ApplicationContext>();
             var envType = Enum.Parse<EnvironmentType>(app.Environment.EnvironmentName);
-            await ApplicationContextSeed.SeedAsync(applicationContext, envType, logger, scopedProvider);
+            await ApplicationContextSeed.SeedAsync(applicationContext, envType, logger, scopedProvider, 10);
             await ApplicationContextClear.ClearAsync(applicationContext, logger, app.Environment.IsDevelopment());
         }
         catch (Exception ex)

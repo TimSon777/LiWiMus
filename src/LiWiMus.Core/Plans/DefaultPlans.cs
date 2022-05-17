@@ -13,16 +13,16 @@ public static class DefaultPlans
         {
             new()
             {
-                Id = 1,
+                //Id = 1,
                 Name = Free,
                 PricePerMonth = 0
             },
             new()
             {
-                Id = 2,
+                //Id = 2,
                 Name = Premium,
                 PricePerMonth = 100500,
-                Permissions = DefaultPermissions.GetPublic()
+                //Permissions = DefaultPermissions.GetPublic()
             }
         };
     }

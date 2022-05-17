@@ -17,7 +17,8 @@ public static class DbContextConfiguration
                     options => options.EnableRetryOnFailure())
                 .UseValidationCheckConstraints()
                 .UseAllCheckConstraints()
-                .UseOpenIddict();
+                .UseOpenIddict()
+                .EnableSensitiveDataLogging();
         });
     }
 }
