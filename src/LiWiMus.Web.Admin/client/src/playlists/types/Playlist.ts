@@ -9,4 +9,7 @@ export type Playlist = {
   name: string;
   isPublic: boolean;
   photoLocation: string | null;
+
+  createdAt: string;
+  modifiedAt: string;
 };

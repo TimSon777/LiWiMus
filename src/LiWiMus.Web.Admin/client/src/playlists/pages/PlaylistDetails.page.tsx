@@ -14,6 +14,8 @@ import PlaylistService from "../Playlist.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import PlaylistTracks from "../components/PlaylistTracks/PlaylistTracks";
+// @ts-ignore
+import dateFormat from "dateformat";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -93,6 +95,20 @@ export default function PlaylistDetailsPage() {
                   {playlist.userName}
                 </Link>
               }
+            />
+            <ReadonlyInfo
+              name={"Created at"}
+              value={`${dateFormat(
+                new Date(playlist.createdAt),
+                "dd.mm.yyyy, HH:MM"
+              )}`}
+            />
+            <ReadonlyInfo
+              name={"Modified at"}
+              value={`${dateFormat(
+                new Date(playlist.modifiedAt),
+                "dd.mm.yyyy, HH:MM"
+              )}`}
             />
             <PlaylistInfoEditor
               id={id}
