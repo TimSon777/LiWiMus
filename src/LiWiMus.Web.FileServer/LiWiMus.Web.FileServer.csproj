@@ -24,4 +24,8 @@
       <Folder Include="Files" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LiWiMus.Web.Shared\LiWiMus.Web.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

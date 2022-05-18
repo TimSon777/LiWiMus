@@ -7,9 +7,7 @@ open Microsoft.Extensions.Configuration
 open Microsoft.Extensions.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
-
-
-open Microsoft.OpenApi.Models
+open LiWiMus.Web.Shared.Configuration
 open Ocelot.DependencyInjection
 open Ocelot.Middleware
 
@@ -47,15 +45,9 @@ module Program =
             services.AddCors()
 
         services.AddControllers()
-        
-        let info = OpenApiInfo()
-        info.Title <- builder.Environment.ApplicationName
-        
-        services.AddSwaggerGen(fun o->
-            o.SwaggerDoc("v1", info)
-            o.CustomSchemaIds(fun t -> t.ToString()))
-        
+        services.AddSwaggerWithAuthorize(builder.Environment.ApplicationName)
         services.AddSwaggerForOcelot(configuration)
+        
         let app = builder.Build()
 
         if app.Environment.IsDevelopment() then

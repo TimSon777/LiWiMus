@@ -3,8 +3,7 @@ using FluentValidation.AspNetCore;
 using LiWiMus.Web.MailServer.Core.Interfaces;
 using LiWiMus.Web.MailServer.Core.Settings;
 using LiWiMus.Web.MailServer.Infrastructure.Services;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
+using LiWiMus.Web.Shared.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -26,12 +25,7 @@ services.AddFluentValidation(options =>
     options.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 });
 
-services.AddSwaggerGen(o =>
-{
-    o.SwaggerDoc("v1", new OpenApiInfo { Title = builder.Environment.ApplicationName });
-    o.CustomSchemaIds(type => type.ToString());
-    o.AddFluentValidationRulesScoped();
-});
+services.AddSwaggerWithAuthorize(builder.Environment.ApplicationName);
 
 var app = builder.Build();
 app.UseSwagger();

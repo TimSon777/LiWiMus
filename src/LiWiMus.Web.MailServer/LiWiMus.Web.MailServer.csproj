@@ -17,4 +17,8 @@
       <AdditionalFiles Include="Views\Emails\_ViewStart.cshtml" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\LiWiMus.Web.Shared\LiWiMus.Web.Shared.csproj" />
+    </ItemGroup>
+
 </Project>

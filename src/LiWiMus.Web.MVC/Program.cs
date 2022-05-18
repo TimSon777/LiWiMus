@@ -23,7 +23,7 @@ configuration.AddEnvironmentVariables();
 var services = builder.Services;
 
 services.AddSharedServices();
-services.AddDbContext(configuration);
+services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
 services.AddCoreServices();
 services.AddTriggers();
 var pullUrls = configuration.GetRequiredSection(nameof(PullUrls)).Get<PullUrls>();

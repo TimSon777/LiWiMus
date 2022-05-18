@@ -2,17 +2,13 @@ namespace LiWiMus.Web.Auth
 
 #nowarn "20"
 
-open System
-open System.IdentityModel.Tokens.Jwt
 open LiWiMus.Infrastructure.Data.Config
-open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open LiWiMus.Web.Auth.Extensions.ServicesExtensions
-open Microsoft.Net.Http.Headers
-open Microsoft.OpenApi.Models
-
+open LiWiMus.Web.Shared.Configuration
+open Microsoft.Extensions.Configuration
 
 module Program =
     let exitCode = 0
@@ -25,7 +21,7 @@ module Program =
 
         let services = builder.Services
         let environment = builder.Environment
-        let configuration = builder.Configuration
+        let configuration = builder.Configuration.GetConnectionString("DefaultConnection")
 
         services.AddControllers()
 
@@ -44,40 +40,13 @@ module Program =
             .AddAuthenticationWithJwt()
             .AddAuthorization()
 
-        services.AddDbContext(configuration)
+        services
+            .AddDbContext(configuration)
 
         services
             .AddIdentity()
             .AddOpenIdConnect()
-            
-        let info = OpenApiInfo()
-        info.Title <- builder.Environment.ApplicationName
-        
-        let scheme = OpenApiSecurityScheme()
-        scheme.Name           <- HeaderNames.Authorization
-        scheme.Type           <- SecuritySchemeType.OAuth2
-        scheme.Scheme         <- JwtBearerDefaults.AuthenticationScheme
-        scheme.BearerFormat   <- JwtConstants.TokenType
-        scheme.In             <- ParameterLocation.Header
-        
-        let flows = OpenApiOAuthFlows()
-        let passwordFlow = OpenApiOAuthFlow()
-        passwordFlow.TokenUrl <- Uri("https://localhost:5021/auth/connect/token")
-        flows.Password <- passwordFlow
-        scheme.Flows <- flows
-        
-        let securityRequirement = OpenApiSecurityRequirement()
-        let securityScheme = OpenApiSecurityScheme()
-        let reference = OpenApiReference()
-        reference.Type <- ReferenceType.SecurityScheme
-        reference.Id <- "oauth2"
-        securityScheme.Reference <- reference
-        securityRequirement.Add(securityScheme, Array.empty)
-        
-        services.AddSwaggerGen(fun o ->
-            o.SwaggerDoc("v1", info)
-            o.AddSecurityDefinition("oauth2", scheme)
-            o.AddSecurityRequirement(securityRequirement)) |> ignore
+            .AddSwaggerWithAuthorize(builder.Environment.ApplicationName)
         
         let app = builder.Build()
 
