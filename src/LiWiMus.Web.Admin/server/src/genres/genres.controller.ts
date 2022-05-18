@@ -1,14 +1,13 @@
 import {
     Body,
-    Controller,
     Get,
     HttpException,
-    HttpStatus, Param, Patch,
+    HttpStatus, Param, Patch, Delete,
     Post,
     Query,
     UseInterceptors,
     UsePipes,
-    ValidationPipe
+    ValidationPipe, Controller
 } from '@nestjs/common';
 import {GenreDto} from "./dto/genre.dto";
 import {Track} from "../tracks/track.entity";
@@ -65,6 +64,24 @@ export class GenresController {
         return new PaginatedData<GenreDto>(data, normalizedOptions, count);
     }
 
+    @Delete(':id')
+    async delete(@Param('id') id : number) {
+        let genre = await Genre.findOne({id: id});
+        
+        if (!genre) {
+            throw new HttpException({
+                message: "genre was not found"
+            }, HttpStatus.NOT_FOUND)
+        }
+        
+        await Genre
+            .remove(genre)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.INTERNAL_SERVER_ERROR)
+            });
+    }
 
     @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist:true}))
