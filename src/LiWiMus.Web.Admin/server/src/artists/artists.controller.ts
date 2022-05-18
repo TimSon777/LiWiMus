@@ -26,7 +26,7 @@ import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 @ApiTags('artists')
 export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
-    @Get('getList')
+    @Get()
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
     @ApiOkResponse({ type: [Artist] })
     async getArtists(@Query() options : FilterOptions)
@@ -41,7 +41,7 @@ export class ArtistsController {
             });
     }
 
-    @Delete('deleteArtist')
+    @Delete()
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
     async deleteUser(@Body() id: number){
         let artist = await Artist.findOne(id);
@@ -54,7 +54,7 @@ export class ArtistsController {
         return true;
     }
 
-    @Patch('updateArtist')
+    @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async updateArtist(@Body() dto: any) : Promise<ArtistsDto> {
         await Artist.update({id: dto.id}, dto);

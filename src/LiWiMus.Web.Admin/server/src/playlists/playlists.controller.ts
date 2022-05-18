@@ -15,7 +15,7 @@ export class PlaylistsController {
                 private readonly playlistsService: PlaylistsService) {
     }
 
-    @Get("getall")
+    @Get()
     @UseInterceptors(new TransformInterceptor(PlaylistDto))
     @ApiOkResponse({ type: [Playlist] })
     async getGenres(@Query() options : FilterOptions) : Promise<Playlist[]> {

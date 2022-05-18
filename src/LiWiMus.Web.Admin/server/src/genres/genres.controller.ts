@@ -29,7 +29,7 @@ export class GenresController {
                 private readonly genreService: GenresService) {
     }
     
-    @Get("getall")
+    @Get()
     @UseInterceptors(new TransformInterceptor(GenreDto))
     @ApiOkResponse({ type: [Genre] })
     async getGenres(@Query() options : FilterOptions) : Promise<Genre[]> {
@@ -37,7 +37,7 @@ export class GenresController {
             .find(this.filterOptionsService.GetFindOptionsObject(options));
     }
     
-    @Patch("updateGenre")
+    @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist:true}))
     async updateGenres(@Body() dto: GenreDto) : Promise<Genre> {
         return this.genreService.updateGenre(dto)

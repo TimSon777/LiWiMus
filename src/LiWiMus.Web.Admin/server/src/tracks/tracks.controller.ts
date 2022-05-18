@@ -15,7 +15,7 @@ import {plainToInstance} from "class-transformer";
 @ApiTags('tracks')
 export class TracksController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
-    @Get('getList')
+    @Get()
    // @UseInterceptors(new TransformInterceptor(TrackDto))
     @ApiOkResponse({ type: [Track] })
     async getTracks(@Query() options : FilterOptions)

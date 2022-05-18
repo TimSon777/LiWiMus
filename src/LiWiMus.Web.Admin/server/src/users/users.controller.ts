@@ -28,7 +28,7 @@ export class UsersController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly userService: UsersService){}
     
-    @Get('getList')
+    @Get()
     //@UseInterceptors(new TransformInterceptor(UserDto))
     @ApiOkResponse({ type: [PaginatedData] })
     async getUsers(@Query() options : FilterOptions)
@@ -54,7 +54,7 @@ export class UsersController {
         //       .then(items => items.map(e=>plainToClass(ItemDTO, classToPlain(e), { excludeExtraneousValues: true })));
     }
     
-    @Patch('updateUser')
+    @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true}))
     @ApiCreatedResponse({ type: User })
     @UseInterceptors(new TransformInterceptor(UserDto))
