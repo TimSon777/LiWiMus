@@ -25,4 +25,12 @@ export class TransactionDto extends IdDto {
     @Expose()
     @IsString()
     description: string;
+
+    @ApiProperty()
+    @Expose()
+    createdAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    modifiedAt: Date;
 }

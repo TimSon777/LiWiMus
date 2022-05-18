@@ -37,4 +37,12 @@ export class ArtistsDto extends IdDto {
     @ApiProperty()
     @Expose()
     photoLocation: string
+
+    @ApiProperty()
+    @Expose()
+    createdAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    modifiedAt: Date;
 }

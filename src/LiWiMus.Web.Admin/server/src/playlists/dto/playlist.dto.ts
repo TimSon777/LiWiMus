@@ -27,4 +27,12 @@ export class PlaylistDto extends IdDto {
     @Expose()
     @IsBoolean()
     isPublic: boolean;
+
+    @ApiProperty()
+    @Expose()
+    createdAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    modifiedAt: Date;
 }
