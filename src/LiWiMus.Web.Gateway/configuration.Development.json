@@ -126,6 +126,21 @@
       "SwaggerKey" : "Admin.API.C#"
     },
     {
+      "DownstreamPathTemplate": "/api/genres",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/genres",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
       "DownstreamPathTemplate": "/api/albums",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

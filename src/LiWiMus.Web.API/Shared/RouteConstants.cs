@@ -44,4 +44,9 @@ public static class RouteConstants
             public const string List = $"{Prefix}/{nameof(Tracks)}/{{id:int}}/artists";
         }
     }
+
+    public static class Genres
+    {
+        public const string Create = $"{Prefix}/{nameof(Genres)}";
+    }
 }
