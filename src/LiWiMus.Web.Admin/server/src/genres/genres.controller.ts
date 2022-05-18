@@ -3,7 +3,7 @@ import {
     Controller,
     Get,
     HttpException,
-    HttpStatus, Patch,
+    HttpStatus, Param, Patch,
     Post,
     Query,
     UseInterceptors,
@@ -21,6 +21,7 @@ import {TransformInterceptor} from "../transformInterceptor/transform.intercepto
 import {TrackDto} from "../tracks/dto/track.dto";
 import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {Artist} from "../artists/artist.entity";
+import {plainToInstance} from "class-transformer";
 
 @Controller('genres')
 @ApiTags('genres')
@@ -28,10 +29,23 @@ export class GenresController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly genreService: GenresService) {
     }
+
+    @Get(':id')
+    @UseInterceptors(new TransformInterceptor(GenreDto))
+    @ApiOkResponse({ type: GenreDto })
+    async getGenreById(@Param('id') id : string) : Promise<GenreDto> {
+        let genre = Genre.findOne(+id)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+        return plainToInstance(GenreDto, genre);
+    }
     
     @Get()
     @UseInterceptors(new TransformInterceptor(GenreDto))
-    @ApiOkResponse({ type: [Genre] })
+    @ApiOkResponse({ type: [GenreDto] })
     async getGenres(@Query() options : FilterOptions) : Promise<Genre[]> {
         return await Genre
             .find(this.filterOptionsService.GetFindOptionsObject(options));
