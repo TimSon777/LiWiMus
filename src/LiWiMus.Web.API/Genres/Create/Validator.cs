@@ -14,7 +14,7 @@ public class Validator : AbstractValidator<Request>
             .NotEmpty()
             .MaximumLength(50)
             .DisableTags()
-            .MustAsync(async (name, token) => !await repository.AnyAsync(new GenreByNameSpec(name)))
+            .MustAsync(async (name, token) => !await repository.AnyAsync(new GenreByNameSpec(name), token))
             .WithMessage("Genre with name '{PropertyValue}' already exists");
     }
 }
