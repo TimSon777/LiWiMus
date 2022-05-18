@@ -3,7 +3,7 @@ import {
     Controller,
     Get,
     HttpException,
-    HttpStatus,
+    HttpStatus, Param,
     Patch,
     Query,
     UseInterceptors,
@@ -27,9 +27,22 @@ import {plainToInstance} from "class-transformer";
 export class UsersController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly userService: UsersService){}
+
+
+    @Get(':id')
+    @ApiOkResponse( {type: UserDto })
+    async getUserById(@Param('id') id : string)
+        : Promise<UserDto> {
+        let user = User.findOne(+id)
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
+        return plainToInstance(UserDto, user);
+    }
     
     @Get('getList')
-    //@UseInterceptors(new TransformInterceptor(UserDto))
     @ApiOkResponse({ type: [PaginatedData] })
     async getUsers(@Query() options : FilterOptions)
         : Promise<PaginatedData<UserDto>> {
