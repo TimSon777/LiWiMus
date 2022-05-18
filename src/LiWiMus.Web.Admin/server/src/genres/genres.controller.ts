@@ -22,6 +22,7 @@ import {TrackDto} from "../tracks/dto/track.dto";
 import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {Artist} from "../artists/artist.entity";
 import {plainToInstance} from "class-transformer";
+import {PaginatedData} from "../pagination/paginatied.data";
 
 @Controller('genres')
 @ApiTags('genres')
@@ -44,13 +45,27 @@ export class GenresController {
     }
     
     @Get()
-    @UseInterceptors(new TransformInterceptor(GenreDto))
+    //@UseInterceptors(new TransformInterceptor(GenreDto))
     @ApiOkResponse({ type: [GenreDto] })
-    async getGenres(@Query() options : FilterOptions) : Promise<Genre[]> {
-        return await Genre
-            .find(this.filterOptionsService.GetFindOptionsObject(options));
+    async getGenres(@Query() options : FilterOptions)
+        : Promise<PaginatedData<GenreDto>>
+    {
+        let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
+        let obj = this.filterOptionsService.GetFindOptionsObject(options);
+
+        let data = await Genre.find(obj)
+            .then(items => items.map(data => plainToInstance(GenreDto, data)))
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+
+        let count = await Genre.count({where: obj.where});
+        return new PaginatedData<GenreDto>(data, normalizedOptions, count);
     }
-    
+
+
     @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist:true}))
     async updateGenres(@Body() dto: GenreDto) : Promise<Genre> {

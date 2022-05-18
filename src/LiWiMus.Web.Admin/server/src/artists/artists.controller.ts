@@ -3,7 +3,7 @@ import {
     Controller, Delete,
     Get,
     HttpException,
-    HttpStatus, Patch,
+    HttpStatus, Param, Patch,
     Post,
     Query,
     UseInterceptors,
@@ -21,25 +21,48 @@ import {TransformInterceptor} from "../transformInterceptor/transform.intercepto
 import {TrackDto} from "../tracks/dto/track.dto";
 import {ArtistsDto} from "./dto/artists.dto";
 import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {plainToInstance} from "class-transformer";
+import {PaginatedData} from "../pagination/paginatied.data";
 
 @Controller('artists')
 @ApiTags('artists')
 export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
-    @Get()
-    @UseInterceptors(new TransformInterceptor(ArtistsDto))
-    @ApiOkResponse({ type: [Artist] })
-    async getArtists(@Query() options : FilterOptions)
-        : Promise<Artist[]> {
-        return Artist.find(
-            this.filterOptionsService.GetFindOptionsObject(options))
-            
+
+    @Get(':id')
+    @ApiOkResponse({ type: ArtistsDto })
+    async getArtistById(@Param('id') id : string) : Promise<ArtistsDto> {
+        let artist = Artist.findOne(+id)
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
+        return plainToInstance(ArtistsDto, artist);
     }
+
+
+    @Get()
+   // @UseInterceptors(new TransformInterceptor(ArtistsDto))
+    @ApiOkResponse({ type: [ArtistsDto] })
+    async getArtists(@Query() options : FilterOptions)
+        : Promise<PaginatedData<ArtistsDto>>
+    {
+        let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
+        let obj = this.filterOptionsService.GetFindOptionsObject(options);
+
+        let data = await Artist.find(obj)
+            .then(items => items.map(data => plainToInstance(ArtistsDto, data)))
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+
+        let count = await Artist.count({where: obj.where});
+        return new PaginatedData<ArtistsDto>(data, normalizedOptions, count);
+    }
+
 
     @Delete()
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
