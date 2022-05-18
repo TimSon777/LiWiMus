@@ -19,10 +19,11 @@ import {getRepository} from "typeorm";
 import {GenresService} from "./genres.service";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {TrackDto} from "../tracks/dto/track.dto";
-import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {Artist} from "../artists/artist.entity";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
+import {UpdateGenreDto} from "./dto/update.genre.dto";
 
 @Controller('genres')
 @ApiTags('genres')
@@ -68,7 +69,9 @@ export class GenresController {
 
     @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist:true}))
-    async updateGenres(@Body() dto: GenreDto) : Promise<Genre> {
+    @ApiCreatedResponse({ type: GenreDto })
+    async updateGenres(@Body() dto: UpdateGenreDto) 
+        : Promise<GenreDto> {
         return this.genreService.updateGenre(dto)
             .catch(err => {
             throw new HttpException({

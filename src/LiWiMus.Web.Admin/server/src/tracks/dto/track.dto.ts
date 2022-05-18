@@ -36,4 +36,12 @@ export class TrackDto extends IdDto{
     @ApiProperty()
     @Expose()
     duration: number;
+
+    @ApiProperty()
+    @Expose()
+    createdAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    modifiedAt: Date;
 }

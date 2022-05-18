@@ -32,4 +32,12 @@ export class AlbumDto extends IdDto {
     @ApiProperty()
     @Expose()
     coverLocation: string;
+
+    @ApiProperty()
+    @Expose()
+    createdAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    modifiedAt: Date;
 }

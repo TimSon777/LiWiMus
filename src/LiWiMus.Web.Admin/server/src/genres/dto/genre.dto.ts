@@ -13,4 +13,16 @@ export class GenreDto extends IdDto {
     @IsString()
     @Expose()
     name: string;
+
+    @ApiProperty()
+    @Expose()
+    createdAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    modifiedAt: Date;
+
+   /* @ApiProperty()
+    @Expose()
+    tracksAmount: number;*/
 }
