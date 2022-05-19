@@ -2,6 +2,8 @@
 using FluentValidation;
 using LiWiMus.Core.Transactions;
 using LiWiMus.SharedKernel.Interfaces;
+using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.API.Shared.Extensions;
 using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 
@@ -31,17 +33,21 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         if (transaction is null)
         {
-            return Results.UnprocessableEntity(new {detail = $"No transactions with Id {request.Id}."});
+            return Results.Extensions.NotFoundById(EntityType.Transactions, request.Id);
         }
 
         _mapper.Map(request, transaction);
+        
         await _repository.UpdateAsync(transaction);
-        return Results.NoContent();
+
+        var dto = _mapper.Map<Dto>(transaction);
+
+        return Results.Ok(dto);
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPut("/api/transactions", async (Request request, IRepository<Transaction> repository) =>
+        app.MapPatch(RouteConstants.Transactions.Update, async (Request request, IRepository<Transaction> repository) =>
         {
             _repository = repository;
             return await HandleAsync(request);
