@@ -1,5 +1,7 @@
 import axios from "./Axios";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const FileService = {
   remove: (location: string) => axios.delete(location),
   save: async (file: File) => {
@@ -10,6 +12,7 @@ const FileService = {
     });
     return data.location as string;
   },
+  getLocation: (relativeLocation: string) => API_URL + relativeLocation,
 };
 
 export default FileService;

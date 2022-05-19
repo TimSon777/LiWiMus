@@ -1,5 +1,5 @@
-import {Artist} from "../../artists/Artist";
-import {Album} from "../../albums/Album";
+import { Artist } from "../../artists/Artist";
+import { Album } from "../../albums/types/Album";
 
 export type Track = {
   id: string;

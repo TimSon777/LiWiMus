@@ -16,8 +16,7 @@ import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import PlaylistTracks from "../components/PlaylistTracks/PlaylistTracks";
 // @ts-ignore
 import dateFormat from "dateformat";
-
-const API_URL = process.env.REACT_APP_API_URL;
+import FileService from "../../shared/services/File.service";
 
 export default function PlaylistDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -28,7 +27,7 @@ export default function PlaylistDetailsPage() {
 
   const setPlaylistWithPhoto = (playlist: Playlist) => {
     const photoLocation = playlist.photoLocation
-      ? API_URL + playlist.photoLocation
+      ? FileService.getLocation(playlist.photoLocation)
       : playlistCover;
     setPlaylist({ ...playlist });
     setPlaylistPhoto(photoLocation);

@@ -7,6 +7,9 @@ import { BrowserRouter } from "react-router-dom";
 import { useAuth } from "./shared/hooks/Auth.hook";
 import { AuthContext } from "./shared/contexts/Auth.context";
 import { SnackbarProvider } from "notistack";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import ruLocale from "date-fns/locale/ru";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import "./App.sass";
 
 function App() {
@@ -21,19 +24,21 @@ function App() {
   return (
     <AuthContext.Provider value={{ userData, login, logout, isAuthenticated }}>
       <BrowserRouter>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider
-            maxSnack={3}
-            preventDuplicate
-            autoHideDuration={2000}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-          >
-            <Layout userData={userData}>{routes}</Layout>
-          </SnackbarProvider>
-        </ThemeProvider>
+        <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
+          <ThemeProvider theme={theme}>
+            <SnackbarProvider
+              maxSnack={3}
+              preventDuplicate
+              autoHideDuration={2000}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <Layout userData={userData}>{routes}</Layout>
+            </SnackbarProvider>
+          </ThemeProvider>
+        </LocalizationProvider>
       </BrowserRouter>
     </AuthContext.Provider>
   );

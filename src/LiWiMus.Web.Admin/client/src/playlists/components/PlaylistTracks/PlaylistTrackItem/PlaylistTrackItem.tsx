@@ -2,8 +2,8 @@ import React, { ReactElement } from "react";
 import { TableCell, TableRow } from "@mui/material";
 import TrackLink from "../../../../tracks/components/TrackLink/TrackLink";
 import { Track } from "../../../../tracks/types/Track";
-import TrackArtists from "../../../../tracks/components/TrackArtists/TrackArtists";
-import AlbumLink from "../../../../albums/components/AlbumLink";
+import AlbumLink from "../../../../albums/components/AlbumLink/AlbumLink";
+import ArtistsList from "../../../../artists/components/ArtistsList/ArtistsList";
 
 type Props = {
   track: Track;
@@ -25,7 +25,7 @@ export default function PlaylistTrackItem({
         <TrackLink track={track} cover />
       </TableCell>
       <TableCell>
-        <TrackArtists track={track} />
+        <ArtistsList artists={track.artists} />
       </TableCell>
       <TableCell>
         <AlbumLink album={track.album} />
