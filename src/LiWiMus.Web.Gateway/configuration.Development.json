@@ -121,7 +121,8 @@
       ],
       "UpstreamPathTemplate": "/api/transactions",
       "UpstreamHttpMethod": [
-        "PATCH"
+        "PATCH",
+        "POST"
       ],
       "SwaggerKey" : "Admin.API.C#"
     },

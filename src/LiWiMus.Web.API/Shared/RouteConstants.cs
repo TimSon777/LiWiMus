@@ -53,5 +53,6 @@ public static class RouteConstants
     public static class Transactions
     {
         public const string Update = $"{Prefix}/{nameof(Transactions)}";
+        public const string Create = $"{Prefix}/{nameof(Transactions)}";
     }
 }
