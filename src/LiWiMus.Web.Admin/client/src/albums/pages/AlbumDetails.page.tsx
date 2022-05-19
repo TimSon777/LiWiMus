@@ -16,6 +16,7 @@ import AlbumInfoEditor from "../components/AlbumInfoEditor/AlbumInfoEditor";
 import ArtistsList from "../../artists/components/ArtistsList/ArtistsList";
 import { format, parse } from "date-fns";
 import AlbumDeleter from "../components/AlbumDeleter/AlbumDeleter";
+import AlbumTracks from "../components/AlbumTracks/AlbumTracks";
 
 export default function AlbumDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -121,6 +122,10 @@ export default function AlbumDetailsPage() {
             <InfoCard title={"Tracks"} value={album.tracksCount} />
             <InfoCard title={"Listeners"} value={album.listenersCount} />
           </Stack>
+        </Grid>
+
+        <Grid item xs={12}>
+          <AlbumTracks album={album} />
         </Grid>
       </Grid>
     </>
