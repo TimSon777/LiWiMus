@@ -70,7 +70,6 @@ builder.Services.AddEndpointsApiExplorer();
 //     o.AddFluentValidationRulesScoped();
 // });
 builder.Services.AddSwaggerWithAuthorize(builder.Environment.ApplicationName);
-builder.Services.AddHostedService<HostedService>();
 var app = builder.Build();
 app.UseAuthentication();
 app.UseAuthorization();
@@ -84,6 +83,11 @@ app.UseSwaggerUI(c =>
 });
 app.MapEndpoints();
 app.Run();
+
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    await ConfigureSeeder.UseSeedersAsync(app.Services, app.Logger, builder.Environment);
+}
 
 //For tests
 #pragma warning disable CA1050
