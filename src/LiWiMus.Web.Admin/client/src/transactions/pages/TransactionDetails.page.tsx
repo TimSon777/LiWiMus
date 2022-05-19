@@ -55,11 +55,11 @@ export default function TransactionDetailsPage() {
               value={
                 <Link
                   component={RouterLink}
-                  to={`/admin/users/${transaction.userId}`}
+                  to={`/admin/users/${transaction.user.id}`}
                   underline="none"
                   color={"secondary"}
                 >
-                  {transaction.userName}
+                  {transaction.user.userName}
                 </Link>
               }
             />

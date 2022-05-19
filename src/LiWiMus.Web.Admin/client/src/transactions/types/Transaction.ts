@@ -1,7 +1,8 @@
+import { User } from "../../users/types/User";
+
 export type Transaction = {
   id: string;
-  userId: string;
-  userName: string;
+  user: User;
   amount: string;
   description: string;
 
