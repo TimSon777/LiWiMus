@@ -10,11 +10,13 @@ public class Validator : AbstractValidator<Request>
     public Validator()
     {
         RuleFor(r => r.Title)
-            .Length(2, 50)
+            .Length(5, 50)
             .DisableTags();
-        
+
         RuleFor(r => r.PublishedAt)
-            .Must(d => d is null || d <= DateTime.UtcNow)
+            .Cascade(CascadeMode.Stop)
+            .Must(d => d <= DateOnly.FromDateTime(DateTime.UtcNow))
+            .When(request => request.PublishedAt is not null, ApplyConditionTo.CurrentValidator)
             .WithMessage(ValidationMessages.DateLessThenNow);
     }
 }

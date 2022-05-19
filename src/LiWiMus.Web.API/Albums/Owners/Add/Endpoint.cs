@@ -1,9 +1,12 @@
-﻿using LiWiMus.Core.Albums;
+﻿using AutoMapper;
+using LiWiMus.Core.Albums;
+using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Add;
 using LiWiMus.Web.API.Shared.Extensions;
+using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Albums.Owners.Add;
@@ -13,6 +16,12 @@ public class Endpoint : IEndpoint<IResult, Request>
 {
     private IRepository<Album> _albumRepository = null!;
     private IRepository<Artist> _artistRepository = null!;
+    private readonly IMapper _mapper;
+
+    public Endpoint(IMapper mapper)
+    {
+        _mapper = mapper;
+    }
 
     public async Task<IResult> HandleAsync(Request request)
     {
@@ -37,7 +46,13 @@ public class Endpoint : IEndpoint<IResult, Request>
         
         album.Owners.Add(artist);
         await _albumRepository.SaveChangesAsync();
-        return Results.Ok();
+
+        var dto = _mapper.Map<Dto>(album);
+        dto.Artists = _mapper.MapList<Artist, Artists.Dto>(await _albumRepository.GetArtistsAsync(album)).ToList();
+        dto.TracksCount = await _albumRepository.GetTracksCountAsync(album);
+        dto.ListenersCount = await _albumRepository.GetListenersCountAsync(album);
+
+        return Results.Ok(dto);
     }
 
     public void AddRoute(IEndpointRouteBuilder app)

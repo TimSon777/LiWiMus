@@ -91,7 +91,9 @@
       ],
       "UpstreamPathTemplate": "/api/albums/{everything}",
       "UpstreamHttpMethod": [
-        "POST"
+        "POST",
+        "DELETE",
+        "GET"
       ],
       "SwaggerKey" : "Admin.API.C#"
     },
@@ -109,6 +111,38 @@
         "POST"
       ],
       "SwaggerKey" : "Auth"
+    },
+    {
+      "DownstreamPathTemplate": "/api/artists/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/artists/{id}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "DELETE"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
+      "DownstreamPathTemplate": "/api/artists",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/artists",
+      "UpstreamHttpMethod": [
+        "PATCH",
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
     },
     {
       "DownstreamPathTemplate": "/api/transactions/{id}",
@@ -138,21 +172,6 @@
       "UpstreamHttpMethod": [
         "PATCH",
         "POST"
-      ],
-      "SwaggerKey" : "Admin.API.C#"
-    },
-    {
-      "DownstreamPathTemplate": "/api/albums/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5010
-        }
-      ],
-      "UpstreamPathTemplate": "/api/albums/{id}",
-      "UpstreamHttpMethod": [
-        "GET"
       ],
       "SwaggerKey" : "Admin.API.C#"
     },
@@ -214,7 +233,8 @@
       ],
       "UpstreamPathTemplate": "/api/albums",
       "UpstreamHttpMethod": [
-        "POST"
+        "POST",
+        "PATCH"
       ],
       "SwaggerKey" : "Admin.API.C#"
     },

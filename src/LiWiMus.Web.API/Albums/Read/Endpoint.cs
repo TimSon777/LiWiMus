@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Albums;
+using LiWiMus.Core.Albums.Specifications;
+using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
+using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.Albums.Read;
@@ -28,6 +31,9 @@ public class Endpoint : IEndpoint<IResult, int>
         }
 
         var dto = _mapper.Map<Dto>(album);
+        dto.Artists = _mapper.MapList<Artist, Artists.Dto>(await _albumRepository.GetArtistsAsync(album)).ToList();
+        dto.TracksCount = await _albumRepository.GetTracksCountAsync(album);
+        dto.ListenersCount = await _albumRepository.GetListenersCountAsync(album);
 
         return Results.Ok(dto);
     }

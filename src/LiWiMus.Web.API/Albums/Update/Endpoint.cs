@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Albums;
+using LiWiMus.Core.Albums.Specifications;
+using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
@@ -41,9 +43,12 @@ public class Endpoint : IEndpoint<IResult, Request>
         _mapper.Map(request, album);
 
         await _albumRepository.UpdateAsync(album);
-        
+
         var dto = _mapper.Map<Dto>(album);
-        
+        dto.Artists = _mapper.MapList<Artist, Artists.Dto>(await _albumRepository.GetArtistsAsync(album)).ToList();
+        dto.TracksCount = await _albumRepository.GetTracksCountAsync(album);
+        dto.ListenersCount = await _albumRepository.GetListenersCountAsync(album);
+
         return Results.Ok(dto);
     }
 
