@@ -5,7 +5,6 @@ using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
-using LiWiMus.Web.API.Shared.Remove;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using MinimalApi.Endpoint;
@@ -32,12 +31,12 @@ public class Endpoint : IEndpoint<IResult, Request>
             return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
-        var artist = album.Owners.FirstOrDefault(owner => owner.Id == request.DeletedId);
+        var artist = album.Owners.FirstOrDefault(owner => owner.Id == request.ArtistId);
 
         if (artist is null)
         {
             return Results.UnprocessableEntity(
-                new { detail = $"Album {album.Title} does not contains artist with Id {request.DeletedId}." });
+                new {detail = $"Album {album.Title} does not contains artist with Id {request.ArtistId}."});
         }
 
         album.Owners.Remove(artist);

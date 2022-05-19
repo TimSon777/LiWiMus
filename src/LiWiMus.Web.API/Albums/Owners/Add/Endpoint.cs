@@ -4,7 +4,6 @@ using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
-using LiWiMus.Web.API.Shared.Add;
 using LiWiMus.Web.API.Shared.Extensions;
 using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
@@ -32,11 +31,11 @@ public class Endpoint : IEndpoint<IResult, Request>
             return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
-        var artist = await _artistRepository.GetByIdAsync(request.AddedId);
+        var artist = await _artistRepository.GetByIdAsync(request.ArtistId);
 
         if (artist is null)
         {
-            return Results.Extensions.NotFoundById(EntityType.Artists, request.AddedId);
+            return Results.Extensions.NotFoundById(EntityType.Artists, request.ArtistId);
         }
 
         if (album.Owners.Contains(artist))
