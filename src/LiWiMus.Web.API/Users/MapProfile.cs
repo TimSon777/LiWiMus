@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Users;
+using LiWiMus.Web.API.Users.Create;
 
 namespace LiWiMus.Web.API.Users;
 
@@ -8,6 +9,7 @@ public class MapProfile : Profile
 {
     public MapProfile()
     {
-        CreateMap<Create.Request, User>();
+        CreateMap<Request, User>();
+        CreateMap<User, Dto>();
     }
 }
