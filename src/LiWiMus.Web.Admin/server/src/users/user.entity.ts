@@ -29,8 +29,8 @@ export class User extends CommonEntity {
   balance: number;
 
   @Exclude()
-  @Column({ name: 'AvatarPath' })
-  avatarPath: string;
+  @Column({ name: 'AvatarLocation' })
+  avatarLocation: string;
   
   @Column({ length: 256, name: 'Email' })
   email: string;
