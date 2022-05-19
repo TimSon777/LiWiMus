@@ -18,7 +18,7 @@ export class TransactionsController {
     @Get(':id')
     @ApiOkResponse({ type: TransactionDto })
     async getTransactionsDtoById(@Param('id') id : string) : Promise<TransactionDto> {
-        let transaction = Transaction.findOne(+id)
+        let transaction = Transaction.findOne(+id, {relations: ["user"]})
             .catch(err => {
                 throw new HttpException({
                     message: err.message
