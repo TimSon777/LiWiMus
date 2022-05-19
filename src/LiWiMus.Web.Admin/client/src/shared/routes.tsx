@@ -6,6 +6,8 @@ import DashboardPage from "../dashboard/Dashboard.page";
 import ArtistsPage from "../artists/Artists.page";
 import UserProfilePage from "../users/UserProfile.page";
 import PlaylistDetailsPage from "../playlists/pages/PlaylistDetails.page";
+import GenreDetailsPage from "../genres/pages/GenreDetails.page";
+import TransactionDetailsPage from "../transactions/pages/TransactionDetails.page";
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -15,6 +17,11 @@ export const useRoutes = (isAuthenticated: boolean) => {
         <Route path="/admin/users" element={<UsersPage />} />
         <Route path="/admin/artists" element={<ArtistsPage />} />
         <Route path="/admin/playlists/:id" element={<PlaylistDetailsPage />} />
+        <Route
+          path="/admin/transactions/:id"
+          element={<TransactionDetailsPage />}
+        />
+        <Route path="/admin/genres/:id" element={<GenreDetailsPage />} />
         <Route path="/admin/users/:id" element={<UserProfilePage />} />
         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
       </Routes>

@@ -5,6 +5,7 @@ using LiWiMus.Core.Roles;
 using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel;
+using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Data.Config;
@@ -19,7 +20,16 @@ public static class TriggersConfiguration
         Triggers<BaseUserEntity>.Inserting += entry => entry.Entity.CreatedAt = entry.Entity.ModifiedAt = DateTime.UtcNow;
         Triggers<BaseUserEntity>.Updating += entry => entry.Entity.ModifiedAt = DateTime.UtcNow;
 
-        Triggers<Transaction>.Inserting += entry => entry.Entity.User.Balance += entry.Entity.Amount;
+        Triggers<Transaction>.GlobalInserting.Add<IRepository<User>>(async entry =>
+        {
+            var transaction = entry.Entity;
+            var userId = transaction.UserId;
+            var user = await entry.Service.GetByIdAsync(userId);
+            if (user != null)
+            {
+                user.Balance += transaction.Amount;
+            }
+        });
 
         Triggers<User, ApplicationContext>.Inserted += entry => entry.Context.Transactions.Add(new Transaction
         {

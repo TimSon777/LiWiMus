@@ -9,5 +9,7 @@ public class MapProfile : Profile
     public MapProfile()
     {
         CreateMap<Request, Transaction>();
+        CreateMap<Create.Request, Transaction>();
+        CreateMap<Transaction, Dto>();
     }
 }
