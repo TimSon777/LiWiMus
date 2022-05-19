@@ -1,6 +1,5 @@
 ﻿using LiWiMus.Infrastructure.Data.Seeders;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace LiWiMus.Infrastructure.Data;
@@ -10,7 +9,7 @@ public static class ApplicationContextSeed
     public static async Task SeedAsync(ApplicationContext applicationContext, 
         EnvironmentType environmentType,
         ILogger logger, 
-        IServiceProvider serviceProvider, 
+        ISeeder[] seeders,
         int retry = 0)
     {
         var retryForAvailability = retry;
@@ -21,11 +20,7 @@ public static class ApplicationContextSeed
                 await applicationContext.Database.MigrateAsync();
             }
 
-            var seeders = serviceProvider
-                .GetServices<ISeeder>()
-                .OrderByDescending(s => s.Priority);
-
-            foreach (var seeder in seeders)
+            foreach (var seeder in seeders.OrderByDescending(x => x.Priority))
             {
                 await seeder.SeedAsync(environmentType);
             }
@@ -33,6 +28,7 @@ public static class ApplicationContextSeed
         }
         catch (Exception ex)
         {
+            //File.WriteAllText(@"C:\Users\Тимур\Desktop\LiWiMus\src\LiWiMus.Web.API/EXCEPTION" + Guid.NewGuid().ToString()[..10] + ".txt", ex.Message + "\n" + ex.StackTrace);
             if (retryForAvailability >= 10)
             {
                 throw;
@@ -41,7 +37,7 @@ public static class ApplicationContextSeed
             retryForAvailability++;
 
             logger.LogError("Error while seeding database: {Message}", ex.Message);
-            await SeedAsync(applicationContext, environmentType, logger, serviceProvider, retryForAvailability);
+            await SeedAsync(applicationContext, environmentType, logger, seeders, retryForAvailability);
             throw;
         }
     }

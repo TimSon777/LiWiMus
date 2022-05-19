@@ -2,11 +2,8 @@
 
 open LiWiMus.Infrastructure.Data
 open Microsoft.AspNetCore.Mvc.Testing
-open Microsoft.Extensions.Hosting
 open Microsoft.AspNetCore.Hosting
-open Microsoft.AspNetCore.TestHost
 open Microsoft.Extensions.DependencyInjection
-open Microsoft.Extensions.Logging
 
 type TestApplicationFactory() =
     inherit WebApplicationFactory<Program>()

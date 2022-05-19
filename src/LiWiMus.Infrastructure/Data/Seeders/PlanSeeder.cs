@@ -22,14 +22,14 @@ public class PlansSeeder : ISeeder
         {
             return;
         }
-
+        
         var plans = DefaultPlans.GetAll().ToList();
         
         foreach (var plan in plans)
         {
             await _planRepository.AddAsync(plan);
         }
-
+        
         foreach (var permission in DefaultPermissions.GetPrivate())
         {
             await _permissionRepository.AddAsync(permission);

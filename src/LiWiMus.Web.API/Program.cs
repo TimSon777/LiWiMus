@@ -3,6 +3,7 @@ using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data.Config;
+using LiWiMus.Web.API;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
@@ -69,9 +70,8 @@ builder.Services.AddEndpointsApiExplorer();
 //     o.AddFluentValidationRulesScoped();
 // });
 builder.Services.AddSwaggerWithAuthorize(builder.Environment.ApplicationName);
-
+builder.Services.AddHostedService<HostedService>();
 var app = builder.Build();
-
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -83,9 +83,12 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "api/swagger";
 });
 app.MapEndpoints();
-await app.SeedDatabaseAsync(app.Logger);
 app.Run();
 
+//For tests
+#pragma warning disable CA1050
+// ReSharper disable once UnusedType.Global
 public partial class Program
+#pragma warning restore CA1050
 {
 }

@@ -100,7 +100,7 @@ public class PlaylistSeeder : ISeeder
                 };
 
                 await _userManager.CreateAsync(user, "Password");
-
+                await _userManager.UpdateAsync(user);
                 var playlist = new Playlist
                 {
                     Name = "MockPlaylist_Playlist",

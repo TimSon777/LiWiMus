@@ -25,7 +25,7 @@ public class RoleSeeder : ISeeder
             }
             
             await _roleManager.CreateAsync(role);
-            await AddPermissionClaim(role, permissions);
+            //await AddPermissionClaim(role, permissions);
         }
     }
     

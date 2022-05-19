@@ -47,7 +47,8 @@ public class UserSeeder : ISeeder
         {
             admin = user;
         }
-
+        
+        await _userManager.UpdateAsync(admin);
         await _userManager.AddToRoleAsync(admin, DefaultRoles.Admin.Name);
     }
 

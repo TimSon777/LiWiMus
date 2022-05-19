@@ -65,7 +65,7 @@ type UpdateTests(factory: TestApplicationFactory) =
         
     [<Theory>]
     [<InlineData("VeryLongggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg")>]
-    member this.``Tests(Playlists): Create => Failure (bad request)``(name) =
+    member this.``Tests(Playlists): Update => Failure (bad request)``(name) =
         
         // Arrange
         let client = factory.CreateClient()
@@ -85,7 +85,7 @@ type UpdateTests(factory: TestApplicationFactory) =
         
     
     [<Fact>]
-    member this.``Tests(Playlists): Create => Failure (not found)``() =
+    member this.``Tests(Playlists): Update => Failure (not found)``() =
         
         // Arrange
         let client = factory.CreateClient()

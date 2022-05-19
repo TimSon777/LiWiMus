@@ -74,7 +74,7 @@ services.AddWebOptimizer(pipeline =>
     pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css"));
 
 services.AddSignalR();
-
+services.AddHostedService<HostedService>();
 var app = builder.Build();
 var logger = app.Logger;
 
@@ -124,8 +124,6 @@ app.UseEndpoints(endpoints =>
 
     endpoints.MapHub<SupportChatHub>("/chat");
 });
-
-await app.SeedDatabaseAsync(logger);
 
 logger.LogInformation("LAUNCHING");
 

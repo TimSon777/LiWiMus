@@ -18,6 +18,7 @@
         <Compile Include="Playlists\RemovePhotoTests.fs" />
         <Compile Include="Playlists\AddTrackTests.fs" />
         <Compile Include="Playlists\RemoveTrackTests.fs" />
+        <Compile Include="Transactions\UpdateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>
