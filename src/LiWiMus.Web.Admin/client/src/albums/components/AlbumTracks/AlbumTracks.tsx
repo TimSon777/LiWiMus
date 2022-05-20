@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  FormControlLabel,
-  Paper,
-  Switch,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { FormControlLabel, Switch } from "@mui/material";
 import TrackService from "../../../tracks/Track.service";
 import {
   DefaultPaginatedData,
@@ -20,10 +10,7 @@ import { Album } from "../../types/Album";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "../../../shared/components/Loading/Loading";
-import TrackLink from "../../../tracks/components/TrackLink/TrackLink";
-import ArtistsList from "../../../artists/components/ArtistsList/ArtistsList";
-import AlbumLink from "../AlbumLink/AlbumLink";
-import NotFound from "../../../shared/components/NotFound/NotFound";
+import TracksList from "../../../tracks/components/TracksList/TracksList";
 
 type Props = {
   album: Album;
@@ -72,38 +59,15 @@ export default function AlbumTracks({ album }: Props) {
           loader={<Loading />}
           next={fetchMore}
         >
-          {tracks.data.length > 0 ? (
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>#</TableCell>
-                    <TableCell>Name</TableCell>
-                    <TableCell>Artists</TableCell>
-                    <TableCell>Album</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {tracks.data.map((track, index) => (
-                    <TableRow>
-                      <TableCell>{index + 1}</TableCell>
-                      <TableCell>
-                        <TrackLink track={track} cover />
-                      </TableCell>
-                      <TableCell>
-                        <ArtistsList artists={track.artists} />
-                      </TableCell>
-                      <TableCell>
-                        <AlbumLink album={track.album} />
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          ) : (
-            <NotFound />
-          )}
+          <TracksList
+            tracks={tracks.data}
+            name
+            artists
+            publishedAt
+            duration
+            album={false}
+            albumCover={false}
+          />
         </InfiniteScroll>
       )}
     </>

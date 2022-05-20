@@ -3,20 +3,11 @@ import { Track } from "../../../../tracks/types/Track";
 import { Playlist } from "../../../types/Playlist";
 import PlaylistService from "../../../Playlist.service";
 import Loading from "../../../../shared/components/Loading/Loading";
-import {
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
 import AlertDialog from "../../../../shared/components/AlertDialog/AlertDialog";
-import PlaylistTrackItem from "../PlaylistTrackItem/PlaylistTrackItem";
 import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PaginatedData } from "../../../../shared/types/PaginatedData";
+import TracksList from "../../../../tracks/components/TracksList/TracksList";
 
 type Props = {
   playlist: Playlist;
@@ -96,38 +87,23 @@ export default function TracksInPlaylist({
       loader={<Loading />}
       next={fetchMore}
     >
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Artists</TableCell>
-              <TableCell>Album</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tracks.data.map((track, index) => (
-              <PlaylistTrackItem
-                key={index}
-                index={index}
-                track={track}
-                renderAction={() => (
-                  <AlertDialog
-                    onAgree={() => removeTrack(track)}
-                    title={"Remove track from playlist?"}
-                    text={"You can add it back later"}
-                    agreeText={"Remove"}
-                    disagreeText={"Cancel"}
-                    buttonText={"Remove"}
-                  />
-                )}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <TracksList
+        tracks={tracks.data}
+        albumCover
+        name
+        artists
+        album
+        action={(track) => (
+          <AlertDialog
+            onAgree={() => removeTrack(track)}
+            title={"Remove track from playlist?"}
+            text={"You can add it back later"}
+            agreeText={"Remove"}
+            disagreeText={"Cancel"}
+            buttonText={"Remove"}
+          />
+        )}
+      />
     </InfiniteScroll>
   );
 }

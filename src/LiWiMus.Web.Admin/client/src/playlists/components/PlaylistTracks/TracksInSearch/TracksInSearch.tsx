@@ -5,19 +5,10 @@ import { Track } from "../../../../tracks/types/Track";
 import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
 import Loading from "../../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
-import {
-  Button,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import PlaylistTrackItem from "../PlaylistTrackItem/PlaylistTrackItem";
+import { Button } from "@mui/material";
 import TrackService from "../../../../tracks/Track.service";
 import PlaylistService from "../../../Playlist.service";
+import TracksList from "../../../../tracks/components/TracksList/TracksList";
 
 type Props = {
   playlist: Playlist;
@@ -50,7 +41,7 @@ export default function TracksInSearch({
           {
             columnName: "id",
             operator: "-in",
-            value: tracksInPlaylist.data.map((track) => track.id),
+            value: [0, ...tracksInPlaylist.data.map((track) => track.id)],
           },
         ],
         page: { pageNumber: tracks.actualPage + 1, numberOfElementsOnPage: 10 },
@@ -96,38 +87,23 @@ export default function TracksInSearch({
       loader={<Loading />}
       next={fetchMore}
     >
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Artists</TableCell>
-              <TableCell>Album</TableCell>
-              <TableCell />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tracks.data.map((track, index) => (
-              <PlaylistTrackItem
-                key={index}
-                index={index}
-                track={track}
-                renderAction={() => (
-                  <Button
-                    variant="outlined"
-                    color={"secondary"}
-                    sx={{ borderRadius: "20px", px: 4 }}
-                    onClick={() => addTrack(track)}
-                  >
-                    Add
-                  </Button>
-                )}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <TracksList
+        tracks={tracks.data}
+        albumCover
+        name
+        artists
+        album
+        action={(track) => (
+          <Button
+            variant="outlined"
+            color={"secondary"}
+            sx={{ borderRadius: "20px", px: 4 }}
+            onClick={() => addTrack(track)}
+          >
+            Add
+          </Button>
+        )}
+      />
     </InfiniteScroll>
   );
 }

@@ -38,7 +38,7 @@ export default function PlaylistTrackSearchInput({
           {
             columnName: "id",
             operator: "-in",
-            value: tracksInPlaylist.map((track) => track.id),
+            value: [0, ...tracksInPlaylist.map((track) => track.id)],
           },
         ],
         page: { pageNumber: 1, numberOfElementsOnPage: 10 },

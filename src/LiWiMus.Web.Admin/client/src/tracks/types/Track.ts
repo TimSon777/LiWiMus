@@ -4,12 +4,12 @@ import { Album } from "../../albums/types/Album";
 export type Track = {
   id: string;
   name: string;
-  publishedAt: Date;
+  publishedAt: string;
   fileLocation: string;
   duration: number;
   artists: Artist[];
   album: Album;
 
-  createdAt: Date;
-  modifiedAt: Date;
+  createdAt: string;
+  modifiedAt: string;
 };
