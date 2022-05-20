@@ -5,7 +5,7 @@ import {
     HttpException,
     HttpStatus, Param, Patch,
     Post,
-    Query,
+    Query, Res,
     UseInterceptors,
     UsePipes,
     ValidationPipe
@@ -25,6 +25,8 @@ import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
 import {CreateArtistDto} from "./dto/create.artist.dto";
 import {ArtistsService} from "./artists.service";
+import {UserDto} from "../users/dto/user.dto";
+import {UserArtistDto} from "./dto/user.artist.dto";
 
 @Controller('artists')
 @ApiTags('artists')
@@ -32,16 +34,23 @@ export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService, 
                 private readonly artistsService: ArtistsService){}
 
+    @Post()
+    @ApiOkResponse({ type: [ArtistsDto] })
+    async createArtist(@Body() dto: CreateArtistDto) : Promise<ArtistsDto> {
+        return await this.artistsService.createArtist(dto);
+    }
+
     @Get(':id')
     @ApiOkResponse({ type: ArtistsDto })
     async getArtistById(@Param('id') id : string) : Promise<ArtistsDto> {
-        let artist = Artist.findOne(+id)
+        let artist = await Artist.findOne(+id, {relations: ['albums']})
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
-        return plainToInstance(ArtistsDto, artist);
+        
+       return plainToInstance(ArtistsDto, artist);
     }
 
 
@@ -52,10 +61,12 @@ export class ArtistsController {
         : Promise<PaginatedData<ArtistsDto>>
     {
         let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
-        let obj = this.filterOptionsService.GetFindOptionsObject(options);
+        let obj = this.filterOptionsService.GetFindOptionsObject(options, ['albums']);
 
         let data = await Artist.find(obj)
             .then(items => items.map(data => plainToInstance(ArtistsDto, data)))
+            
+            
             .catch(err => {
                 throw new HttpException({
                     message: err.message
@@ -66,8 +77,31 @@ export class ArtistsController {
         return new PaginatedData<ArtistsDto>(data, normalizedOptions, count);
     }
 
+    @Get(":id/users")
+    @ApiOkResponse({ type: [UserDto] })
+    async getArtistsUsers(@Param('id') id : string)
+        : Promise<UserDto[]>
+    {
+        let artist = await Artist.findOne(+id);
+        let users = UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
+            .then(i => i.map((u) => (u.user)))
+            .then(u => u.map(data => plainToInstance(UserDto, data)));
+        return users;
+    }
 
-    @Delete()
+    @Post(":id/users")
+    @ApiOkResponse({ type: [ArtistsDto] }) 
+    async addUsers(@Param('id') id : string, @Body() dto: UserArtistDto) {
+        return  await this.artistsService.addUsers(+id, dto);
+    }
+
+    @Delete(":id/users")
+    @ApiOkResponse({ type: [ArtistsDto] })
+    async deleteUsers(@Param('id') id : string, @Body() dto: UserArtistDto) {
+        return await this.artistsService.deleteUsers(+id, dto);
+    }
+    
+   /* @Delete()
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
     async deleteArtist(@Body() id: number){
         let artist = await Artist.findOne(id);
@@ -78,20 +112,16 @@ export class ArtistsController {
                 }, HttpStatus.BAD_REQUEST)
             });
         return true;
-    }
+    }*/
     
-    @Post()
-    @ApiOkResponse({ type: [ArtistsDto] })
-    async createArtist(@Body() dto: CreateArtistDto) : Promise<ArtistsDto> {
-       return await this.artistsService.createArtist(dto);
-    }
 
-    @Patch()
+
+   /* @Patch()
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async updateArtist(@Body() dto: any) : Promise<ArtistsDto> {
         await Artist.update({id: dto.id}, dto);
         return Artist.findOne(dto.id);
-    }
+    }*/
 
    /* @Post('updateUserArtist')
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))

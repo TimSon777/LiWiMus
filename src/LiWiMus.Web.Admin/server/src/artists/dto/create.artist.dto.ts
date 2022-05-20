@@ -21,11 +21,7 @@ export class CreateArtistDto {
     @MaxLength(500)
     about: string;
 
-    @ApiProperty({type: 'numbers'})
-    @Expose()
-    @IsArray()
-    @IsInt({each: true})
-    userIds: number[];
+
 
     @ApiProperty()
     @Expose()

@@ -6,6 +6,10 @@ import {JoinTable, ManyToMany} from "typeorm";
 import {Track} from "../../tracks/track.entity";
 import {Exclude, Expose} from "class-transformer";
 import {ApiProperty} from "@nestjs/swagger";
+import {UserDto} from "../../users/dto/user.dto";
+import {User} from "../../users/user.entity";
+import {AlbumDto} from "../../albums/dto/album.dto";
+import {TrackDto} from "../../tracks/dto/track.dto";
 
 
 @Exclude()
@@ -21,18 +25,10 @@ export class ArtistsDto extends IdDto {
     @IsString()
     @MaxLength(500)
     about: string;
-
+    
     @ApiProperty()
     @Expose()
-    userArtists: UserArtist[]
-
-    @ApiProperty()
-    @Expose()
-    albums: Album[];
-
-    @ApiProperty()
-    @Expose()
-    tracks: Track[];
+    albums: AlbumDto[];
 
     @ApiProperty()
     @Expose()
@@ -45,4 +41,8 @@ export class ArtistsDto extends IdDto {
     @ApiProperty()
     @Expose()
     modifiedAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    users: UserDto[];
 }
