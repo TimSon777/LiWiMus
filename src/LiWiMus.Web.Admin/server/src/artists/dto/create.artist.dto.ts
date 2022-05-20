@@ -21,8 +21,6 @@ export class CreateArtistDto {
     @MaxLength(500)
     about: string;
 
-
-
     @ApiProperty()
     @Expose()
     @IsString()

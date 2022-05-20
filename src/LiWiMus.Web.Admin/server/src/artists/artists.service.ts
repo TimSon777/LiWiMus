@@ -8,6 +8,7 @@ import {User} from "../users/user.entity";
 import {plainToInstance} from "class-transformer";
 import {UserArtistDto} from "./dto/user.artist.dto";
 import {UserDto} from "../users/dto/user.dto";
+import {UpdateArtistDto} from "./dto/update.artist.dto";
 
 @Injectable()
 export class ArtistsService {
@@ -105,7 +106,7 @@ export class ArtistsService {
             if (!relation){
                 throw new HttpException({
                     message: `Relation was not found.`
-                }, HttpStatus.NOT_FOUND)
+                }, HttpStatus.NOT_FOUND);
             }
             
             let userArtist = await UserArtist.find({where: {user: user, artist: artist}});
@@ -117,10 +118,28 @@ export class ArtistsService {
             .then(u => u.map(data => plainToInstance(UserDto, data)));
     }
     
-    async updateArtist(dto: ArtistsDto) {
-
-        await Artist.update({id: dto.id}, dto);
-
+    async updateArtist(dto: UpdateArtistDto) : Promise<ArtistsDto> {
+        let artist = await Artist.findOne(dto.id);
+        if (!artist){
+            throw new HttpException({
+                message: `Artist was not found.`
+            }, HttpStatus.NOT_FOUND);
+        }
+        let updatedArtist = await Artist.create(dto);
+        updatedArtist.modifiedAt = await this.dateSetter.setDate();
+        await Artist.save(updatedArtist);
         return plainToInstance(ArtistsDto, Artist.findOne(dto.id));
+    }
+    
+    async deleteArtist(id: number) {
+        let artist = await Artist.findOne(id);
+        if (!artist){
+            throw new HttpException({
+                message: `Artist was not found.`
+            }, HttpStatus.NOT_FOUND);
+        }
+        
+        await Artist.remove(artist);
+        return !await Artist.findOne(id);
     }
 }

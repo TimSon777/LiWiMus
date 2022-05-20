@@ -41,8 +41,4 @@ export class ArtistsDto extends IdDto {
     @ApiProperty()
     @Expose()
     modifiedAt: Date;
-
-    @ApiProperty()
-    @Expose()
-    users: UserDto[];
 }
