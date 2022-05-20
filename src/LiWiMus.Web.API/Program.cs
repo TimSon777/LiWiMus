@@ -82,17 +82,16 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "api/swagger";
 });
 app.MapEndpoints();
-app.Run();
 
 if (!builder.Environment.IsEnvironment("Testing"))
 {
     await ConfigureSeeder.UseSeedersAsync(app.Services, app.Logger, builder.Environment);
 }
 
+app.Run();
+
 //For tests
-#pragma warning disable CA1050
 // ReSharper disable once UnusedType.Global
 public partial class Program
-#pragma warning restore CA1050
 {
 }
