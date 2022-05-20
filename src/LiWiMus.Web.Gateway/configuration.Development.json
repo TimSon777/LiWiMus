@@ -140,7 +140,8 @@
       "UpstreamPathTemplate": "/api/artists",
       "UpstreamHttpMethod": [
         "PATCH",
-        "GET"
+        "GET",
+        "POST"
       ],
       "SwaggerKey" : "Admin.API.Nest"
     },
