@@ -23,11 +23,14 @@ import {ArtistsDto} from "./dto/artists.dto";
 import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
+import {CreateArtistDto} from "./dto/create.artist.dto";
+import {ArtistsService} from "./artists.service";
 
 @Controller('artists')
 @ApiTags('artists')
 export class ArtistsController {
-    constructor(private readonly filterOptionsService: FilterOptionsService){}
+    constructor(private readonly filterOptionsService: FilterOptionsService, 
+                private readonly artistsService: ArtistsService){}
 
     @Get(':id')
     @ApiOkResponse({ type: ArtistsDto })
@@ -66,7 +69,7 @@ export class ArtistsController {
 
     @Delete()
     @UseInterceptors(new TransformInterceptor(ArtistsDto))
-    async deleteUser(@Body() id: number){
+    async deleteArtist(@Body() id: number){
         let artist = await Artist.findOne(id);
         await Artist.remove(artist)
             .catch(err => {
@@ -75,6 +78,12 @@ export class ArtistsController {
                 }, HttpStatus.BAD_REQUEST)
             });
         return true;
+    }
+    
+    @Post()
+    @ApiOkResponse({ type: [ArtistsDto] })
+    async createArtist(@Body() dto: CreateArtistDto) : Promise<ArtistsDto> {
+       return await this.artistsService.createArtist(dto);
     }
 
     @Patch()
