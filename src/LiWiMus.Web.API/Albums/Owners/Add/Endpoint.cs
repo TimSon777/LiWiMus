@@ -56,7 +56,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost(RouteConstants.Albums.Owners.Add,
+        app.MapPost(RouteConstants.Albums.Artists.Add,
             async (Request request, IRepository<Album> albumRepository, IRepository<Artist> artistRepository) =>
             {
                 _albumRepository = albumRepository;

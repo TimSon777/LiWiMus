@@ -12,10 +12,11 @@ public static class RouteConstants
         public const string Update = $"{Prefix}/{nameof(Albums)}";
         //public const string ReadList = $"{Prefix}/{nameof(Albums)}";
 
-        public static class Owners
+        public static class Artists
         {
-            public const string Add = $"{Prefix}/{nameof(Albums)}/{nameof(Owners)}/{nameof(Add)}";
-            public const string Remove = $"{Prefix}/{nameof(Albums)}/{nameof(Owners)}/{nameof(Remove)}";
+            public const string Add = $"{Prefix}/{nameof(Albums)}/{nameof(Artists)}";
+            public const string Remove = $"{Prefix}/{nameof(Albums)}/{nameof(Artists)}";
+            public const string List = $"{Prefix}/{nameof(Albums)}/{{albumId:int}}/{nameof(Artists)}";
         }
     }
 

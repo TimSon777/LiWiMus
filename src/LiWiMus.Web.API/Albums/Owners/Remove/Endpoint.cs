@@ -53,7 +53,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapDelete(RouteConstants.Albums.Owners.Remove,
+        app.MapDelete(RouteConstants.Albums.Artists.Remove,
             async ([FromBody] Request request, IRepository<Album> repository) =>
             {
                 _albumRepository = repository;
