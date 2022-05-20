@@ -2,26 +2,31 @@ namespace LiWiMus.Web.Auth
 
 #nowarn "20"
 
+open System
+open LiWiMus.Core.Settings
 open LiWiMus.Infrastructure.Data.Config
+open LiWiMus.Infrastructure.Data.Seeders
 open Microsoft.AspNetCore.Builder
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Hosting
 open LiWiMus.Web.Auth.Extensions.ServicesExtensions
 open LiWiMus.Web.Shared.Configuration
 open Microsoft.Extensions.Configuration
+open Microsoft.FSharp.Control
 
-module Program =
-    let exitCode = 0
+type Program() =
+    static let exitCode = 0
 
     [<EntryPoint>]
-    let main args =
+    static let main args =
 
         let builder =
             WebApplication.CreateBuilder(args)
 
         let services = builder.Services
         let environment = builder.Environment
-        let configuration = builder.Configuration.GetConnectionString("DefaultConnection")
+        let connection = builder.Configuration
+                                .GetConnectionString("DefaultConnection")
 
         services.AddControllers()
 
@@ -41,12 +46,18 @@ module Program =
             .AddAuthorization()
 
         services
-            .AddDbContext(configuration)
+            .AddDbContext(connection)
 
         services
             .AddIdentity()
             .AddOpenIdConnect()
             .AddSwaggerWithAuthorize(builder.Environment.ApplicationName)
+            
+        services
+            .Configure<AdminSettings>(builder.Configuration.GetSection(nameof(AdminSettings)))
+            
+        services
+            .AddScoped<ISeeder, UserSeeder>()
         
         let app = builder.Build()
 
@@ -69,7 +80,9 @@ module Program =
             c.RoutePrefix <- "api/auth/swagger")
         
         app.MapControllers()
-
+        
+        ConfigureSeeder.UseSeedersAsync(app.Services, app.Logger, builder.Environment).Wait()
+        
         app.Run()
 
         exitCode

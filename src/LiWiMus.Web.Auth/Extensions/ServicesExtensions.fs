@@ -1,11 +1,11 @@
 ﻿module LiWiMus.Web.Auth.Extensions.ServicesExtensions
 
-open LiWiMus.Core.Users
-open LiWiMus.Infrastructure.Data
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Identity
 open OpenIddict.Abstractions
+open LiWiMus.Core.Users
+open LiWiMus.Infrastructure.Data
 
 type IServiceCollection with
     member public services.AddAuthenticationWithJwt() =
@@ -20,7 +20,12 @@ type IServiceCollection with
 
     member public services.AddIdentity() =
         services
-            .AddIdentity<User, IdentityRole<int>>()
+            .AddIdentity<User, IdentityRole<int>>(fun o ->
+                o.Password.RequireDigit <- false
+                o.Password.RequiredLength <- 3
+                o.Password.RequireLowercase <- false
+                o.Password.RequireUppercase <- false
+                o.Password.RequireNonAlphanumeric <- false)
             .AddEntityFrameworkStores<ApplicationContext>()
             .AddDefaultTokenProviders()
         |> ignore

@@ -1,8 +1,8 @@
 ﻿namespace LiWiMus.Web.API.Tests.Playlists
 
 open LiWiMus.Web.API.Shared
-open LiWiMus.Web.API.Tests.WebApplicationFactory
 open FluentAssertions
+open LiWiMus.Web.API.Tests
 open Xunit
 
 type ReadTests(factory: TestApplicationFactory) =

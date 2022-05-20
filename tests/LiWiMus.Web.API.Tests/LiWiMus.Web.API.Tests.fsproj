@@ -10,6 +10,7 @@
     <ItemGroup>
         <Compile Include="JsonHelpers.fs" />
         <Compile Include="UrlSettings.fs" />
+        <Compile Include="BaseApplicationFactory.fs" />
         <Compile Include="TestApplicationFactory.fs" />
         <Compile Include="Albums\CreateTests.fs" />
         <Compile Include="Playlists\UpdateTests.fs" />
@@ -22,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
@@ -38,7 +40,6 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\src\LiWiMus.Web.API\LiWiMus.Web.API.csproj" />
-        <ProjectReference Include="..\LiWiMus.Web.API.Tests.Setup\LiWiMus.Web.API.Tests.Setup.csproj" />
     </ItemGroup>
 
 </Project>

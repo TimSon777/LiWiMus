@@ -1,9 +1,9 @@
 ﻿namespace LiWiMus.Web.API.Tests.Playlists
 
 open LiWiMus.Web.API.Shared
+open LiWiMus.Web.API.Tests
 open Xunit
 open FluentAssertions
-open LiWiMus.Web.API.Tests.WebApplicationFactory
 open LiWiMus.Web.API
 open LiWiMus.Web.Shared.Extensions
 

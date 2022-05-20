@@ -1,41 +1,34 @@
-﻿module LiWiMus.Web.API.Tests.WebApplicationFactory
+﻿namespace LiWiMus.Web.API.Tests
 
-open LiWiMus.Infrastructure.Data
-open LiWiMus.Web.Shared.Configuration
+open System.Collections.Generic
+open System.Net.Http
+open System.Net.Http.Headers
 open Microsoft.AspNetCore.Mvc.Testing
+open Newtonsoft.Json.Linq
 open Microsoft.AspNetCore.Hosting
-open Microsoft.Extensions.DependencyInjection
-open Microsoft.Extensions.Logging
 
 type TestApplicationFactory() =
-    inherit WebApplicationFactory<Program>()
-
-    override this.ConfigureWebHost(builder) =
-        builder
-            .UseEnvironment("Testing")
-        |> ignore
-        
-        builder.ConfigureServices(fun services ->
-            let sp = services.BuildServiceProvider()
-            let scope = sp.CreateScope()
-            let logger = scope.ServiceProvider.GetRequiredService<ILogger<TestApplicationFactory>>()
-            let env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>()
-            
-            ConfigureSeeder.UseSeedersAsync(scope.ServiceProvider, logger, env).Wait()
-            scope.Dispose()) |> ignore
-
-        base.ConfigureWebHost(builder)
+    inherit BaseApplicationFactory<Program>()
     
-    override this.DisposeAsync() =
-        let scope = this.Server.Services.CreateScope()
-        let scopedServices = scope.ServiceProvider
-
-        let db =
-            scopedServices.GetRequiredService<ApplicationContext>()
-
-        task {
-            return! db.Database.EnsureDeletedAsync()
-        } |> ignore
+    override this.ConfigureClient(client) =
+        let auth = { new WebApplicationFactory<LiWiMus.Web.Auth.Program>() with
+                       override this.ConfigureWebHost(builder) =
+                           builder.UseEnvironment("Testing") |> ignore }
+        let authClient = auth.CreateClient()
         
-        base.DisposeAsync()
+        let body = [
+            KeyValuePair<string, string>("password", "admin")
+            KeyValuePair<string, string>("username", "admin")
+            KeyValuePair<string, string>("grant_type", "password")
+        ]
+        
+        let a = auth.Server.BaseAddress
+        let response = authClient.PostAsync("auth/connect/token", new FormUrlEncodedContent(body)).Result
+        let json = response.Content.ReadAsStringAsync().Result
+        let token = (JObject.Parse(json)["access_token"]).ToObject<string>()
+        let tokenType = (JObject.Parse(json)["token_type"]).ToObject<string>()
+        
+        client.DefaultRequestHeaders.Authorization <- AuthenticationHeaderValue(tokenType, token)
+        
+        base.ConfigureClient(client)
         

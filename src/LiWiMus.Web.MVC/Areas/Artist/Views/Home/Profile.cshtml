@@ -20,9 +20,15 @@
             <h2 class="your-profile-header">
                 Your artist profile
             </h2>
-            <a class="text-link your-profile-header" asp-route-artistId="@Model.Id" asp-area="Artist" asp-controller="Albums" asp-action="Index">
+            <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Home" asp-action="Index">
+                Back to all artists
+            </a>
+            @*<a class="text-link your-profile-header" asp-route-artistId="@Model.Id" asp-area="Artist" asp-controller="Albums" asp-action="Index">
                 Manage albums
             </a>
+            <a class="text-link your-profile-header" asp-route-artistId="@Model.Id" asp-area="Artist" asp-controller="Tracks" asp-action="Index">
+                Manage tracks
+            </a>*@
         </div>
 
         <section class="edit-inputs-group">
@@ -56,6 +62,23 @@
                 </div>
             </form>
         </section>
+        <div>
+            <h2 class="your-profile-header">
+                Albums
+            </h2>
+        </div>
+        <section class="edit-inputs-group">
+            <div style="">
+                        <a class="text-link" style="font-size: larger; font-weight: bolder" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["id"]" asp-action="Create">Create new album</a>
+                    </div>
+            @{
+                foreach (var album in Model.Albums)
+                {
+                    <a class="text-link" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["id"]" asp-action="Details" asp-route-id="@album.Id">@album.Title</a>
+                }
+            }
+        </section>
+
     </div>
 </div>
 

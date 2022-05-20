@@ -35,6 +35,15 @@
                     Manage artists
                 </a>
             }
+            else
+            {
+                <form asp-formhelper="true" asp-controller="Following" asp-action="FollowUser" style="display: flex; justify-content: center">
+                    <input type="hidden" value="@Model.UserName"/>
+                    <div class="change-password-button">
+                        <a asp-area="User" asp-controller="Following" asp-action="FollowUser">Subscribe</a>
+                    </div>
+                </form>
+            }
         </div>
 
         <section class="edit-inputs-group">

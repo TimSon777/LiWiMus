@@ -24,8 +24,13 @@ public class AuthorizationHandler : IAuthorizationHandler
     public async Task HandleAsync(AuthorizationHandlerContext context)
     {
         var pendingRequirements = context.PendingRequirements.ToList();
+        if (context.User.Identity?.Name is null)
+        {
+            return;
+        }
+        
         var user = await _userRepository.GetBySpecAsync(
-            new UserWithArtistsByNameSpec(context.User.Identity?.Name ?? throw new InvalidOperationException()));
+            new UserWithArtistsByNameSpec(context.User.Identity.Name));
 
         if (user is null)
         {
