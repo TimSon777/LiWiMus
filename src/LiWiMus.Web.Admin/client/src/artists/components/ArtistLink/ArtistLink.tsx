@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
-import { Artist } from "../../Artist";
+import { Artist } from "../../types/Artist";
 
 type Props = {
   artist: Artist;

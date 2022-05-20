@@ -1,24 +1,24 @@
 import React, { useState } from "react";
+import { PaginatedData } from "../../../shared/types/PaginatedData";
+import { Artist } from "../../../artists/types/Artist";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import { PaginatedData } from "../../../../shared/types/PaginatedData";
-import { Track } from "../../../../tracks/types/Track";
-import TrackService from "../../../../tracks/Track.service";
-import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
+import ArtistService from "../../../artists/Artist.service";
 
 type Props = {
-  tracksInPlaylist: Track[];
+  artistsInAlbum: Artist[];
   filter: string;
   setFilter: (filter: string) => void;
-  setTracks: (tracks: PaginatedData<Track>) => void;
+  setArtists: (artists: PaginatedData<Artist>) => void;
   setLoading: (loading: boolean) => void;
 };
 
-export default function PlaylistTrackSearchInput({
-  tracksInPlaylist,
+export default function AlbumArtistsSearchInput({
+  artistsInAlbum,
   filter,
   setFilter,
-  setTracks,
+  setArtists,
   setLoading,
 }: Props) {
   const [value, setValue] = useState(filter);
@@ -31,18 +31,18 @@ export default function PlaylistTrackSearchInput({
 
     setLoading(true);
     try {
-      const tracks = await TrackService.getTracks({
+      const artists = await ArtistService.getArtists({
         filters: [
           { columnName: "name", operator: "cnt", value },
           {
             columnName: "id",
             operator: "-in",
-            value: [0, ...tracksInPlaylist.map((track) => track.id)],
+            value: [0, ...artistsInAlbum.map((artist) => artist.id)],
           },
         ],
         page: { pageNumber: 1, numberOfElementsOnPage: 10 },
       });
-      setTracks(tracks);
+      setArtists(artists);
       setFilter(value);
     } catch (e) {
       showError(e);

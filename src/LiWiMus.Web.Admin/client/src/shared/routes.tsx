@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "../login/Login.page";
 import UsersPage from "../users/Users.page";
 import DashboardPage from "../dashboard/Dashboard.page";
-import ArtistsPage from "../artists/Artists.page";
+import ArtistsPage from "../artists/pages/Artists.page";
 import UserProfilePage from "../users/UserProfile.page";
 import PlaylistDetailsPage from "../playlists/pages/PlaylistDetails.page";
 import GenreDetailsPage from "../genres/pages/GenreDetails.page";

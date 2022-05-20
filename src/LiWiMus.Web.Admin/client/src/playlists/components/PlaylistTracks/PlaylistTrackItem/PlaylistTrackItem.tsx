@@ -3,7 +3,7 @@ import { TableCell, TableRow } from "@mui/material";
 import TrackLink from "../../../../tracks/components/TrackLink/TrackLink";
 import { Track } from "../../../../tracks/types/Track";
 import AlbumLink from "../../../../albums/components/AlbumLink/AlbumLink";
-import ArtistsList from "../../../../artists/components/ArtistsList/ArtistsList";
+import ArtistsLinks from "../../../../artists/components/ArtistsLinks/ArtistsLinks";
 
 type Props = {
   track: Track;
@@ -25,7 +25,7 @@ export default function PlaylistTrackItem({
         <TrackLink track={track} cover />
       </TableCell>
       <TableCell>
-        <ArtistsList artists={track.artists} />
+        <ArtistsLinks artists={track.artists} />
       </TableCell>
       <TableCell>
         <AlbumLink album={track.album} />

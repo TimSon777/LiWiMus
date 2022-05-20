@@ -1,4 +1,4 @@
-import { Artist } from "../../artists/Artist";
+import { Artist } from "../../artists/types/Artist";
 
 export type Album = {
   id: string;

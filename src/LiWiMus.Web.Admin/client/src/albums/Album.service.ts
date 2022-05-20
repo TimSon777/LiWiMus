@@ -2,6 +2,8 @@ import axios from "../shared/services/Axios";
 import { Album } from "./types/Album";
 import FileService from "../shared/services/File.service";
 import { UpdateAlbumDto } from "./types/UpdateAlbumDto";
+import { PaginatedData } from "../shared/types/PaginatedData";
+import { Artist } from "../artists/types/Artist";
 
 const AlbumService = {
   get: async (id: string | number) =>
@@ -32,6 +34,33 @@ const AlbumService = {
       coverLocation: coverLocation,
     };
     return await AlbumService.update(updateDto);
+  },
+
+  getArtists: async (album: Album, page: number, itemsPerPage: number) => {
+    if (!page) {
+      page = 1;
+    }
+    if (!itemsPerPage) {
+      itemsPerPage = 10;
+    }
+
+    const response = await axios.get(`/albums/${album.id}/artists`, {
+      params: {
+        page,
+        itemsPerPage,
+      },
+    });
+    return response.data as PaginatedData<Artist>;
+  },
+
+  removeArtist: async (album: Album, artist: Artist) => {
+    const dto = { id: album.id, artistId: artist.id };
+    return await axios.delete(`/albums/artists`, { data: dto });
+  },
+
+  addArtist: (album: Album, artist: Artist) => {
+    const req = { id: album.id, artistId: artist.id };
+    return axios.post("/albums/artists", req);
   },
 };
 

@@ -13,10 +13,11 @@ import FileService from "../../shared/services/File.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import AlbumInfoEditor from "../components/AlbumInfoEditor/AlbumInfoEditor";
-import ArtistsList from "../../artists/components/ArtistsList/ArtistsList";
+import ArtistsLinks from "../../artists/components/ArtistsLinks/ArtistsLinks";
 import { format, parse } from "date-fns";
 import AlbumDeleter from "../components/AlbumDeleter/AlbumDeleter";
 import AlbumTracks from "../components/AlbumTracks/AlbumTracks";
+import AlbumArtists from "../components/AlbumArtists/AlbumArtists";
 
 export default function AlbumDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -97,7 +98,7 @@ export default function AlbumDetailsPage() {
             />
             <ReadonlyInfo
               name={"Artists"}
-              value={<ArtistsList artists={album.artists} />}
+              value={<ArtistsLinks artists={album.artists} />}
             />
             <AlbumInfoEditor
               id={id}
@@ -126,6 +127,10 @@ export default function AlbumDetailsPage() {
 
         <Grid item xs={12}>
           <AlbumTracks album={album} />
+        </Grid>
+
+        <Grid item xs={12}>
+          <AlbumArtists album={album} setAlbum={setAlbum} />
         </Grid>
       </Grid>
     </>

@@ -1,5 +1,5 @@
 import axios from "../shared/services/Axios";
-import { Artist } from "../artists/Artist";
+import { Artist } from "../artists/types/Artist";
 import { Track } from "./types/Track";
 import { PaginatedData } from "../shared/types/PaginatedData";
 import { FilterOptions } from "../shared/types/FilterOptions";

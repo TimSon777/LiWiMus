@@ -53,7 +53,6 @@ export default function PlaylistTracks({ playlist, setPlaylist }: Props) {
             filter={searchFilter}
             setFilter={setSearchFilter}
             setTracks={setTracksInSearch}
-            loading={searchLoading}
             setLoading={setSearchLoading}
           />
         </TabPanel>

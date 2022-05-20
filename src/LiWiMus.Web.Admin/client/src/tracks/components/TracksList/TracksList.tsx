@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import TrackLink from "../TrackLink/TrackLink";
-import ArtistsList from "../../../artists/components/ArtistsList/ArtistsList";
+import ArtistsLinks from "../../../artists/components/ArtistsLinks/ArtistsLinks";
 import { format } from "date-fns";
 import AlbumLink from "../../../albums/components/AlbumLink/AlbumLink";
 import EditIcon from "@mui/icons-material/Edit";
@@ -76,7 +76,7 @@ export default function TracksList({
               )}
               {artists && (
                 <TableCell>
-                  <ArtistsList artists={track.artists} />
+                  <ArtistsLinks artists={track.artists} />
                 </TableCell>
               )}
               {publishedAt && <TableCell>{track.publishedAt}</TableCell>}
