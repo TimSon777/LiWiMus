@@ -13,7 +13,7 @@
             </h2>
         </div>
         <div style="margin-left: 3%">
-            <a class="text-link" style="font-size: larger" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-action="Create">Create new album</a>
+            <a class="text-link" style="font-size: larger" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-action="Create" asp-route-albumId="@ViewContext.RouteData.Values["id"]">Create new album</a>
         </div>
         <ol style="margin: 2% 0 0 2%">
             @foreach (var album in Model)
