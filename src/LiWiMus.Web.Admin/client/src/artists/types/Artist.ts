@@ -4,6 +4,9 @@ export type Artist = {
   about: string;
   photoLocation: string;
 
-  createdAt: Date;
-  modifiedAt: Date;
+  createdAt: string;
+  modifiedAt: string;
+
+  tracksCount: number;
+  albumsCount: number;
 };
