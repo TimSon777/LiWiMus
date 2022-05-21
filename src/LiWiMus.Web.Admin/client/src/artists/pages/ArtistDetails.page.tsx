@@ -13,6 +13,7 @@ import ArtistImageEditor from "../components/ArtistImageEditor/ArtistImageEditor
 import ArtistInfoEditor from "../components/ArtistInfoEditor/ArtistInfoEditor";
 import ArtistDeleter from "../components/ArtistDeleter/ArtistDeleter";
 import ArtistUsers from "../components/ArtistUsers/ArtistUsers";
+import AlbumsList from "../../albums/components/AlbumsList/AlbumsList";
 
 export default function ArtistDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -82,8 +83,12 @@ export default function ArtistDetailsPage() {
         <Grid item xs={12} md={8} lg={4}>
           <Stack spacing={4}>
             <InfoCard title={"Tracks"} value={artist.tracksCount} />
-            <InfoCard title={"Albums"} value={artist.albumsCount} />
+            <InfoCard title={"Albums"} value={artist.albums.length} />
           </Stack>
+        </Grid>
+
+        <Grid item xs={12}>
+          <AlbumsList albums={artist.albums} cover title publishedAt />
         </Grid>
 
         <Grid item xs={12}>

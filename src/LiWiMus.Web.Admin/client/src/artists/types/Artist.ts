@@ -1,3 +1,5 @@
+import { Album } from "../../albums/types/Album";
+
 export type Artist = {
   id: string;
   name: string;
@@ -9,4 +11,6 @@ export type Artist = {
 
   tracksCount: number;
   albumsCount: number;
+
+  albums: Album[];
 };

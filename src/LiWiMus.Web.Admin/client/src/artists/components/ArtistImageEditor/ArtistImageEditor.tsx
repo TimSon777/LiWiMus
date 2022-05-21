@@ -29,7 +29,7 @@ export default function ArtistImageEditor({ artist, setArtist }: Props) {
       const photo = input.files[0];
 
       const response = await ArtistService.changePhoto(artist, photo);
-      setArtist(response);
+      setArtist({ ...artist, ...response });
       showSuccess("Photo updated");
     } catch (error) {
       // @ts-ignore
