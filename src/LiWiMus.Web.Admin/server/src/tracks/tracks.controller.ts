@@ -24,6 +24,8 @@ import {plainToInstance} from "class-transformer";
 import {UpdateTrackDto} from "./dto/update.track.dto";
 import {TracksService} from "./tracks.service";
 import {TrackGenreDto} from "./dto/track.genre.dto";
+import {TrackAlbumDto} from "./dto/track.album.dto";
+import {TrackArtistDto} from "./dto/track.artist.dto";
 
 @Controller('tracks')
 @ApiTags('tracks')
@@ -81,7 +83,8 @@ export class TracksController {
     @Post(":id/genres")
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiCreatedResponse({ type: TrackDto })
-    async addGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) {
+    async addGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) 
+    :Promise<TrackDto> {
         return await this.trackService.addTrackGenre(+id, dto)
             .catch(err => {
             throw new HttpException({
@@ -93,7 +96,7 @@ export class TracksController {
     @Delete(":id/genres")
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiOkResponse({ type: TrackDto })
-    async deleteGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) {
+    async deleteGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) : Promise<TrackDto> {
         return await this.trackService.deleteTrackGenre(+id, dto)
             .catch(err => {
                 throw new HttpException({
@@ -104,12 +107,50 @@ export class TracksController {
     
     @Delete(":id")
     @ApiOkResponse({ type: Boolean })
-    async deleteTrack(@Param('id') id: string) {
+    async deleteTrack(@Param('id') id: string)
+    : Promise<boolean> {
         return await this.trackService.deleteTrack(+id)
             .catch(err => {
             throw new HttpException({
                 message: err.message
             }, HttpStatus.BAD_REQUEST)
         });
+    }
+
+    @Patch(":id/album")
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    @ApiCreatedResponse({ type: TrackDto })
+    async updateAlbum(@Param('id') id: string, @Body() dto: TrackAlbumDto)
+    :Promise<TrackDto> {
+       return await this.trackService.updateTrackAlbum(+id, dto).catch(err => {
+           throw new HttpException({
+               message: err.message
+           }, HttpStatus.BAD_REQUEST)
+       });
+    }
+
+    @Post(":id/artists")
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    @ApiCreatedResponse({ type: TrackDto })
+    async addGArtist(@Param('id') id: string, @Body() dto: TrackArtistDto)
+        :Promise<TrackDto> {
+        return await this.trackService.addTrackArtist(+id, dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+    }
+
+    @Delete(":id/artists")
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    @ApiOkResponse({ type: TrackDto })
+    async deleteArtist(@Param('id') id: string, @Body() dto: TrackArtistDto) : Promise<TrackDto> {
+        return await this.trackService.deleteTrackArtist(+id, dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
     }
 }

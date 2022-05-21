@@ -13,6 +13,9 @@ import {TrackGenreDto} from "./dto/track.genre.dto";
 import {User} from "../users/user.entity";
 import {UserArtist} from "../userArtist/userArtist.entity";
 import {UserDto} from "../users/dto/user.dto";
+import {TrackAlbumDto} from "./dto/track.album.dto";
+import {Album} from "../albums/album.entity";
+import {TrackArtistDto} from "./dto/track.artist.dto";
 
 @Injectable()
 export class TracksService {
@@ -102,7 +105,7 @@ export class TracksService {
             }, HttpStatus.NOT_FOUND)
         }
 
-        track.modifiedAt = date;
+        
 
         //let trackGenres = await Track.findOne({where: {id: id}, relations: ['genres']})
         //    .then(i => i.genres);
@@ -115,8 +118,129 @@ export class TracksService {
             track.genres.splice(index, 1);
         }
         
+        if (track.genres.length === 0) {
+            throw new HttpException({
+                message: "The rack must have a genre."
+            }, HttpStatus.CONFLICT)
+        }
+
+        track.modifiedAt = date;
+        
         await Track.save(track);
         
+        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+    }
+    
+    public async updateTrackAlbum(id: number, dto: TrackAlbumDto)
+        : Promise<TrackDto>
+    {
+        if (!dto.albumId) {
+            throw new HttpException({
+                message: "Enter album."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let album = await Album.findOne(dto.albumId);
+
+        if(!album) {
+            throw new HttpException({
+                message: "Album was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let date = await this.dateSetter.setDate();
+        let track = await Track.findOne(id, {relations: ['album']});
+        if(!track) {
+            throw new HttpException({
+                message: "Track was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        track.modifiedAt = date;
+
+        track.album = album;
+
+        await Track.save(track);
+        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+    }
+
+    public async addTrackArtist(id: number, dto: TrackArtistDto)
+        : Promise<TrackDto>
+    {
+        if (!dto.artistId) {
+            throw new HttpException({
+                message: "Enter artist."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let artist = await Artist.findOne(dto.artistId);
+
+        if(!artist) {
+            throw new HttpException({
+                message: "Artist was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let date = await this.dateSetter.setDate();
+        let track = await Track.findOne(id, {relations: ['artists']});
+        if(!track) {
+            throw new HttpException({
+                message: "Track was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        track.modifiedAt = date;
+
+        track.artists.push(artist);
+
+        await Track.save(track);
+        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+    }
+
+    public async deleteTrackArtist(id: number, dto: TrackArtistDto)
+        : Promise<TrackDto>
+    {
+        if (!dto.artistId) {
+            throw new HttpException({
+                message: "Enter artist."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let artist = await Artist.findOne(dto.artistId);
+
+        if(!artist) {
+            throw new HttpException({
+                message: "Artist was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let date = await this.dateSetter.setDate();
+        let track = await Track.findOne(id, {relations: ['artists']});
+        if(!track) {
+            throw new HttpException({
+                message: "Track was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+
+        const index = track.artists.map(function (g) {
+            return g.id;
+        }).indexOf(dto.artistId);
+
+        if (index > -1) {
+            track.artists.splice(index, 1);
+        }
+
+        if (track.artists.length === 0) {
+            throw new HttpException({
+                message: "The rack must have a genre."
+            }, HttpStatus.CONFLICT)
+        }
+
+        track.modifiedAt = date;
+
+        await Track.save(track);
+
         return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
     }
 } 

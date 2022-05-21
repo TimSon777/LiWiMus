@@ -1,11 +1,12 @@
 ﻿import {ApiProperty} from "@nestjs/swagger";
-import {Exclude, Expose} from "class-transformer";
-import {IsArray, IsInt, IsNumberString} from "class-validator";
+import {Exclude, Expose, Type} from "class-transformer";
+import {IsArray, IsInt, IsNumber, IsNumberString} from "class-validator";
 
 @Exclude()
 export class TrackAlbumDto {
      @ApiProperty()
      @Expose()
-     albumId: number[];
-
+     @IsNumber()
+     @Type(() => Number)
+     albumId:number;
 }
