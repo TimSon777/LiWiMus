@@ -47,15 +47,55 @@ export class TracksService {
     public async addTrackGenre(id: number, dto: TrackGenreDto) 
         : Promise<TrackDto> 
     {
-        
-        if (!dto.genresId) {
+        if (!dto.genreId) {
             throw new HttpException({
-                message: "Enter genres."
+                message: "Enter genre."
+            }, HttpStatus.NOT_FOUND)
+        }
+        
+        let genre = await Genre.findOne(dto.genreId);
+        
+        if(!genre) {
+            throw new HttpException({
+                message: "Genre was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+        
+        let date = await this.dateSetter.setDate();
+        let track = await Track.findOne(id, {relations: ['genres']});
+        if(!track) {
+            throw new HttpException({
+                message: "Track was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        track.modifiedAt = date;
+        
+        track.genres.push(genre);
+
+        await Track.save(track);
+        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+    }
+
+    public async deleteTrackGenre(id: number, dto: TrackGenreDto)
+        : Promise<TrackDto>
+    {
+        if (!dto.genreId) {
+            throw new HttpException({
+                message: "Enter genre."
+            }, HttpStatus.NOT_FOUND)
+        }
+
+        let genre = await Genre.findOne(dto.genreId);
+
+        if(!genre) {
+            throw new HttpException({
+                message: "Genre was not found."
             }, HttpStatus.NOT_FOUND)
         }
 
         let date = await this.dateSetter.setDate();
-        let track = await Track.findOne(id);
+        let track = await Track.findOne(id, {relations: ['genres']});
         if(!track) {
             throw new HttpException({
                 message: "Track was not found."
@@ -64,28 +104,20 @@ export class TracksService {
 
         track.modifiedAt = date;
 
-        let genres = await Genre.find({
-            where: dto.genresId.map((id) => ({id} as Genre))
-        })
-            .catch(err => {
-                throw new HttpException({
-                    message: "One of entered genres was not found."
-                }, HttpStatus.NOT_FOUND)
-            });
+        //let trackGenres = await Track.findOne({where: {id: id}, relations: ['genres']})
+        //    .then(i => i.genres);
 
-        let genreList: Genre[] = [];
-        for (let genre of genres){
-            genreList.push(genre);
+        const index = track.genres.map(function (g) {
+            return g.id;
+        }).indexOf(dto.genreId);
+        
+        if (index > -1) {
+            track.genres.splice(index, 1);
         }
         
-        track.genres = genreList;
-        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres']}));
-    }
-
-    public async deleteTrackGenre(id: number, dto: TrackGenreDto)
+        await Track.save(track);
         
-    {
-
+        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
     }
 } 
 

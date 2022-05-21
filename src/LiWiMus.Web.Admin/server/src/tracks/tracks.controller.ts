@@ -70,19 +70,46 @@ export class TracksController {
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiCreatedResponse({ type: TrackDto })
     async updateTrack(@Body() dto: UpdateTrackDto) : Promise<TrackDto> {
-        return await this.trackService.updateTrack(dto);
+        return await this.trackService.updateTrack(dto) 
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
     }
     
     @Post(":id/genres")
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiCreatedResponse({ type: TrackDto })
     async addGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) {
-        return await this.trackService.addTrackGenre(+id, dto);
+        return await this.trackService.addTrackGenre(+id, dto)
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
+    }
+
+    @Delete(":id/genres")
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    @ApiOkResponse({ type: TrackDto })
+    async deleteGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) {
+        return await this.trackService.deleteTrackGenre(+id, dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
     }
     
     @Delete(":id")
     @ApiOkResponse({ type: Boolean })
     async deleteTrack(@Param('id') id: string) {
-        return await this.trackService.deleteTrack(+id);
+        return await this.trackService.deleteTrack(+id)
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
     }
 }
