@@ -31,6 +31,18 @@ export class TracksService {
         await Track.save(updatedTrack);
         return plainToInstance(TrackDto, Track.findOne(dto.id));
     }
+
+    async deleteTrack(id: number) {
+        let track = await Track.findOne(id);
+        if (!track){
+            throw new HttpException({
+                message: `Track was not found.`
+            }, HttpStatus.NOT_FOUND);
+        }
+
+        await Track.remove(track);
+        return !await Track.findOne(id);
+    }
     
     public async addTrackGenre(id: number, dto: TrackGenreDto) 
         : Promise<TrackDto> 

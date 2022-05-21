@@ -1,6 +1,6 @@
 import {
     Body,
-    Controller,
+    Controller, Delete,
     Get,
     HttpException,
     HttpStatus,
@@ -34,7 +34,7 @@ export class TracksController {
     @Get(':id')
     @ApiOkResponse({ type: TrackDto })
     async getTrackById(@Param('id') id : string) : Promise<TrackDto> {
-        let track = Track.findOne(+id)
+        let track = Track.findOne(+id, {relations: ['genres', 'album', 'artists']})
             .catch(err => {
                 throw new HttpException({
                     message: err.message
@@ -51,7 +51,7 @@ export class TracksController {
         : Promise<PaginatedData<TrackDto>> {
 
         let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
-        let obj = this.filterOptionsService.GetFindOptionsObject(options, ['artists', 'album']);
+        let obj = this.filterOptionsService.GetFindOptionsObject(options, ['genres', 'album', 'artists']);
 
         let data = await Track.find(obj)
             .then(items => items.map(data => plainToInstance(TrackDto, data)))
@@ -78,5 +78,11 @@ export class TracksController {
     @ApiCreatedResponse({ type: TrackDto })
     async addGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) {
         return await this.trackService.addTrackGenre(+id, dto);
+    }
+    
+    @Delete(":id")
+    @ApiOkResponse({ type: Boolean })
+    async deleteTrack(@Param('id') id: string) {
+        return await this.trackService.deleteTrack(+id);
     }
 }
