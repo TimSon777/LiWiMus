@@ -37,7 +37,7 @@ export default function TrackDetailsPage() {
   }
 
   return (
-    <Grid container spacing={5} justifyContent={"center"}>
+    <Grid container spacing={5} justifyContent={"center"} sx={{ py: 5 }}>
       <Grid item xs={12} md={10} lg={8}>
         <Paper sx={{ p: 4 }} elevation={10}>
           <Typography variant={"h3"} component={"div"}>

@@ -30,6 +30,7 @@ export default function GenreCard({ genre, track, setTrack }: Props) {
 
   return (
     <Paper
+      elevation={10}
       className={styles.container}
       sx={{ width: "100%", pb: "100%", position: "relative" }}
     >

@@ -34,10 +34,12 @@ const modalStyle = {
   transform: "translate(-50%, -50%)",
   overflow: "hidden",
   width: { xs: "90%", sm: "75%", md: "60%", lg: "45%", xl: "30%" },
-  bgcolor: "background.default",
+  bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
   display: "block",
+  border: 1,
+  borderColor: "secondary",
 };
 
 const headerStyle = {};
@@ -109,7 +111,10 @@ export default function AddGenreCard({ track, setTrack }: Props) {
 
   return (
     <>
-      <Paper sx={{ width: "100%", pb: "100%", position: "relative" }}>
+      <Paper
+        sx={{ width: "100%", pb: "100%", position: "relative" }}
+        elevation={10}
+      >
         <IconButton
           sx={{
             position: "absolute",
