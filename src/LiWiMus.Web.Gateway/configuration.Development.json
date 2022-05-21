@@ -155,7 +155,8 @@
       "UpstreamPathTemplate": "/api/tracks/{everything}",
       "UpstreamHttpMethod": [
         "GET",
-        "POST"
+        "POST",
+        "DELETE"
       ],
       "SwaggerKey" : "Admin.API.Nest"
     },
