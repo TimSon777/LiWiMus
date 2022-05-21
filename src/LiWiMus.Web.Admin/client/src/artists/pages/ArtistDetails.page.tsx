@@ -88,7 +88,14 @@ export default function ArtistDetailsPage() {
         </Grid>
 
         <Grid item xs={12}>
-          <AlbumsList albums={artist.albums} cover title publishedAt />
+          <Typography variant={"h4"} component={"div"}>
+            Albums
+          </Typography>
+          {artist.albums && artist.albums.length > 0 ? (
+            <AlbumsList albums={artist.albums} cover title publishedAt />
+          ) : (
+            <Typography>No albums</Typography>
+          )}
         </Grid>
 
         <Grid item xs={12}>

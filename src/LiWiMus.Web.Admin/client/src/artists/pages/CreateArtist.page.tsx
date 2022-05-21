@@ -121,6 +121,8 @@ export default function CreateArtistPage() {
                     fullWidth
                     {...register("name", {
                       required: { value: true, message: "Name required" },
+                      minLength: { value: 5, message: "Min length - 5" },
+                      maxLength: { value: 50, message: "Max length - 50" },
                     })}
                   />
                   <ContrastTextField
@@ -134,6 +136,7 @@ export default function CreateArtistPage() {
                         value: true,
                         message: "Description required",
                       },
+                      maxLength: { value: 500, message: "Max length - 500" },
                     })}
                   />
                   <Button

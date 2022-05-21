@@ -68,7 +68,7 @@ export default function TrackDetailsPage() {
       </Grid>
 
       <Grid item xs={12} md={10} lg={8}>
-        <Typography variant={"h3"} component={"div"}>
+        <Typography variant={"h4"} component={"div"}>
           Genres
         </Typography>
         <Grid container spacing={3}>

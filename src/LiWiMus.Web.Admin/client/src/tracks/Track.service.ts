@@ -52,7 +52,11 @@ const TrackService = {
     const audio = await getAudio(file);
 
     if (track.fileLocation) {
-      await FileService.remove(track.fileLocation);
+      try {
+        await FileService.remove(track.fileLocation);
+      } catch (e) {
+        console.error(e);
+      }
     }
 
     const fileLocation = await FileService.save(file);
