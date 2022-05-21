@@ -128,6 +128,38 @@
       "SwaggerKey" : "Admin.API.Nest"
     },
     {
+      "DownstreamPathTemplate": "/api/tracks",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/tracks",
+      "UpstreamHttpMethod": [
+        "GET",
+        "PATCH"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
+      "DownstreamPathTemplate": "/api/tracks/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/tracks/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
       "DownstreamPathTemplate": "/api/artists/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -267,36 +299,6 @@
       "UpstreamPathTemplate": "/api/tracks",
       "UpstreamHttpMethod": [
         "POST"
-      ],
-      "SwaggerKey" : "Admin.API.C#"
-    },
-    {
-      "DownstreamPathTemplate": "/api/tracks/{id}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5010
-        }
-      ],
-      "UpstreamPathTemplate": "/api/tracks/{id}",
-      "UpstreamHttpMethod": [
-        "GET"
-      ],
-      "SwaggerKey" : "Admin.API.C#"
-    },
-    {
-      "DownstreamPathTemplate": "/api/tracks",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 3001
-        }
-      ],
-      "UpstreamPathTemplate": "/api/tracks",
-      "UpstreamHttpMethod": [
-        "GET"
       ],
       "SwaggerKey" : "Admin.API.C#"
     },
