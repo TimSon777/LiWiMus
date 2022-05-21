@@ -5,6 +5,7 @@ import { PaginatedData } from "../shared/types/PaginatedData";
 import { FilterOptions } from "../shared/types/FilterOptions";
 import { UpdateTrackDto } from "./types/UpdateTrackDto";
 import FileService from "../shared/services/File.service";
+import { Genre } from "../genres/types/Genre";
 
 const getAudio = (file: File): Promise<HTMLAudioElement> => {
   return new Promise((resolve, reject) => {
@@ -61,6 +62,16 @@ const TrackService = {
       fileLocation,
     };
     return await TrackService.update(dto);
+  },
+
+  addGenre: async (track: Track, genre: Genre) => {
+    const dto = { genreId: +genre.id };
+    return await axios.post(`tracks/${track.id}/genres`, dto);
+  },
+
+  removeGenre: async (track: Track, genre: Genre) => {
+    const dto = { genreId: +genre.id };
+    return await axios.delete(`tracks/${track.id}/genres`, { data: dto });
   },
 };
 
