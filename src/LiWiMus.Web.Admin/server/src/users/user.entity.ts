@@ -27,8 +27,7 @@ export class User extends CommonEntity {
   
   @Column({ type: 'decimal',name: 'Balance' })
   balance: number;
-
-  @Exclude()
+  
   @Column({ name: 'AvatarLocation' })
   avatarLocation: string;
   

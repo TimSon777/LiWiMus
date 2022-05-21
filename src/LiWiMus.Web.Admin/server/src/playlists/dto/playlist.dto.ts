@@ -30,6 +30,11 @@ export class PlaylistDto extends IdDto {
 
     @ApiProperty()
     @Expose()
+    @IsString()
+    photoPath: string;
+
+    @ApiProperty()
+    @Expose()
     createdAt: Date;
 
     @ApiProperty()

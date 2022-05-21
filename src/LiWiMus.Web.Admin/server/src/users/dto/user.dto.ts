@@ -63,6 +63,11 @@ export class UserDto extends IdDto {
 
     @ApiProperty()
     @Expose()
+    @IsString()
+    avatarLocation: string;
+
+    @ApiProperty()
+    @Expose()
     createdAt: Date;
 
     @ApiProperty()
