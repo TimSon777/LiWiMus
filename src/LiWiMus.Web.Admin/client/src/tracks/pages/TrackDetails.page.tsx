@@ -14,6 +14,7 @@ import HoverImage from "../../shared/components/HoverImage/HoverImage";
 import AlbumLink from "../../albums/components/AlbumLink/AlbumLink";
 import GenreCard from "../components/GenreCard/GenreCard";
 import AddGenreCard from "../components/AddGenreCard/AddGenreCard";
+import TrackArtists from "../components/TrackArtists/TrackArtists";
 
 export default function TrackDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -67,6 +68,9 @@ export default function TrackDetailsPage() {
       </Grid>
 
       <Grid item xs={12} md={10} lg={8}>
+        <Typography variant={"h3"} component={"div"}>
+          Genres
+        </Typography>
         <Grid container spacing={3}>
           {track.genres.map((genre, index) => (
             <Grid item xs={4} md={3} lg={2} key={index}>
@@ -77,6 +81,10 @@ export default function TrackDetailsPage() {
             <AddGenreCard track={track} setTrack={setTrack} />
           </Grid>
         </Grid>
+      </Grid>
+
+      <Grid item xs={12} md={10} lg={8}>
+        <TrackArtists track={track} setTrack={setTrack} />
       </Grid>
     </Grid>
   );

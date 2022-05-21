@@ -14,15 +14,21 @@ type Props = {
 };
 
 export default function GenreCard({ genre, track, setTrack }: Props) {
-  const { showError } = useNotifier();
+  const { showError, showSuccess } = useNotifier();
 
   const removeGenre = async () => {
+    if (track.genres.length <= 1) {
+      showError("The track must have a genre");
+      return;
+    }
+
     try {
       await TrackService.removeGenre(track, genre);
       setTrack({
         ...track,
         genres: track.genres.filter((t) => t.id !== genre.id),
       });
+      showSuccess("Genre removed from track");
     } catch (e) {
       showError(e);
     }

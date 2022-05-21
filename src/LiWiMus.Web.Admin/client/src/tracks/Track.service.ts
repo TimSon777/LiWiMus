@@ -66,12 +66,22 @@ const TrackService = {
 
   addGenre: async (track: Track, genre: Genre) => {
     const dto = { genreId: +genre.id };
-    return await axios.post(`tracks/${track.id}/genres`, dto);
+    return await axios.post(`/tracks/${track.id}/genres`, dto);
   },
 
   removeGenre: async (track: Track, genre: Genre) => {
     const dto = { genreId: +genre.id };
-    return await axios.delete(`tracks/${track.id}/genres`, { data: dto });
+    return await axios.delete(`/tracks/${track.id}/genres`, { data: dto });
+  },
+
+  addArtist: async (track: Track, artist: Artist) => {
+    const dto = { artistId: +artist.id };
+    return await axios.post(`/tracks/${track.id}/artists`, dto);
+  },
+
+  removeArtist: async (track: Track, artist: Artist) => {
+    const dto = { artistId: +artist.id };
+    return await axios.delete(`/tracks/${track.id}/artists`, { data: dto });
   },
 };
 

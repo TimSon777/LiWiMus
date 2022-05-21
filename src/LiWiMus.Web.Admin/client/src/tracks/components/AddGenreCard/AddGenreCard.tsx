@@ -54,7 +54,7 @@ export default function AddGenreCard({ track, setTrack }: Props) {
     useState<PaginatedData<Genre>>(DefaultPaginatedData);
   const [open, setOpen] = React.useState(false);
   const [filter, setFilter] = useState("");
-  const { showError } = useNotifier();
+  const { showError, showSuccess } = useNotifier();
 
   const handleOpen = async () => {
     setOpen(true);
@@ -104,6 +104,7 @@ export default function AddGenreCard({ track, setTrack }: Props) {
         ...genres,
         data: genres.data.filter((t) => t.id !== genre.id),
       });
+      showSuccess("Genre added to track");
     } catch (e) {
       showError(e);
     }
