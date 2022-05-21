@@ -1,7 +1,8 @@
 import React, { useCallback } from "react";
-import styles from "./ImageEditor.module.sass";
-import { Box, Button } from "@mui/material";
+import { Button } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
+import HoverImage from "../HoverImage/HoverImage";
+import styles from "./ImageEditor.module.sass";
 
 export type ImageEditorProps = {
   src?: string | undefined;
@@ -39,8 +40,7 @@ export default function ImageEditor({
   };
 
   return (
-    <Box className={styles.container} width={size} height={size}>
-      <img src={src} alt={alt ?? "Image editor"} className={styles.image} />
+    <>
       <input
         type="file"
         id={styles.input}
@@ -48,7 +48,8 @@ export default function ImageEditor({
         name={"file"}
         accept={"image/png, image/gif, image/jpeg"}
       />
-      <div className={styles.controls}>
+
+      <HoverImage src={src} alt={alt ?? "Image editor"} size={size}>
         <Button
           variant="text"
           color={"secondary"}
@@ -71,7 +72,7 @@ export default function ImageEditor({
         ) : (
           ""
         )}
-      </div>
-    </Box>
+      </HoverImage>
+    </>
   );
 }
