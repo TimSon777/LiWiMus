@@ -5,6 +5,7 @@ import { PaginatedData } from "../shared/types/PaginatedData";
 import { CreateArtistDto } from "./types/CreateArtistDto";
 import FileService from "../shared/services/File.service";
 import { UpdateArtistDto } from "./types/UpdateArtistDto";
+import { User } from "../users/types/User";
 
 const ArtistService = {
   get: async (id: number | string) => {
@@ -46,6 +47,21 @@ const ArtistService = {
 
   remove: async (artist: Artist) => {
     return await axios.delete(`/artists/${artist.id}`);
+  },
+
+  addOwner: async (artist: Artist, user: User) => {
+    return axios.post(`/artists/${artist.id}/users`, { userIds: [user.id] });
+  },
+
+  removeOwner: async (artist: Artist, user: User) => {
+    return axios.delete(`/artists/${artist.id}/users`, {
+      data: { userIds: [user.id] },
+    });
+  },
+
+  getOwners: async (artist: Artist) => {
+    const response = await axios.get(`/artists/${artist.id}/users`);
+    return response.data as User[];
   },
 };
 
