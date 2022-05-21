@@ -5,11 +5,13 @@ import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import TrackService from "../Track.service";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import { Avatar, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
 import FileService from "../../shared/services/File.service";
 import TrackInfoEditor from "../components/TrackInfoEditor/TrackInfoEditor";
 import TrackDeleter from "../components/TrackDeleter/TrackDeleter";
 import TrackFileEditor from "../components/TrackFileEditor/TrackFileEditor";
+import HoverImage from "../../shared/components/HoverImage/HoverImage";
+import AlbumLink from "../../albums/components/AlbumLink/AlbumLink";
 
 export default function TrackDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -43,14 +45,13 @@ export default function TrackDetailsPage() {
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <Stack spacing={2} alignItems={"center"}>
-                <Avatar
-                  sx={{ width: 250, height: 250 }}
-                  src={
-                    track.album
-                      ? FileService.getLocation(track.album.coverLocation)
-                      : "https://www.dailymaverick.co.za/wp-content/uploads/nvmnd3.jpg"
-                  }
-                />
+                <HoverImage
+                  src={FileService.getLocation(track.album.coverLocation)}
+                  alt={track.album.title}
+                  size={250}
+                >
+                  <AlbumLink album={track.album} />
+                </HoverImage>
                 <TrackFileEditor track={track} setTrack={setTrack} />
                 <TrackDeleter track={track} setTrack={setTrack} />
               </Stack>
