@@ -6,18 +6,17 @@ import { FilterOptions } from "../shared/types/FilterOptions";
 import { UpdateTrackDto } from "./types/UpdateTrackDto";
 import FileService from "../shared/services/File.service";
 
-const getDuration = (file: File) => {
-  return new Promise((resolve: (duration: number) => void) => {
-    const objectUrl = URL.createObjectURL(file);
-    const sound = new Audio(objectUrl);
-    sound.addEventListener(
-      "canplaythrough",
-      () => {
-        URL.revokeObjectURL(objectUrl);
-        resolve(sound.duration);
-      },
-      false
-    );
+const getAudio = (file: File): Promise<HTMLAudioElement> => {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const sound = new Audio(url);
+    sound.addEventListener("error", () => {
+      reject("Bad audio file");
+    });
+    sound.addEventListener("canplaythrough", () => {
+      URL.revokeObjectURL(url);
+      resolve(sound);
+    });
   });
 };
 
@@ -49,17 +48,18 @@ const TrackService = {
   },
 
   updateFile: async (track: Track, file: File) => {
+    const audio = await getAudio(file);
+
     if (track.fileLocation) {
-      try {
-        await FileService.remove(track.fileLocation);
-      } catch (e) {
-        console.error(e);
-      }
+      await FileService.remove(track.fileLocation);
     }
 
-    const duration = await getDuration(file);
     const fileLocation = await FileService.save(file);
-    const dto: UpdateTrackDto = { id: +track.id, duration, fileLocation };
+    const dto: UpdateTrackDto = {
+      id: +track.id,
+      duration: audio.duration,
+      fileLocation,
+    };
     return await TrackService.update(dto);
   },
 };
