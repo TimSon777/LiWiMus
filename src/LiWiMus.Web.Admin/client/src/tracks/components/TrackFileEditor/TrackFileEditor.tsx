@@ -33,7 +33,7 @@ export default function TrackFileEditor({ track, setTrack }: Props) {
       sx={{ borderRadius: "20px", px: 4 }}
     >
       Upload file
-      <input type={"file"} hidden onChange={changeHandler} />
+      <input type={"file"} hidden onChange={changeHandler} accept={"audio/*"} />
     </Button>
   );
 }
