@@ -110,6 +110,7 @@ export default function TrackInfoEditor({ track, setTrack }: Props) {
           rules={{ required: true }}
           render={({ field }) => (
             <DatePicker
+              maxDate={new Date()}
               label={"Published at"}
               mask={"__.__.____"}
               renderInput={(params) => (
