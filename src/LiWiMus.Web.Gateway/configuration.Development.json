@@ -113,7 +113,7 @@
       "SwaggerKey" : "Auth"
     },
     {
-      "DownstreamPathTemplate": "/api/artists/{id}",
+      "DownstreamPathTemplate": "/api/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -121,10 +121,26 @@
           "Port": 3001
         }
       ],
-      "UpstreamPathTemplate": "/api/artists/{id}",
+      "UpstreamPathTemplate": "/api/users",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
+      "DownstreamPathTemplate": "/api/artists/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/artists/{everything}",
       "UpstreamHttpMethod": [
         "GET",
-        "DELETE"
+        "DELETE",
+        "POST"
       ],
       "SwaggerKey" : "Admin.API.Nest"
     },
@@ -140,7 +156,8 @@
       "UpstreamPathTemplate": "/api/artists",
       "UpstreamHttpMethod": [
         "PATCH",
-        "GET"
+        "GET",
+        "POST"
       ],
       "SwaggerKey" : "Admin.API.Nest"
     },

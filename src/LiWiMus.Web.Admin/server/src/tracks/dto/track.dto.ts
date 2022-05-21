@@ -39,6 +39,10 @@ export class TrackDto extends IdDto{
 
     @ApiProperty()
     @Expose()
+    fileLocation: string;
+
+    @ApiProperty()
+    @Expose()
     createdAt: Date;
 
     @ApiProperty()
