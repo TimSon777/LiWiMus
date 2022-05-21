@@ -13,7 +13,6 @@ export class Artist extends CommonEntity {
     @Column({ name: 'About', length: 500 })
     about: string
     
-    @Exclude()
     @Column({ name: 'PhotoLocation' })
     photoLocation: string
 
