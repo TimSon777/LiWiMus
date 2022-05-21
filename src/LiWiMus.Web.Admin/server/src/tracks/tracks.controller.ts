@@ -36,7 +36,7 @@ export class TracksController {
     @Get(':id')
     @ApiOkResponse({ type: TrackDto })
     async getTrackById(@Param('id') id : string) : Promise<TrackDto> {
-        let track = Track.findOne(+id, {relations: ['genres', 'album', 'artists']})
+        let track = await Track.findOne(+id, {relations: ['genres', 'album', 'artists']})
             .catch(err => {
                 throw new HttpException({
                     message: err.message

@@ -32,7 +32,7 @@ export class ArtistsDto extends IdDto {
 
     @ApiProperty()
     @Expose()
-    photoLocation: string
+    photoLocation: string;
 
     @ApiProperty()
     @Expose()

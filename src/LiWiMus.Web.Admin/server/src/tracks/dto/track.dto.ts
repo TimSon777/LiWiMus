@@ -31,7 +31,7 @@ export class TrackDto extends IdDto{
 
     @ApiProperty()
     @Expose()
-    artists: ArtistsDto;
+    artists: ArtistsDto[];
 
     @ApiProperty()
     @Expose()
