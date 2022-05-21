@@ -3,6 +3,7 @@ using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
 using LiWiMus.Core.Interfaces.Mail;
+using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Web.MVC.Hubs.SupportChat;
@@ -74,6 +75,8 @@ services.AddWebOptimizer(pipeline =>
     pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css"));
 
 services.AddSignalR();
+services.AddSeeders();
+services.Configure<AdminSettings>(configuration.GetSection(nameof(AdminSettings)));
 var app = builder.Build();
 var logger = app.Logger;
 

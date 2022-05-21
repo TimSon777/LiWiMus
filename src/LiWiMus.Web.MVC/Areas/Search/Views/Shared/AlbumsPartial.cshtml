@@ -1,0 +1,12 @@
+﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.Areas.Search.ViewModels.AlbumForListViewModel>
+
+@{
+    Layout = null;
+}
+
+@foreach (var album in Model)
+{
+    <div>
+        @album.Title @album.PublishedAt @string.Join("&", album.Owners.Select(x => x.Name))
+    </div>
+}

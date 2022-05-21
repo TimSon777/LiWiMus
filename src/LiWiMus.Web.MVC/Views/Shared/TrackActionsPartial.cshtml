@@ -1,4 +1,4 @@
-﻿@model (LiWiMus.Web.MVC.Areas.Search.ViewModels.TrackViewModel track, IEnumerable<LiWiMus.Web.MVC.ViewModels.PlaylistGeneralInfoViewModel> playlists)
+﻿@model (LiWiMus.Web.MVC.Areas.Search.ViewModels.TrackForListViewModel track, IEnumerable<LiWiMus.Web.MVC.ViewModels.PlaylistGeneralInfoViewModel> playlists)
 
 <form asp-formhelper="true" asp-area="User" asp-controller="Track" asp-action="AddToPlaylist">
     <input type="hidden" value="@Model.track.Id" name="trackId">

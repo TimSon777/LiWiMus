@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
 using LiWiMus.Web.MVC.ViewModels;
 using LiWiMus.Web.Shared.Extensions;
-using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
@@ -17,30 +16,19 @@ public class TrackController : Controller
 {
     private readonly IRepository<Track> _trackRepository;
     private readonly IMapper _mapper;
-    private readonly UserManager<Core.Users.User> _userManager;
 
-    public TrackController(IRepository<Track> trackRepository, IMapper mapper, UserManager<Core.Users.User> userManager)
+    public TrackController(IRepository<Track> trackRepository, IMapper mapper)
     {
         _trackRepository = trackRepository;
         _mapper = mapper;
-        _userManager = userManager;
     }
 
-    private async Task<TrackListViewModel> GetTracks(SearchViewModel searchVm)
+    private async Task<IEnumerable<TrackForListViewModel>> GetTracks(SearchViewModel searchVm)
     {
-        var user = await _userManager.GetUserAsync(User);
-        
         var tracks = await _trackRepository
-            .ListAsync(new TracksByTitleSpec(searchVm.Title, searchVm.Skip, searchVm.Take));
+            .ListAsync(new TracksPaginatedSpec(searchVm.Title, (searchVm.Page, searchVm.Take)));
 
-        var trackVms = _mapper.MapList<Track, TrackViewModel>(tracks);
-        var playlistVms = _mapper.MapList<Playlist, PlaylistGeneralInfoViewModel>(user.Playlists);
-        
-        return new TrackListViewModel
-        {
-            Playlists = playlistVms,
-            Tracks = trackVms
-        };
+        return _mapper.MapList<Track, TrackForListViewModel>(tracks);
     }
     
     [HttpGet]

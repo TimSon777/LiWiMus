@@ -1,0 +1,8 @@
+﻿@model IEnumerable<LiWiMus.Web.MVC.Areas.Search.ViewModels.PlaylistForListViewModel>
+
+@foreach (var playlist in Model)
+{
+    <div>
+        @playlist.Name @playlist.Owner.UserName @playlist.CountSubscribers @playlist.IsOwner
+    </div>
+}

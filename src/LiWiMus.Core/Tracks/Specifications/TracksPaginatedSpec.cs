@@ -1,18 +1,18 @@
 ﻿using Ardalis.Specification;
+using LiWiMus.Core.Shared;
+using LiWiMus.SharedKernel.Extensions;
 
 namespace LiWiMus.Core.Tracks.Specifications;
 
-public sealed class TracksByTitleSpec : Specification<Track>
+public sealed class TracksPaginatedSpec : Specification<Track>
 {
-    public TracksByTitleSpec(string name, int skip, int take)
+    public TracksPaginatedSpec(string name, Pagination pagination)
     {
         Query
             .Where(t => t.Name.ToLower().Contains(name.ToLower()))
-            .Skip(skip)
-            .Take(take)
             .Include(t => t.Album)
             .ThenInclude(a => a.Subscribers)
             .Include(t => t.Owners)
-            .OrderByDescending(a => a.Subscribers.Count);
+            .Paginate(pagination.Page, pagination.Take, p => p.Subscribers.Count * -1);
     }
 }

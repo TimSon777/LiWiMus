@@ -2,11 +2,13 @@
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.PlaylistTracks;
+using LiWiMus.Core.Settings;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Enums;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Infrastructure.Data.Seeders;
 
@@ -19,9 +21,12 @@ public class PlaylistSeeder : ISeeder
     private readonly IRepository<Playlist> _playlistRepository;
     private readonly UserManager<User> _userManager;
     private readonly IRepository<PlaylistTrack> _playlistTrackRepository;
+    private readonly AdminSettings _adminSettings;
 
     public PlaylistSeeder(IRepository<Artist> artistRepository, IRepository<Track> trackRepository, 
-        IRepository<Album> albumRepository, IRepository<Playlist> playlistRepository, UserManager<User> userManager, IRepository<PlaylistTrack> playlistTrackRepository)
+        IRepository<Album> albumRepository, IRepository<Playlist> playlistRepository, 
+        UserManager<User> userManager, IRepository<PlaylistTrack> playlistTrackRepository,
+        IOptions<AdminSettings> adminSettingsOptions)
     {
         _artistRepository = artistRepository;
         _trackRepository = trackRepository;
@@ -29,6 +34,7 @@ public class PlaylistSeeder : ISeeder
         _playlistRepository = playlistRepository;
         _userManager = userManager;
         _playlistTrackRepository = playlistTrackRepository;
+        _adminSettings = adminSettingsOptions.Value;
     }
     public async Task SeedAsync(EnvironmentType environmentType)
     {
@@ -115,6 +121,53 @@ public class PlaylistSeeder : ISeeder
                     Playlist = playlist,
                     Track = track1
                 };
+
+                var additionPlaylist = new List<Playlist>
+                {
+                    new()
+                    {
+                        Name = "MockPlaylist_Playlist",
+                        Owner = user,
+                        PhotoLocation = "Location"
+                    },
+
+                    new()
+                    {
+                        Name = "MockPlaylist_Playlist",
+                        Owner = user,
+                        PhotoLocation = "Location"
+                    },
+
+                    new()
+                    {
+                        Name = "MockPlaylist_Playlist",
+                        Owner = user,
+                        PhotoLocation = "Location"
+                    },
+
+                    new()
+                    {
+                        Name = "MockPlaylist_Playlist",
+                        Owner = user,
+                        PhotoLocation = "Location"
+                    }
+                };
+
+                foreach (var p in additionPlaylist)
+                {
+                    await _playlistRepository.AddAsync(p);
+                }
+
+                var admin = await _userManager.FindByNameAsync(_adminSettings.UserName);
+                
+                var playlistAdmin = new Playlist
+                {
+                    Name = "MockPlaylist_Playlist",
+                    Owner = admin,
+                    PhotoLocation = "Location"
+                };
+                
+                await _playlistRepository.AddAsync(playlistAdmin);
 
                 await _playlistTrackRepository.AddAsync(playlistTrack);
                 break;

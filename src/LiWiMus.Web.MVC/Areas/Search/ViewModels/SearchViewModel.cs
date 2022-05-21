@@ -15,14 +15,13 @@ public class SearchViewModel
     public int Page { get; set; }
     // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Global
     public int Take { get; set; }
-    public int Skip => (Page - 1) * Take;
 
     // ReSharper disable once MemberCanBePrivate.Global
     public SearchViewModel()
     {
         _title = "";
         Page = 1;
-        Take = 10;
+        Take = 2;
     }
 
     public static readonly SearchViewModel Default = new();
