@@ -28,7 +28,6 @@ export class ArtistsService {
     
     
     async addUsers(id: number, dto: UserArtistDto) : Promise<UserDto[]>{
-        
         if (!dto.userIds) {
             throw new HttpException({
                 message: "Enter users."
@@ -36,10 +35,13 @@ export class ArtistsService {
         }
         
         let artist = await Artist.findOne(id);
-        
+        if(!artist) {
+            throw new HttpException({
+                message: "Artist was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
         let date = await this.dateSetter.setDate();
         artist.modifiedAt = date;
-        
             let users = await User.find({
                 where: dto.userIds.map((id) => ({id} as User))
             })
@@ -90,6 +92,12 @@ export class ArtistsService {
         
         let date = await this.dateSetter.setDate();
         let artist = await Artist.findOne(id);
+        if(!artist) {
+            throw new HttpException({
+                message: "Artist was not found."
+            }, HttpStatus.NOT_FOUND)
+        }
+        
         artist.modifiedAt = date;
 
         let users = await User.find({
