@@ -7,7 +7,6 @@ import {
     Param,
     Post,
     Query,
-    UseInterceptors,
     UsePipes, ValidationPipe
 } from '@nestjs/common';
 import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
@@ -18,12 +17,9 @@ import {PlaylistDto} from "./dto/playlist.dto";
 import {PlaylistsService} from "./playlists.service";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
-import {ArtistsDto} from "../artists/dto/artists.dto";
 import {CreatePlaylistDto} from "./dto/create.playlist.dto";
 import {UserDto} from "../users/dto/user.dto";
-import {UserArtistDto} from "../artists/dto/user.artist.dto";
 import {TrackDto} from "../tracks/dto/track.dto";
-import {PlaylistTrack} from "../playlistTracks/playlistTrack.entity";
 import {PlaylistTrackDto} from "./dto/playlist.track.dto";
 
 @Controller('playlists')
@@ -40,29 +36,24 @@ export class PlaylistsController {
             .catch(err => {
                 throw new HttpException({
                     message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+                }, HttpStatus.BAD_REQUEST)});
         return plainToInstance(PlaylistDto, playlist);
     }
 
 
     @Get()
-    //@UseInterceptors(new TransformInterceptor(PlaylistDto))
     @ApiOkResponse({ type: [PlaylistDto] })
     async getPlaylists(@Query() options : FilterOptions)
         : Promise<PaginatedData<PlaylistDto>>
     {
         let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
         let obj = this.filterOptionsService.GetFindOptionsObject(options, ['owner']);
-
         let data = await Playlist.find(obj)
             .then(items => items.map(data => plainToInstance(PlaylistDto, data)))
             .catch(err => {
                 throw new HttpException({
                     message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
-
+                }, HttpStatus.BAD_REQUEST)});
         let count = await Playlist.count({where: obj.where});
         return new PaginatedData<PlaylistDto>(data, normalizedOptions, count);
     }
@@ -75,8 +66,7 @@ export class PlaylistsController {
             .catch(err => {
                 throw new HttpException({
                     message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+                }, HttpStatus.BAD_REQUEST)});
     }
 
     @Post(":id/tracks")
@@ -87,8 +77,7 @@ export class PlaylistsController {
             .catch(err => {
                 throw new HttpException({
                     message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+                }, HttpStatus.BAD_REQUEST)});
     }
 
     @Delete(":id/tracks")
@@ -99,8 +88,7 @@ export class PlaylistsController {
             .catch(err => {
             throw new HttpException({
                 message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
+            }, HttpStatus.BAD_REQUEST)});
     }
 }
 

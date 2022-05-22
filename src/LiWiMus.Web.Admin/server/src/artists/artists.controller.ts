@@ -42,44 +42,30 @@ export class ArtistsController {
     @Get(':id')
     @ApiOkResponse({ type: ArtistsDto })
     async getArtistById(@Param('id') id : string) : Promise<ArtistsDto> {
-        let artist = await Artist.findOne(+id, {relations: ['albums']})
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
-        
+        let artist = await Artist.findOne(+id, {relations: ['albums']});
+        if(!artist){
+            throw new HttpException({
+                message: "The artist does not exist."
+            }, HttpStatus.BAD_REQUEST)
+        }
        return plainToInstance(ArtistsDto, artist);
     }
 
-
     @Get()
     @ApiOkResponse({ type: [ArtistsDto] })
-    async getArtists(@Query() options : FilterOptions)
-        : Promise<PaginatedData<ArtistsDto>>
-    {
+    async getArtists(@Query() options : FilterOptions) : Promise<PaginatedData<ArtistsDto>> {
         let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
         let obj = this.filterOptionsService.GetFindOptionsObject(options, ['albums']);
-
         let data = await Artist.find(obj)
             .then(items => items.map(data => plainToInstance(ArtistsDto, data)))
-            
-            
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
-
+            .catch(err => {throw new HttpException({message: err.message}, HttpStatus.BAD_REQUEST)});
         let count = await Artist.count({where: obj.where});
         return new PaginatedData<ArtistsDto>(data, normalizedOptions, count);
     }
 
     @Get(":id/users")
     @ApiOkResponse({ type: [UserDto] })
-    async getArtistsUsers(@Param('id') id : string)
-        : Promise<UserDto[]>
-    {
+    async getArtistsUsers(@Param('id') id : string) : Promise<UserDto[]> {
         let artist = await Artist.findOne(+id);
         return UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
             .then(i => i.map((u) => (u.user)))
@@ -90,27 +76,43 @@ export class ArtistsController {
     @ApiCreatedResponse({ type: [UserDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async addUsers(@Param('id') id : string, @Body() dto: UserArtistDto) : Promise<UserDto[]> {
-        return await this.artistsService.addUsers(+id, dto);
+        return await this.artistsService.addUsers(+id, dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)});
     }
 
     @Delete(":id/users")
     @ApiOkResponse({ type: [UserDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async deleteUsers(@Param('id') id : string, @Body() dto: UserArtistDto) : Promise<UserDto[]> {
-        return await this.artistsService.deleteUsers(+id, dto);
+        return await this.artistsService.deleteUsers(+id, dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)});
     }
 
     @Patch()
     @ApiCreatedResponse({ type: [ArtistsDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async updateArtist(@Body() dto: UpdateArtistDto) {
-        return await this.artistsService.updateArtist(dto);
+        return await this.artistsService.updateArtist(dto)
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)});
     }
 
     @Delete(":id")
     @ApiOkResponse({ type: Boolean })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async deleteArtist(@Param('id') id : string) : Promise<boolean> {
-       return await this.artistsService.deleteArtist(+id);
+       return await this.artistsService.deleteArtist(+id)
+           .catch(err => {
+               throw new HttpException({
+                   message: err.message
+               }, HttpStatus.BAD_REQUEST)});
     }
 }

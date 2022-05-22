@@ -45,22 +45,18 @@ export class GenresController {
     }
     
     @Get()
-    //@UseInterceptors(new TransformInterceptor(GenreDto))
     @ApiOkResponse({ type: [GenreDto] })
     async getGenres(@Query() options : FilterOptions)
         : Promise<PaginatedData<GenreDto>>
     {
         let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
         let obj = this.filterOptionsService.GetFindOptionsObject(options);
-
         let data = await Genre.find(obj)
             .then(items => items.map(data => plainToInstance(GenreDto, data)))
             .catch(err => {
                 throw new HttpException({
                     message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
-
+                }, HttpStatus.BAD_REQUEST)});
         let count = await Genre.count({where: obj.where});
         return new PaginatedData<GenreDto>(data, normalizedOptions, count);
     }
@@ -68,7 +64,6 @@ export class GenresController {
     @Delete(':id')
     async delete(@Param('id') id : number) {
         let genre = await Genre.findOne({id: id});
-        
         if (!genre) {
             throw new HttpException({
                 message: "genre was not found"
@@ -80,8 +75,7 @@ export class GenresController {
             .catch(err => {
                 throw new HttpException({
                     message: err.message
-                }, HttpStatus.INTERNAL_SERVER_ERROR)
-            });
+                }, HttpStatus.INTERNAL_SERVER_ERROR)});
     }
 
     @Patch()
@@ -93,7 +87,6 @@ export class GenresController {
             .catch(err => {
             throw new HttpException({
                 message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
+            }, HttpStatus.BAD_REQUEST)});
     }
 }

@@ -16,7 +16,6 @@ import {TrackDto} from "../tracks/dto/track.dto";
 export class PlaylistsService {
     constructor(private readonly dateSetter: DateSetterService) {}
     async createPlaylist(dto: CreatePlaylistDto) : Promise<PlaylistDto> {
-        
         if (!dto.owner) {
             throw new HttpException({
                 message: "Enter owner."
@@ -31,13 +30,10 @@ export class PlaylistsService {
         }
         
         let playlist = Playlist.create({name: dto.name, isPublic: dto.isPublic, photoLocation: dto.photoLocation, owner: owner});
-
         let date = await this.dateSetter.setDate();
         playlist.createdAt = date;
         playlist.modifiedAt = date;
-        
         await Playlist.save(playlist);
-
         return plainToInstance(PlaylistDto, Playlist.findOne(playlist.id, {relations: ['owner']}));
     }
     
@@ -50,7 +46,7 @@ export class PlaylistsService {
         }
 
         let playlist = await Playlist.findOne(id);
-        if(!playlist) {
+        if (!playlist) {
             throw new HttpException({
                 message: "Playlist was not found."
             }, HttpStatus.NOT_FOUND)
@@ -66,25 +62,17 @@ export class PlaylistsService {
             });
 
         let playlistTracks: PlaylistTrack[] = [];
-
         for (let track  of tracks)  {
             let relation = await PlaylistTrack.findOne({where: {playlist: playlist, track: track}});
-            if (relation){
+            if (relation) {
                 throw new HttpException({
                     message: `Playlist already have this track: id: ${track.id}`
                 }, HttpStatus.CONFLICT)
             }
 
-
             let date = await this.dateSetter.setDate();
             playlist.modifiedAt = date;
-            
-            let playlistTrack = PlaylistTrack.create({
-                track: track,
-                playlist: playlist,
-                createdAt: date,
-                modifiedAt: date});
-
+            let playlistTrack = PlaylistTrack.create({track: track, playlist: playlist, createdAt: date, modifiedAt: date});
             playlistTracks.push(playlistTrack)
         }
 
@@ -98,7 +86,6 @@ export class PlaylistsService {
         return PlaylistTrack.find({where: {playlist: playlist}, relations: ['playlist', 'track']})
             .then(i => i.map((u) => (u.track)))
             .then(p => p.map(track => plainToInstance(TrackDto, track)));
-        
     }
 
 
@@ -117,13 +104,11 @@ export class PlaylistsService {
         }
 
         let tracks = await Track.find({
-            where: dto.tracks.map((id) => ({id} as Track))
-        })
+            where: dto.tracks.map((id) => ({id} as Track))})
             .catch(err => {
                 throw new HttpException({
                     message: "One of entered tracks was not found."
-                }, HttpStatus.NOT_FOUND)
-            });
+                }, HttpStatus.NOT_FOUND)});
 
         for(let track of tracks) {
             let relation = await PlaylistTrack.findOne({where: {playlist: playlist, track: track}});
@@ -138,7 +123,6 @@ export class PlaylistsService {
         }
 
         playlist.modifiedAt = await this.dateSetter.setDate();
-
         return PlaylistTrack.find({where: {playlist: playlist}, relations: ['playlist', 'track']})
             .then(i => i.map((u) => (u.track)))
             .then(p => p.map(track => plainToInstance(TrackDto, track)));

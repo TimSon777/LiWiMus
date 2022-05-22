@@ -14,7 +14,6 @@ export class UsersService {
             let updatedUser = User.create(dto);
             updatedUser.modifiedAt = await this.dateSetter.setDate();
             await User.save(updatedUser);
-
             if(dto.email){
                 await User.update({id: dto.id},
                     { normalizedEmail: dto.email.toUpperCase()})
