@@ -13,6 +13,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
+import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
 import ListButton from "../ListButton/ListButton";
@@ -77,6 +78,12 @@ export default function SideBar({
               icon={<ReceiptIcon />}
               text={"Transactions"}
               to={"/admin/transactions"}
+              onClick={linkClickHandler}
+          />
+          <ListLink
+              icon={<TheaterComedyIcon />}
+              text={"Genres"}
+              to={"/admin/genres"}
               onClick={linkClickHandler}
           />
           

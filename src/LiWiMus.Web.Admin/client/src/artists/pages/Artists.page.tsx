@@ -35,7 +35,7 @@ interface FilterModel extends Array<FilterItem> {
 }
 
 export default function ArtistsPage() {
-    const [rowsCount, setRowsCount] = useState(0);
+    const [rowsCount, setRowsCount] = useState<number>();
     const [rows, setRows] = useState<GridRowsProp>([]);
     const [page, setPage] = useState(0);
     const [limitItems, setLimitItems] = useState(5);

@@ -36,7 +36,7 @@ interface FilterModel extends Array<FilterItem> {
 }
 
 export default function UsersPage() {
-    const [rowsCount, setRowsCount] = useState(0);
+    const [rowsCount, setRowsCount] = useState<number>();
     const [rows, setRows] = useState<GridRowsProp>([]);
     const [page, setPage] = useState(0);
     const [limitItems, setLimitItems] = useState(5);
@@ -83,6 +83,16 @@ export default function UsersPage() {
             type: "boolean",
             filterable: false,
         },
+        /*{
+            field: "balance",
+            headerName: "Balance",
+            flex:0.4,
+            type:"number",
+            filterable: false,
+/!*
+            valueGetter: (params) => params.row.user.balance
+*!/
+        },*/
         {
             field: "edit",
             headerName: "Edit",
