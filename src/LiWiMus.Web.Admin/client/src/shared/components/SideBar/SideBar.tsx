@@ -10,7 +10,9 @@ import {
 } from "@mui/material";
 import { AuthContext } from "../../contexts/Auth.context";
 import GroupIcon from "@mui/icons-material/Group";
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
 import ListButton from "../ListButton/ListButton";
@@ -65,7 +67,19 @@ export default function SideBar({
             text={"Artists"}
             to={"/admin/artists"}
             onClick={linkClickHandler}
+          /><ListLink
+            icon={<AudiotrackIcon />}
+            text={"Tracks"}
+            to={"/admin/tracks"}
+            onClick={linkClickHandler}
+            />
+          <ListLink
+              icon={<ReceiptIcon />}
+              text={"Transactions"}
+              to={"/admin/transactions"}
+              onClick={linkClickHandler}
           />
+          
         </List>
         <Divider />
         <List>
