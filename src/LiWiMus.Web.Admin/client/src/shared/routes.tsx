@@ -1,10 +1,10 @@
 import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "../login/Login.page";
-import UsersPage from "../users/Users.page";
+import UsersPage from "../users/pages/Users.page";
 import DashboardPage from "../dashboard/Dashboard.page";
 import ArtistsPage from "../artists/pages/Artists.page";
-import UserProfilePage from "../users/UserProfile.page";
+import UserProfilePage from "../users/pages/UserProfile.page";
 import PlaylistDetailsPage from "../playlists/pages/PlaylistDetails.page";
 import GenreDetailsPage from "../genres/pages/GenreDetails.page";
 import TransactionDetailsPage from "../transactions/pages/TransactionDetails.page";
