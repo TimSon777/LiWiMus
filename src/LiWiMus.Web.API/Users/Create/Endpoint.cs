@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Users;
+using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 using MinimalApi.Endpoint;
@@ -39,7 +40,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/users", async (Request request, UserManager<User> userManager) =>
+        app.MapPost(RouteConstants.Users.Create, async (Request request, UserManager<User> userManager) =>
         {
             _userManager = userManager;
             return await HandleAsync(request);

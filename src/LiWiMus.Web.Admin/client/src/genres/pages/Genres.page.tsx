@@ -20,9 +20,9 @@ import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from "@mui/icons-material/Add";
 import FiltersPopover from "../../shared/components/FiltersPopover/FiltersPopover";
 import FilterListIcon from '@mui/icons-material/FilterList';
-import TransactionService from "../Transaction.service";
+import GenreService from "../Genre.service";
 import {FilterOptions} from "../../shared/types/FilterOptions";
-import {Transaction} from "../types/Transaction";
+import {Genre} from "../types/Genre";
 
 
 type FilterItem = {
@@ -36,7 +36,7 @@ interface FilterModel extends Array<FilterItem> {
 }
 
 export default function UsersPage() {
-    const [rowsCount, setRowsCount] = useState(0);
+    const [rowsCount, setRowsCount] = useState<number>();
     const [rows, setRows] = useState<GridRowsProp>([]);
     const [page, setPage] = useState(0);
     const [limitItems, setLimitItems] = useState(5);
@@ -53,22 +53,27 @@ export default function UsersPage() {
     const columns: GridColDef[] = [
         {field: "id", hide: true,},
         {
-            field: "user",
-            headerName: "User",
-            flex: 0.5,
-            filterable: false,
-            valueGetter: (params) => params.row.user.userName
-        },
-        {
-            field: "amount",
-            headerName: "Amount",
+            field: "name",
+            headerName: "Name",
             flex: 0.5,
             filterable: false,
         },
         {
-            field: "description",
-            headerName: "Description",
-            flex: 0.9,
+            field: "createdAt",
+            headerName: "createdAt",
+            flex: 0.5,
+            filterable: false,
+        },
+        {
+            field: "modifiedAt",
+            headerName: "modifiedAt",
+            flex: 0.5,
+            filterable: false,
+        },
+        {
+            field: "tracksCount",
+            headerName: "TracksCount",
+            flex: 0.5,
             filterable: false,
         },
         {
@@ -80,7 +85,7 @@ export default function UsersPage() {
             renderCell: (params) => {
                 const onClick = (e: any) => {
                     e.stopPropagation();
-                    const path = "/admin/transactions/" + params.getValue(params.id, "id");
+                    const path = "/admin/genres/" + params.getValue(params.id, "id");
                     navigate(path);
                 };
 
@@ -115,7 +120,7 @@ export default function UsersPage() {
         {key: "sw", value: "StartsWith"}
     ];
     const columnsOptions: any[] = columns
-        .filter((name) => name.headerName !== undefined && name.headerName !== "Edit" )
+        .filter((name) => name.headerName !== undefined && name.headerName !== "Edit")
         .map((opt) => opt.headerName);
     const operatorsOptions: string[] = filterOperators.map((a) => a.value);
     const filterModelInitialState = columnsOptions.map((column, index) => ({
@@ -151,7 +156,7 @@ export default function UsersPage() {
                 setSortModel([{field: "id", sort: "asc"}]);
             }
             const order = sortModel[0].sort === "asc" ? "ASC" : "DESC"
-            const testColumn: keyof Transaction = sortModel[0].field as any
+            const testColumn: keyof Genre = sortModel[0].field as any
             const filters = filterModel
                 .filter(a => a.filterOperator !== '' && a.filterValue !== '')
                 .map(a => ({
@@ -159,13 +164,13 @@ export default function UsersPage() {
                     operator: (filterOperators.filter(op => op.value === a.filterOperator)[0].key as any),
                     value: a.filterValue
                 }))
-            const options: FilterOptions<Transaction> = {
+            const options: FilterOptions<Genre> = {
                 filters: filters,
                 page: {pageNumber: page + 1, numberOfElementsOnPage: limitItems},
                 sorting: [{columnName: testColumn, order: order}]
 
             }
-            const res = await TransactionService.getTransactions(options)
+            const res = await GenreService.getGenres(options)
 
 
             if (!active) {
@@ -188,7 +193,7 @@ export default function UsersPage() {
     return (
         <div>
             <div>
-                <h1>Transactions page</h1>
+                <h1>Genres page</h1>
             </div>
             <div>
                 <Button aria-describedby={id} onClick={handleClick} variant="contained"
