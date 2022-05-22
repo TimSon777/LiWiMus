@@ -7,8 +7,7 @@ import {plainToInstance} from "class-transformer";
 
 @Injectable()
 export class GenresService {
-    constructor(private readonly dateSetter: DateSetterService) {
-    }
+    constructor(private readonly dateSetter: DateSetterService) {}
     async updateGenre(dto: UpdateGenreDto) 
         : Promise<GenreDto> {
         if (await Genre.findOne(dto.id)){

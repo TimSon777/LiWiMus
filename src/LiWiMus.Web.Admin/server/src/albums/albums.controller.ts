@@ -39,7 +39,6 @@ export class AlbumsController {
     }
 
     @Get()
-    //@UseInterceptors(new TransformInterceptor(AlbumDto))
     @ApiOkResponse({ type: [AlbumDto] })
     async getAlbums(@Query() options : FilterOptions)
         : Promise<PaginatedData<AlbumDto>>

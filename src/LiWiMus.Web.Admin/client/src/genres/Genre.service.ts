@@ -1,6 +1,7 @@
 import { Genre } from "./types/Genre";
 import axios from "../shared/services/Axios";
 import { UpdateGenreDto } from "./types/UpdateGenreDto";
+import { CreateGenreDto } from "./types/CreateGenreDto"
 import { FilterOptions } from "../shared/types/FilterOptions";
 import { PaginatedData } from "../shared/types/PaginatedData";
 
@@ -15,6 +16,11 @@ const GenreService = {
   update: async (dto: UpdateGenreDto) => {
     const response = await axios.patch("/genres", dto);
     return response.data as Genre;
+  },
+  
+  save: async (genre: CreateGenreDto) => {
+    const response = await axios.post("/genres", genre);
+    return response.data as Genre
   },
 
   getGenres: async (

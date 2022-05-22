@@ -16,6 +16,8 @@ import TransactionsPage from "../transactions/pages/Transactions.page"
 import TracksPage from "../tracks/pages/Tracks.page"
 import CreateUserPage from "../users/pages/CreateUser.page"
 import GenresPage from "../genres/pages/Genres.page"
+import CreateGenrePage from "../genres/pages/CreateGenre.page"
+import CreateTrackPage from "../tracks/pages/CreateTrack.page"
 
 export const useRoutes = (isAuthenticated: boolean) => {
     if (isAuthenticated) {
@@ -30,7 +32,9 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 <Route path="/admin/artists/:id" element={<ArtistDetailsPage/>}/>
                 <Route path="/admin/tracks/:id" element={<TrackDetailsPage/>}/>
                 <Route path="/admin/artists/create" element={<CreateArtistPage/>}/>
+                <Route path="/admin/genres/create" element={<CreateGenrePage/>}/>
                 <Route path="/admin/users/create" element={<CreateUserPage/>}/>
+                <Route path="/admin/tracks/create" element={<CreateTrackPage/>}/>
                 <Route path="/admin/playlists/:id" element={<PlaylistDetailsPage/>}/>
                 <Route path="/admin/albums/:id" element={<AlbumDetailsPage/>}/>
                 <Route

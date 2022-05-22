@@ -59,6 +59,6 @@ public static class RouteConstants
 
     public static class Users
     {
-        public const string Create = $"{Prefix}/{nameof(Create)}";
+        public const string Create = $"{Prefix}/{nameof(Users)}";
     }
 }

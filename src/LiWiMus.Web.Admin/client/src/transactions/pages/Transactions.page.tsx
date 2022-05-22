@@ -57,13 +57,15 @@ export default function UsersPage() {
             headerName: "User",
             flex: 0.5,
             filterable: false,
-            valueGetter: (params) => params.row.user.userName
+            valueGetter: (params) => params.row.user.userName,
         },
         {
             field: "amount",
             headerName: "Amount",
             flex: 0.5,
             filterable: false,
+            valueFormatter: params => Number(params.value).toFixed(2)
+            
         },
         {
             field: "description",

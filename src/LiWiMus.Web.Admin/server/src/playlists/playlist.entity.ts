@@ -16,8 +16,8 @@ export class Playlist extends CommonEntity {
     @Column({ name: 'IsPublic' })
     isPublic: boolean;
     
-    @Column({ name: 'PhotoPath' })
-    photoPath: string;
+    @Column({ name: 'PhotoLocation' })
+    photoLocation: string;
 
     @OneToMany(() => PlaylistTrack, playlistTrack => playlistTrack.playlist)
     tracks: PlaylistTrack[];

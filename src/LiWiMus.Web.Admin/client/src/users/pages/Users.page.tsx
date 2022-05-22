@@ -14,7 +14,8 @@ import {
     MenuItem,
     Select,
     TextField,
-    Popover
+    Popover,
+    Fab
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from "@mui/icons-material/Add";
@@ -177,7 +178,7 @@ export default function UsersPage() {
             const filters = filterModel
                 .filter(a => a.filterOperator !== '' && a.filterValue !== '')
                 .map(a => ({
-                    columnName:(columns.filter(col => col.headerName === a.filterColumn)[0].field as any),
+                    columnName: (columns.filter(col => col.headerName === a.filterColumn)[0].field as any),
                     operator: (filterOperators.filter(op => op.value === a.filterOperator)[0].key as any),
                     value: a.filterValue
                 }))
@@ -249,6 +250,11 @@ export default function UsersPage() {
                     loading={loading}
                     autoHeight
                 ></DataGrid>
+            </div>
+            <div>
+                <Fab color="primary" sx={{ position: 'absolute', bottom: 50, right: 50}} aria-label="add" href="/admin/users/create">
+                    <AddIcon/>
+                </Fab>
             </div>
         </div>
     );
