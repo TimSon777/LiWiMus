@@ -55,13 +55,13 @@ export default function UsersPage() {
         {
             field: "userName",
             headerName: "Username",
-            flex: 0.6,
+            flex: 0.5,
             filterable: false,
         },
         {
             field: "email",
             headerName: "Email",
-            flex: 0.7,
+            flex: 0.9,
             filterable: false,
         },
         {
@@ -83,7 +83,6 @@ export default function UsersPage() {
             type: "boolean",
             filterable: false,
         },
-
         {
             field: "edit",
             headerName: "Edit",
