@@ -2,35 +2,34 @@
 import {Column, JoinColumn, ManyToOne, OneToMany} from "typeorm";
 import {User} from "../../users/user.entity";
 import {PlaylistTrack} from "../../playlistTracks/playlistTrack.entity";
+import {IsArray, IsBoolean, IsInt, IsNotEmpty, IsString, MaxLength} from "class-validator";
 import {Exclude, Expose, Type} from "class-transformer";
-import {UserDto} from "../../users/dto/user.dto";
-import {IsBoolean, IsNotEmpty, IsString, Length, MaxLength, ValidateNested} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
 @Exclude()
-export class PlaylistDto extends IdDto {
+export class CreatePlaylistDto {
     @ApiProperty()
     @Expose()
-    owner: UserDto;
+    @IsNotEmpty()
+    @IsInt()
+    owner: number;
 
     @ApiProperty()
     @Expose()
+    @IsNotEmpty()
+    @IsString()
+    @MaxLength(50)
     name: string;
 
     @ApiProperty()
     @Expose()
+    @IsNotEmpty()
+    @IsBoolean()
     isPublic: boolean;
 
     @ApiProperty()
     @Expose()
+    @IsNotEmpty()
     @IsString()
     photoLocation: string;
-
-    @ApiProperty()
-    @Expose()
-    createdAt: Date;
-
-    @ApiProperty()
-    @Expose()
-    modifiedAt: Date;
 }

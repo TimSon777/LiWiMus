@@ -1,14 +1,30 @@
-import {Controller, Get, HttpException, HttpStatus, Param, Query, UseInterceptors} from '@nestjs/common';
-import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {
+    Body,
+    Controller, Delete,
+    Get,
+    HttpException,
+    HttpStatus,
+    Param,
+    Post,
+    Query,
+    UseInterceptors,
+    UsePipes, ValidationPipe
+} from '@nestjs/common';
+import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {FilterOptionsService} from "../filters/services/filter.options.service";
-import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {FilterOptions} from "../filters/filter.options";
 import {Playlist} from "./playlist.entity";
 import {PlaylistDto} from "./dto/playlist.dto";
 import {PlaylistsService} from "./playlists.service";
-import {Artist} from "../artists/artist.entity";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
+import {ArtistsDto} from "../artists/dto/artists.dto";
+import {CreatePlaylistDto} from "./dto/create.playlist.dto";
+import {UserDto} from "../users/dto/user.dto";
+import {UserArtistDto} from "../artists/dto/user.artist.dto";
+import {TrackDto} from "../tracks/dto/track.dto";
+import {PlaylistTrack} from "../playlistTracks/playlistTrack.entity";
+import {PlaylistTrackDto} from "./dto/playlist.track.dto";
 
 @Controller('playlists')
 @ApiTags('playlists')
@@ -20,7 +36,7 @@ export class PlaylistsController {
     @Get(':id')
     @ApiOkResponse({ type: PlaylistDto })
     async getPlaylistById(@Param('id') id : string): Promise<PlaylistDto> {
-        let playlist = Playlist.findOne(+id)
+        let playlist = Playlist.findOne(+id, {relations: ['owner']})
             .catch(err => {
                 throw new HttpException({
                     message: err.message
@@ -49,6 +65,42 @@ export class PlaylistsController {
 
         let count = await Playlist.count({where: obj.where});
         return new PaginatedData<PlaylistDto>(data, normalizedOptions, count);
+    }
+    
+    @Post()
+    @ApiCreatedResponse({ type: [PlaylistDto] })
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    async createPlaylist(@Body() dto: CreatePlaylistDto) : Promise<PlaylistDto> {
+        return await this.playlistsService.createPlaylist(dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+    }
+
+    @Post(":id/tracks")
+    @ApiCreatedResponse({ type: [UserDto] })
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    async addTracks(@Param('id') id : string, @Body() dto: PlaylistTrackDto) : Promise<TrackDto[]> {
+        return await this.playlistsService.addPlaylistTracks(+id, dto)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)
+            });
+    }
+
+    @Delete(":id/tracks")
+    @ApiOkResponse({ type: [UserDto] })
+    @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
+    async deleteTracks(@Param('id') id : string, @Body() dto: PlaylistTrackDto) : Promise<TrackDto[]> {
+        return await this.playlistsService.deletePlaylistTrack(+id, dto)
+            .catch(err => {
+            throw new HttpException({
+                message: err.message
+            }, HttpStatus.BAD_REQUEST)
+        });
     }
 }
 

@@ -54,7 +54,6 @@ export class ArtistsController {
 
 
     @Get()
-   // @UseInterceptors(new TransformInterceptor(ArtistsDto))
     @ApiOkResponse({ type: [ArtistsDto] })
     async getArtists(@Query() options : FilterOptions)
         : Promise<PaginatedData<ArtistsDto>>
@@ -115,4 +114,3 @@ export class ArtistsController {
        return await this.artistsService.deleteArtist(+id);
     }
 }
-//http://localhost:3001/api/artists/getall?options[page][numberOfElementsOnPage]=3&options[page][pageNumber]=1&options[sorting][0][columnName]=id&options[sorting][0][order]=DESC&options[filters][0][columnName]=name&options[filters][0][operator]=cnt&options[filters][0][value]=n

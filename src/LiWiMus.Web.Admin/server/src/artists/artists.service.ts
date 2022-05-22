@@ -40,8 +40,7 @@ export class ArtistsService {
                 message: "Artist was not found."
             }, HttpStatus.NOT_FOUND)
         }
-        let date = await this.dateSetter.setDate();
-        artist.modifiedAt = date;
+        
             let users = await User.find({
                 where: dto.userIds.map((id) => ({id} as User))
             })
@@ -60,6 +59,9 @@ export class ArtistsService {
                         message: `Artist already have this user: id: ${user.id}`
                     }, HttpStatus.CONFLICT)
                 }
+
+                let date = await this.dateSetter.setDate();
+                artist.modifiedAt = date;
                 
                 let userArtist = UserArtist.create({
                     user: user,
@@ -98,7 +100,7 @@ export class ArtistsService {
             }, HttpStatus.NOT_FOUND)
         }
         
-        artist.modifiedAt = date;
+       
 
         let users = await User.find({
             where: dto.userIds.map((id) => ({id} as User))
@@ -120,6 +122,8 @@ export class ArtistsService {
             let userArtist = await UserArtist.find({where: {user: user, artist: artist}});
             await UserArtist.remove(userArtist);
         }
+
+        artist.modifiedAt = date;
 
         return UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
             .then(i => i.map((u) => (u.user)))

@@ -5,19 +5,19 @@ import {IsString, MaxLength} from "class-validator";
 
 @Exclude()
 export class UpdateArtistDto extends IdDto {
-    @ApiProperty({required: false, nullable: true})
+    @ApiProperty()
     @Expose()
     @IsString()
     @MaxLength(50)
     name: string;
 
-    @ApiProperty({required: false, nullable: true})
+    @ApiProperty()
     @Expose()
     @IsString()
     @MaxLength(500)
     about: string;
 
-    @ApiProperty({required: false, nullable: true})
+    @ApiProperty()
     @Expose()
     @IsString()
     photoLocation: string
