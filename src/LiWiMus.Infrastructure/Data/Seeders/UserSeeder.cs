@@ -1,4 +1,5 @@
 ﻿using LiWiMus.Core.Roles;
+using LiWiMus.Core.Roles.Interfaces;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
 using Microsoft.AspNetCore.Identity;
@@ -10,11 +11,14 @@ namespace LiWiMus.Infrastructure.Data.Seeders;
 public class UserSeeder : ISeeder
 {
     private readonly UserManager<User> _userManager;
+    private readonly IRoleManager _roleManager;
     private readonly AdminSettings _adminSettings;
 
-    public UserSeeder(UserManager<User> userManager, IOptions<AdminSettings> adminSettingsOptions)
+    public UserSeeder(UserManager<User> userManager, IOptions<AdminSettings> adminSettingsOptions,
+                      IRoleManager roleManager)
     {
         _userManager = userManager;
+        _roleManager = roleManager;
         _adminSettings = adminSettingsOptions.Value;
     }
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -49,7 +53,7 @@ public class UserSeeder : ISeeder
         }
         
         await _userManager.UpdateAsync(admin);
-        await _userManager.AddToRoleAsync(admin, DefaultRoles.Admin.Name);
+        await _roleManager.AddToRoleAsync(admin, DefaultRoles.Admin.Name);
     }
 
     public int Priority => 80;

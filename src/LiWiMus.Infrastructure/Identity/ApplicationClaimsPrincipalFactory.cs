@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
-using LiWiMus.Core.Plans;
-using LiWiMus.Core.Plans.Specifications;
+using LiWiMus.Core.Roles;
+using LiWiMus.Core.Roles.Specifications;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -8,33 +8,27 @@ using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Infrastructure.Identity;
 
-public class ApplicationClaimsPrincipalFactory : UserClaimsPrincipalFactory<User, IdentityRole<int>>
+public class ApplicationClaimsPrincipalFactory : UserClaimsPrincipalFactory<User>
 {
-    private readonly IRepository<UserPlan> _userPlanRepository;
+    private readonly IRepository<Role> _roleRepository;
 
-    public ApplicationClaimsPrincipalFactory(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager,
-                                             IOptions<IdentityOptions> options, IRepository<UserPlan> userPlanRepository) : base(userManager, roleManager,
-        options)
+    public ApplicationClaimsPrincipalFactory(UserManager<User> userManager, IOptions<IdentityOptions> optionsAccessor,
+                                             IRepository<Role> roleRepository) : base(userManager, optionsAccessor)
     {
-        _userPlanRepository = userPlanRepository;
+        _roleRepository = roleRepository;
     }
 
     protected override async Task<ClaimsIdentity> GenerateClaimsAsync(User user)
     {
-        var id = await base.GenerateClaimsAsync(user);
+        var identity = await base.GenerateClaimsAsync(user);
 
-        var plan = await _userPlanRepository.GetBySpecAsync(new PlanWithPermissionsByUserSpec(user));
+        var roles = await _roleRepository.GetByUserAsync(user);
 
-        if (plan is null)
+        foreach (var role in roles)
         {
-            return id;
+            identity.AddClaims(role.Permissions.Select(p => p.GetClaim()));
         }
 
-        var permissionClaims = plan.Permissions.Select(permission => permission.ToClaim());
-
-        id.AddClaim(plan.ToClaim());
-        id.AddClaims(permissionClaims);
-
-        return id;
+        return identity;
     }
 }

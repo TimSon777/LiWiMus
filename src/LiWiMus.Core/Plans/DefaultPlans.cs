@@ -1,29 +1,23 @@
-﻿using LiWiMus.Core.Permissions;
-
-namespace LiWiMus.Core.Plans;
+﻿namespace LiWiMus.Core.Plans;
 
 public static class DefaultPlans
 {
-    public const string Free = "Free";
-    public const string Premium = "Premium";
+    public static readonly Plan Free = new()
+    {
+        Name = nameof(Free),
+        Description = "Free plan",
+        PricePerMonth = 0
+    };
+
+    public static readonly Plan Premium = new()
+    {
+        Name = nameof(Premium),
+        Description = "Premium plan",
+        PricePerMonth = 100
+    };
 
     public static IEnumerable<Plan> GetAll()
     {
-        return new List<Plan>
-        {
-            new()
-            {
-                //Id = 1,
-                Name = Free,
-                PricePerMonth = 0
-            },
-            new()
-            {
-                //Id = 2,
-                Name = Premium,
-                PricePerMonth = 100500,
-                //Permissions = DefaultPermissions.GetPublic()
-            }
-        };
+        return new[] {Free, Premium};
     }
 }

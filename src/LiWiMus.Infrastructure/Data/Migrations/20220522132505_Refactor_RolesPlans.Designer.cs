@@ -3,16 +3,18 @@ using System;
 using LiWiMus.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace LiWiMus.Infrastructure.Migrations
+namespace LiWiMus.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20220522132505_Refactor_RolesPlans")]
+    partial class Refactor_RolesPlans
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -806,7 +808,7 @@ namespace LiWiMus.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
-                    b.Property<int?>("UserPlanId")
+                    b.Property<int>("UserPlanId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1541,7 +1543,9 @@ namespace LiWiMus.Infrastructure.Migrations
                 {
                     b.HasOne("LiWiMus.Core.Plans.UserPlan", "UserPlan")
                         .WithOne("User")
-                        .HasForeignKey("LiWiMus.Core.Users.User", "UserPlanId");
+                        .HasForeignKey("LiWiMus.Core.Users.User", "UserPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("UserPlan");
                 });

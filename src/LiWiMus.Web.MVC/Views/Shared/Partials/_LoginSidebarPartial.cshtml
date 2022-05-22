@@ -1,5 +1,6 @@
 ﻿@using LiWiMus.Core.Users
 @using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using LiWiMus.Core.Roles
 @inject SignInManager<User> _signInManager
 @inject UserManager<User> _userManager
@@ -15,7 +16,7 @@
                     @currentUser.UserName
                 </p>
             </div>
-            @if (User.IsInRole(DefaultRoles.Admin.Name))
+            @if (User.HasClaim(SystemPermission.ClaimType, DefaultSystemPermissions.Admin.Access.Name))
             {
                 <div>
                     <a class="text-link" href="/admin">Admin</a>

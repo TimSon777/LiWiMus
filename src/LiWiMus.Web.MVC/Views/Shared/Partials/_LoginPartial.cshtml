@@ -9,7 +9,7 @@
         User? currentUser;
         if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
         {
-            if (User.IsInRole(DefaultRoles.Admin.Name))
+            if (User.HasClaim(SystemPermission.ClaimType, DefaultSystemPermissions.Admin.Access.Name))
             {
                 <li class="nav-item">
                     <a class="nav-link text-white d-inline-block" title="Admin - roles" href="/admin">Admin</a>

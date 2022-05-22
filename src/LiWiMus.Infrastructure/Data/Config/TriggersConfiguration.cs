@@ -1,12 +1,10 @@
 ﻿using EntityFrameworkCore.Triggers;
 using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Plans;
-using LiWiMus.Core.Roles;
+using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel;
 using LiWiMus.SharedKernel.Interfaces;
-using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Data.Config;
 
@@ -41,10 +39,10 @@ public static class TriggersConfiguration
         Triggers<User, ApplicationContext>.GlobalInserted.Add<IAvatarService>(async entry =>
             await entry.Service.SetRandomAvatarAsync(entry.Entity));
 
-        Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(async entry =>
-            await entry.Service.AddToRoleAsync(entry.Entity, DefaultRoles.User.Name));
+        /*Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(async entry =>
+            await entry.Service.AddToRoleAsync(entry.Entity, DefaultRoles.User.Name));*/
 
-        // Triggers<User, ApplicationContext>.GlobalInserted.Add<IUserPlanManager>(entry =>
-        //     entry.Service.AddToPlan(entry.Entity, DefaultPlans.Free, TimeSpan.FromDays(30)));
+        Triggers<User, ApplicationContext>.GlobalInserted.Add<IPlanManager>(async entry =>
+            await entry.Service.AddToDefaultPlanAsync(entry.Entity));
     }
 }
