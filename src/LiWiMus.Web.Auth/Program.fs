@@ -48,9 +48,6 @@ type Program() =
 
         services.AddRepositoriesAndManagers()
 
-        services.AddIde
-
-        services
         services
             .AddIdentity(builder.Environment)
             .ConfigureIdentityOptions()
