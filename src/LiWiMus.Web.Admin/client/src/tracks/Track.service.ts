@@ -4,6 +4,7 @@ import { Track } from "./types/Track";
 import { PaginatedData } from "../shared/types/PaginatedData";
 import { FilterOptions } from "../shared/types/FilterOptions";
 import { UpdateTrackDto } from "./types/UpdateTrackDto";
+import { CreateTrackDto} from "./types/CreateTrackDto"
 import FileService from "../shared/services/File.service";
 import { Genre } from "../genres/types/Genre";
 
@@ -39,6 +40,11 @@ const TrackService = {
     return response.data as Track;
   },
 
+  save: async (track: CreateTrackDto) => {
+    const response = await axios.post(`/tracks`, track);
+    return response.data as Artist;
+  },
+  
   remove: async (track: Track) => {
     return await axios.delete(`/tracks/${track.id}`);
   },

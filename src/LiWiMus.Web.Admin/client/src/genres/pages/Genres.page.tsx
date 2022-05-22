@@ -1,5 +1,7 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+// @ts-ignore
+import dateFormat from "dateformat";
 import {
     DataGrid,
     GridColDef,
@@ -14,7 +16,7 @@ import {
     MenuItem,
     Select,
     TextField,
-    Popover
+    Popover, Fab
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from "@mui/icons-material/Add";
@@ -63,12 +65,20 @@ export default function UsersPage() {
             headerName: "createdAt",
             flex: 0.5,
             filterable: false,
+            valueFormatter: (params) => (`${dateFormat(
+                new Date(params.value),
+                "dd.mm.yyyy, HH:MM"
+            )}`)
         },
         {
             field: "modifiedAt",
             headerName: "modifiedAt",
             flex: 0.5,
             filterable: false,
+            valueFormatter: (params) => (`${dateFormat(
+                new Date(params.value),
+                "dd.mm.yyyy, HH:MM"
+              )}`)
         },
         {
             field: "tracksCount",
@@ -232,6 +242,11 @@ export default function UsersPage() {
                     loading={loading}
                     autoHeight
                 ></DataGrid>
+            </div>
+            <div>
+                <Fab color="primary" sx={{ position: 'absolute', bottom: 50, right: 50}} aria-label="add" href="/admin/genres/create">
+                    <AddIcon/>
+                </Fab>
             </div>
         </div>
     );

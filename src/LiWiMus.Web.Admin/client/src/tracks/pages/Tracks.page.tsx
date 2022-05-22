@@ -1,5 +1,7 @@
 ﻿import React, {useEffect, useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
+// @ts-ignore
+import dateFormat from "dateformat";
 import {
     DataGrid,
     GridColDef,
@@ -14,7 +16,7 @@ import {
     MenuItem,
     Select,
     TextField,
-    Popover
+    Popover, Fab
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from "@mui/icons-material/Add";
@@ -59,16 +61,14 @@ export default function UsersPage() {
             filterable: false,
         },
         {
-            field: "amount",
-            headerName: "Amount",
-            flex: 0.5,
-            filterable: false,
-        },
-        {
             field: "publishedAt",
             headerName: "PublishedAt",
             flex: 0.5,
             filterable: false,
+            valueFormatter: (params) => (`${dateFormat(
+                new Date(params.value),
+                "dd.mm.yyyy, HH:MM"
+            )}`)
         },
         {
             field: "duration",
