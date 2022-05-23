@@ -60,14 +60,18 @@ const UserService = {
     if (!user.avatarLocation) {
       return user;
     }
-    await axios.delete(user.avatarLocation);
+    try {
+      await FileService.remove(user.avatarLocation);
+    } catch (e) {}
     const response = await axios.post(`/users/${user.id}/removeAvatar`);
     return map(response.data);
   },
 
   changeAvatar: async (user: User, avatar: File) => {
     if (user.avatarLocation) {
-      await FileService.remove(user.avatarLocation);
+      try {
+        await FileService.remove(user.avatarLocation);
+      } catch (e) {}
     }
 
     const location = await FileService.save(avatar);

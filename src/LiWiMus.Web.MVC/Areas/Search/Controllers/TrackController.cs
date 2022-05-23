@@ -1,12 +1,9 @@
 using AutoMapper;
-using LiWiMus.Core.Permissions;
-using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Shared;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
-using LiWiMus.Web.MVC.ViewModels;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
