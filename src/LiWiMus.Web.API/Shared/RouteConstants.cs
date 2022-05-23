@@ -61,4 +61,46 @@ public static class RouteConstants
     {
         public const string Create = $"{Prefix}/{nameof(Users)}";
     }
+
+    public static class Plans
+    {
+        public const string List = $"{Prefix}/{nameof(Plans)}";
+        public const string Update = $"{Prefix}/{nameof(Plans)}";
+        public const string Read = $"{Prefix}/{nameof(Plans)}/{{id:int}}";
+        public const string Create = $"{Prefix}/{nameof(Plans)}";
+        public const string Delete = $"{Prefix}/{nameof(Plans)}/{{id:int}}";
+
+        public static class Permissions
+        {
+            public const string Add = $"{Prefix}/{nameof(Plans)}/{nameof(Permissions)}";
+            public const string Remove = $"{Prefix}/{nameof(Plans)}/{nameof(Permissions)}";
+            public const string ReplaceAll = $"{Prefix}/{nameof(Plans)}/{nameof(Permissions)}";
+        }
+    }
+
+    public static class Permissions
+    {
+        public const string List = $"{Prefix}/{nameof(Permissions)}";
+    }
+
+    public static class Roles
+    {
+        public const string List = $"{Prefix}/{nameof(Roles)}";
+        public const string Update = $"{Prefix}/{nameof(Roles)}";
+        public const string Read = $"{Prefix}/{nameof(Roles)}/{{id:int}}";
+        public const string Create = $"{Prefix}/{nameof(Roles)}";
+        public const string Delete = $"{Prefix}/{nameof(Roles)}/{{id:int}}";
+
+        public static class SystemPermissions
+        {
+            public const string Add = $"{Prefix}/{nameof(Roles)}/{nameof(SystemPermissions)}";
+            public const string Remove = $"{Prefix}/{nameof(Roles)}/{nameof(SystemPermissions)}";
+            public const string ReplaceAll = $"{Prefix}/{nameof(Roles)}/{nameof(SystemPermissions)}";
+        }
+    }
+
+    public static class SystemPermissions
+    {
+        public const string List = $"{Prefix}/{nameof(SystemPermissions)}";
+    }
 }

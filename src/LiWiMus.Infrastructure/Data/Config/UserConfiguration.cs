@@ -1,5 +1,4 @@
 ﻿using LiWiMus.Core.Artists;
-using LiWiMus.Core.Plans;
 using LiWiMus.Core.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -12,10 +11,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.Property(u => u.Gender)
                .HasConversion<string>();
-
+        
         builder.HasOne(u => u.UserPlan)
                .WithOne(up => up.User)
-               .HasForeignKey<UserPlan>(u => u.UserId);
+               .HasForeignKey<User>(u => u.UserPlanId);
 
         builder.HasMany(u => u.Artists)
                .WithMany(a => a.Owners)

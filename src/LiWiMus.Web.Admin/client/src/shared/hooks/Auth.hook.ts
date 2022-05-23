@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import jwtDecode from "jwt-decode";
-import { UserData } from "../types/UserData";
+import {UserData} from "../types/UserData";
 
 const storageName = "userData";
 
@@ -9,7 +9,7 @@ type JwtPayload = {
   name: string;
   email: string;
   role: string[];
-  permission: string[];
+  sysperm: string[];
 };
 
 export const useAuth = () => {
@@ -18,7 +18,7 @@ export const useAuth = () => {
 
   const login = useCallback((jwtToken: string) => {
     const payload = jwtDecode<JwtPayload>(jwtToken);
-    if (!payload.role || !payload.role.includes("Admin")) {
+    if (!payload.sysperm || !payload.sysperm.includes("Admin.Access")) {
       return false;
     }
 
@@ -28,7 +28,7 @@ export const useAuth = () => {
       name: payload.name,
       email: payload.email,
       role: payload.role,
-      permissions: payload.permission,
+      permissions: payload.sysperm,
     };
 
     setUserData(data);

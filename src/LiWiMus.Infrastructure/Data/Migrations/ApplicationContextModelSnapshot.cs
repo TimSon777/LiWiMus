@@ -463,25 +463,29 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.ToTable("OnlineConsultants");
                 });
 
-            modelBuilder.Entity("LiWiMus.Core.Permissions.Permission", b =>
+            modelBuilder.Entity("LiWiMus.Core.Plans.Permission", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name");
-
-                    b.ToTable("Permissions");
+                    b.ToTable("Permission");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Plans.Plan", b =>
@@ -492,6 +496,10 @@ namespace LiWiMus.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime(6)");
@@ -512,24 +520,28 @@ namespace LiWiMus.Infrastructure.Migrations
 
             modelBuilder.Entity("LiWiMus.Core.Plans.UserPlan", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("PlanId")
-                        .HasColumnType("int");
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("End")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("PlanId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Start")
                         .HasColumnType("datetime(6)");
 
-                    b.HasKey("UserId", "PlanId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PlanId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
 
                     b.ToTable("UserPlan");
                 });
@@ -592,6 +604,56 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasIndex("TrackId");
 
                     b.ToTable("PlaylistTrack");
+                });
+
+            modelBuilder.Entity("LiWiMus.Core.Roles.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Role");
+                });
+
+            modelBuilder.Entity("LiWiMus.Core.Roles.SystemPermission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemPermission");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Tracks.Track", b =>
@@ -744,6 +806,9 @@ namespace LiWiMus.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
 
+                    b.Property<int?>("UserPlanId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -753,58 +818,12 @@ namespace LiWiMus.Infrastructure.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
+                    b.HasIndex("UserPlanId")
+                        .IsUnique();
+
                     b.ToTable("AspNetUsers", (string)null);
 
                     b.HasCheckConstraint("CK_AspNetUsers_Gender_Enum", "`Gender` IN ('Male', 'Female')");
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClaimType")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ClaimValue")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
@@ -848,21 +867,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("AspNetUserLogins", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "RoleId");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
@@ -1095,6 +1099,36 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasIndex("PlansId");
 
                     b.ToTable("PermissionPlan");
+                });
+
+            modelBuilder.Entity("RoleSystemPermission", b =>
+                {
+                    b.Property<int>("PermissionsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PermissionsId", "RolesId");
+
+                    b.HasIndex("RolesId");
+
+                    b.ToTable("RoleSystemPermission");
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.Property<int>("RolesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
                 });
 
             modelBuilder.Entity("AlbumArtist", b =>
@@ -1448,15 +1482,7 @@ namespace LiWiMus.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LiWiMus.Core.Users.User", "User")
-                        .WithOne("UserPlan")
-                        .HasForeignKey("LiWiMus.Core.Plans.UserPlan", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Plan");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Playlists.Playlist", b =>
@@ -1473,13 +1499,13 @@ namespace LiWiMus.Infrastructure.Migrations
             modelBuilder.Entity("LiWiMus.Core.PlaylistTracks.PlaylistTrack", b =>
                 {
                     b.HasOne("LiWiMus.Core.Playlists.Playlist", "Playlist")
-                        .WithMany("Tracks")
+                        .WithMany("PlaylistTracks")
                         .HasForeignKey("PlaylistId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LiWiMus.Core.Tracks.Track", "Track")
-                        .WithMany("Playlists")
+                        .WithMany("PlaylistTracks")
                         .HasForeignKey("TrackId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1511,13 +1537,13 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
+            modelBuilder.Entity("LiWiMus.Core.Users.User", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("LiWiMus.Core.Plans.UserPlan", "UserPlan")
+                        .WithOne("User")
+                        .HasForeignKey("LiWiMus.Core.Users.User", "UserPlanId");
+
+                    b.Navigation("UserPlan");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
@@ -1531,21 +1557,6 @@ namespace LiWiMus.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("LiWiMus.Core.Users.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole<int>", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LiWiMus.Core.Users.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -1588,7 +1599,7 @@ namespace LiWiMus.Infrastructure.Migrations
 
             modelBuilder.Entity("PermissionPlan", b =>
                 {
-                    b.HasOne("LiWiMus.Core.Permissions.Permission", null)
+                    b.HasOne("LiWiMus.Core.Plans.Permission", null)
                         .WithMany()
                         .HasForeignKey("PermissionsId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1597,6 +1608,36 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.HasOne("LiWiMus.Core.Plans.Plan", null)
                         .WithMany()
                         .HasForeignKey("PlansId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleSystemPermission", b =>
+                {
+                    b.HasOne("LiWiMus.Core.Roles.SystemPermission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LiWiMus.Core.Roles.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("LiWiMus.Core.Roles.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LiWiMus.Core.Users.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -1630,16 +1671,22 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.Navigation("UserPlans");
                 });
 
+            modelBuilder.Entity("LiWiMus.Core.Plans.UserPlan", b =>
+                {
+                    b.Navigation("User")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("LiWiMus.Core.Playlists.Playlist", b =>
                 {
-                    b.Navigation("Subscribers");
+                    b.Navigation("PlaylistTracks");
 
-                    b.Navigation("Tracks");
+                    b.Navigation("Subscribers");
                 });
 
             modelBuilder.Entity("LiWiMus.Core.Tracks.Track", b =>
                 {
-                    b.Navigation("Playlists");
+                    b.Navigation("PlaylistTracks");
 
                     b.Navigation("Subscribers");
                 });
@@ -1663,9 +1710,6 @@ namespace LiWiMus.Infrastructure.Migrations
                     b.Navigation("UserArtists");
 
                     b.Navigation("UserChats");
-
-                    b.Navigation("UserPlan")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>

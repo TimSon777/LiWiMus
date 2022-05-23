@@ -15,5 +15,8 @@ public enum EntityType : byte
     Genres,
     Albums,
     Playlists,
-    Transactions
+    Transactions,
+    Plans,
+    Permissions,
+    Roles
 }

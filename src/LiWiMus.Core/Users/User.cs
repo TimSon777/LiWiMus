@@ -9,6 +9,7 @@ using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.LikedSongs;
 using LiWiMus.Core.Plans;
 using LiWiMus.Core.Playlists;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Users.Enums;
 
 namespace LiWiMus.Core.Users;
@@ -37,8 +38,6 @@ public class User : BaseUserEntity
     public virtual ICollection<UserArtist> UserArtists { get; set; } = null!;
     public virtual ICollection<Artist> Artists { get; set; } = null!;
 
-    public virtual UserPlan UserPlan { get; set; } = null!;
-
     public virtual ICollection<LikedAlbum> LikedAlbums { get; set; } = null!;
     public virtual ICollection<LikedArtist> LikedArtists { get; set; } = null!;
     public virtual ICollection<LikedPlaylist> LikedPlaylists { get; set; } = null!;
@@ -47,4 +46,8 @@ public class User : BaseUserEntity
     public virtual ICollection<FollowingUser> Following { get; set; } = null!;
     public virtual ICollection<Chat> UserChats { get; set; } = null!;
     public virtual ICollection<Playlist> Playlists { get; set; } = null!;
+    public virtual ICollection<Role> Roles { get; set; } = null!;
+
+    public virtual UserPlan? UserPlan { get; set; } = null!;
+    public int? UserPlanId { get; set; }
 }

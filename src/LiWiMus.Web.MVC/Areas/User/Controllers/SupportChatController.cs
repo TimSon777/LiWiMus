@@ -4,7 +4,6 @@ using LiWiMus.Core.Messages;
 using LiWiMus.Core.Messages.Specifications;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
-using LiWiMus.Core.Permissions;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;

@@ -64,6 +64,112 @@
       "SwaggerKey" : "Admin.API.Nest"
     },
     {
+      "DownstreamPathTemplate": "/api/permissions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/permissions",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/plans",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/plans",
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/plans/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/plans/{everything}",
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/systemPermissions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/systemPermissions",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/roles",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/roles",
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
+      "DownstreamPathTemplate": "/api/roles/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/roles/{everything}",
+      "UpstreamHttpMethod": [
+        "POST",
+        "PUT",
+        "GET",
+        "PATCH",
+        "DELETE"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
       "DownstreamPathTemplate": "/api/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -113,6 +219,21 @@
       "SwaggerKey" : "Auth"
     },
     {
+      "DownstreamPathTemplate": "/api/users/{id}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
       "DownstreamPathTemplate": "/api/users",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -123,7 +244,8 @@
       ],
       "UpstreamPathTemplate": "/api/users",
       "UpstreamHttpMethod": [
-        "GET"
+        "GET",
+        "PATCH"
       ],
       "SwaggerKey" : "Admin.API.Nest"
     },

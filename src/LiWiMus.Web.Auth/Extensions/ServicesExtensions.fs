@@ -4,7 +4,6 @@ open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Identity
 open OpenIddict.Abstractions
-open LiWiMus.Core.Users
 open LiWiMus.Infrastructure.Data
 
 type IServiceCollection with
@@ -18,18 +17,7 @@ type IServiceCollection with
 
         services
 
-    member public services.AddIdentity() =
-        services
-            .AddIdentity<User, IdentityRole<int>>(fun o ->
-                o.Password.RequireDigit <- false
-                o.Password.RequiredLength <- 3
-                o.Password.RequireLowercase <- false
-                o.Password.RequireUppercase <- false
-                o.Password.RequireNonAlphanumeric <- false)
-            .AddEntityFrameworkStores<ApplicationContext>()
-            .AddDefaultTokenProviders()
-        |> ignore
-
+    member public services.ConfigureIdentityOptions() =
         services.Configure<IdentityOptions> (fun (options: IdentityOptions) ->
             options.ClaimsIdentity.UserNameClaimType <- OpenIddictConstants.Claims.Name
             options.ClaimsIdentity.UserIdClaimType <- OpenIddictConstants.Claims.Subject

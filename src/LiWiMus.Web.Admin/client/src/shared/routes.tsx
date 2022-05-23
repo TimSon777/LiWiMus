@@ -19,6 +19,8 @@ import GenresPage from "../genres/pages/Genres.page"
 import CreateGenrePage from "../genres/pages/CreateGenre.page"
 import CreateTrackPage from "../tracks/pages/CreateTrack.page"
 import PlaylistsPage from "../playlists/pages/Playlists.page"
+import PlanDetailsPage from "../plans/pages/PlanDetails.page";
+import RoleDetailsPage from "../roles/pages/RoleDetails.page";
 
 export const useRoutes = (isAuthenticated: boolean) => {
     if (isAuthenticated) {
@@ -39,6 +41,8 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 <Route path="/admin/tracks/create" element={<CreateTrackPage/>}/>
                 <Route path="/admin/playlists/:id" element={<PlaylistDetailsPage/>}/>
                 <Route path="/admin/albums/:id" element={<AlbumDetailsPage/>}/>
+                <Route path="/admin/plans/:id" element={<PlanDetailsPage />} />
+                <Route path="/admin/roles/:id" element={<RoleDetailsPage />} />
                 <Route
                     path="/admin/transactions/:id"
                     element={<TransactionDetailsPage/>}
@@ -50,10 +54,10 @@ export const useRoutes = (isAuthenticated: boolean) => {
         );
     }
 
-    return (
-        <Routes>
-            <Route path={"/admin"} element={<LoginPage/>}/>
-            <Route path="*" element={<Navigate to="/admin" replace/>}/>
-        </Routes>
-    );
+  return (
+    <Routes>
+      <Route path={"/admin"} element={<LoginPage />} />
+      <Route path="*" element={<Navigate to="/admin" replace />} />
+    </Routes>
+  );
 };

@@ -2,7 +2,6 @@ namespace LiWiMus.Web.Auth
 
 #nowarn "20"
 
-open System
 open LiWiMus.Core.Settings
 open LiWiMus.Infrastructure.Data.Config
 open LiWiMus.Infrastructure.Data.Seeders
@@ -12,7 +11,6 @@ open Microsoft.Extensions.Hosting
 open LiWiMus.Web.Auth.Extensions.ServicesExtensions
 open LiWiMus.Web.Shared.Configuration
 open Microsoft.Extensions.Configuration
-open Microsoft.FSharp.Control
 
 type Program() =
     static let exitCode = 0
@@ -48,8 +46,11 @@ type Program() =
         services
             .AddDbContext(connection)
 
+        services.AddRepositoriesAndManagers()
+
         services
-            .AddIdentity()
+            .AddIdentity(builder.Environment)
+            .ConfigureIdentityOptions()
             .AddOpenIdConnect()
             .AddSwaggerWithAuthorize(builder.Environment.ApplicationName)
             

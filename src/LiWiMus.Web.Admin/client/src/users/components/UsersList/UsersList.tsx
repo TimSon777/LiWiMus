@@ -74,7 +74,13 @@ export default function UsersList({
               <TableCell>{index + 1}</TableCell>
               {avatar && (
                 <TableCell>
-                  <Avatar src={FileService.getLocation(user.avatarLocation)} />
+                  <Avatar
+                    src={
+                      user.avatarLocation
+                        ? FileService.getLocation(user.avatarLocation)
+                        : undefined
+                    }
+                  />
                 </TableCell>
               )}
               {userName && (
