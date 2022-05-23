@@ -12,10 +12,10 @@ type UpdateTests(factory: TestApplicationFactory) =
     interface IClassFixture<TestApplicationFactory>
 
     [<Theory>]
-    [<InlineData(1, "NewTestName", true)>]
-    [<InlineData(1, "NewTestName1", true)>]
-    [<InlineData(1, "NewTestName2", true)>]
-    [<InlineData(1, "NewTestName3", false)>]
+    [<InlineData(24, "NewTestName", true)>]
+    [<InlineData(24, "NewTestName1", true)>]
+    [<InlineData(24, "NewTestName2", true)>]
+    [<InlineData(24, "NewTestName3", false)>]
     member this.``Tests(Playlists): Update => Success``(id, name, isPublic) =
 
         // Arrange
@@ -48,7 +48,7 @@ type UpdateTests(factory: TestApplicationFactory) =
         let client = factory.CreateClient()
 
         let body =
-            Playlists.Update.Request(Id = 1)
+            Playlists.Update.Request(Id = 24)
 
         task {
 

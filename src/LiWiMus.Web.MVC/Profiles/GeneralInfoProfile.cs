@@ -5,6 +5,7 @@ using LiWiMus.Core.Genres;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Users;
 using LiWiMus.Web.MVC.ViewModels;
+using LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels;
 
 namespace LiWiMus.Web.MVC.Profiles;
 

@@ -69,6 +69,7 @@ public class PlaylistSeeder : ISeeder
 
                 var track1 = new Track
                 {
+                    Id = 24,
                     Album = album,
                     Name = "MockTrack_Playlist",
                     Duration = 190,
@@ -109,6 +110,7 @@ public class PlaylistSeeder : ISeeder
                 await _userManager.UpdateAsync(user);
                 var playlist = new Playlist
                 {
+                    Id = 24,
                     Name = "MockPlaylist_Playlist",
                     Owner = user,
                     PhotoLocation = "Location"

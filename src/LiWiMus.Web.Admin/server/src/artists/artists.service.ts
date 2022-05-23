@@ -15,14 +15,11 @@ export class ArtistsService {
     constructor (private readonly dateSetter: DateSetterService){}
     
     async createArtist(dto: CreateArtistDto) : Promise<ArtistsDto> {
-
-        let date = await this.dateSetter.setDate();
-
         let artist = Artist.create({name: dto.name, about: dto.about, photoLocation: dto.photoLocation});
+        let date = await this.dateSetter.setDate();
         artist.createdAt = date;
         artist.modifiedAt = date;
         await Artist.save(artist);
-        
         return plainToInstance(ArtistsDto, Artist.findOne(artist.id));
     }
     
@@ -40,45 +37,36 @@ export class ArtistsService {
                 message: "Artist was not found."
             }, HttpStatus.NOT_FOUND)
         }
-        
-            let users = await User.find({
-                where: dto.userIds.map((id) => ({id} as User))
-            })
-                .catch(err => {
-                    throw new HttpException({
-                        message: "One of entered users was not found."
-                    }, HttpStatus.NOT_FOUND)
-                });
+    
+        let users = await User.find({
+            where: dto.userIds.map((id) => ({id} as User))
+        })
+            .catch(err => {
+                throw new HttpException({
+                    message: "One of entered users was not found."
+                }, HttpStatus.NOT_FOUND)
+            });
 
-            let userArtists: UserArtist[] = [];
+        let userArtists: UserArtist[] = [];
 
-            for (let user  of users)  {
-                let relation = await UserArtist.findOne({where: {artist: artist, user: user}});
-                if (relation){
-                    throw new HttpException({
-                        message: `Artist already have this user: id: ${user.id}`
-                    }, HttpStatus.CONFLICT)
-                }
-
-                let date = await this.dateSetter.setDate();
-                artist.modifiedAt = date;
-                
-                let userArtist = UserArtist.create({
-                    user: user,
-                    artist: artist,
-                    createdAt: date,
-                    modifiedAt: date});
-                
-                userArtists.push(userArtist)
+        for (let user  of users) {
+            let relation = await UserArtist.findOne({where: {artist: artist, user: user}});
+            if (relation) {
+                throw new HttpException({
+                    message: `Artist already have this user: id: ${user.id}`}, 
+                    HttpStatus.CONFLICT)
             }
-
-            await UserArtist.save(userArtists)
-                .catch(err => {
-                    throw new HttpException({
-                        message: err.message
-                    }, HttpStatus.BAD_REQUEST)
-                });
-
+            let date = await this.dateSetter.setDate();
+            artist.modifiedAt = date;
+            let userArtist = UserArtist.create({user: user, artist: artist, createdAt: date, modifiedAt: date});
+            userArtists.push(userArtist)
+        }
+        
+        await UserArtist.save(userArtists)
+            .catch(err => {
+                throw new HttpException({
+                    message: err.message
+                }, HttpStatus.BAD_REQUEST)});
         return UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
             .then(i => i.map((u) => (u.user)))
             .then(u => u.map(data => plainToInstance(UserDto, data)));
@@ -100,18 +88,14 @@ export class ArtistsService {
             }, HttpStatus.NOT_FOUND)
         }
         
-       
-
         let users = await User.find({
-            where: dto.userIds.map((id) => ({id} as User))
-        })
+            where: dto.userIds.map((id) => ({id} as User))})
             .catch(err => {
                 throw new HttpException({
                     message: "One of entered users was not found."
-                }, HttpStatus.NOT_FOUND)
-            });
+                }, HttpStatus.NOT_FOUND)});
         
-        for(let user of users) {
+        for (let user of users) {
             let relation = await UserArtist.findOne({where: {artist: artist, user: user}});
             if (!relation){
                 throw new HttpException({
@@ -124,7 +108,6 @@ export class ArtistsService {
         }
 
         artist.modifiedAt = date;
-
         return UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
             .then(i => i.map((u) => (u.user)))
             .then(u => u.map(data => plainToInstance(UserDto, data)));
@@ -137,6 +120,7 @@ export class ArtistsService {
                 message: `Artist was not found.`
             }, HttpStatus.NOT_FOUND);
         }
+        
         let updatedArtist = await Artist.create(dto);
         updatedArtist.modifiedAt = await this.dateSetter.setDate();
         await Artist.save(updatedArtist);

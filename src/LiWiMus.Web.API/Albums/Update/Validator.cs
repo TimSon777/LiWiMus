@@ -13,6 +13,9 @@ public class Validator : AbstractValidator<Request>
             .Length(5, 50)
             .DisableTags();
 
+        RuleFor(r => r.CoverLocation)
+            .Length(1, 100);
+
         RuleFor(r => r.PublishedAt)
             .Cascade(CascadeMode.Stop)
             .Must(d => d <= DateOnly.FromDateTime(DateTime.UtcNow))

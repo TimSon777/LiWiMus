@@ -14,7 +14,7 @@ public class SearchValidator : AbstractValidator<SearchViewModel>
         RuleFor(x => x.Page)
             .GreaterThan(0);
 
-        RuleFor(x => x.Take)
+        RuleFor(x => x.ItemsPerPage)
             .GreaterThan(0);
     }
 }

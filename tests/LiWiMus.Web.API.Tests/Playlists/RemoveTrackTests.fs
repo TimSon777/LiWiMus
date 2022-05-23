@@ -17,7 +17,7 @@ type RemoveTrackTests(factory: TestApplicationFactory) =
     
         // Arrange
         let client = factory.CreateClient()
-        let body = Playlists.Tracks.Remove.Request(TrackId = 1, PlaylistId = 1)
+        let body = Playlists.Tracks.Remove.Request(TrackId = 24, PlaylistId = 24)
         
         task {
     
@@ -38,7 +38,7 @@ type RemoveTrackTests(factory: TestApplicationFactory) =
     
         // Arrange
         let client = factory.CreateClient()
-        let body = Playlists.Tracks.Remove.Request(TrackId = trackId, PlaylistId = 1)
+        let body = Playlists.Tracks.Remove.Request(TrackId = trackId, PlaylistId = 24)
         
         task {
     

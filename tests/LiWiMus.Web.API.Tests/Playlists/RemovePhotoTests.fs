@@ -18,12 +18,12 @@ type RemovePhotoTests(factory: TestApplicationFactory) =
         task {
     
             //Act
-            let! httpMessage = client.PostAsync(url.Replace("{id:int}", "1"), null)
+            let! httpMessage = client.PostAsync(url.Replace("{id:int}", "24"), null)
     
             //Assert
             httpMessage
                 .Should()
-                .BeSuccessful("playlist with id 1 must be in db (see seeder)")
+                .BeSuccessful("playlist with id 24 must be in db (see seeder)")
             |> ignore
         }
 

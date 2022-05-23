@@ -16,7 +16,7 @@ type AddTrackTests(factory: TestApplicationFactory) =
     
         // Arrange
         let client = factory.CreateClient()
-        let body = Playlists.Tracks.Add.Request(TrackId = 100, PlaylistId = 1)
+        let body = Playlists.Tracks.Add.Request(TrackId = 100, PlaylistId = 24)
         
         task {
     
@@ -35,7 +35,7 @@ type AddTrackTests(factory: TestApplicationFactory) =
     
         // Arrange
         let client = factory.CreateClient()
-        let body = Playlists.Tracks.Add.Request(TrackId = 101, PlaylistId = 1)
+        let body = Playlists.Tracks.Add.Request(TrackId = 101, PlaylistId = 24)
         
         task {
     

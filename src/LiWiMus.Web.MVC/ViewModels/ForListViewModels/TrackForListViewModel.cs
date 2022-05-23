@@ -1,7 +1,7 @@
 ﻿using LiWiMus.SharedKernel;
-using LiWiMus.Web.MVC.ViewModels;
+using LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels;
 
-namespace LiWiMus.Web.MVC.Areas.Search.ViewModels;
+namespace LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 
 public class TrackForListViewModel : HasId
 {

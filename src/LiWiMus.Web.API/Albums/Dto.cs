@@ -8,7 +8,7 @@ public class Dto : BaseDto
     public string Title { get; set; } = null!;
     public DateOnly PublishedAt { get; set; }
     public string CoverLocation { get; set; } = null!;
-    public ICollection<ArtistDto> Artists { get; set; } = null!;
+    public ICollection<ArtistDto> Artists { get; set; } = new List<ArtistDto>();
 
     public int TracksCount { get; set; }
     public int ListenersCount { get; set; }

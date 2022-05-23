@@ -1,4 +1,5 @@
 ﻿using LiWiMus.Web.MVC.ViewModels;
+using LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels;
 
 namespace LiWiMus.Web.MVC.Areas.Music.ViewModels;
 

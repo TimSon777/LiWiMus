@@ -1,6 +1,6 @@
 ﻿using LiWiMus.SharedKernel;
 
-namespace LiWiMus.Web.MVC.ViewModels;
+namespace LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels;
 
 public class AlbumGeneralInfoViewModel : HasId
 {

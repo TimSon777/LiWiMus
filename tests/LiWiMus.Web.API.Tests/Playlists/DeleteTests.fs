@@ -18,7 +18,7 @@ type DeleteTests(factory: TestApplicationFactory) =
         task {
     
             //Act
-            let! httpMessage = client.DeleteAsync(url.Replace("{id:int}", "1"))
+            let! httpMessage = client.DeleteAsync(url.Replace("{id:int}", "24"))
     
             //Assert
             httpMessage

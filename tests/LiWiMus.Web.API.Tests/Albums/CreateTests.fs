@@ -28,8 +28,7 @@ type CreateTests(
             let body = Albums.Create.Request(
                 Title = title,
                 CoverLocation = coverLocation,
-                PublishedAt = DateOnly(),
-                ArtistIds = [|1|])
+                PublishedAt = DateOnly())
             
             task {
                 
@@ -54,8 +53,7 @@ type CreateTests(
             let body = Albums.Create.Request(
                 Title = title,
                 CoverLocation = coverLocation,
-                PublishedAt = DateOnly(),
-                ArtistIds = [|1|])
+                PublishedAt = DateOnly())
             
             task {
                 
@@ -78,8 +76,7 @@ type CreateTests(
             let body = Albums.Create.Request(
                 Title = "Test",
                 CoverLocation = "Location",
-                PublishedAt = DateOnly.MaxValue,
-                ArtistIds = [|1|])
+                PublishedAt = DateOnly.MaxValue)
             
             task {
                 
@@ -90,53 +87,5 @@ type CreateTests(
                 httpMessage
                     .Should()
                     .HaveClientError("the publication date cannot be greater than the current date")
-                    |> ignore
-            }
-        
-        [<Fact>]
-        member this.``Tests(Albums): Create => Failure (bad request - artists)``() =
-            
-            // Arrange
-            let client = factory.CreateClient()
-    
-            let body = Albums.Create.Request(
-                Title = "Test",
-                CoverLocation = "Location",
-                PublishedAt = DateOnly(),
-                ArtistIds = [||])
-            
-            task {
-                
-                //Act
-                let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
-                
-                //Assert
-                httpMessage
-                    .Should()
-                    .HaveClientError("the album must have artists")
-                    |> ignore
-            }
-            
-        [<Fact>]
-        member this.``Tests(Albums): Create => Failure (unprocessable entity)``() =
-            
-            // Arrange
-            let client = factory.CreateClient()
-    
-            let body = Albums.Create.Request(
-                Title = "Test",
-                CoverLocation = "Location",
-                PublishedAt = DateOnly(),
-                ArtistIds = [|777|])
-            
-            task {
-                
-                //Act
-                let! httpMessage = client.PostAsJsonAsync(url, body, JsonOptions().WithDateTimeOnly())
-                
-                //Assert
-                httpMessage
-                    .Should()
-                    .HaveClientError("the album must have existed artists")
                     |> ignore
             }
