@@ -58,6 +58,10 @@ export class UserDto extends IdDto {
     @ApiProperty()
     @Expose()
     modifiedAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    balance: number;
 }
 
 

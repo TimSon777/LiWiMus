@@ -4,7 +4,7 @@ import {
     Get,
     HttpException,
     HttpStatus, Param,
-    Patch,
+    Patch, Post,
     Query,
     UseInterceptors,
     UsePipes,
@@ -59,12 +59,21 @@ export class UsersController {
     @UsePipes(new ValidationPipe({skipMissingProperties: true}))
     @ApiCreatedResponse({ type: User })
     @UseInterceptors(new TransformInterceptor(UserDto))
-    async updateUserPersonal(@Body() dto: UpdateUserDto){
+    async updateUserPersonal(@Body() dto: UpdateUserDto) : Promise<UserDto>{
             return await this.userService.updateUser(dto)
                 .catch(err => {
                     throw new HttpException({
                         message: err.message
                     }, HttpStatus.BAD_REQUEST)});
-            } 
     }
+
+    @Post(':id')
+    @ApiCreatedResponse( {type: UserDto })
+    async removeUserAvatar(@Param('id') id: string) {
+        return await this.userService.removeAvatar(+id);
+    }
+}
+
+
+
 
