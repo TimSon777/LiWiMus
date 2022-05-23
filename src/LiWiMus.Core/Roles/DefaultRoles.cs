@@ -2,26 +2,42 @@
 
 public static class DefaultRoles
 {
-    public static readonly Role User = new()
+    public static class User
     {
-        Name = nameof(User),
-        Description = "Basic role"
-    };
+        public const string Name = nameof(User);
+        public const string Description = "Basic role";
+    }
 
-    public static readonly Role Admin = new()
+    public static class Admin
     {
-        Name = nameof(Admin),
-        Description = "Administration role"
-    };
+        public const string Name = nameof(Admin);
+        public const string Description = "Administration role";
+    }
 
-    public static readonly Role Consultant = new()
+    public static class Consultant
     {
-        Name = nameof(Consultant),
-        Description = "Consultant role"
-    };
+        public const string Name = nameof(Consultant);
+        public const string Description = "Consultant role";
+    }
 
     public static IEnumerable<Role> GetAll()
     {
-        return new[] {User, Consultant, Admin};
+        yield return new Role
+        {
+            Name = User.Name,
+            Description = User.Description
+        };
+
+        yield return new Role
+        {
+            Name = Consultant.Name,
+            Description = Consultant.Description
+        };
+
+        yield return new Role
+        {
+            Name = Admin.Name,
+            Description = Admin.Description
+        };
     }
 }

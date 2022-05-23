@@ -2,22 +2,34 @@
 
 public static class DefaultPlans
 {
-    public static readonly Plan Free = new()
+    public static class Free
     {
-        Name = nameof(Free),
-        Description = "Free plan",
-        PricePerMonth = 0
-    };
+        public const string Name = nameof(Free);
+        public const string Description = "Free plan";
+        public const int PricePerMonth = 0;
+    }
 
-    public static readonly Plan Premium = new()
+    public static class Premium
     {
-        Name = nameof(Premium),
-        Description = "Premium plan",
-        PricePerMonth = 100
-    };
+        public const string Name = nameof(Premium);
+        public const string Description = "Premium plan";
+        public const int PricePerMonth = 100;
+    }
 
     public static IEnumerable<Plan> GetAll()
     {
-        return new[] {Free, Premium};
+        yield return new Plan
+        {
+            Name = Free.Name,
+            Description = Free.Description,
+            PricePerMonth = Free.PricePerMonth
+        };
+
+        yield return new Plan
+        {
+            Name = Premium.Name,
+            Description = Premium.Description,
+            PricePerMonth = Premium.PricePerMonth
+        };
     }
 }
