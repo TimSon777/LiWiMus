@@ -1,0 +1,9 @@
+﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.ArtistForListViewModel>
+
+@foreach (var artist in Model)
+{
+    <div>
+        @artist.Name 
+        <p>@artist.About</p>
+    </div>
+}

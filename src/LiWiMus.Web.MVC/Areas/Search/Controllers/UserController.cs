@@ -4,6 +4,7 @@ using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Shared;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
+using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
@@ -14,32 +15,32 @@ using LiWiMus.Web.Shared.Extensions;
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
 [Area("Search")]
-public class TrackController : Controller
+public class UserController : Controller
 {
-    private readonly IRepository<Track> _trackRepository;
+    private readonly IRepository<Core.Users.User> _userRepository;
     private readonly IMapper _mapper;
 
-    public TrackController(IRepository<Track> trackRepository, IMapper mapper)
+    public UserController(IRepository<Core.Users.User> userRepository, IMapper mapper)
     {
-        _trackRepository = trackRepository;
+        _userRepository = userRepository;
         _mapper = mapper;
     }
 
-    private async Task<IEnumerable<TrackForListViewModel>> GetTracks(SearchViewModel searchVm)
+    private async Task<IEnumerable<UserForListViewModel>> GetUsersAsync(SearchViewModel searchVm)
     {
-        var tracks = await _trackRepository.PaginateWithTitleAsync(_mapper.Map<PaginationWithTitle>(searchVm));
-        return _mapper.MapList<Track, TrackForListViewModel>(tracks);
+        var users = await _userRepository.PaginateWithTitleAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        return _mapper.Map<List<Core.Users.User>, List<UserForListViewModel>>(users);
     }
     
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        return View(await GetTracks(SearchViewModel.Default));
+        return View(await GetUsersAsync(SearchViewModel.Default));
     }
 
     [HttpGet]
     public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
     {
-        return PartialView("TracksPartial", await GetTracks(searchVm));
+        return PartialView("UsersPartial", await GetUsersAsync(searchVm));
     }
 }

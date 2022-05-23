@@ -1,9 +1,4 @@
-﻿function resetSearchSettings() {
-    $('#search-items').empty();
-    $('#input-page-search').val(1);
-}
-
-$(document).ready(() => {
+﻿$(document).ready(() => {
     const form = $('#form-search');
     $(form).submit((e) => {
         e.preventDefault();
@@ -17,15 +12,12 @@ $(document).ready(() => {
                 const inputPageSearch = $('#input-page-search');
                 const currentNumberPage = parseInt(inputPageSearch.val())
                 inputPageSearch.val(currentNumberPage + 1);
-                $('#btn-search-show-more').prop("disabled",true);
             }
         });
     });
     
-    $('#btn-search-search').click(resetSearchSettings);
-    $('#input-search').change(resetSearchSettings);
-    
-    $('#btn-search-show-more').click(() => {
-        $('#btn-search-search').prop("disabled",false);
+    $('#btn-search-search').click(() => {
+        $('#search-items').empty();
+        $('#input-page-search').val(1);
     });
 });

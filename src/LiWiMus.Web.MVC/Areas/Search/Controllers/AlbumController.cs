@@ -3,9 +3,11 @@ using LiWiMus.Core.Albums;
 using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Playlists.Specifications;
+using LiWiMus.Core.Shared;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,12 +28,8 @@ public class AlbumController : Controller
     
     private async Task<IEnumerable<AlbumForListViewModel>> GetPlaylists(SearchViewModel searchVm)
     {
-        var albums = await _albumRepository
-            .ListAsync(new AlbumPaginatedSpec(searchVm.Title, (searchVm.Page, searchVm.Take)));
-
-        var albumVms = _mapper.Map<List<Album>, List<AlbumForListViewModel>>(albums);
-
-        return albumVms;
+        var albums = await _albumRepository.PaginateWithTitleAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        return _mapper.Map<List<Album>, List<AlbumForListViewModel>>(albums);
     }
     
     [HttpGet]
