@@ -18,6 +18,7 @@ import CreateUserPage from "../users/pages/CreateUser.page"
 import GenresPage from "../genres/pages/Genres.page"
 import CreateGenrePage from "../genres/pages/CreateGenre.page"
 import CreateTrackPage from "../tracks/pages/CreateTrack.page"
+import PlaylistsPage from "../playlists/pages/Playlists.page"
 
 export const useRoutes = (isAuthenticated: boolean) => {
     if (isAuthenticated) {
@@ -29,6 +30,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 <Route path="/admin/transactions" element={<TransactionsPage/>}/>
                 <Route path="/admin/tracks" element={<TracksPage/>}/>
                 <Route path="/admin/genres" element={<GenresPage/>}/>
+                <Route path="/admin/playlists" element={<PlaylistsPage/>}/>
                 <Route path="/admin/artists/:id" element={<ArtistDetailsPage/>}/>
                 <Route path="/admin/tracks/:id" element={<TrackDetailsPage/>}/>
                 <Route path="/admin/artists/create" element={<CreateArtistPage/>}/>

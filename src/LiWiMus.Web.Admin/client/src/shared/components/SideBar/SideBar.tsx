@@ -13,6 +13,7 @@ import GroupIcon from "@mui/icons-material/Group";
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
+import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
@@ -68,24 +69,32 @@ export default function SideBar({
             text={"Artists"}
             to={"/admin/artists"}
             onClick={linkClickHandler}
-          /><ListLink
+          />
+          <ListLink
+              icon={<QueueMusicIcon />}
+              text={"Playlists"}
+              to={"/admin/playlists"}
+              onClick={linkClickHandler}
+          />
+          <ListLink
             icon={<AudiotrackIcon />}
             text={"Tracks"}
             to={"/admin/tracks"}
             onClick={linkClickHandler}
             />
           <ListLink
-              icon={<ReceiptIcon />}
-              text={"Transactions"}
-              to={"/admin/transactions"}
-              onClick={linkClickHandler}
-          />
-          <ListLink
               icon={<TheaterComedyIcon />}
               text={"Genres"}
               to={"/admin/genres"}
               onClick={linkClickHandler}
           />
+          <ListLink
+              icon={<ReceiptIcon />}
+              text={"Transactions"}
+              to={"/admin/transactions"}
+              onClick={linkClickHandler}
+          />
+          
           
         </List>
         <Divider />
