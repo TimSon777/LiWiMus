@@ -10,6 +10,7 @@ import PlanInfoEditor from "../components/PlanInfoEditor/PlanInfoEditor";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { formatDistanceToNow } from "date-fns";
 import PlanDeleter from "../components/PlanDeleter/PlanDeleter";
+import PlanPermissionsEditor from "../components/PlanPermissionsEditor/PlanPermissionsEditor";
 
 export default function PlanDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -65,6 +66,16 @@ export default function PlanDetailsPage() {
               <PlanInfoEditor plan={plan} setPlan={setPlan} />
             </Grid>
           </Grid>
+        </Paper>
+      </Grid>
+
+      <Grid item xs={12} md={10} lg={8}>
+        <Paper sx={{ p: 4 }} elevation={10}>
+          <Typography variant={"h3"} component={"div"}>
+            Permissions
+          </Typography>
+
+          <PlanPermissionsEditor plan={plan} setPlan={setPlan} />
         </Paper>
       </Grid>
     </Grid>
