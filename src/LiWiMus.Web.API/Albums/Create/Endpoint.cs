@@ -34,27 +34,9 @@ public class Endpoint : IEndpoint<IResult, Request>
         }
 
         var album = _mapper.Map<Album>(request);
-        album.Owners = new List<Artist>();
-
-        foreach (var artistId in request.ArtistIds)
-        {
-            var artist = await _artistRepository.GetByIdAsync(artistId);
-
-            if (artist is null)
-            {
-                return Results.Extensions.NotFoundById(EntityType.Artists, artistId);
-            }
-
-            album.Owners.Add(artist);
-        }
-
         await _albumRepository.AddAsync(album);
 
         var dto = _mapper.Map<Dto>(album);
-        dto.Artists = _mapper.MapList<Artist, Artists.Dto>(await _albumRepository.GetArtistsAsync(album)).ToList();
-        dto.TracksCount = await _albumRepository.GetTracksCountAsync(album);
-        dto.ListenersCount = await _albumRepository.GetListenersCountAsync(album);
-
         return Results.Ok(dto);
     }
 

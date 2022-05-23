@@ -5,5 +5,4 @@ public class Request
     public string Title { get; set; } = null!;
     public DateOnly PublishedAt { get; set; }
     public string CoverLocation { get; set; } = null!;
-    public ICollection<int> ArtistIds { get; set; } = null!;
 }

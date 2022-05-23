@@ -9,10 +9,12 @@
 
     <ItemGroup>
         <Compile Include="JsonHelpers.fs" />
-        <Compile Include="UrlSettings.fs" />
         <Compile Include="BaseApplicationFactory.fs" />
         <Compile Include="TestApplicationFactory.fs" />
         <Compile Include="Albums\CreateTests.fs" />
+        <Compile Include="Albums\UpdateTests.fs" />
+        <Compile Include="Albums\Owners\DeleteTests.fs" />
+        <Compile Include="Albums\Owners\AddTests.fs" />
         <Compile Include="Playlists\UpdateTests.fs" />
         <Compile Include="Playlists\ReadTests.fs" />
         <Compile Include="Playlists\DeleteTests.fs" />

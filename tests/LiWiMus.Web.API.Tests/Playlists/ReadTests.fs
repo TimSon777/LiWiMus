@@ -18,7 +18,7 @@ type ReadTests(factory: TestApplicationFactory) =
         task {
     
             //Act
-            let! httpMessage = client.GetAsync(url.Replace("{id:int}", "1"))
+            let! httpMessage = client.GetAsync(url.Replace("{id:int}", "24"))
     
             //Assert
             httpMessage

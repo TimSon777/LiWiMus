@@ -40,6 +40,11 @@ public class Endpoint : IEndpoint<IResult, Request>
             return Results.Extensions.NotFoundById(EntityType.Albums, request.Id);
         }
 
+        if (request.PublishedAt is not null && DateOnly.FromDateTime(album.CreatedAt) < request.PublishedAt.Value)
+        {
+            return Results.Conflict(new { detail = "Publication date must be less than created date" });
+        }
+
         _mapper.Map(request, album);
 
         await _albumRepository.UpdateAsync(album);
