@@ -3,6 +3,7 @@ using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Plans.Specifications;
 using LiWiMus.Core.Users;
+using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
 
@@ -64,6 +65,24 @@ public class PlanManager : IPlanManager
         await GrantPermissionAsync(plan, permission);
     }
 
+    public async Task<bool> DeleteAsync(Plan plan)
+    {
+        var users = await _userRepository.GetInPlanAsync(plan);
+
+        if (users.Any(user => IsActive(user.UserPlan)))
+        {
+            return false;
+        }
+
+        await _planRepository.DeleteAsync(plan);
+        return true;
+    }
+
+    public async Task<bool> IsInPlanAsync(User user, Plan plan)
+    {
+        throw new NotImplementedException();
+    }
+
     private static UserPlan CreateUserPlan(User user, Plan plan, TimeSpan time)
     {
         return new UserPlan
@@ -73,5 +92,10 @@ public class PlanManager : IPlanManager
             Start = DateTime.UtcNow,
             End = DateTime.UtcNow.AddOrMaximize(time)
         };
+    }
+
+    private static bool IsActive(UserPlan? userPlan)
+    {
+        return userPlan is not null && userPlan.End > DateTime.UtcNow;
     }
 }
