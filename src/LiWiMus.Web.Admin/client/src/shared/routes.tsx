@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import LoginPage from "../login/Login.page";
 import UsersPage from "../users/pages/Users.page";
 import DashboardPage from "../dashboard/Dashboard.page";
@@ -19,6 +19,7 @@ import GenresPage from "../genres/pages/Genres.page";
 import CreateGenrePage from "../genres/pages/CreateGenre.page";
 import CreateTrackPage from "../tracks/pages/CreateTrack.page";
 import PlanDetailsPage from "../plans/pages/PlanDetails.page";
+import RoleDetailsPage from "../roles/pages/RoleDetails.page";
 
 export const useRoutes = (isAuthenticated: boolean) => {
   if (isAuthenticated) {
@@ -32,6 +33,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
         <Route path="/admin/genres" element={<GenresPage />} />
         <Route path="/admin/artists/:id" element={<ArtistDetailsPage />} />
         <Route path="/admin/plans/:id" element={<PlanDetailsPage />} />
+        <Route path="/admin/roles/:id" element={<RoleDetailsPage />} />
         <Route path="/admin/tracks/:id" element={<TrackDetailsPage />} />
         <Route path="/admin/artists/create" element={<CreateArtistPage />} />
         <Route path="/admin/genres/create" element={<CreateGenrePage />} />

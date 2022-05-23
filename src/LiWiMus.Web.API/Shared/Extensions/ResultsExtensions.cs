@@ -17,5 +17,6 @@ public enum EntityType : byte
     Playlists,
     Transactions,
     Plans,
-    Permissions
+    Permissions,
+    Roles
 }

@@ -7,12 +7,14 @@ public sealed class SystemPermissionsByRoleSpec : Specification<SystemPermission
 {
     public SystemPermissionsByRoleSpec(Role role)
     {
-        Query.Where(permission => permission.Roles.Any(r => r.Name == role.Name));
+        Query.Where(permission => permission.Roles.Any(p => p.Name == role.Name));
+        Query.Include(permission => permission.Roles);
     }
 
     public SystemPermissionsByRoleSpec(string roleName)
     {
-        Query.Where(permission => permission.Roles.Any(r => r.Name == roleName));
+        Query.Where(permission => permission.Roles.Any(p => p.Name == roleName));
+        Query.Include(permission => permission.Roles);
     }
 }
 

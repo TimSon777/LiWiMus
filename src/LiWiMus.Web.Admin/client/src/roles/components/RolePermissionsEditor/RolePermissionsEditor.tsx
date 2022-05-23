@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Plan} from "../../types/Plan";
-import {Permission} from "../../../permissions/Permission";
-import PermissionService from "../../../permissions/Permission.service";
+import {Role} from "../../types/Role";
 import {useNotifier} from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import {
@@ -18,22 +16,24 @@ import {
     Tooltip,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
-import PlanService from "../../Plan.service";
+import RoleService from "../../Role.service";
+import {SystemPermission} from "../../../systemPermissions/SystemPermission";
+import SystemPermissionService from "../../../systemPermissions/SystemPermission.service";
 
 type Prop = {
-  plan: Plan;
-  setPlan: (plan: Plan) => void;
+  role: Role;
+  setRole: (role: Role) => void;
 };
 
-export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
-  const [permissions, setPermissions] = useState<Permission[]>();
+export default function RolePermissionsEditor({ role, setRole }: Prop) {
+  const [permissions, setPermissions] = useState<SystemPermission[]>();
   const [loading, setLoading] = useState(true);
-  const [checked, setChecked] = useState(plan.permissions);
+  const [checked, setChecked] = useState(role.permissions);
   const { showError, showSuccess } = useNotifier();
 
   useEffect(() => {
     setLoading(true);
-    PermissionService.getAll()
+    SystemPermissionService.getAll()
       .then(setPermissions)
       .catch(showError)
       .then(() => setLoading(false));
@@ -43,7 +43,7 @@ export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
     return <Loading />;
   }
 
-  const handleToggle = (permission: Permission) => {
+  const handleToggle = (permission: SystemPermission) => {
     const currentIndex = checked.map((p) => p.id).indexOf(permission.id);
     const newChecked = [...checked];
 
@@ -57,13 +57,13 @@ export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
   };
 
   const rollbackHandler = () => {
-    setChecked(plan.permissions);
+    setChecked(role.permissions);
   };
 
   const saveHandler = async () => {
     try {
-      const response = await PlanService.replacePermissions(plan, checked);
-      setPlan({ ...plan, ...response });
+      const response = await RoleService.replacePermissions(role, checked);
+      setRole({ ...role, ...response });
       showSuccess("Permissions updated");
     } catch (e) {
       showError(e);
@@ -71,7 +71,7 @@ export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
   };
 
   const isChanged =
-    JSON.stringify(checked) !== JSON.stringify(plan.permissions);
+    JSON.stringify(checked) !== JSON.stringify(role.permissions);
 
   return (
     <Box display={"flex"} flexDirection={"column"}>
