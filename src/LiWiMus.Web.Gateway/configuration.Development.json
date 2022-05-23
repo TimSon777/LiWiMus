@@ -425,6 +425,21 @@
       "SwaggerKey" : "Admin.API.C#"
     },
     {
+      "DownstreamPathTemplate": "/api/playlists",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/playlists",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
       "DownstreamPathTemplate": "/api/playlists/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
