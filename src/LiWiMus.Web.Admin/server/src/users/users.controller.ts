@@ -67,7 +67,7 @@ export class UsersController {
                     }, HttpStatus.BAD_REQUEST)});
     }
 
-    @Post(':id')
+    @Post(':id/removeAvatar')
     @ApiCreatedResponse( {type: UserDto })
     async removeUserAvatar(@Param('id') id: string) {
         return await this.userService.removeAvatar(+id);
