@@ -15,6 +15,8 @@
         <Compile Include="Albums\UpdateTests.fs" />
         <Compile Include="Albums\Owners\DeleteTests.fs" />
         <Compile Include="Albums\Owners\AddTests.fs" />
+        <Compile Include="Albums\DeleteTests.fs" />
+        <Compile Include="Albums\ReadTests.fs" />
         <Compile Include="Playlists\UpdateTests.fs" />
         <Compile Include="Playlists\ReadTests.fs" />
         <Compile Include="Playlists\DeleteTests.fs" />

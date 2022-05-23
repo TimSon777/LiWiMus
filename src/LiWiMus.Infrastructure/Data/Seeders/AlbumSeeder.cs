@@ -14,12 +14,15 @@ public class AlbumSeeder : ISeeder
     private readonly UserManager<User> _userManager;
     private readonly IRepository<Track> _trackRepository;
     private readonly IRepository<Artist> _artistRepository;
+    private readonly IRepository<Album> _albumRepository;
 
-    public AlbumSeeder(UserManager<User> userManager, IRepository<Track> trackRepository, IRepository<Artist> artistRepository)
+    public AlbumSeeder(UserManager<User> userManager, IRepository<Track> trackRepository, 
+        IRepository<Artist> artistRepository, IRepository<Album> albumRepository)
     {
         _userManager = userManager;
         _trackRepository = trackRepository;
         _artistRepository = artistRepository;
+        _albumRepository = albumRepository;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -94,6 +97,15 @@ public class AlbumSeeder : ISeeder
                     Name = "MockArtist3_Album",
                     PhotoLocation = "Location"
                 };
+
+                var albumEmpty = new Album
+                {
+                    Id = 90001,
+                    CoverLocation = "Location",
+                    Title = "MockAlbum_Album"
+                };
+
+                await _albumRepository.AddAsync(albumEmpty);
 
                 await _artistRepository.AddAsync(artistWithoutAlbum);
                 break;
