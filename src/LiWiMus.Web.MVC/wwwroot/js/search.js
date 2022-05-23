@@ -14,10 +14,15 @@
                 inputPageSearch.val(currentNumberPage + 1);
             }
         });
+        $('#btn-search-show-more').prop('disabled', false);
     });
     
     $('#btn-search-search').click(() => {
         $('#search-items').empty();
         $('#input-page-search').val(1);
+    });
+    
+    $('#input-search').on('input', () => {
+       $('#btn-search-show-more').prop('disabled', true); 
     });
 });
