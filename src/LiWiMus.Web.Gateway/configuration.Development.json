@@ -287,6 +287,21 @@
       "SwaggerKey" : "Admin.API.Nest"
     },
     {
+      "DownstreamPathTemplate": "/api/albums",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/albums",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
       "DownstreamPathTemplate": "/api/genres",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
