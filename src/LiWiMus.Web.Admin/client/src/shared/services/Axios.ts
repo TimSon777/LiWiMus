@@ -23,6 +23,9 @@ const getMessage = (error): string => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
+    if (error.response.data.detail) {
+      return error.response.data.detail;
+    }
     if (error.response.data) {
       return error.response.data;
     }
