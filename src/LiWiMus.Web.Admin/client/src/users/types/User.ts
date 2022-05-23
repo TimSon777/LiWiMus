@@ -1,16 +1,50 @@
-export type User = {
-  id: string;
-  userName: string | undefined;
+import { parseISO } from "date-fns";
+import { Gender } from "./Gender";
+
+export class User {
+  constructor(
+    id: string,
+    userName: string | undefined,
+    email: string,
+    emailConfirmed: string,
+    firstName: string | undefined,
+    secondName: string | undefined,
+    patronymic: string | undefined,
+    birthDate: string | undefined,
+    gender: Gender | undefined,
+    balance: string,
+    avatarLocation: string | undefined,
+    createdAt: string,
+    modifiedAt: string
+  ) {
+    this.id = +id;
+    this.userName = userName;
+    this.email = email;
+    this.emailConfirmed = Boolean(emailConfirmed);
+    this.firstName = firstName;
+    this.secondName = secondName;
+    this.patronymic = patronymic;
+    this.birthDate = birthDate ? parseISO(birthDate) : undefined;
+    this.gender = gender;
+    this.balance = +balance;
+    this.avatarLocation = avatarLocation;
+    this.createdAt = parseISO(createdAt);
+    this.modifiedAt = parseISO(modifiedAt);
+  }
+
+  id: number;
+  userName?: string;
   email: string;
+  emailConfirmed: boolean;
 
-  firstName: string;
-  secondName: string;
-  patronymic: string;
-  birthDate: string;
-  gender: string;
-  balance: string;
-  avatarLocation: string;
+  firstName?: string;
+  secondName?: string;
+  patronymic?: string;
+  birthDate?: Date;
+  gender?: Gender;
+  balance: number;
+  avatarLocation?: string;
 
-  createdAt: string;
-  modifiedAt: string;
-};
+  createdAt: Date;
+  modifiedAt: Date;
+}
