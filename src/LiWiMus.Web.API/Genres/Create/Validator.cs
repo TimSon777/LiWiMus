@@ -12,7 +12,7 @@ public class Validator : AbstractValidator<Request>
     {
         RuleFor(request => request.Name)
             .NotEmpty()
-            .MaximumLength(50)
+            .Length(2, 50)
             .DisableTags()
             .MustAsync(async (name, token) => !await repository.AnyAsync(new GenreByNameSpec(name), token))
             .WithMessage("Genre with name '{PropertyValue}' already exists");
