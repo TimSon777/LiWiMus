@@ -17,7 +17,7 @@ const map = (data: any) =>
     data.patronymic,
     data.birthDate,
     data.gender,
-    data.babel,
+    data.balance,
     data.avatarLocation,
     data.createdAt,
     data.modifiedAt

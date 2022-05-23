@@ -26,7 +26,7 @@ export class User {
     this.patronymic = patronymic;
     this.birthDate = birthDate ? parseISO(birthDate) : undefined;
     this.gender = gender;
-    this.balance = +balance;
+    this.balance = parseFloat(balance);
     this.avatarLocation = avatarLocation;
     this.createdAt = parseISO(createdAt);
     this.modifiedAt = parseISO(modifiedAt);
