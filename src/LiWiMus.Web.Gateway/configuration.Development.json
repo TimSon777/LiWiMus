@@ -219,6 +219,21 @@
       "SwaggerKey" : "Auth"
     },
     {
+      "DownstreamPathTemplate": "/api/users/{id}/removeAvatar",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 3001
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}/removeAvatar",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "SwaggerKey" : "Admin.API.Nest"
+    },
+    {
       "DownstreamPathTemplate": "/api/users/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
