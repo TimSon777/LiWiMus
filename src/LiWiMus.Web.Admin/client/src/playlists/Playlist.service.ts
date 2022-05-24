@@ -5,6 +5,7 @@ import {UpdatePlaylistDto} from "./types/UpdatePlaylistDto";
 import {Track} from "../tracks/types/Track";
 import {PaginatedData} from "../shared/types/PaginatedData";
 import {FilterOptions} from "../shared/types/FilterOptions";
+import {CreatePlaylistDto} from "./types/CreatePlaylistDto"
 
 
 const PlaylistService = {
@@ -17,6 +18,11 @@ const PlaylistService = {
             params: options,
         });
         return response.data as PaginatedData<Playlist>
+    },
+    
+    save: async (playlist: CreatePlaylistDto) => {
+        const response = await axios.post(`/playlists`, playlist)
+        return response.data as Playlist
     },
 
     remove: async (playlist: Playlist) => {

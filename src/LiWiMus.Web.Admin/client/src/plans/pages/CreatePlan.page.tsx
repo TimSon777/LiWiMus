@@ -3,16 +3,18 @@ import {Button, Grid, IconButton, InputAdornment, Paper, Stack, Typography} from
 import ContrastTextField from "../../shared/components/ContrastTextField/ContrastTextField";
 import {useNotifier} from "../../shared/hooks/Notifier.hook";
 import {SubmitHandler, useForm} from "react-hook-form";
-import GenreService from "../Genre.service";
-import {CreateGenreDto} from "../types/CreateGenreDto";
+import PlanService from "../Plan.service";
+import {CreatePlanDto} from "../types/CreatePlanDto";
 import {useNavigate} from "react-router-dom";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 type Inputs = {
-    name: string,
+    name: string
+    pricePerMonth: number;
+    description: string
 };
 
-export default function CreateGenrePage() {
+export default function CreatePlanPage() {
     const {
         register,
         handleSubmit,
@@ -26,12 +28,14 @@ export default function CreateGenrePage() {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         try {
             // @ts-ignore
-            const dto: CreateGenreDto = {
+            const dto: CreatePlanDto = {
                 name: data.name,
+                description: data.description,
+                pricePerMonth: data.pricePerMonth
             };
-            const genre = await GenreService.save(dto);
-            showSuccess("Genre created");
-            navigate(`/admin/genres/${genre.id}`);
+            const genre = await PlanService.save(dto);
+            showSuccess("Plan created");
+            navigate(`/admin/plans/${genre.id}`);
         } catch (e) {
             showError(e);
         }
@@ -42,7 +46,7 @@ export default function CreateGenrePage() {
             <Grid item xs={12} md={10} lg={8}>
                 <Paper sx={{p: 4}} elevation={10}>
                     <Typography variant={"h3"} component={"div"} sx={{mb: 4}}>
-                        New genre
+                        New plan
                     </Typography>
 
                     <Grid>
@@ -55,8 +59,28 @@ export default function CreateGenrePage() {
                                     fullWidth
                                     {...register("name", {
                                         required: {value: true, message: "Name required"},
-                                        minLength: {value: 2, message: "Min length - 4"},
+                                        minLength: {value: 4, message: "Min length - 4"},
                                         maxLength: {value: 50, message: "Max length - 50"},
+                                    })}
+                                />
+                                <ContrastTextField
+                                    error={!!errors.description && !!errors.description.message}
+                                    helperText={errors.description?.message}
+                                    label={"Description"}
+                                    fullWidth
+                                    {...register("description", {
+                                        required: {value: true, message: "Description required"},
+                                        minLength: {value: 4, message: "Min length - 4"},
+                                        maxLength: {value: 50, message: "Max length - 50"},
+                                    })}
+                                />
+                                <ContrastTextField
+                                    error={!!errors.pricePerMonth && !!errors.pricePerMonth.message}
+                                    helperText={errors.name?.message}
+                                    label={"Price Per Month"}
+                                    fullWidth
+                                    {...register("pricePerMonth", {
+                                        required: {value: true, message: "Price Per Month required"},
                                     })}
                                 />
                                 <Button

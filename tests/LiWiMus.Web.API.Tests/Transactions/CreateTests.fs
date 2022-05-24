@@ -90,3 +90,27 @@ type CreateTests(
                     .HaveClientError("amount can't be 0 (see Validator)")
                     |> ignore
             }
+            
+        [<Fact>]
+        member this.``Tests(Transactions): Create => Failure (unprocessable entity)``() =
+            
+            // Arrange
+            let client = factory.CreateClient()
+    
+            let body = Transactions.Create.Request(
+                UserId = 45000,
+                Amount = 10,
+                Description = "Description"
+            )
+            
+            task {
+                
+                //Act
+                let! httpMessage = client.PostAsJsonAsync(url, body)
+                
+                //Assert
+                httpMessage
+                    .Should()
+                    .HaveClientError("request to not existing entity")
+                    |> ignore
+            }
