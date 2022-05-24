@@ -19,8 +19,12 @@ import GenresPage from "../genres/pages/Genres.page"
 import CreateGenrePage from "../genres/pages/CreateGenre.page"
 import CreateTrackPage from "../tracks/pages/CreateTrack.page"
 import PlaylistsPage from "../playlists/pages/Playlists.page"
+import CreatePlaylistPage from "../playlists/pages/CreatePlaylist.page"
 import PlanDetailsPage from "../plans/pages/PlanDetails.page";
 import RoleDetailsPage from "../roles/pages/RoleDetails.page";
+import CreateTransactionPage from "../transactions/pages/CreateTransaction.page"
+import CreatePlanPage from "../plans/pages/CreatePlan.page"
+import PlansPage from "../plans/pages/Plans.page"
 
 export const useRoutes = (isAuthenticated: boolean) => {
     if (isAuthenticated) {
@@ -32,6 +36,7 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 <Route path="/admin/transactions" element={<TransactionsPage/>}/>
                 <Route path="/admin/tracks" element={<TracksPage/>}/>
                 <Route path="/admin/genres" element={<GenresPage/>}/>
+                <Route path="/admin/plans" element={<PlansPage/>}/>
                 <Route path="/admin/playlists" element={<PlaylistsPage/>}/>
                 <Route path="/admin/artists/:id" element={<ArtistDetailsPage/>}/>
                 <Route path="/admin/tracks/:id" element={<TrackDetailsPage/>}/>
@@ -41,6 +46,9 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 <Route path="/admin/tracks/create" element={<CreateTrackPage/>}/>
                 <Route path="/admin/playlists/:id" element={<PlaylistDetailsPage/>}/>
                 <Route path="/admin/albums/:id" element={<AlbumDetailsPage/>}/>
+                <Route path="/admin/plans/create" element={<CreatePlanPage/>}/>
+                <Route path="/admin/playlists/create" element={<CreatePlaylistPage/>}/>
+                <Route path="/admin/transactions/create" element={<CreateTransactionPage/>}/>
                 <Route path="/admin/plans/:id" element={<PlanDetailsPage />} />
                 <Route path="/admin/roles/:id" element={<RoleDetailsPage />} />
                 <Route

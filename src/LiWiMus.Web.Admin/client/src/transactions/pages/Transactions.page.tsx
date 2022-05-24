@@ -14,7 +14,7 @@ import {
     MenuItem,
     Select,
     TextField,
-    Popover
+    Popover, Fab
 } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from "@mui/icons-material/Add";
@@ -229,6 +229,11 @@ export default function UsersPage() {
                     loading={loading}
                     autoHeight
                 ></DataGrid>
+            </div>
+            <div>
+                <Fab color="primary" sx={{ position: 'fixed', bottom: 50, right: 50}} aria-label="add" href="/admin/transactions/create">
+                    <AddIcon/>
+                </Fab>
             </div>
         </div>
     );

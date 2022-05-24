@@ -15,6 +15,7 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import AudiotrackIcon from '@mui/icons-material/Audiotrack';
 import QueueMusicIcon from '@mui/icons-material/QueueMusic';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
+import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
 import ListButton from "../ListButton/ListButton";
@@ -92,6 +93,12 @@ export default function SideBar({
               icon={<ReceiptIcon />}
               text={"Transactions"}
               to={"/admin/transactions"}
+              onClick={linkClickHandler}
+          />
+          <ListLink
+              icon={<MonetizationOnIcon />}
+              text={"Plans"}
+              to={"/admin/plans"}
               onClick={linkClickHandler}
           />
           

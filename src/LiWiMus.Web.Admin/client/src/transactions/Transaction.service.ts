@@ -3,6 +3,7 @@ import { Transaction } from "./types/Transaction";
 import { UpdateTransactionDto } from "./types/UpdateTransactionDto";
 import { FilterOptions } from "../shared/types/FilterOptions";
 import { PaginatedData } from "../shared/types/PaginatedData";
+import { CreateTransactionDto } from "./types/CreateTransactionDto"
 
 
 const TransactionService = {
@@ -17,6 +18,11 @@ const TransactionService = {
     return response.data as Transaction;
   },
 
+  save: async (transaction: CreateTransactionDto) => {
+    const response = await axios.post(`/transactions`, transaction);
+    return response.data as Transaction;
+  },
+  
   update: async (dto: UpdateTransactionDto) => {
     const response = await axios.patch(`/transactions`, dto);
     return response.data as Transaction;

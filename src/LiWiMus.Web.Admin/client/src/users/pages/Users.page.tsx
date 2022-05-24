@@ -24,6 +24,7 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import UserService from "../User.service";
 import {FilterOptions} from "../../shared/types/FilterOptions";
 import {User} from "../types/User";
+import DateFormat from "date-fns/format"
 
 
 type FilterItem = {
@@ -70,6 +71,10 @@ export default function UsersPage() {
             headerName: "BirthDate",
             flex: 0.5,
             filterable: false,
+            valueFormatter: params => {
+                if (params.value)
+                    return DateFormat(params.value, "dd.MM.yyyy")
+            }
         },
         {
             field: "gender",
@@ -252,7 +257,8 @@ export default function UsersPage() {
                 ></DataGrid>
             </div>
             <div>
-                <Fab color="primary" sx={{ position: 'absolute', bottom: 50, right: 50}} aria-label="add" href="/admin/users/create">
+                <Fab color="primary" sx={{position: 'fixed', bottom: 50, right: 50}} aria-label="add"
+                     href="/admin/users/create">
                     <AddIcon/>
                 </Fab>
             </div>
