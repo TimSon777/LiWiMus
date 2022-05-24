@@ -32,10 +32,14 @@ public class Endpoint : IEndpoint<IResult, Request>
 
         var user = _mapper.Map<User>(request);
         var result = await _userManager.CreateAsync(user, request.Password);
+        
+        if (!result.Succeeded)
+        {
+            return Results.UnprocessableEntity(result.Errors);
+        }
 
-        return !result.Succeeded
-            ? Results.UnprocessableEntity(result.Errors)
-            : Results.NoContent();
+        var dto = _mapper.Map<Dto>(user);
+        return Results.Ok(dto);
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
