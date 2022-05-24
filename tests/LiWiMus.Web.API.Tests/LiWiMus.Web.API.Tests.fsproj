@@ -8,12 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="JsonHelpers.fs" />
+        <Compile Include="JsonOptionsExtensions.fs" />
+        <Compile Include="HttpResponseMessageExtensions.fs" />
         <Compile Include="BaseApplicationFactory.fs" />
         <Compile Include="TestApplicationFactory.fs" />
         <Compile Include="Albums\CreateTests.fs" />
         <Compile Include="Albums\UpdateTests.fs" />
-        <Compile Include="Albums\Owners\DeleteTests.fs" />
+        <Compile Include="Albums\Owners\RemoveTests.fs" />
         <Compile Include="Albums\Owners\AddTests.fs" />
         <Compile Include="Albums\DeleteTests.fs" />
         <Compile Include="Albums\ReadTests.fs" />
@@ -25,7 +26,16 @@
         <Compile Include="Playlists\RemoveTrackTests.fs" />
         <Compile Include="Transactions\UpdateTests.fs" />
         <Compile Include="Genres\CreateTests.fs" />
+        <Compile Include="Plans\Generators\UpdateTestsGeneratorSuccess.fs" />
+        <Compile Include="Plans\Generators\UpdateTestsGeneratorBadRequest.fs" />
+        <Compile Include="Plans\UpdateTests.fs" />
         <Compile Include="Plans\CreateTests.fs" />
+        <Compile Include="Plans\DeleteTests.fs" />
+        <Compile Include="Plans\ReadTests.fs" />
+        <Compile Include="Plans\ListTests.fs" />
+        <Compile Include="Plans\Permissions\AddTests.fs" />
+        <Compile Include="Plans\Permissions\RemoveTests.fs" />
+        <Compile Include="Plans\Permissions\ReplaceAllTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

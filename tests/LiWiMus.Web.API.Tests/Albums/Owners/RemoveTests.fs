@@ -7,7 +7,7 @@ open Xunit
 open FluentAssertions
 open LiWiMus.Web.Shared.Extensions
 
-type DeleteTests(
+type RemoveTests(
         factory: TestApplicationFactory) =
         let url = RouteConstants.Albums.Artists.Remove
         interface IClassFixture<TestApplicationFactory>
@@ -15,7 +15,7 @@ type DeleteTests(
         [<Theory>]
         [<InlineData(90000)>]
         [<InlineData(90001)>]
-        member this.``Tests(Albums -> Owners): Delete => Success``(artistId) =
+        member this.``Tests(Albums -> Owners): Remove => Success``(artistId) =
             
             // Arrange
             let client = factory.CreateClient()
@@ -37,7 +37,7 @@ type DeleteTests(
             }
             
         [<Fact>]
-        member this.``Tests(Albums): Update => Failure (unprocessable entity - artist)``() =
+        member this.``Tests(Albums): Remove => Failure (unprocessable entity - artist)``() =
             
             // Arrange
             let client = factory.CreateClient()
@@ -59,7 +59,7 @@ type DeleteTests(
             }
             
         [<Fact>]
-        member this.``Tests(Albums): Update => Failure (unprocessable entity - album)``() =
+        member this.``Tests(Albums): Remove => Failure (unprocessable entity - album)``() =
             
             // Arrange
             let client = factory.CreateClient()

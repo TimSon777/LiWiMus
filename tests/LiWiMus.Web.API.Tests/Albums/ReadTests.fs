@@ -8,7 +8,7 @@ open Xunit
 open System.Net.Http.Json
 open FluentAssertions
 open Microsoft.AspNetCore.Http.Json
-open LiWiMus.Web.API.Tests.JsonHelpers
+open LiWiMus.Web.API.Tests.JsonOptionsExtensions
 
 type ReadTests(
         factory: TestApplicationFactory) =
