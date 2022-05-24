@@ -10,12 +10,14 @@
     <ItemGroup>
         <Compile Include="JsonOptionsExtensions.fs" />
         <Compile Include="HttpResponseMessageExtensions.fs" />
+        <Compile Include="TestHelpers.fs" />
         <Compile Include="BaseApplicationFactory.fs" />
         <Compile Include="TestApplicationFactory.fs" />
         <Compile Include="Albums\CreateTests.fs" />
         <Compile Include="Albums\UpdateTests.fs" />
         <Compile Include="Albums\Owners\RemoveTests.fs" />
         <Compile Include="Albums\Owners\AddTests.fs" />
+        <Compile Include="Albums\Owners\ListTests.fs" />
         <Compile Include="Albums\DeleteTests.fs" />
         <Compile Include="Albums\ReadTests.fs" />
         <Compile Include="Playlists\UpdateTests.fs" />
@@ -42,12 +44,14 @@
         <Compile Include="Users\CreateTests.fs" />
         <Compile Include="Tracks\Generators\CreateTestsGeneratorSuccess.fs" />
         <Compile Include="Tracks\Generators\CreateTestsGeneratorFailure.fs" />
+        <Compile Include="Tracks\Owners\ListTests.fs" />
         <Compile Include="Tracks\CreateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="FluentAssertions" Version="6.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
+        <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
