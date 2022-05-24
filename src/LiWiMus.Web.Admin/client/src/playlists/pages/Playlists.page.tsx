@@ -81,12 +81,6 @@ export default function UsersPage() {
             )}`)
         },
         {
-            field: "tracksCount",
-            headerName: "TracksCount",
-            flex: 0.5,
-            filterable: false,
-        },
-        {
             field: "edit",
             headerName: "Edit",
             sortable: false,
