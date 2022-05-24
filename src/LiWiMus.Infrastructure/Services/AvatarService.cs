@@ -54,7 +54,7 @@ public class AvatarService : IAvatarService
         }
         catch (Exception)
         {
-            user.AvatarLocation = "Fuck";
+            user.AvatarLocation = null;
         }
         
     }
