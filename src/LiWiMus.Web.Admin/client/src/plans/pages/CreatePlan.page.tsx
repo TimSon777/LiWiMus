@@ -78,9 +78,11 @@ export default function CreatePlanPage() {
                                     error={!!errors.pricePerMonth && !!errors.pricePerMonth.message}
                                     helperText={errors.name?.message}
                                     label={"Price Per Month"}
+                                    type={"number"}
                                     fullWidth
                                     {...register("pricePerMonth", {
                                         required: {value: true, message: "Price Per Month required"},
+                                        min: {value: 0, message: "Positive price"}
                                     })}
                                 />
                                 <Button
