@@ -21,4 +21,8 @@ export class GenreDto extends IdDto {
     @ApiProperty()
     @Expose()
     modifiedAt: Date;
+    
+    @ApiProperty()
+    @Expose()
+    tracksCount: number;
 }

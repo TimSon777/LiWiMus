@@ -35,13 +35,15 @@ export class GenresController {
     @UseInterceptors(new TransformInterceptor(GenreDto))
     @ApiOkResponse({ type: GenreDto })
     async getGenreById(@Param('id') id : string) : Promise<GenreDto> {
-        let genre = Genre.findOne(+id)
+        let genre = await Genre.findOne(+id, {relations: ['tracks']})
             .catch(err => {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)
             });
-        return plainToInstance(GenreDto, genre);
+        let result = plainToInstance(GenreDto, genre);
+        result.tracksCount = genre.tracks.length;
+        return result;
     }
     
     @Get()
@@ -66,16 +68,12 @@ export class GenresController {
         let genre = await Genre.findOne({id: id});
         if (!genre) {
             throw new HttpException({
-                message: "genre was not found"
+                message: "Genre was not found"
             }, HttpStatus.NOT_FOUND)
         }
         
         await Genre
-            .remove(genre)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.INTERNAL_SERVER_ERROR)});
+            .remove(genre);
     }
 
     @Patch()
@@ -83,10 +81,6 @@ export class GenresController {
     @ApiCreatedResponse({ type: GenreDto })
     async updateGenres(@Body() dto: UpdateGenreDto) 
         : Promise<GenreDto> {
-        return this.genreService.updateGenre(dto)
-            .catch(err => {
-            throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)});
+        return this.genreService.updateGenre(dto);
     }
 }
