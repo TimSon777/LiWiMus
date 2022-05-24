@@ -39,18 +39,18 @@ public class AvatarService : IAvatarService
     {
         try
         {
-            // RemoveAvatarIfExists(user);
-            // var avatar = await GetRandomAvatarAsync();
-            //
-            // var fakeDirectory = _settings.DataSettings.PicturesDirectory;
-            //
-            // var fileName = Path.ChangeExtension(Path.GetRandomFileName(), "svg");
-            //
-            // var fakePath = Path.Combine(fakeDirectory, fileName);
-            // var realPath = GetRealPath(fakePath);
-            //
-            // user.AvatarLocation = Path.Combine(fakePath);
-            // await File.WriteAllBytesAsync(realPath, avatar);
+            RemoveAvatarIfExists(user);
+            var avatar = await GetRandomAvatarAsync();
+            
+            var fakeDirectory = _settings.DataSettings.PicturesDirectory;
+            
+            var fileName = Path.ChangeExtension(Path.GetRandomFileName(), "svg");
+            
+            var fakePath = Path.Combine(fakeDirectory, fileName);
+            var realPath = GetRealPath(fakePath);
+            
+            user.AvatarLocation = Path.Combine(fakePath);
+            await File.WriteAllBytesAsync(realPath, avatar);
         }
         catch (Exception)
         {
