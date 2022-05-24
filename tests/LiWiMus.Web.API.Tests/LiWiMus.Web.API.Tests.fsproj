@@ -36,6 +36,7 @@
         <Compile Include="Plans\Permissions\AddTests.fs" />
         <Compile Include="Plans\Permissions\RemoveTests.fs" />
         <Compile Include="Plans\Permissions\ReplaceAllTests.fs" />
+        <Compile Include="Users\CreateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

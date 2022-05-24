@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using LiWiMus.Web.Shared.Extensions;
 
 namespace LiWiMus.Web.API.Users.Create;
 
@@ -9,7 +10,8 @@ public class Validator : AbstractValidator<Request>
     {
         RuleFor(u => u.UserName)
             .NotEmpty()
-            .Length(3, 20);
+            .Length(3, 20)
+            .DisableTags();
 
         RuleFor(u => u.Email)
             .NotEmpty()
@@ -18,6 +20,6 @@ public class Validator : AbstractValidator<Request>
 
         RuleFor(u => u.Password)
             .NotEmpty()
-            .Length(1, 100);
+            .MaximumLength(100);
     }
 }
