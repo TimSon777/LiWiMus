@@ -11,10 +11,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.Property(u => u.Gender)
                .HasConversion<string>();
-        
-        builder.HasOne(u => u.UserPlan)
-               .WithOne(up => up.User)
-               .HasForeignKey<User>(u => u.UserPlanId);
 
         builder.HasMany(u => u.Artists)
                .WithMany(a => a.Owners)

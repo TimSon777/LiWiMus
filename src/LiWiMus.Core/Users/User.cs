@@ -47,7 +47,5 @@ public class User : BaseUserEntity
     public virtual ICollection<Chat> UserChats { get; set; } = null!;
     public virtual ICollection<Playlist> Playlists { get; set; } = null!;
     public virtual ICollection<Role> Roles { get; set; } = null!;
-
-    public virtual UserPlan? UserPlan { get; set; } = null!;
-    public int? UserPlanId { get; set; }
+    public virtual ICollection<UserPlan> Plans { get; set; } = null!;
 }

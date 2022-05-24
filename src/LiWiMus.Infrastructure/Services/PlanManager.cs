@@ -3,7 +3,6 @@ using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Plans.Specifications;
 using LiWiMus.Core.Users;
-using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
 
@@ -13,19 +12,21 @@ public class PlanManager : IPlanManager
 {
     private readonly IRepository<Plan> _planRepository;
     private readonly IRepository<User> _userRepository;
+    private readonly IRepository<UserPlan> _userPlanRepository;
     private readonly IRepository<Permission> _permissionRepository;
 
     public PlanManager(IRepository<Plan> planRepository, IRepository<User> userRepository,
-                       IRepository<Permission> permissionRepository)
+                       IRepository<Permission> permissionRepository, IRepository<UserPlan> userPlanRepository)
     {
         _planRepository = planRepository;
         _userRepository = userRepository;
         _permissionRepository = permissionRepository;
+        _userPlanRepository = userPlanRepository;
     }
 
-    public async Task AddToDefaultPlanAsync(User user, CancellationToken token = default)
+    public async Task AddToDefaultPlanAsync(User user)
     {
-        var defaultPlan = await _planRepository.GetBySpecAsync(new PlanByNameSpec(DefaultPlans.Free.Name), token);
+        var defaultPlan = await _planRepository.GetBySpecAsync(new PlanByNameSpec(DefaultPlans.Free.Name));
 
         if (defaultPlan is null)
         {
@@ -33,8 +34,7 @@ public class PlanManager : IPlanManager
         }
 
         var userPlan = CreateUserPlan(user, defaultPlan, TimeSpan.MaxValue);
-        user.UserPlan = userPlan;
-        await _userRepository.UpdateAsync(user, token);
+        await _userPlanRepository.AddAsync(userPlan);
     }
 
     public async Task<bool> HasPermissionAsync(Plan plan, Permission permission)
@@ -67,9 +67,7 @@ public class PlanManager : IPlanManager
 
     public async Task<bool> DeleteAsync(Plan plan)
     {
-        var users = await _userRepository.GetInPlanAsync(plan);
-
-        if (users.Any(user => IsActive(user.UserPlan)))
+        if (await _userPlanRepository.HasActiveAsync(plan))
         {
             return false;
         }

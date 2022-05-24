@@ -8,7 +8,8 @@ public sealed class RoleByNameSpec : Specification<Role>, ISingleResultSpecifica
     public RoleByNameSpec(string roleName)
     {
         Query.Where(role => role.Name == roleName);
-        Query.Include(role => role.Permissions);
+        Query.Include(role => role.Permissions)
+             .Include(role => role.Users);
     }
 }
 

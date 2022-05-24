@@ -1,12 +1,17 @@
-﻿namespace LiWiMus.Core.Plans;
+﻿using System.Linq.Expressions;
+
+namespace LiWiMus.Core.Plans;
 
 public class UserPlan : BaseEntity
 {
     public virtual User User { get; set; } = null!;
     public virtual Plan Plan { get; set; } = null!;
 
+    public int UserId { get; set; }
     public int PlanId { get; set; }
 
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
+
+    public static readonly Expression<Func<UserPlan, bool>> IsActive = plan => plan.End > DateTime.UtcNow;
 }

@@ -2,7 +2,7 @@
 
 public interface IPlanManager
 {
-    Task AddToDefaultPlanAsync(User user, CancellationToken token = default);
+    Task AddToDefaultPlanAsync(User user);
 
     Task<bool> HasPermissionAsync(Plan plan, Permission permission);
     Task GrantPermissionAsync(Plan plan, Permission permission);
