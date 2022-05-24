@@ -1,7 +1,10 @@
 ﻿using LiWiMus.Core.Plans;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Plans.Specifications;
+using LiWiMus.Core.Users;
+using LiWiMus.Core.Users.Enums;
 using LiWiMus.SharedKernel.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Data.Seeders;
 
@@ -10,13 +13,15 @@ public class PlanSeeder : ISeeder
     private readonly IRepository<Plan> _plansRepository;
     private readonly IRepository<Permission> _permissionRepository;
     private readonly IPlanManager _planManager;
+    private readonly UserManager<User> _userManager;
 
     public PlanSeeder(IRepository<Plan> plansRepository, IRepository<Permission> permissionRepository,
-                      IPlanManager planManager)
+                      IPlanManager planManager, UserManager<User> userManager)
     {
         _plansRepository = plansRepository;
         _permissionRepository = permissionRepository;
         _planManager = planManager;
+        _userManager = userManager;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -33,6 +38,52 @@ public class PlanSeeder : ISeeder
             {
                 await _planManager.GrantPermissionAsync(premium, permission);
             }
+        }
+
+        const string userName = "MockUser_Plan";
+
+        if (await _userManager.FindByNameAsync(userName) is not null)
+        {
+            return;
+        }
+        
+        switch (environmentType)
+        {
+            case EnvironmentType.Testing:
+                var user = new User
+                {
+                    Id = 180000,
+                    UserName = userName,
+                    Email = "mockEmail@mock.mock_Plan",
+                    Gender = Gender.Male,
+                };
+
+                var result = await _userManager.CreateAsync(user, "Password");
+                
+                if (!result.Succeeded)
+                {
+                    throw new SystemException();
+                }
+                
+                var permission = await _permissionRepository.GetByIdAsync(4);
+                var permission2 = await _permissionRepository.GetByIdAsync(5);
+                
+                if (permission is null || permission2 is null)
+                {
+                    throw new SystemException();
+                }
+                
+                var plan = new Plan
+                {
+                    Id = 180000,
+                    Description = "Description",
+                    Name = "MockPlan_Plan",
+                    PricePerMonth = 90,
+                    Permissions = new List<Permission> { permission, permission2 }
+                };
+
+                await _plansRepository.AddAsync(plan);
+                break;
         }
     }
 

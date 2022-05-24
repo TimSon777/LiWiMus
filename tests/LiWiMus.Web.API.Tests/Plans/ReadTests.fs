@@ -1,16 +1,16 @@
-﻿namespace LiWiMus.Web.API.Tests.Playlists
+﻿namespace LiWiMus.Web.API.Tests.Plans
 
 open LiWiMus.Web.API.Shared
+open FluentAssertions
 open LiWiMus.Web.API.Tests
 open Xunit
-open FluentAssertions
 
-type DeleteTests(factory: TestApplicationFactory) =
-    let url = RouteConstants.Playlists.Delete
+type ReadTests(factory: TestApplicationFactory) =
+    let url = RouteConstants.Plans.Read
     interface IClassFixture<TestApplicationFactory>
     
     [<Fact>]
-    member this.``Tests(Playlists): Delete => Success``() =
+    member this.``Tests(Plans): Read => Success``() =
     
         // Arrange
         let client = factory.CreateClient()
@@ -18,17 +18,17 @@ type DeleteTests(factory: TestApplicationFactory) =
         task {
     
             //Act
-            let! httpMessage = client.DeleteAsync(url.Replace("{id:int}", "24"))
+            let! httpMessage = client.GetAsync(url.Replace("{id:int}", "180000"))
     
             //Assert
             httpMessage
                 .Should()
-                .BeSuccessful("playlist with id 24 must be in db (see seeder)")
+                .BeSuccessful("plan with id 1 must be in db (see seeder)")
             |> ignore
         }
 
     [<Fact>]
-    member this.``Tests(Playlists): Delete => Failure (not found)``() =
+    member this.``Tests(Plans): Read => Failure (not found)``() =
     
         // Arrange
         let client = factory.CreateClient()
@@ -36,7 +36,7 @@ type DeleteTests(factory: TestApplicationFactory) =
         task {
     
             //Act
-            let! httpMessage = client.DeleteAsync(url.Replace("{id:int}", "100"))
+            let! httpMessage = client.GetAsync(url.Replace("{id:int}", "185000"))
     
             //Assert
             httpMessage
@@ -44,4 +44,3 @@ type DeleteTests(factory: TestApplicationFactory) =
                 .HaveClientError("request to not existing entity must return 404")
             |> ignore
         }
-    

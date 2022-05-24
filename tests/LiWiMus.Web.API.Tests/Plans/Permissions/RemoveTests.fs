@@ -1,80 +1,80 @@
-﻿namespace LiWiMus.Web.API.Tests.Albums.Owners
+﻿namespace LiWiMus.Web.API.Tests.Plans.Permissions
 
 open LiWiMus.Web.API
 open LiWiMus.Web.API.Shared
 open LiWiMus.Web.API.Tests
 open Xunit
 open FluentAssertions
-open System.Net.Http.Json
+open LiWiMus.Web.Shared.Extensions
 
-type AddTests(
+type DeleteTests(
         factory: TestApplicationFactory) =
-        let url = RouteConstants.Albums.Artists.Add
+        let url = RouteConstants.Plans.Permissions.Remove
         interface IClassFixture<TestApplicationFactory>
     
         [<Fact>]
-        member this.``Tests(Albums -> Owners): Add => Success``() =
+        member this.``Tests(Plans -> Permissions): Remove => Success``() =
             
             // Arrange
             let client = factory.CreateClient()
     
-            let body = Albums.Owners.Add.Request(
-                Id = 90000,
-                ArtistId = 90002)
+            let body = Plans.Permissions.Remove.Request(
+                PlanId = 180000,
+                PermissionId = 4)
             
             task {
                 
                 //Act
-                let! httpMessage = client.PostAsJsonAsync(url, body)
+                let! httpMessage = client.DeleteAsJsonAsync(url, body)
                 
                 //Assert
                 httpMessage
                     .Should()
-                    .BeSuccessful("artist must exists (see Validator)")
+                    .BeSuccessful("plan with id 180000 must has permission with id 11 (see seeder)")
                     |> ignore
             }
             
         [<Fact>]
-        member this.``Tests(Albums -> Owners): Add => Failure (unprocessable entity - artist)``() =
+        member this.``Tests(Plans -> Permissions): Remove => Failure (unprocessable entity - plan)``() =
             
             // Arrange
             let client = factory.CreateClient()
     
             let body = Albums.Owners.Remove.Request(
-                Id = 90000,
-                ArtistId = 95000)
+                Id = 185000,
+                ArtistId = 5)
             
             task {
                 
                 //Act
-                let! httpMessage = client.PostAsJsonAsync(url, body)
+                let! httpMessage = client.DeleteAsJsonAsync(url, body)
                 
                 //Assert
                 httpMessage
                     .Should()
-                    .HaveClientError("artist not exists (maybe you have problem with seeder?)")
+                    .HaveClientError("plan with id 185000 not exists")
                     |> ignore
             }
             
         [<Fact>]
-        member this.``Tests(Albums -> Owners): Add => Failure (unprocessable entity - album)``() =
+        member this.``Tests(Plans -> Permissions): Remove => Failure (unprocessable entity - permission)``() =
             
             // Arrange
             let client = factory.CreateClient()
     
-            let body = Albums.Owners.Remove.Request(
-                Id = 95000,
-                ArtistId = 90000)
+            let body = Plans.Permissions.Remove.Request(
+                PlanId = 180000,
+                PermissionId = 185000)
             
             task {
                 
                 //Act
-                let! httpMessage = client.PostAsJsonAsync(url, body)
+                let! httpMessage = client.DeleteAsJsonAsync(url, body)
                 
                 //Assert
                 httpMessage
                     .Should()
-                    .HaveClientError("can't found not existed album (maybe you have problem with seeder?)")
+                    .HaveClientError("permission with id 185000 not exists")
                     |> ignore
             }
         

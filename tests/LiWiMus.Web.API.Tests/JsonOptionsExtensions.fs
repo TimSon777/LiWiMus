@@ -1,4 +1,4 @@
-﻿module LiWiMus.Web.API.Tests.JsonHelpers
+﻿module LiWiMus.Web.API.Tests.JsonOptionsExtensions
 
 open DateOnlyTimeOnly.AspNet.Converters
 open Microsoft.AspNetCore.Http.Json
