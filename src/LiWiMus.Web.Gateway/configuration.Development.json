@@ -32,6 +32,21 @@
       "SwaggerKey" : "FileServer"
     },
     {
+      "DownstreamPathTemplate": "/files/url",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5223
+        }
+      ],
+      "UpstreamPathTemplate": "/api/files/url",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "SwaggerKey" : "FileServer"
+    },
+    {
       "DownstreamPathTemplate": "/files",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [

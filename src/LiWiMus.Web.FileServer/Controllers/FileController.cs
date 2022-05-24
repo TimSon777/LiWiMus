@@ -11,12 +11,45 @@ public class FilesController : ControllerBase
     private readonly FileContext _context;
     private readonly string _filesPath;
     private readonly IHashids _hashids;
+    private readonly HttpClient _client;
 
-    public FilesController(IHostEnvironment environment, FileContext context, IHashids hashids)
+    public FilesController(IHostEnvironment environment, FileContext context, IHashids hashids,
+                           IHttpClientFactory clientFactory)
     {
         _context = context;
         _hashids = hashids;
         _filesPath = Path.Combine(environment.ContentRootPath, "Files");
+        _client = clientFactory.CreateClient();
+    }
+
+    [HttpPost("url")]
+    public async Task<ActionResult<FileDto>> Save([FromBody] SaveUrlRequest request)
+    {
+        try
+        {
+            var response = await _client.GetAsync(request.Url);
+            response.EnsureSuccessStatusCode();
+
+            var contentType = response.Content.Headers.ContentType?.ToString();
+            var fileName = Path.GetFileName(request.Url);
+
+            var fileInfo = new FileInfo(fileName, contentType ?? "");
+
+            _context.Files.Add(fileInfo);
+            await _context.SaveChangesAsync();
+
+            var path = Path.Combine(_filesPath, fileInfo.Id.ToString());
+
+            await using var stream = System.IO.File.Create(path);
+            await response.Content.CopyToAsync(stream);
+
+            var location = Url.Action(nameof(Get), new {hashId = _hashids.Encode(fileInfo.Id)});
+            return new FileDto(location!);
+        }
+        catch (Exception e)
+        {
+            return BadRequest();
+        }
     }
 
     [HttpPost]
@@ -45,7 +78,7 @@ public class FilesController : ControllerBase
         {
             return UnprocessableEntity();
         }
-        
+
         var fileInfo = await _context.Files.FindAsync(id);
         if (fileInfo is null)
         {
@@ -71,7 +104,7 @@ public class FilesController : ControllerBase
         {
             return UnprocessableEntity();
         }
-        
+
         var fileInfo = await _context.Files.FindAsync(id);
         if (fileInfo is null)
         {

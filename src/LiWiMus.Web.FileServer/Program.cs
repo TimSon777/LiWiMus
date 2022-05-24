@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient();
+
 builder.Services.AddDbContext<FileContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
