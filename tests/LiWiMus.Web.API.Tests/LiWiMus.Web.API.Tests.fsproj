@@ -40,6 +40,9 @@
         <Compile Include="Plans\Permissions\RemoveTests.fs" />
         <Compile Include="Plans\Permissions\ReplaceAllTests.fs" />
         <Compile Include="Users\CreateTests.fs" />
+        <Compile Include="Tracks\Generators\CreateTestsGeneratorSuccess.fs" />
+        <Compile Include="Tracks\Generators\CreateTestsGeneratorFailure.fs" />
+        <Compile Include="Tracks\CreateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

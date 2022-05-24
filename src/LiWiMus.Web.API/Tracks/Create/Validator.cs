@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using LiWiMus.Web.API.Shared;
+using LiWiMus.Web.Shared.Extensions;
 
 namespace LiWiMus.Web.API.Tracks.Create;
 
@@ -10,7 +11,8 @@ public class Validator : AbstractValidator<Request>
     {
         RuleFor(r => r.Name)
             .NotNull()
-            .Length(2, 50);
+            .Length(2, 50)
+            .DisableTags();
 
         RuleFor(r => r.GenreIds)
             .NotEmpty()
@@ -26,5 +28,9 @@ public class Validator : AbstractValidator<Request>
 
         RuleFor(r => r.Duration)
             .GreaterThan(0);
+
+        RuleFor(r => r.FileLocation)
+            .NotEmpty()
+            .MaximumLength(100);
     }
 }
