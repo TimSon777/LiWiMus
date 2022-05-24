@@ -3,6 +3,7 @@ using LiWiMus.Core.Roles.Exceptions;
 using LiWiMus.Core.Roles.Interfaces;
 using LiWiMus.Core.Roles.Specifications;
 using LiWiMus.Core.Users;
+using LiWiMus.Infrastructure.Data;
 using LiWiMus.SharedKernel.Interfaces;
 
 namespace LiWiMus.Infrastructure.Services;
@@ -12,13 +13,15 @@ public class RoleManager : IRoleManager
     private readonly IRepository<User> _userRepository;
     private readonly IRepository<Role> _roleRepository;
     private readonly IRepository<SystemPermission> _permissionRepository;
-
+    private readonly ApplicationContext _context;
+    
     public RoleManager(IRepository<User> userRepository, IRepository<Role> roleRepository,
-                       IRepository<SystemPermission> permissionRepository)
+                       IRepository<SystemPermission> permissionRepository, ApplicationContext context)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _permissionRepository = permissionRepository;
+        _context = context;
     }
 
     public async Task<bool> IsInRoleAsync(User user, Role role)
@@ -34,7 +37,13 @@ public class RoleManager : IRoleManager
             throw new UserAlreadyInRoleException(user, role);
         }
 
-        user.Roles.Add(role);
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (user.Roles is null)
+        {
+            await _context.Entry(user).Collection(nameof(User.Roles)).LoadAsync();
+        }
+
+        user.Roles!.Add(role);
         await _userRepository.UpdateAsync(user);
     }
 
