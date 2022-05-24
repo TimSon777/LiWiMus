@@ -32,6 +32,7 @@ public class TransactionSeeder : ISeeder
             case EnvironmentType.Testing:
                 var user = new User
                 {
+                    Id = 40000,
                     UserName = userName,
                     Gender = Gender.Male,
                     AvatarLocation = "Location",
