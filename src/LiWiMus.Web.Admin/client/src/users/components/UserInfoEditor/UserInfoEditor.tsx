@@ -8,8 +8,7 @@ import {
   Select,
   Stack,
 } from "@mui/material";
-import ReadonlyInfo from "../../../shared/components/InfoItem/ReadonlyInfo";
-import { formatDistanceToNow, formatISO } from "date-fns";
+import { formatISO } from "date-fns";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateUserDto } from "../../types/UpdateUserDto";
@@ -81,26 +80,6 @@ export default function UserInfoEditor({ user, setUser }: Props) {
   return (
     <form>
       <Stack spacing={3}>
-        <ReadonlyInfo name={"ID"} value={user.id} />
-        <ReadonlyInfo name={"Email"} value={user.email} />
-        <ReadonlyInfo
-          name={"Email confirmed"}
-          value={`${user.emailConfirmed}`}
-        />
-        <ReadonlyInfo name={"Balance"} value={user.balance || 0} />
-        <ReadonlyInfo
-          name={"Created"}
-          value={formatDistanceToNow(user.createdAt, {
-            addSuffix: true,
-          })}
-        />
-        <ReadonlyInfo
-          name={"Modified"}
-          value={formatDistanceToNow(user.modifiedAt, {
-            addSuffix: true,
-          })}
-        />
-
         <Controller
           name="firstName"
           control={control}

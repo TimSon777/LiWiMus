@@ -70,6 +70,16 @@ export default function UserImageEditor({ user, setUser }: Props) {
     }
   };
 
+  const setRandomAvatar = async () => {
+    try {
+      const response = await UserService.setRandomAvatar(user!);
+      setUser(response);
+      showSuccess("Random avatar set");
+    } catch (e) {
+      showError(e);
+    }
+  };
+
   return (
     <ImageEditor
       width={250}
@@ -77,6 +87,7 @@ export default function UserImageEditor({ user, setUser }: Props) {
       onChange={changePhotoHandler}
       handler1={updatePhotoHandler}
       handler2={removePhotoHandler}
+      handler3={setRandomAvatar}
     />
   );
 }

@@ -1,6 +1,5 @@
 import React, { useCallback } from "react";
 import { Button } from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
 import HoverImage from "../HoverImage/HoverImage";
 import styles from "./ImageEditor.module.sass";
 
@@ -10,9 +9,11 @@ export type ImageEditorProps = {
   width: number;
   handler1: (input: HTMLInputElement) => void;
   handler2?: (input: HTMLInputElement) => void;
+  handler3?: (input: HTMLInputElement) => void;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   button1Text?: string;
   button2Text?: string;
+  button3Text?: string;
 };
 
 export default function ImageEditor({
@@ -21,9 +22,11 @@ export default function ImageEditor({
   width,
   handler1,
   handler2,
+  handler3,
   onChange,
-  button1Text = "Choose photo",
-  button2Text = "Remove photo",
+  button1Text = "Upload",
+  button2Text = "Remove",
+  button3Text = "Random",
 }: ImageEditorProps) {
   const callHandler = useCallback(
     (handler: (input: HTMLInputElement) => void) => {
@@ -50,6 +53,8 @@ export default function ImageEditor({
       />
 
       <HoverImage src={src} alt={alt ?? "Image editor"} size={size}>
+        {/*<EditIcon className={styles.icon} />*/}
+
         <Button
           variant="text"
           color={"secondary"}
@@ -57,20 +62,25 @@ export default function ImageEditor({
         >
           {button1Text}
         </Button>
-        {handler2 ? (
-          <>
-            <EditIcon className={styles.icon} />
-            <Button
-              variant="text"
-              color={"secondary"}
-              // @ts-ignore
-              onClick={() => callHandler(handler2)}
-            >
-              {button2Text}
-            </Button>
-          </>
-        ) : (
-          ""
+        {handler2 && (
+          <Button
+            variant="text"
+            color={"secondary"}
+            // @ts-ignore
+            onClick={() => callHandler(handler2)}
+          >
+            {button2Text}
+          </Button>
+        )}
+        {handler3 && (
+          <Button
+            variant="text"
+            color={"secondary"}
+            // @ts-ignore
+            onClick={() => callHandler(handler3)}
+          >
+            {button3Text}
+          </Button>
         )}
       </HoverImage>
     </>
