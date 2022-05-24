@@ -244,7 +244,7 @@ export default function UsersPage() {
                 ></DataGrid>
             </div>
             <div>
-                <Fab color="primary" sx={{ position: 'absolute', bottom: 50, right: 50}} aria-label="add" href="/admin/genres/create">
+                <Fab color="primary" sx={{ position: 'fixed', bottom: 50, right: 50}} aria-label="add" href="/admin/genres/create">
                     <AddIcon/>
                 </Fab>
             </div>
