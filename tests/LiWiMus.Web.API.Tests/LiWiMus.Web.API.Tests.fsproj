@@ -10,6 +10,7 @@
     <ItemGroup>
         <Compile Include="JsonOptionsExtensions.fs" />
         <Compile Include="HttpResponseMessageExtensions.fs" />
+        <Compile Include="TestHelpers.fs" />
         <Compile Include="BaseApplicationFactory.fs" />
         <Compile Include="TestApplicationFactory.fs" />
         <Compile Include="Albums\CreateTests.fs" />
@@ -43,6 +44,7 @@
         <Compile Include="Users\CreateTests.fs" />
         <Compile Include="Tracks\Generators\CreateTestsGeneratorSuccess.fs" />
         <Compile Include="Tracks\Generators\CreateTestsGeneratorFailure.fs" />
+        <Compile Include="Tracks\Owners\ListTests.fs" />
         <Compile Include="Tracks\CreateTests.fs" />
     </ItemGroup>
 

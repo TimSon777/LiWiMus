@@ -8,20 +8,11 @@ open LiWiMus.Web.API.Tests
 open Microsoft.AspNetCore.WebUtilities
 open Xunit
 open FluentAssertions
-open LiWiMus.Web.Shared.Extensions
 
 type ListTests(
         factory: TestApplicationFactory) =
         let baseUrl = RouteConstants.Albums.Artists.List
         interface IClassFixture<TestApplicationFactory>
-    
-        member this.GenerateUrl(albumId, page:int, itemsPerPage:int) =
-            let queries = [
-                KeyValuePair<string, string>("page", page.ToString())
-                KeyValuePair<string, string>("itemsPerPage", itemsPerPage.ToString())
-            ]
-            
-            QueryHelpers.AddQueryString(baseUrl.Replace("{albumId:int}", albumId.ToString()), queries)
 
         [<Theory>]
         [<InlineData(90000, 1, 2)>]
@@ -30,7 +21,7 @@ type ListTests(
             // Arrange
             let client = factory.CreateClient()
     
-            let url = this.GenerateUrl(albumId, page, itemsPerPage)
+            let url = TestHelpers.GenerateUrl(baseUrl, albumId, "{albumId:int}", page, itemsPerPage)
             
             task {
                 
@@ -54,7 +45,7 @@ type ListTests(
             // Arrange
             let client = factory.CreateClient()
     
-            let url = this.GenerateUrl(albumId, page, itemsPerPage)
+            let url = TestHelpers.GenerateUrl(baseUrl, albumId, "{albumId:int}", page, itemsPerPage)
                         
             task {
                 
@@ -74,7 +65,7 @@ type ListTests(
             // Arrange
             let client = factory.CreateClient()
     
-            let url = this.GenerateUrl(95000, 1, 1)
+            let url = TestHelpers.GenerateUrl(baseUrl, 95000, "{albumId:int}", 1, 1)
                         
             task {
                 
