@@ -94,6 +94,22 @@ const UserService = {
     const dto = { userId: user.id, roleId: role.id };
     return await axios.delete("/users/roles", { data: dto });
   },
+
+  setRandomAvatar: async (user: User) => {
+    if (user.avatarLocation) {
+      try {
+        await FileService.remove(user.avatarLocation);
+      } catch (e) {}
+    }
+
+    // https://avatars.dicebear.com/api/adventurer/{0}.svg?background=%23EF6817
+    const seed = (Math.random() * 1000000000).toFixed(0);
+    const url = `https://avatars.dicebear.com/api/adventurer/${seed}.svg?background=%23EF6817`;
+
+    const location = await FileService.saveByUrl(url);
+    const updateDto: UpdateUserDto = { id: +user.id, avatarLocation: location };
+    return await UserService.update(updateDto);
+  },
 };
 
 export default UserService;

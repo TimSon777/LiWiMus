@@ -13,6 +13,11 @@ const FileService = {
     return data.location as string;
   },
   getLocation: (relativeLocation: string) => API_URL + relativeLocation,
+
+  saveByUrl: async (url: string) => {
+    const response = await axios.post("/files/url", { url });
+    return response.data.location as string;
+  },
 };
 
 export default FileService;
