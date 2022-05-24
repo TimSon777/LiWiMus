@@ -38,7 +38,7 @@ function FiltersPopover({id, open, anchorEl, onClose, columnsOptions, operatorsO
                             {operatorsOptions.map((operator, num) =>
                                 <option key={num} id={number.toString()} value={operator}>{operator}</option>)}
                         </Select>
-                        <TextField inputProps={{maxLength:"10"}} value={inputFilterValues[number]} id={number.toString()} onChange={(event: any) => onFilterValueChange(event)}></TextField>
+                        <TextField inputProps={{maxLength:"50"}} value={inputFilterValues[number]} id={number.toString()} onChange={(event: any) => onFilterValueChange(event)}></TextField>
                     </div>
                 </div>)
         }
