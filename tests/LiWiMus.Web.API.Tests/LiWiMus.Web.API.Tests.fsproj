@@ -25,6 +25,7 @@
         <Compile Include="Playlists\RemoveTrackTests.fs" />
         <Compile Include="Transactions\UpdateTests.fs" />
         <Compile Include="Genres\CreateTests.fs" />
+        <Compile Include="Plans\CreateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

@@ -17,12 +17,12 @@ type BaseApplicationFactory<'TStartup when 'TStartup : not struct>() =
         
         builder.ConfigureServices(fun services ->
             let sp = services.BuildServiceProvider()
-            let scope = sp.CreateScope()
+            use scope = sp.CreateScope()
             let logger = scope.ServiceProvider.GetRequiredService<ILogger<BaseApplicationFactory<'TStartup>>>()
             let env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>()
             
-            ConfigureSeeder.UseSeedersAsync(scope.ServiceProvider, logger, env).Wait()
-            scope.Dispose()) |> ignore
+            ConfigureSeeder.UseSeedersAsync(scope.ServiceProvider, logger, env).Wait())
+        |> ignore
 
         base.ConfigureWebHost(builder)
         

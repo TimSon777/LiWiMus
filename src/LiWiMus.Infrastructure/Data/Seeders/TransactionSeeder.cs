@@ -20,7 +20,7 @@ public class TransactionSeeder : ISeeder
     
     public async Task SeedAsync(EnvironmentType environmentType)
     {
-        const string userName = "MockUser_Transactions";
+        const string userName = "MockUser_Trans";
         if (await _userManager.FindByNameAsync(userName) is not null)
         {
             return;
@@ -35,7 +35,7 @@ public class TransactionSeeder : ISeeder
                     UserName = userName,
                     Gender = Gender.Male,
                     AvatarLocation = "Location",
-                    Email = "mockEmail@mock.mock_Transactions"
+                    Email = "mockEmail@mock.mock_Trans"
                 };
 
                 await _userManager.CreateAsync(user, "Password");

@@ -41,7 +41,6 @@ public class AlbumSeeder : ISeeder
                 var user = new User
                 {
                     Email = "mockEmail@mock.mock_Album",
-                    AvatarLocation = "Location",
                     Gender = Gender.Male,
                     Id = 90000,
                     UserName = userName

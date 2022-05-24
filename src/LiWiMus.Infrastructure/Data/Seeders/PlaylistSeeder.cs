@@ -103,7 +103,6 @@ public class PlaylistSeeder : ISeeder
                     UserName = userName,
                     Email = "mockEmail@mock.mock_Playlist",
                     Gender = Gender.Female,
-                    AvatarLocation = "Location"
                 };
 
                 await _userManager.CreateAsync(user, "Password");

@@ -44,7 +44,6 @@ public class ArtistSeeder : ISeeder
                 {
                     Email = "mockEmail@mock.mock_Artist",
                     Gender = Gender.Male,
-                    AvatarLocation = "Location",
                     UserName = userName
                 };
 
