@@ -1,11 +1,11 @@
 import React from "react";
 import { Genre } from "../../../genres/types/Genre";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { Box, IconButton, Paper, Typography } from "@mui/material";
-import styles from "./GenreCard.module.sass";
+import { IconButton } from "@mui/material";
 import { Track } from "../../types/Track";
 import TrackService from "../../Track.service";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import ActionCard from "../../../shared/components/ActionCard/ActionCard";
 
 type Props = {
   genre: Genre;
@@ -35,19 +35,13 @@ export default function GenreCard({ genre, track, setTrack }: Props) {
   };
 
   return (
-    <Paper
-      elevation={10}
-      className={styles.container}
-      sx={{ width: "100%", pb: "100%", position: "relative" }}
-    >
-      <Box className={styles.content}>
-        <Typography>{genre.name}</Typography>
-      </Box>
-      <Box className={styles.actions}>
+    <ActionCard
+      text={genre.name}
+      action={
         <IconButton aria-label="delete" onClick={removeGenre}>
           <DeleteIcon sx={{ fontSize: "2rem" }} />
         </IconButton>
-      </Box>
-    </Paper>
+      }
+    />
   );
 }

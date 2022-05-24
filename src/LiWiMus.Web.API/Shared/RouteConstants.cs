@@ -60,6 +60,18 @@ public static class RouteConstants
     public static class Users
     {
         public const string Create = $"{Prefix}/{nameof(Users)}";
+
+        public static class Plan
+        {
+            public const string Read = $"{Prefix}/{nameof(Users)}/{{userId:int}}/plan";
+        }
+
+        public static class Roles
+        {
+            public const string List = $"{Prefix}/{nameof(Users)}/{{userId:int}}/{nameof(Roles)}";
+            public const string Add = $"{Prefix}/{nameof(Users)}/{nameof(Roles)}";
+            public const string Remove = $"{Prefix}/{nameof(Users)}/{nameof(Roles)}";
+        }
     }
 
     public static class Plans

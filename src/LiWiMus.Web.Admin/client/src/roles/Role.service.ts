@@ -1,7 +1,7 @@
 import axios from "../shared/services/Axios";
-import {Role} from "./types/Role";
-import {UpdateRoleDto} from "./types/UpdateRoleDto";
-import {SystemPermission} from "../systemPermissions/SystemPermission";
+import { Role } from "./types/Role";
+import { UpdateRoleDto } from "./types/UpdateRoleDto";
+import { SystemPermission } from "../systemPermissions/SystemPermission";
 
 const map = (data: any) => {
   return new Role(
@@ -37,6 +37,11 @@ const RoleService = {
     };
     const response = await axios.put("/roles/systemPermissions", dto);
     return map(response.data);
+  },
+
+  getAll: async (): Promise<Role[]> => {
+    const response = await axios.get("/roles");
+    return response.data.map((x: any) => map(x));
   },
 };
 

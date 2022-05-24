@@ -8,6 +8,7 @@ import NotFound from "../../shared/components/NotFound/NotFound";
 import { Grid, Paper, Stack, Typography } from "@mui/material";
 import UserImageEditor from "../components/UserImageEditor/UserImageEditor";
 import UserInfoEditor from "../components/UserInfoEditor/UserInfoEditor";
+import UserRoles from "../components/UserRoles/UserRoles";
 
 export default function UserProfilePage() {
   const { id } = useParams() as { id: string };
@@ -50,6 +51,10 @@ export default function UserProfilePage() {
             </Grid>
           </Grid>
         </Paper>
+      </Grid>
+
+      <Grid item xs={12} md={10} lg={8}>
+        <UserRoles user={user} />
       </Grid>
     </Grid>
   );

@@ -5,6 +5,7 @@ import { User } from "./types/User";
 import { CreateUserDto } from "./types/CreateUserDto";
 import FileService from "../shared/services/File.service";
 import { UpdateUserDto } from "./types/UpdateUserDto";
+import { Role } from "../roles/types/Role";
 
 const map = (data: any) =>
   new User(
@@ -77,6 +78,21 @@ const UserService = {
     const location = await FileService.save(avatar);
     const updateDto: UpdateUserDto = { id: +user.id, avatarLocation: location };
     return await UserService.update(updateDto);
+  },
+
+  getRoles: async (user: User) => {
+    const response = await axios.get(`/users/${user.id}/roles`);
+    return response.data as Role[];
+  },
+
+  addRole: async (user: User, role: Role) => {
+    const dto = { userId: user.id, roleId: role.id };
+    return await axios.post("/users/roles", dto);
+  },
+
+  removeRole: async (user: User, role: Role) => {
+    const dto = { userId: user.id, roleId: role.id };
+    return await axios.delete("/users/roles", { data: dto });
   },
 };
 

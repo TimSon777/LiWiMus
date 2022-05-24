@@ -49,6 +49,28 @@ public class RoleManager : IRoleManager
         await AddToRoleAsync(user, role);
     }
 
+    public async Task RemoveFromRoleAsync(User user, Role role)
+    {
+        if (!await IsInRoleAsync(user, role))
+        {
+            throw new UserNotInRoleException(user, role);
+        }
+
+        user.Roles.Remove(role);
+        await _userRepository.UpdateAsync(user);
+    }
+
+    public async Task RemoveFromRoleAsync(User user, string roleName)
+    {
+        var role = await _roleRepository.GetByNameAsync(roleName);
+        if (role is null)
+        {
+            throw new RoleNotFoundException(roleName);
+        }
+
+        await RemoveFromRoleAsync(user, role);
+    }
+
     public async Task<bool> HasPermissionAsync(Role role, SystemPermission permission)
     {
         var permissions = await _permissionRepository.GetByRoleAsync(role);
