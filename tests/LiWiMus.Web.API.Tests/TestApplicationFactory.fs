@@ -1,34 +1,34 @@
 ﻿namespace LiWiMus.Web.API.Tests
 
-open System.Collections.Generic
-open System.Net.Http
-open System.Net.Http.Headers
+open System
+open LiWiMus.Infrastructure.Data
+open LiWiMus.Web.API.Tests.MockPolicyEvaluator
+open Microsoft.AspNetCore.Authorization.Policy
 open Microsoft.AspNetCore.Mvc.Testing
-open Newtonsoft.Json.Linq
-open Microsoft.AspNetCore.Hosting
+open Microsoft.EntityFrameworkCore
+open Microsoft.Extensions.DependencyInjection
+open System.Linq
 
 type TestApplicationFactory() =
-    inherit BaseApplicationFactory<Program>()
-//    
-//    override this.ConfigureClient(client) =
-//        let auth = { new WebApplicationFactory<LiWiMus.Web.Auth.Program>() with
-//                       override this.ConfigureWebHost(builder) =
-//                           builder.UseEnvironment("Testing") |> ignore }
-//        let authClient = auth.CreateClient()
-//        
-//        let body = [
-//            KeyValuePair<string, string>("password", "admin")
-//            KeyValuePair<string, string>("username", "admin")
-//            KeyValuePair<string, string>("grant_type", "password")
-//        ]
-//        
-//        let a = auth.Server.BaseAddress
-//        let response = authClient.PostAsync("auth/connect/token", new FormUrlEncodedContent(body)).Result
-//        let json = response.Content.ReadAsStringAsync().Result
-//        let token = (JObject.Parse(json)["access_token"]).ToObject<string>()
-//        let tokenType = (JObject.Parse(json)["token_type"]).ToObject<string>()
-//        
-//        client.DefaultRequestHeaders.Authorization <- AuthenticationHeaderValue(tokenType, token)
-//        
-//        base.ConfigureClient(client)
+    inherit WebApplicationFactory<Program>()
+
+    override this.ConfigureWebHost(builder) =
+        
+        builder.ConfigureServices(fun services ->
+            let descriptor = services.SingleOrDefault(fun d -> d.ServiceType = typeof<DbContextOptions<ApplicationContext>>);
+            services.Remove(descriptor) |> ignore
+ 
+            let databaseName = Guid.NewGuid().ToString()
+            services.AddDbContext<ApplicationContext>(fun (options:DbContextOptionsBuilder) ->
+                options.UseInMemoryDatabase(databaseName)
+                |> ignore)
+            |> ignore
+            
+            let sp = services.BuildServiceProvider()
+            use scope = sp.CreateScope()
+            services.AddSingleton<IPolicyEvaluator, MockPolicyEvaluator>() |> ignore)
+        |> ignore
+
+        base.ConfigureWebHost(builder)
+       
         

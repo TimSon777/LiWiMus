@@ -10,5 +10,5 @@ public class Genre : BaseEntity
     [RegularExpression(RegularExpressions.DisableTags)]
     public string Name { get; set; } = null!;
 
-    public virtual ICollection<Track> Tracks { get; set; } = null!;
+    public List<Track> Tracks { get; set; } = new();
 }

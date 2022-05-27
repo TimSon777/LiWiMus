@@ -16,7 +16,7 @@ public class Album : BaseEntity, IResource.WithMultipleOwners<Artist>
     public DateOnly PublishedAt { get; set; }
     public string CoverLocation { get; set; } = null!;
 
-    public virtual ICollection<LikedAlbum> Subscribers { get; set; } = null!;
-    public virtual ICollection<Artist> Owners { get; set; } = null!;
-    public virtual ICollection<Track> Tracks { get; set; } = null!;
+    public List<LikedAlbum> Subscribers { get; set; } = new();
+    public List<Artist> Owners { get; set; } = new();
+    public List<Track> Tracks { get; set; } = new();
 }

@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Albums;
-using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
-using LiWiMus.Web.API.Shared.Extensions;
 using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 

@@ -1,8 +1,28 @@
 ﻿@model IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.PlaylistForListViewModel>
 
-@foreach (var playlist in Model)
-{
-    <div>
-        @playlist.Name @playlist.Owner.UserName @playlist.CountSubscribers @playlist.IsOwner
-    </div>
-}
+
+<div class="playlists">
+    @foreach (var playlist in Model)
+    {
+        <div class="playlist-container">
+            <div>
+                <img class="playlist-image" src="../images/playlist-cover.jpg" alt="Playlist cover."/>
+            </div>
+            <div class="playlist-information">
+                <p class="playlist-name">@playlist.Name</p>
+                 @if (playlist.IsOwner)
+                 {
+                     <p class="playlist-owner">Your playlist</p>
+                 }
+                 else
+                 {
+                     <p class="playlist-owner">Owner: @playlist.Owner.UserName</p>
+                 }
+                
+                <p class="playlist-subscribers">Subscribers: @playlist.CountSubscribers</p>
+            </div>
+
+           
+        </div>
+    }
+</div>

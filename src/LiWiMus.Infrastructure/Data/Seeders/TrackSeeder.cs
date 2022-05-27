@@ -32,7 +32,6 @@ public class TrackSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var user = new User
                 {
                     Email = "mockEmail@mail.ru_Track",

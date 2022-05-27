@@ -9,7 +9,7 @@ public class SystemPermission : BaseEntity
     public string Name { get; set; } = null!;
     public string Description { get; set; } = null!;
 
-    public virtual ICollection<Role> Roles { get; set; } = null!;
+    public List<Role> Roles { get; set; } = new();
 
     public Claim GetClaim()
     {

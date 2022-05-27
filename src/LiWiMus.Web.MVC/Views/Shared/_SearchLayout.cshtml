@@ -4,16 +4,16 @@
     Layout = "_Layout";
 }
 
-<h1 class="text-white text-center mt-3 mb-2">@ViewData["Title"]</h1>
+<h1 class="text-white text-center mt-3 mb-4">@ViewData["Title"]</h1>
 
 <div>
     <section class="mb-3">
         <form method="get"
               asp-action="ShowMore"
-              id="form-search" class="track-form-search w-75" style="margin: 0 auto">
-            <input type="text" id="input-search" class="form-control" name="@nameof(SearchViewModel.Title)" placeholder="Search track">
+              id="form-search" class="track-form-search" style="margin: 0 auto">
+            <input type="text" id="input-search" class="form-control" name="@nameof(SearchViewModel.Title)" placeholder="Search..">
             <input type="hidden" name="@nameof(SearchViewModel.Page)" id="input-page-search" value="2">
-            <button form="form-search" id="btn-search-search" class="m-3 " style="min-width: 15%; max-width: 80%">Search</button>
+            <button form="form-search" id="btn-search-search" class="search-btn" style="max-width: 80%">Search</button>
         </form>
     </section>
     
@@ -24,7 +24,7 @@
     </section>
     
     <section class="m-3" style="text-align: center">
-        <button form="form-search" id="btn-search-show-more" class="m-3" style="min-width: 15%; max-width: 80%">Show more</button>
+        <button form="form-search" id="btn-search-show-more" class="m-3 show-more-btn" style="min-width: 15%; max-width: 80%">Show more</button>
     </section>
 </div>
 

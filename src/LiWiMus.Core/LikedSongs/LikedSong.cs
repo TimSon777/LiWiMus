@@ -4,6 +4,6 @@ namespace LiWiMus.Core.LikedSongs;
 
 public class LikedSong : BaseEntity
 {
-    public virtual User User { get; set; } = null!;
-    public virtual Track Track { get; set; } = null!;
+    public User User { get; set; } = null!;
+    public Track Track { get; set; } = null!;
 }

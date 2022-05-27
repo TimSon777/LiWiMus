@@ -12,6 +12,6 @@ public static class IResource
     // ReSharper disable once InconsistentNaming
     public interface WithMultipleOwners<T>
     {
-        public ICollection<T> Owners { get; set; }
+        public List<T> Owners { get; set; }
     }
 }

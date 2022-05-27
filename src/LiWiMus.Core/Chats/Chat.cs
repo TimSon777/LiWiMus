@@ -5,13 +5,13 @@ namespace LiWiMus.Core.Chats;
 
 public class Chat : BaseEntity
 {
-    public virtual User User { get; set; } = null!;
+    public User User { get; set; } = null!;
 
-    public virtual ChatStatus Status { get; set; } = ChatStatus.Opened;
+    public ChatStatus Status { get; set; } = ChatStatus.Opened;
     
     public string UserConnectionId { get; set; } = "";
 
     public string? ConsultantConnectionId { get; set; } = "";
 
-    public virtual ICollection<Message> Messages { get; set; } = null!;
+    public List<Message> Messages { get; set; } = new();
 }
