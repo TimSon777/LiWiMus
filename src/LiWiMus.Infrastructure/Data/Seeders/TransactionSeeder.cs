@@ -10,12 +10,12 @@ namespace LiWiMus.Infrastructure.Data.Seeders;
 public class TransactionSeeder : ISeeder
 {
     private readonly UserManager<User> _userManager;
-    private readonly IRepository<Transaction> _transactionRepository;
+    private readonly ApplicationContext _applicationContext;
 
-    public TransactionSeeder(UserManager<User> userManager, IRepository<Transaction> transactionRepository)
+    public TransactionSeeder(UserManager<User> userManager, ApplicationContext applicationContext)
     {
         _userManager = userManager;
-        _transactionRepository = transactionRepository;
+        _applicationContext = applicationContext;
     }
     
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -49,7 +49,7 @@ public class TransactionSeeder : ISeeder
                     User = user
                 };
 
-                await _transactionRepository.AddAsync(transaction);
+                _applicationContext.Add(transaction);
                 break;
             case EnvironmentType.Production:
                 break;

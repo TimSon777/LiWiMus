@@ -10,19 +10,22 @@ public class RoleSeeder : ISeeder
     private readonly IRepository<Role> _roleRepository;
     private readonly IRepository<SystemPermission> _systemPermissionRepository;
     private readonly IRoleManager _roleManager;
+    private readonly ApplicationContext _applicationContext;
 
     public RoleSeeder(IRepository<Role> roleRepository, IRepository<SystemPermission> systemPermissionRepository,
-                      IRoleManager roleManager)
+                      IRoleManager roleManager, ApplicationContext applicationContext)
     {
         _roleRepository = roleRepository;
         _systemPermissionRepository = systemPermissionRepository;
         _roleManager = roleManager;
+        _applicationContext = applicationContext;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
     {
         await SeedPermissionsAsync(environmentType);
         await SeedRolesAsync(environmentType);
+        await _applicationContext.SaveChangesAsync();
 
         var admin = await _roleRepository.GetByNameAsync(DefaultRoles.Admin.Name) ?? throw new SystemException();
         var adminAccessPermission =
@@ -44,7 +47,7 @@ public class RoleSeeder : ISeeder
 
         foreach (var role in DefaultRoles.GetAll())
         {
-            await _roleRepository.AddAsync(role);
+            _applicationContext.Add(role);
         }
     }
 
@@ -58,7 +61,7 @@ public class RoleSeeder : ISeeder
 
         foreach (var permission in DefaultSystemPermissions.GetAll())
         {
-            await _systemPermissionRepository.AddAsync(permission);
+            _applicationContext.Add(permission);
         }
     }
 
