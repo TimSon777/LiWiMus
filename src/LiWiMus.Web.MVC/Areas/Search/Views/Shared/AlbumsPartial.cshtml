@@ -1,12 +1,22 @@
-﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.AlbumForListViewModel>
+﻿@using LiWiMus.Web.MVC.Models
+@using Microsoft.Extensions.Options
+@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.AlbumForListViewModel>
+
+@inject IOptions<PullUrls> _urls
 
 @{
     Layout = null;
 }
 
-@foreach (var album in Model)
-{
-    <div>
-        @album.Title @album.PublishedAt @string.Join("&", album.Owners.Select(x => x.Name))
-    </div>
-}
+@*@System.IO.Path.Combine(_urls.Value.GatewayUrl, album.CoverLocation)*@
+<div class="albums">
+    @foreach (var album in Model)
+    {
+        <div class="album-container">
+            <p class="album-title"> @album.Title </p>
+            <img class="album-cover" src="../images/album_cover.jpg" alt="Album cover." />
+            <p class="album-artists">@string.Join("&", album.Owners.Select(x => x.Name))</p>
+            <p class="album-date">@album.PublishedAt</p>
+        </div>
+    }
+</div>
