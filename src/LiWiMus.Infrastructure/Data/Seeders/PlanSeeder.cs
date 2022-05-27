@@ -53,7 +53,7 @@ public class PlanSeeder : ISeeder
         
         switch (environmentType)
         {
-            case EnvironmentType.Testing:
+            case EnvironmentType.Development:
                 var user = new User
                 {
                     Id = 180000,
@@ -88,6 +88,10 @@ public class PlanSeeder : ISeeder
 
                 _applicationContext.Add(plan);
                 break;
+            case EnvironmentType.Production:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(environmentType), environmentType, null);
         }
     }
 

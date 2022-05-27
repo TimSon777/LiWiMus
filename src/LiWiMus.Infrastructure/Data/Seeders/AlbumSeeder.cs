@@ -32,7 +32,6 @@ public class AlbumSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var user = new User
                 {
                     Email = "mockEmail@mock.mock_Album",

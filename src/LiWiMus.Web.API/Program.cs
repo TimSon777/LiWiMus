@@ -2,11 +2,13 @@ using System.Reflection;
 using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
 using LiWiMus.Core.Settings;
+using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.API;
 using LiWiMus.Web.Shared.Configuration;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
 
@@ -15,12 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpoints();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-if (builder.Environment.EnvironmentName == "Testing")
-{
-    connectionString = connectionString.Replace("{Database}", Guid.NewGuid().ToString());
-}
 
 builder.Services.AddDbContext(connectionString);
+
+
 builder.Services.AddCoreServices();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 TriggersConfiguration.ConfigureTriggers();
@@ -83,7 +83,6 @@ app.UseSwaggerUI(c =>
 });
 app.MapEndpoints();
 
-if (!builder.Environment.IsEnvironment("Testing"))
 {
     await ConfigureSeeder.UseSeedersAsync(app.Services, app.Logger, builder.Environment);
 }

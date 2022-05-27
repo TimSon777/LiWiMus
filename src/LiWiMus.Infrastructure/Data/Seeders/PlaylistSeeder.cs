@@ -39,7 +39,6 @@ public class PlaylistSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var artist = new Artist
                 {
                     About = "About",

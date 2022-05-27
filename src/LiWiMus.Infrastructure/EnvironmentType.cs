@@ -3,6 +3,5 @@
 public enum EnvironmentType
 {
     Development,
-    Testing,
     Production
 }

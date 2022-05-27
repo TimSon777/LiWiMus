@@ -1,4 +1,5 @@
 ﻿using LiWiMus.Core.Playlists;
+using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.Core.Tracks;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
@@ -15,7 +16,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public async Task<IResult> HandleAsync([FromBody] Request request)
     {
-        var playlist = await _playlistsRepository.GetByIdAsync(request.PlaylistId);
+        var playlist = await _playlistsRepository.GetPlaylistsWithTracksAsync(request.PlaylistId);
         if (playlist is null)
         {
             return Results.Extensions.NotFoundById(EntityType.Playlists, request.PlaylistId);

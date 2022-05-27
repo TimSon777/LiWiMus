@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Tracks;
+using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
@@ -21,7 +22,7 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public async Task<IResult> HandleAsync(int id)
     {
-        var track = await _repository.GetByIdAsync(id);
+        var track = await _repository.GetTrackWithArtistsAsync(id);
         if (track is null)
         {
             return Results.Extensions.NotFoundById(EntityType.Tracks, id);
