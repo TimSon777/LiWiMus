@@ -8,27 +8,31 @@ using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Data.Seeders;
 
+// ReSharper disable once UnusedType.Global
 public class PlanSeeder : ISeeder
 {
     private readonly IRepository<Plan> _plansRepository;
     private readonly IRepository<Permission> _permissionRepository;
     private readonly IPlanManager _planManager;
     private readonly UserManager<User> _userManager;
+    private readonly ApplicationContext _applicationContext;
 
     public PlanSeeder(IRepository<Plan> plansRepository, IRepository<Permission> permissionRepository,
-                      IPlanManager planManager, UserManager<User> userManager)
+                      IPlanManager planManager, UserManager<User> userManager, ApplicationContext applicationContext)
     {
         _plansRepository = plansRepository;
         _permissionRepository = permissionRepository;
         _planManager = planManager;
         _userManager = userManager;
+        _applicationContext = applicationContext;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
     {
         await SeedPlansAsync(environmentType);
         await SeedPermissionsAsync(environmentType);
-
+        await _applicationContext.SaveChangesAsync();
+        
         var premium = await _plansRepository.GetByNameAsync(DefaultPlans.Premium.Name) ?? throw new SystemException();
         foreach (var permissionRaw in DefaultPermissions.GetPremium())
         {
@@ -82,7 +86,7 @@ public class PlanSeeder : ISeeder
                     Permissions = new List<Permission> { permission, permission2 }
                 };
 
-                await _plansRepository.AddAsync(plan);
+                _applicationContext.Add(plan);
                 break;
         }
     }
@@ -97,7 +101,7 @@ public class PlanSeeder : ISeeder
 
         foreach (var plan in DefaultPlans.GetAll())
         {
-            await _plansRepository.AddAsync(plan);
+            _applicationContext.Add(plan);
         }
     }
 
@@ -111,7 +115,7 @@ public class PlanSeeder : ISeeder
 
         foreach (var permission in DefaultPermissions.GetAll())
         {
-            await _permissionRepository.AddAsync(permission);
+            _applicationContext.Add(permission);
         }
     }
 

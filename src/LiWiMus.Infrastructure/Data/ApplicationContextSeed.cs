@@ -25,6 +25,7 @@ public static class ApplicationContextSeed
                 await seeder.SeedAsync(environmentType);
             }
 
+            await applicationContext.SaveChangesAsync();
         }
         catch (Exception ex)
         {
