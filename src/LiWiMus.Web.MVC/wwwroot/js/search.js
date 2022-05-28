@@ -8,6 +8,10 @@
         $.get({
             url: url,
             success: (html) => {
+                if (html.indexOf('search-item') < 0) {
+                    $('#btn-search-show-more').prop('disabled', true);
+                    return;
+                }
                 $('#search-items').append(html);
                 const inputPageSearch = $('#input-page-search');
                 const currentNumberPage = parseInt(inputPageSearch.val())

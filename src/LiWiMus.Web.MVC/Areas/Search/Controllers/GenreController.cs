@@ -9,8 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
-
-[Area("Search")]
+[Area(AreasConstants.Search)]
 public class GenreController : Controller
 {
     private readonly IRepository<Genre> _artistRepository;
@@ -25,19 +24,22 @@ public class GenreController : Controller
     
     private async Task<IEnumerable<GenreForListViewModel>> GetGenresAsync(SearchViewModel searchVm)
     {
-        var genres = await _artistRepository.PaginateAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        var pagination = _mapper.Map<Pagination>(searchVm);
+        var genres = await _artistRepository.PaginateAsync(pagination);
         return _mapper.Map<List<Genre>, List<GenreForListViewModel>>(genres);
     }
     
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        return View(await GetGenresAsync(SearchViewModel.Default));
+        var genres = await GetGenresAsync(SearchViewModel.Default);
+        return View(genres);
     }
     
     [HttpGet]
     public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
     {
-        return PartialView("GenresPartial", await GetGenresAsync(searchVm));
+        var genres = await GetGenresAsync(searchVm);
+        return PartialView("GenresPartial", genres);
     }
 }

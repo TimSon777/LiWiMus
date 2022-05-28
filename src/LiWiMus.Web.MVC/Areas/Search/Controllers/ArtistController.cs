@@ -1,6 +1,4 @@
 ﻿using AutoMapper;
-using LiWiMus.Core.Albums;
-using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Shared;
 using LiWiMus.SharedKernel.Interfaces;
@@ -10,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
-[Area("Search")]
+[Area(AreasConstants.Search)]
 public class ArtistController : Controller
 {
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
@@ -23,21 +21,24 @@ public class ArtistController : Controller
         _mapper = mapper;
     }
     
-    private async Task<IEnumerable<ArtistForListViewModel>> GetArtists(SearchViewModel searchVm)
+    private async Task<IEnumerable<ArtistForListViewModel>> GetArtistsAsync(SearchViewModel searchVm)
     {
-        var artists = await _artistRepository.PaginateAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        var pagination = _mapper.Map<Pagination>(searchVm);
+        var artists = await _artistRepository.PaginateAsync(pagination);
         return _mapper.Map<List<Core.Artists.Artist>, List<ArtistForListViewModel>>(artists);
     }
     
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        return View(await GetArtists(SearchViewModel.Default));
+        var artists = await GetArtistsAsync(SearchViewModel.Default);
+        return View(artists);
     }
 
     [HttpGet]
     public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
     {
-        return PartialView("ArtistsPartial", await GetArtists(searchVm));
+        var artists = await GetArtistsAsync(searchVm);
+        return PartialView("ArtistsPartial", artists);
     }
 }

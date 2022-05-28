@@ -9,6 +9,8 @@ public class SearchProfile : Profile
 {
     public SearchProfile()
     {
-        CreateMap<SearchViewModel, PaginationWithTitle>();
+        CreateMap<SortViewModel, Sort>();
+        CreateMap<SearchViewModel, Pagination>()
+            .ForMember(d => d.Sort, opt => opt.MapFrom(s => s.SortViewModel));
     }
 }

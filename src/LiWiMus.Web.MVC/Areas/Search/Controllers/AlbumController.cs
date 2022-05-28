@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Albums.Specifications;
-using LiWiMus.Core.Playlists;
-using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.Core.Shared;
 using LiWiMus.SharedKernel.Interfaces;
-using LiWiMus.Web.MVC.Areas.Music.ViewModels;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
-[Area("Search")]
+[Area(AreasConstants.Search)]
 public class AlbumController : Controller
 {
     private readonly IRepository<Album> _albumRepository;
@@ -26,21 +22,24 @@ public class AlbumController : Controller
         _mapper = mapper;
     }
     
-    private async Task<IEnumerable<AlbumForListViewModel>> GetPlaylists(SearchViewModel searchVm)
+    private async Task<IEnumerable<AlbumForListViewModel>> GetAlbumsAsync(SearchViewModel searchVm)
     {
-        var albums = await _albumRepository.PaginateWithTitleAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        var pagination = _mapper.Map<Pagination>(searchVm);
+        var albums = await _albumRepository.PaginateWithTitleAsync(pagination);
         return _mapper.Map<List<Album>, List<AlbumForListViewModel>>(albums);
     }
     
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        return View(await GetPlaylists(SearchViewModel.Default));
+        var albums = await GetAlbumsAsync(SearchViewModel.Default);
+        return View(albums);
     }
 
     [HttpGet]
     public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
     {
-        return PartialView("AlbumsPartial", await GetPlaylists(searchVm));
+        var albums = await GetAlbumsAsync(searchVm);
+        return PartialView("AlbumsPartial", albums);
     }
 }

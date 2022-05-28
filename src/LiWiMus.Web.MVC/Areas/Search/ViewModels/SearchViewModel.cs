@@ -1,4 +1,6 @@
-﻿namespace LiWiMus.Web.MVC.Areas.Search.ViewModels;
+﻿using LiWiMus.SharedKernel;
+
+namespace LiWiMus.Web.MVC.Areas.Search.ViewModels;
 
 public class SearchViewModel
 {
@@ -19,10 +21,16 @@ public class SearchViewModel
     // ReSharper disable once MemberCanBePrivate.Global
     public SearchViewModel()
     {
+        SortViewModel = new SortViewModel
+        {
+            Order = Order.Desc,
+            SortingBy = SortingBy.Popularity
+        };
         _title = "";
         Page = 1;
         ItemsPerPage = 2;
     }
 
     public static readonly SearchViewModel Default = new();
+    public SortViewModel SortViewModel { get; set; }
 }

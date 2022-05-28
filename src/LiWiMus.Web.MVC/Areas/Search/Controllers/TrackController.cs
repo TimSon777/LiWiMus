@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
-[Area("Search")]
+[Area(AreasConstants.Search)]
 public class TrackController : Controller
 {
     private readonly IRepository<Track> _trackRepository;
@@ -22,21 +22,25 @@ public class TrackController : Controller
         _mapper = mapper;
     }
 
-    private async Task<IEnumerable<TrackForListViewModel>> GetTracks(SearchViewModel searchVm)
+    private async Task<IEnumerable<TrackForListViewModel>> GetTracksAsync(SearchViewModel searchVm)
     {
-        var tracks = await _trackRepository.PaginateWithTitleAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        var _ = Request;
+        var pagination = _mapper.Map<Pagination>(searchVm);
+        var tracks = await _trackRepository.PaginateWithTitleAsync(pagination);
         return _mapper.MapList<Track, TrackForListViewModel>(tracks);
     }
     
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        return View(await GetTracks(SearchViewModel.Default));
+        var tracks = await GetTracksAsync(SearchViewModel.Default);
+        return View(tracks);
     }
 
     [HttpGet]
     public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
     {
-        return PartialView("TracksPartial", await GetTracks(searchVm));
+        var tracks = await GetTracksAsync(searchVm);
+        return PartialView("TracksPartial", tracks);
     }
 }
