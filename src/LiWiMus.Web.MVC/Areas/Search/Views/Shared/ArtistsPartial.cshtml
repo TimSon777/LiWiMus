@@ -1,9 +1,13 @@
 ﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.ArtistForListViewModel>
 
-@foreach (var artist in Model)
-{
-    <div>
-        @artist.Name 
-        <p>@artist.About</p>
-    </div>
-}
+
+<div class="artists">
+    @foreach (var artist in Model)
+    {
+        <div class="artist-container search-item">
+            <img class="artist-image" src="../images/artist_image.jpg"/>
+            <p class="artist-name">@artist.Name </p>
+            <p class="artist-about">@artist.About</p>
+        </div>
+    }
+</div>

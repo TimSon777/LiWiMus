@@ -4,11 +4,9 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import SideBar from "../SideBar/SideBar";
 import { AuthContext } from "../../contexts/Auth.context";
-import { UserData } from "../../types/UserData";
+import { User } from "../../../users/types/User";
 
-export function Layout(
-  props: PropsWithChildren<{ userData: UserData | null }>
-) {
+export function Layout(props: PropsWithChildren<{ user: User | null }>) {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const { isAuthenticated } = useContext(AuthContext);
 
@@ -25,7 +23,7 @@ export function Layout(
       >
         {isAuthenticated && (
           <SideBar
-            userData={props.userData}
+            user={props.user}
             mobileOpen={mobileOpen}
             setMobileOpen={setMobileOpen}
           />

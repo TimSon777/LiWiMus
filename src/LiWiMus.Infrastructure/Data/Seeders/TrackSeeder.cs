@@ -4,7 +4,6 @@ using LiWiMus.Core.Genres;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Enums;
-using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Data.Seeders;
@@ -13,17 +12,12 @@ namespace LiWiMus.Infrastructure.Data.Seeders;
 public class TrackSeeder : ISeeder
 {
     private readonly UserManager<User> _userManager;
-    private readonly IRepository<Artist> _artistRepository;
-    private readonly IRepository<Genre> _genreRepository;
-    private readonly IRepository<Track> _trackRepository;
+    private readonly ApplicationContext _applicationContext;
 
-    public TrackSeeder(UserManager<User> userManager, IRepository<Artist> artistRepository,
-        IRepository<Genre> genreRepository, IRepository<Track> trackRepository)
+    public TrackSeeder(UserManager<User> userManager, ApplicationContext applicationContext)
     {
         _userManager = userManager;
-        _artistRepository = artistRepository;
-        _genreRepository = genreRepository;
-        _trackRepository = trackRepository;
+        _applicationContext = applicationContext;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -38,7 +32,6 @@ public class TrackSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var user = new User
                 {
                     Email = "mockEmail@mail.ru_Track",
@@ -71,7 +64,7 @@ public class TrackSeeder : ISeeder
                     Owners = new List<User> {user}
                 };
 
-                await _artistRepository.AddAsync(artistNotOwner);
+                _applicationContext.Add(artistNotOwner);
 
                 var album = new Album
                 {
@@ -93,7 +86,7 @@ public class TrackSeeder : ISeeder
                     Name = "MockGenreNotToTrack_Track"
                 };
 
-                await _genreRepository.AddAsync(genreNotToTrack);
+                _applicationContext.Add(genreNotToTrack);
 
                 var track = new Track
                 {
@@ -105,7 +98,7 @@ public class TrackSeeder : ISeeder
                     FileLocation = "Location"
                 };
 
-                await _trackRepository.AddAsync(track);
+                _applicationContext.Add(track);
                 break;
             case EnvironmentType.Production:
                 break;

@@ -12,17 +12,12 @@ namespace LiWiMus.Infrastructure.Data.Seeders;
 public class AlbumSeeder : ISeeder
 {
     private readonly UserManager<User> _userManager;
-    private readonly IRepository<Track> _trackRepository;
-    private readonly IRepository<Artist> _artistRepository;
-    private readonly IRepository<Album> _albumRepository;
+    private readonly ApplicationContext _applicationContext;
 
-    public AlbumSeeder(UserManager<User> userManager, IRepository<Track> trackRepository, 
-        IRepository<Artist> artistRepository, IRepository<Album> albumRepository)
+    public AlbumSeeder(UserManager<User> userManager, ApplicationContext applicationContext)
     {
         _userManager = userManager;
-        _trackRepository = trackRepository;
-        _artistRepository = artistRepository;
-        _albumRepository = albumRepository;
+        _applicationContext = applicationContext;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -37,7 +32,6 @@ public class AlbumSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var user = new User
                 {
                     Email = "mockEmail@mock.mock_Album",
@@ -87,7 +81,7 @@ public class AlbumSeeder : ISeeder
                     FileLocation = "Location"
                 };
 
-                await _trackRepository.AddAsync(track);
+                _applicationContext.Add(track);
 
                 var artistWithoutAlbum = new Artist
                 {
@@ -104,9 +98,9 @@ public class AlbumSeeder : ISeeder
                     Title = "MockAlbum_Album"
                 };
 
-                await _albumRepository.AddAsync(albumEmpty);
+                _applicationContext.Add(albumEmpty);
 
-                await _artistRepository.AddAsync(artistWithoutAlbum);
+                _applicationContext.Add(artistWithoutAlbum);
                 break;
             case EnvironmentType.Production:
                 break;

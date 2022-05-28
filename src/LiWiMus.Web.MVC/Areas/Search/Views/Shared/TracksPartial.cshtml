@@ -4,14 +4,16 @@
     Layout = null;
 }
 
-@foreach (var e in Model)
-{
-    <div class="track-information m-2 mb-3 p-2">
-        <img src="../images/logo.jpg" alt="Track cover." width="60px" height="60px" style="border-radius: 10px"/>
-        <div class="track-text" style="">
-            <p class="fw-bold">@e.Name</p>
-            <p>@e.Owners.FirstOrDefault()?.Name</p>
-            <p>@e.Album.Title</p>
+<div class="tracks">
+    @foreach (var e in Model)
+    {
+        <div class="track-container search-item">
+            <img class="track-image" src="../images/logo.jpg" alt="Track cover."/>
+                <p class="track-name">@e.Name</p>
+                <p class="track-album-title">@e.Album.Title</p>
+                <p class="track-owner">@e.Owners.FirstOrDefault()?.Name</p>
+
         </div>
-    </div>
-}
+    }
+</div>
+

@@ -2,8 +2,6 @@
 using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Plans.Specifications;
-using LiWiMus.Core.Users;
-using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
 
 namespace LiWiMus.Infrastructure.Services;
@@ -11,31 +9,16 @@ namespace LiWiMus.Infrastructure.Services;
 public class PlanManager : IPlanManager
 {
     private readonly IRepository<Plan> _planRepository;
-    private readonly IRepository<User> _userRepository;
-    private readonly IRepository<UserPlan> _userPlanRepository;
     private readonly IRepository<Permission> _permissionRepository;
 
-    public PlanManager(IRepository<Plan> planRepository, IRepository<User> userRepository,
-                       IRepository<Permission> permissionRepository, IRepository<UserPlan> userPlanRepository)
+    public PlanManager(IRepository<Plan> planRepository,
+                       IRepository<Permission> permissionRepository)
     {
         _planRepository = planRepository;
-        _userRepository = userRepository;
         _permissionRepository = permissionRepository;
-        _userPlanRepository = userPlanRepository;
     }
 
-    public async Task AddToDefaultPlanAsync(User user)
-    {
-        var defaultPlan = await _planRepository.GetBySpecAsync(new PlanByNameSpec(DefaultPlans.Free.Name));
 
-        if (defaultPlan is null)
-        {
-            throw new InvalidOperationException("Default plan not added to database");
-        }
-
-        var userPlan = CreateUserPlan(user, defaultPlan, TimeSpan.MaxValue);
-        await _userPlanRepository.AddAsync(userPlan);
-    }
 
     public async Task<bool> HasPermissionAsync(Plan plan, Permission permission)
     {
@@ -67,33 +50,12 @@ public class PlanManager : IPlanManager
 
     public async Task<bool> DeleteAsync(Plan plan)
     {
-        if (await _userPlanRepository.HasActiveAsync(plan))
+        if (DefaultPlans.GetAll().Select(p => p.Name).Contains(plan.Name))
         {
-            return false;
+            throw new DeleteDefaultPlanException();
         }
 
         await _planRepository.DeleteAsync(plan);
         return true;
-    }
-
-    public async Task<bool> IsInPlanAsync(User user, Plan plan)
-    {
-        throw new NotImplementedException();
-    }
-
-    private static UserPlan CreateUserPlan(User user, Plan plan, TimeSpan time)
-    {
-        return new UserPlan
-        {
-            User = user,
-            Plan = plan,
-            Start = DateTime.UtcNow,
-            End = DateTime.UtcNow.AddOrMaximize(time)
-        };
-    }
-
-    private static bool IsActive(UserPlan? userPlan)
-    {
-        return userPlan is not null && userPlan.End > DateTime.UtcNow;
     }
 }

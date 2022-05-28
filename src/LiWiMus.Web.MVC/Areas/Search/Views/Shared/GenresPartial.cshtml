@@ -5,9 +5,12 @@
     Layout = "_Layout";
 }
 
-@foreach (var genre in Model)
-{
-    <div>
-        @genre.Name
-    </div>
-}
+<div class="genres">
+    @foreach (var genre in Model)
+    {
+        <div class="genre-container search-item">
+            <p class="genre-name">@genre.Name</p>
+        </div>
+    }
+</div>
+

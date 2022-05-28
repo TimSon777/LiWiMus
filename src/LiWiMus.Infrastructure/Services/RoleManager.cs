@@ -37,13 +37,7 @@ public class RoleManager : IRoleManager
             throw new UserAlreadyInRoleException(user, role);
         }
 
-        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        if (user.Roles is null)
-        {
-            await _context.Entry(user).Collection(nameof(User.Roles)).LoadAsync();
-        }
-
-        user.Roles!.Add(role);
+        user.Roles.Add(role);
         await _userRepository.UpdateAsync(user);
     }
 
@@ -65,6 +59,21 @@ public class RoleManager : IRoleManager
             throw new UserNotInRoleException(user, role);
         }
 
+        if (DefaultRoles.Admin.Name == role.Name)
+        {
+            throw new RemoveFromAdminRoleException();
+        }
+
+        if (DefaultRoles.User.Name == role.Name)
+        {
+            throw new RemoveFromDefaultRoleException();
+        }
+
+        if (user.Roles.Count == 0)
+        {
+            await _context.Entry(user).Collection(u => u.Roles).LoadAsync();
+        }
+        
         user.Roles.Remove(role);
         await _userRepository.UpdateAsync(user);
     }

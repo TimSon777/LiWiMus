@@ -1,6 +1,7 @@
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
-import {UserData} from "../types/UserData";
+import UserService from "../../users/User.service";
+import { User } from "../../users/types/User";
 
 const storageName = "userData";
 
@@ -13,46 +14,51 @@ type JwtPayload = {
 };
 
 export const useAuth = () => {
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState<boolean>(false);
+  const [payload, setPayload] = useState<JwtPayload | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const login = useCallback((jwtToken: string) => {
+  const login = useCallback(async (jwtToken: string) => {
     const payload = jwtDecode<JwtPayload>(jwtToken);
     if (!payload.sysperm || !payload.sysperm.includes("Admin.Access")) {
       return false;
     }
 
-    const data = {
-      token: jwtToken,
-      id: payload.sub,
-      name: payload.name,
-      email: payload.email,
-      role: payload.role,
-      permissions: payload.sysperm,
-    };
+    const userId = payload.sub;
+    try {
+      const user = await UserService.get(userId);
 
-    setUserData(data);
+      setUser(user);
+    } catch (e) {
+      console.error(e);
+    }
 
-    localStorage.setItem(storageName, JSON.stringify(data));
+    setToken(jwtToken);
+    setPayload(payload);
+
+    localStorage.setItem(storageName, JSON.stringify(jwtToken));
     return true;
   }, []);
 
   const logout = useCallback(() => {
-    setUserData(null);
+    setUser(null);
+    setPayload(null);
+    setToken(null);
     localStorage.removeItem(storageName);
   }, []);
 
   useEffect(() => {
-    const dataRaw = localStorage.getItem(storageName);
-    if (dataRaw) {
-      const data: UserData = JSON.parse(dataRaw);
-      if (data) {
-        login(data.token);
-      }
+    const token = localStorage.getItem(storageName);
+    if (token) {
+      login(token)
+        .then()
+        .catch((e) => console.error(e))
+        .then(() => setReady(true));
+    } else {
+      setReady(true);
     }
-
-    setReady(true);
   }, []);
 
-  return { login, logout, userData, ready };
+  return { login, logout, user, payload, token, setUser, ready };
 };

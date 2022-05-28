@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
-[Area("Search")]
+[Area(AreasConstants.Search)]
 public class UserController : Controller
 {
     private readonly IRepository<Core.Users.User> _userRepository;
@@ -22,19 +22,22 @@ public class UserController : Controller
 
     private async Task<IEnumerable<UserForListViewModel>> GetUsersAsync(SearchViewModel searchVm)
     {
-        var users = await _userRepository.PaginateWithTitleAsync(_mapper.Map<PaginationWithTitle>(searchVm));
+        var pagination = _mapper.Map<Pagination>(searchVm);
+        var users = await _userRepository.PaginateWithTitleAsync(pagination);
         return _mapper.Map<List<Core.Users.User>, List<UserForListViewModel>>(users);
     }
     
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        return View(await GetUsersAsync(SearchViewModel.Default));
+        var users = await GetUsersAsync(SearchViewModel.Default);
+        return View(users);
     }
 
     [HttpGet]
     public async Task<IActionResult> ShowMore(SearchViewModel searchVm)
     {
-        return PartialView("UsersPartial", await GetUsersAsync(searchVm));
+        var users = await GetUsersAsync(searchVm);
+        return PartialView("UsersPartial", users);
     }
 }

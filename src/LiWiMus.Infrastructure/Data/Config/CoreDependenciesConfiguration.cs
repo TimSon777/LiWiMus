@@ -18,6 +18,7 @@ public static class CoreDependenciesConfiguration
         services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         services.AddTransient<IPlanManager, PlanManager>();
         services.AddTransient<IRoleManager, RoleManager>();
+        services.AddTransient<IUserPlanManager, UserPlanManager>();
         return services;
     }
 

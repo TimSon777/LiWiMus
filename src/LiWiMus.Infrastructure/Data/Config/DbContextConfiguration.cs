@@ -10,7 +10,6 @@ public static class DbContextConfiguration
         services.AddDbContext<ApplicationContext>(options =>
         {
             options
-                .UseLazyLoadingProxies()
                 .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
                     options => options.EnableRetryOnFailure())
                 .UseValidationCheckConstraints()

@@ -11,20 +11,13 @@ namespace LiWiMus.Infrastructure.Data.Seeders;
 // ReSharper disable once UnusedType.Global
 public class ArtistSeeder : ISeeder
 {
-    private readonly IRepository<Artist> _artistRepository;
-    private readonly IRepository<Track> _trackRepository;
-    private readonly IRepository<Album> _albumRepository;
     private readonly UserManager<User> _userManager;
+    private readonly ApplicationContext _applicationContext;
 
-    public ArtistSeeder(IRepository<Artist> artistRepository,
-        IRepository<Track> trackRepository,
-        IRepository<Album> albumRepository,
-        UserManager<User> userManager)
+    public ArtistSeeder(UserManager<User> userManager, ApplicationContext applicationContext)
     {
-        _artistRepository = artistRepository;
-        _trackRepository = trackRepository;
-        _albumRepository = albumRepository;
         _userManager = userManager;
+        _applicationContext = applicationContext;
     }
 
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -39,7 +32,6 @@ public class ArtistSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var user = new User
                 {
                     Email = "mockEmail@mock.mock_Artist",
@@ -48,7 +40,6 @@ public class ArtistSeeder : ISeeder
                 };
 
                 await _userManager.CreateAsync(user, "Password");
-                await _userManager.UpdateAsync(user);
                 
                 var album = new Album
                 {
@@ -56,7 +47,7 @@ public class ArtistSeeder : ISeeder
                     CoverLocation = "Location"
                 };
 
-                await _albumRepository.AddAsync(album);
+                _applicationContext.Add(album);
                 
                 var track = new Track
                 {
@@ -66,7 +57,7 @@ public class ArtistSeeder : ISeeder
                     Album = album
                 };
 
-                await _trackRepository.AddAsync(track);
+                _applicationContext.Add(track);
 
                 var artist = new Artist
                 {
@@ -84,7 +75,7 @@ public class ArtistSeeder : ISeeder
                     Tracks = new List<Track> { track }
                 };
 
-                await _artistRepository.AddAsync(artist);
+                _applicationContext.Add(artist);
                 break;
             case EnvironmentType.Production:
                 break;

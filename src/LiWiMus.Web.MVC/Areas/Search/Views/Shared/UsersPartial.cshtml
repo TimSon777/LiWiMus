@@ -1,8 +1,16 @@
 ﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.UserForListViewModel>
 
-@foreach (var user in Model)
-{
-    <div>
-        @user.UserName
-    </div>
-}
+<div class="users">
+    @foreach (var user in Model)
+    {
+        <div class="user-container search-item">
+            <div class="user-image-container">
+                  <img class="user-image" src="../images/stars.jpg" alt="User avatar."/>
+            </div>
+            <div class="user-information">
+                <p class="user-name">@user.UserName</p>
+            </div>
+        </div>
+    }
+</div>
+

@@ -19,5 +19,6 @@ public enum EntityType : byte
     Plans,
     Permissions,
     Roles,
-    Users
+    Users,
+    UserPlans
 }

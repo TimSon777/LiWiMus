@@ -24,7 +24,7 @@ public class Endpoint : IEndpoint<IResult, Request>
 
     public async Task<IResult> HandleAsync(Request request)
     {
-        var album = await _albumRepository.GetByIdAsync(request.Id);
+        var album = await _albumRepository.GetAlbumWithOwnersAsync(request.Id);
 
         if (album is null)
         {

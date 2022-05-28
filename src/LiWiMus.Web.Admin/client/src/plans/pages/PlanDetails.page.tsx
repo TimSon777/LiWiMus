@@ -58,7 +58,9 @@ export default function PlanDetailsPage() {
                     addSuffix: true,
                   })}
                 />
-                <PlanDeleter plan={plan} setPlan={setPlan} />
+                {plan.deletable && (
+                  <PlanDeleter plan={plan} setPlan={setPlan} />
+                )}
               </Stack>
             </Grid>
 

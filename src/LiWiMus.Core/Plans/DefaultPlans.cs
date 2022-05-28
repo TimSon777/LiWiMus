@@ -2,10 +2,10 @@
 
 public static class DefaultPlans
 {
-    public static class Free
+    public static class Default
     {
-        public const string Name = nameof(Free);
-        public const string Description = "Free plan";
+        public const string Name = nameof(Default);
+        public const string Description = "Default plan";
         public const int PricePerMonth = 0;
     }
 
@@ -20,9 +20,9 @@ public static class DefaultPlans
     {
         yield return new Plan
         {
-            Name = Free.Name,
-            Description = Free.Description,
-            PricePerMonth = Free.PricePerMonth
+            Name = Default.Name,
+            Description = Default.Description,
+            PricePerMonth = Default.PricePerMonth
         };
 
         yield return new Plan

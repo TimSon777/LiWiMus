@@ -15,25 +15,16 @@ namespace LiWiMus.Infrastructure.Data.Seeders;
 // ReSharper disable once UnusedType.Global
 public class PlaylistSeeder : ISeeder
 {
-    private readonly IRepository<Artist> _artistRepository;
-    private readonly IRepository<Track> _trackRepository;
-    private readonly IRepository<Album> _albumRepository;
-    private readonly IRepository<Playlist> _playlistRepository;
     private readonly UserManager<User> _userManager;
-    private readonly IRepository<PlaylistTrack> _playlistTrackRepository;
+    private readonly ApplicationContext _applicationContext;
     private readonly AdminSettings _adminSettings;
 
-    public PlaylistSeeder(IRepository<Artist> artistRepository, IRepository<Track> trackRepository, 
-        IRepository<Album> albumRepository, IRepository<Playlist> playlistRepository, 
-        UserManager<User> userManager, IRepository<PlaylistTrack> playlistTrackRepository,
-        IOptions<AdminSettings> adminSettingsOptions)
+    public PlaylistSeeder(UserManager<User> userManager,
+        IOptions<AdminSettings> adminSettingsOptions,
+        ApplicationContext applicationContext)
     {
-        _artistRepository = artistRepository;
-        _trackRepository = trackRepository;
-        _albumRepository = albumRepository;
-        _playlistRepository = playlistRepository;
         _userManager = userManager;
-        _playlistTrackRepository = playlistTrackRepository;
+        _applicationContext = applicationContext;
         _adminSettings = adminSettingsOptions.Value;
     }
     public async Task SeedAsync(EnvironmentType environmentType)
@@ -48,7 +39,6 @@ public class PlaylistSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-            case EnvironmentType.Testing:
                 var artist = new Artist
                 {
                     About = "About",
@@ -56,7 +46,7 @@ public class PlaylistSeeder : ISeeder
                     PhotoLocation = "Location"
                 };
 
-                await _artistRepository.AddAsync(artist);
+                _applicationContext.Add(artist);
 
                 var album = new Album
                 {
@@ -65,7 +55,7 @@ public class PlaylistSeeder : ISeeder
                     Owners = new List<Artist> {artist}
                 };
 
-                await _albumRepository.AddAsync(album);
+                _applicationContext.Add(album);
 
                 var track1 = new Track
                 {
@@ -94,9 +84,9 @@ public class PlaylistSeeder : ISeeder
                     FileLocation = "Location"
                 };
 
-                await _trackRepository.AddAsync(track1);
-                await _trackRepository.AddAsync(track2);
-                await _trackRepository.AddAsync(track3);
+                _applicationContext.Add(track1);
+                _applicationContext.Add(track2);
+                _applicationContext.Add(track3);
 
                 var user = new User
                 {
@@ -115,7 +105,7 @@ public class PlaylistSeeder : ISeeder
                     PhotoLocation = "Location"
                 };
 
-                await _playlistRepository.AddAsync(playlist);
+                _applicationContext.Add(playlist);
 
                 var playlistTrack = new PlaylistTrack
                 {
@@ -156,7 +146,7 @@ public class PlaylistSeeder : ISeeder
 
                 foreach (var p in additionPlaylist)
                 {
-                    await _playlistRepository.AddAsync(p);
+                    _applicationContext.Add(p);
                 }
 
                 var admin = await _userManager.FindByNameAsync(_adminSettings.UserName);
@@ -168,9 +158,9 @@ public class PlaylistSeeder : ISeeder
                     PhotoLocation = "Location"
                 };
                 
-                await _playlistRepository.AddAsync(playlistAdmin);
+                _applicationContext.Add(playlistAdmin);
 
-                await _playlistTrackRepository.AddAsync(playlistTrack);
+                _applicationContext.Add(playlistTrack);
                 break;
             case EnvironmentType.Production:
                 break;

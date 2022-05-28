@@ -3,6 +3,14 @@
 public static class RouteConstants
 {
     private const string Prefix = "/api";
+
+    public static class UserPlans
+    {
+        public const string List = $"{Prefix}/{nameof(UserPlans)}";
+        public const string Create = $"{Prefix}/{nameof(UserPlans)}";
+        public const string Update = $"{Prefix}/{nameof(UserPlans)}/{{id:int}}";
+        public const string Read = $"{Prefix}/{nameof(UserPlans)}/{{id:int}}";
+    }
     
     public static class Albums
     {
@@ -60,11 +68,6 @@ public static class RouteConstants
     public static class Users
     {
         public const string Create = $"{Prefix}/{nameof(Users)}";
-
-        public static class Plan
-        {
-            public const string Read = $"{Prefix}/{nameof(Users)}/{{userId:int}}/plan";
-        }
 
         public static class Roles
         {

@@ -29,23 +29,23 @@ public class User : BaseUserEntity
     public string? Patronymic { get; set; }
     
     public DateOnly? BirthDate { get; set; }
-    public virtual Gender? Gender { get; set; }
+    public Gender? Gender { get; set; }
 
     public decimal Balance { get; set; }
 
     public string? AvatarLocation { get; set; }
 
-    public virtual ICollection<UserArtist> UserArtists { get; set; } = null!;
-    public virtual ICollection<Artist> Artists { get; set; } = null!;
-
-    public virtual ICollection<LikedAlbum> LikedAlbums { get; set; } = null!;
-    public virtual ICollection<LikedArtist> LikedArtists { get; set; } = null!;
-    public virtual ICollection<LikedPlaylist> LikedPlaylists { get; set; } = null!;
-    public virtual ICollection<LikedSong> LikedSongs { get; set; } = null!;
-    public virtual ICollection<FollowingUser> Followers { get; set; } = null!;
-    public virtual ICollection<FollowingUser> Following { get; set; } = null!;
-    public virtual ICollection<Chat> UserChats { get; set; } = null!;
-    public virtual ICollection<Playlist> Playlists { get; set; } = null!;
-    public virtual ICollection<Role> Roles { get; set; } = null!;
-    public virtual ICollection<UserPlan> Plans { get; set; } = null!;
+    public List<UserArtist> UserArtists { get; set; } = new();
+    public List<Artist> Artists { get; set; } = new();
+    
+    public List<LikedAlbum> LikedAlbums { get; set; } = new();
+    public List<LikedArtist> LikedArtists { get; set; } = new();
+    public List<LikedPlaylist> LikedPlaylists { get; set; } = new();
+    public List<LikedSong> LikedSongs { get; set; } = new();
+    public List<FollowingUser> Followers { get; set; } = new();
+    public List<FollowingUser> Following { get; set; } = new();
+    public List<Chat> UserChats { get; set; } = new();
+    public List<Playlist> Playlists { get; set; } = new();
+    public List<Role> Roles { get; set; } = new();
+    public List<UserPlan> Plans { get; set; } = new();
 }
