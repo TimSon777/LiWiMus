@@ -12,6 +12,7 @@ import UserRoles from "../components/UserRoles/UserRoles";
 import UserReadonlyInfo from "../components/UserReadonlyInfo/UserReadonlyInfo";
 import UserPlans from "../components/UserPlans/UserPlans";
 import { AuthContext } from "../../shared/contexts/Auth.context";
+import UserBanner from "../components/UserBanner/UserBanner";
 
 export default function UserProfilePage() {
   const { id } = useParams() as { id: string };
@@ -55,6 +56,9 @@ export default function UserProfilePage() {
             <Grid item xs={12} md={6}>
               <Stack spacing={2} alignItems={"center"}>
                 <UserImageEditor user={user} setUser={setUser} />
+                {user.id !== admin?.id && (
+                  <UserBanner user={user} setUser={setUser} />
+                )}
               </Stack>
             </Grid>
 

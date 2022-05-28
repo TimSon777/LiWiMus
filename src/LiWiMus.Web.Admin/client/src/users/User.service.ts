@@ -21,7 +21,8 @@ const map = (data: any) =>
     data.balance,
     data.avatarLocation,
     data.createdAt,
-    data.modifiedAt
+    data.modifiedAt,
+    data.lockoutEnd
   );
 
 const UserService = {
@@ -109,6 +110,13 @@ const UserService = {
     const location = await FileService.saveByUrl(url);
     const updateDto: UpdateUserDto = { id: +user.id, avatarLocation: location };
     return await UserService.update(updateDto);
+  },
+
+  lockOut: async (user: User, lockOutEndDate: Date) => {
+    const response = await axios.post(`/users/${user.id}/lockout`, {
+      end: lockOutEndDate,
+    });
+    return map(response.data);
   },
 };
 

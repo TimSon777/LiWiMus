@@ -15,7 +15,8 @@ export class User {
     balance: string,
     avatarLocation: string | undefined,
     createdAt: string,
-    modifiedAt: string
+    modifiedAt: string,
+    lockoutEnd: string | undefined
   ) {
     this.id = +id;
     this.userName = userName;
@@ -30,6 +31,7 @@ export class User {
     this.avatarLocation = avatarLocation;
     this.createdAt = parseISO(createdAt);
     this.modifiedAt = parseISO(modifiedAt);
+    this.lockoutEnd = lockoutEnd ? parseISO(lockoutEnd) : undefined;
   }
 
   id: number;
@@ -44,6 +46,8 @@ export class User {
   gender?: Gender;
   balance: number;
   avatarLocation?: string;
+
+  lockoutEnd?: Date;
 
   createdAt: Date;
   modifiedAt: Date;
