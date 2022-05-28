@@ -2,6 +2,7 @@
 using FormHelper;
 using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.Playlists;
+using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
@@ -54,9 +55,9 @@ public class PlaylistController : Controller
     }
 
     [HttpPost, FormValidator]
-    public async Task<IActionResult> Like(int playlistId)
+    public async Task<IActionResult> SubscribeOrUnsubscribe(int playlistId)
     {
-        var playlist = await _playlistRepository.GetByIdAsync(playlistId);
+        var playlist = await _playlistRepository.WithSubscribersAndOwner(playlistId);
         
         if (playlist is null)
         {
@@ -65,23 +66,28 @@ public class PlaylistController : Controller
 
         var user = await _userManager.GetUserAsync(User);
 
-        if (user.Playlists.Any(p => p == playlist))
+        if (playlist.Owner == user)
         {
             return FormResult.CreateErrorResult("It is your playlist.");
         }
 
-        if (user.LikedPlaylists.Any(lp => lp.Playlist == playlist))
+        var likedPlaylist = playlist.Subscribers.FirstOrDefault(likedPlaylist => likedPlaylist.User == user);
+        if (likedPlaylist is not null)
         {
-            return FormResult.CreateErrorResult("You has already subscribed to this playlist.");
+            playlist.Subscribers.Remove(likedPlaylist);
+            await _playlistRepository.SaveChangesAsync();
+        }
+        else
+        {
+            var lp = new LikedPlaylist
+            {
+                Playlist = playlist,
+                User = user
+            };
+
+            await _likedPlaylistRepository.AddAsync(lp);
         }
 
-        var lp = new LikedPlaylist
-        {
-            Playlist = playlist,
-            User = user
-        };
-
-        await _likedPlaylistRepository.AddAsync(lp);
         return FormResult.CreateSuccessResult("Ok");
     }
 }
