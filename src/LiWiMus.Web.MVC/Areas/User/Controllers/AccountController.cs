@@ -1,13 +1,10 @@
 ﻿using System.Security.Claims;
-using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Interfaces.Mail;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
-using LiWiMus.Web.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 
@@ -107,8 +104,16 @@ public class AccountController : Controller
         {
             return RedirectToAction("Index", "Home", new {area = ""});
         }
+        else if (result.IsLockedOut)
+        {
+            ModelState.AddModelError("", "The user has been banned");
+        }
+        else
+        {
+            ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+        }
 
-        ModelState.AddModelError("", "Неправильный логин и (или) пароль");
+        model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         return View(model);
     }
 
@@ -132,8 +137,8 @@ public class AccountController : Controller
 
         var response = await _mailService.SendMailToConfirmAccountAsync(
             new ConfirmAccountRequest(user.UserName, user.Email, confirmUrl!));
-        
-        return response.IsSuccessStatusCode 
+
+        return response.IsSuccessStatusCode
             ? Ok("Проверьте почтовый ящик")
             : BadRequest(response.Error);
     }
@@ -169,7 +174,7 @@ public class AccountController : Controller
         var response = await _mailService
             .SendMailToResetPasswordAsync(new ResetPasswordRequest(user.UserName, user.Email, resetUrl!));
 
-        return response.IsSuccessStatusCode 
+        return response.IsSuccessStatusCode
             ? Ok("Проверьте почтовый ящик")
             : BadRequest(response.Error);
     }
