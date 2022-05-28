@@ -129,14 +129,20 @@
                         @{
                             var isMale = Model.IsMale;
                         }
-                        <input class="form-check-input disabled-input" @(isMale ? "checked" : "") type="radio" name="gender" id="gender-male" disabled="disabled">
-                        <label class="form-check-label" for="gender-male">
-                            Male
-                        </label>
-                        <input class="form-check-input disabled-input" @(!isMale ? "checked" : "") type="radio" name="gender" id="gender-female" disabled="disabled">
-                        <label class="form-check-label" for="gender-female">
-                            Female
-                        </label>
+                        <div class="gender-checkbox-container">
+                            <div>
+                                <input class="form-check-input disabled-input custom-radio" @(isMale ? "checked" : "") type="radio" name="gender" id="gender-male" disabled="disabled">
+                                <label class="form-check-label" for="gender-male">
+                                    Male
+                                </label>
+                            </div>
+                            <div>
+                                <input class="form-check-input disabled-input custom-radio" @(!isMale ? "checked" : "") type="radio" name="gender" id="gender-female" disabled="disabled">
+                                <label class="form-check-label" for="gender-female">
+                                    Female
+                                </label>
+                            </div>
+                        </div>
                         <input type="hidden" id="is-male" asp-for="IsMale">
                     </div>
 
@@ -154,11 +160,11 @@
         </section>
 
         <section class="change-password-random-avatar-btns">
-            <form asp-formhelper="true" asp-action="ChangeAvatarToRandom" style="display: flex; justify-content: center">
-                <button class="random-avatar-button">Set random avatar</button>
-            </form>
             @if (Model.IsAccountOwner)
             {
+                <form asp-formhelper="true" asp-action="ChangeAvatarToRandom" style="display: flex; justify-content: center">
+                    <button class="random-avatar-button">Set random avatar</button>
+                </form>
                 <div class="change-password-button">
                     <a asp-area="User" asp-controller="Profile" asp-action="ChangePassword">Change Password</a>
                 </div>
