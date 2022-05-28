@@ -10,6 +10,7 @@ import UserImageEditor from "../components/UserImageEditor/UserImageEditor";
 import UserInfoEditor from "../components/UserInfoEditor/UserInfoEditor";
 import UserRoles from "../components/UserRoles/UserRoles";
 import UserReadonlyInfo from "../components/UserReadonlyInfo/UserReadonlyInfo";
+import UserPlans from "../components/UserPlans/UserPlans";
 
 export default function UserProfilePage() {
   const { id } = useParams() as { id: string };
@@ -61,6 +62,10 @@ export default function UserProfilePage() {
 
       <Grid item xs={12} md={10} lg={8}>
         <UserRoles user={user} />
+      </Grid>
+
+      <Grid item xs={12} md={10} lg={8}>
+        <UserPlans user={user} />
       </Grid>
     </Grid>
   );

@@ -97,7 +97,7 @@ public class PlanSeeder : ISeeder
 
     private async Task SeedPlansAsync(EnvironmentType _)
     {
-        var planByNameSpec = new PlanByNameSpec(DefaultPlans.Free.Name);
+        var planByNameSpec = new PlanByNameSpec(DefaultPlans.Default.Name);
         if (await _plansRepository.AnyAsync(planByNameSpec))
         {
             return;

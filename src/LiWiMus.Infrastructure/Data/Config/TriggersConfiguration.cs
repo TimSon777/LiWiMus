@@ -38,13 +38,13 @@ public static class TriggersConfiguration
             Description = "Gift for registration"
         });
 
-        Triggers<User, ApplicationContext>.GlobalInserted.Add<IAvatarService>(async entry =>
+        Triggers<User>.GlobalInserted.Add<IAvatarService>(async entry =>
             await entry.Service.SetRandomAvatarAsync(entry.Entity));
 
         /*Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(async entry =>
             await entry.Service.AddToRoleAsync(entry.Entity, DefaultRoles.User.Name));*/
 
-        Triggers<User, ApplicationContext>.GlobalInserted.Add<IPlanManager>(async entry =>
+        Triggers<User>.GlobalInserted.Add<IUserPlanManager>(async entry =>
             await entry.Service.AddToDefaultPlanAsync(entry.Entity));
 
         Triggers<User>.GlobalInserted.Add<IRoleManager>(async entry =>

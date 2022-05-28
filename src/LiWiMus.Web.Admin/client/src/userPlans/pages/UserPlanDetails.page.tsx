@@ -1,27 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Plan } from "../types/Plan";
-import PlanService from "../Plan.service";
+import { UserPlan } from "../types/UserPlan";
+import UserPlanService from "../UserPlan.service";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
 import { Grid, Paper, Stack, Typography } from "@mui/material";
-import PlanInfoEditor from "../components/PlanInfoEditor/PlanInfoEditor";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { formatDistanceToNow } from "date-fns";
-import PlanDeleter from "../components/PlanDeleter/PlanDeleter";
-import PlanPermissionsEditor from "../components/PlanPermissionsEditor/PlanPermissionsEditor";
+import UserPlanInfoEditor from "../components/UserPlanInfoEditor/UserPlanInfoEditor";
+import UserPlanDeleter from "../components/UserPlanDeleter/UserPlanDeleter";
 
-export default function PlanDetailsPage() {
+export default function UserPlanDetailsPage() {
   const { id } = useParams() as { id: string };
-  const [plan, setPlan] = useState<Plan>();
+  const [userPlan, setUserPlan] = useState<UserPlan>();
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
 
   useEffect(() => {
     setLoading(true);
-    PlanService.get(id)
-      .then((plan) => setPlan(plan))
+    UserPlanService.get(id)
+      .then(setUserPlan)
       .catch(showError)
       .then(() => setLoading(false));
   }, []);
@@ -30,7 +29,7 @@ export default function PlanDetailsPage() {
     return <Loading />;
   }
 
-  if (!plan) {
+  if (!userPlan) {
     return <NotFound />;
   }
 
@@ -39,45 +38,41 @@ export default function PlanDetailsPage() {
       <Grid item xs={12} md={10} lg={8}>
         <Paper sx={{ p: 4 }} elevation={10}>
           <Typography variant={"h3"} component={"div"}>
-            {plan.name}
+            UserPlan
           </Typography>
 
           <Grid container spacing={6}>
             <Grid item xs={12} md={6}>
-              <Stack spacing={2} alignItems={"end"}>
-                <ReadonlyInfo name={"ID"} value={plan.id} />
+              <Stack spacing={3} alignItems={"end"}>
+                <ReadonlyInfo name={"ID"} value={userPlan.id} />
                 <ReadonlyInfo
                   name={"Created"}
-                  value={formatDistanceToNow(plan.createdAt, {
+                  value={formatDistanceToNow(userPlan.createdAt, {
                     addSuffix: true,
                   })}
                 />
                 <ReadonlyInfo
                   name={"Modified"}
-                  value={formatDistanceToNow(plan.modifiedAt, {
+                  value={formatDistanceToNow(userPlan.modifiedAt, {
                     addSuffix: true,
                   })}
                 />
-                {plan.deletable && (
-                  <PlanDeleter plan={plan} setPlan={setPlan} />
+                {userPlan.updatable && (
+                  <UserPlanDeleter
+                    userPlan={userPlan}
+                    setUserPlan={setUserPlan}
+                  />
                 )}
               </Stack>
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <PlanInfoEditor plan={plan} setPlan={setPlan} />
+              <UserPlanInfoEditor
+                userPlan={userPlan}
+                setUserPlan={setUserPlan}
+              />
             </Grid>
           </Grid>
-        </Paper>
-      </Grid>
-
-      <Grid item xs={12} md={10} lg={8}>
-        <Paper sx={{ p: 4 }} elevation={10}>
-          <Typography variant={"h3"} component={"div"}>
-            Permissions
-          </Typography>
-
-          <PlanPermissionsEditor plan={plan} setPlan={setPlan} />
         </Paper>
       </Grid>
     </Grid>

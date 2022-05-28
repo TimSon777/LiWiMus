@@ -1,4 +1,5 @@
 ﻿using LiWiMus.Core.Roles;
+using LiWiMus.Core.Roles.Exceptions;
 using LiWiMus.Core.Roles.Interfaces;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Interfaces;
@@ -29,13 +30,23 @@ public class Endpoint : IEndpoint<IResult, Request>
             return Results.Extensions.NotFoundById(EntityType.Roles, request.RoleId);
         }
 
-        if (!await _roleManager.IsInRoleAsync(user, role))
+        try
         {
-            return Results.BadRequest("User not in this role");
+            await _roleManager.RemoveFromRoleAsync(user, role);
+            return Results.Ok();
         }
-
-        await _roleManager.RemoveFromRoleAsync(user, role);
-        return Results.Ok();
+        catch (UserNotInRoleException)
+        {
+            return Results.BadRequest("User not this in role");
+        }
+        catch (RemoveFromAdminRoleException)
+        {
+            return Results.UnprocessableEntity("Can't remove user from admin role");
+        }
+        catch (RemoveFromDefaultRoleException)
+        {
+            return Results.UnprocessableEntity("Can't remove user from default role");
+        }
     }
 
     public void AddRoute(IEndpointRouteBuilder app)

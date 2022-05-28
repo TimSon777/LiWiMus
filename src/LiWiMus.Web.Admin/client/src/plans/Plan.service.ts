@@ -2,9 +2,9 @@ import axios from "../shared/services/Axios";
 import { Plan } from "./types/Plan";
 import { UpdatePlanDto } from "./types/UpdatePlanDto";
 import { Permission } from "../permissions/Permission";
-import {CreatePlanDto} from "./types/CreatePlanDto"
-import { FilterOptions } from "../shared/types/FilterOptions";
-import { PaginatedData } from "../shared/types/PaginatedData";
+import { CreatePlanDto } from "./types/CreatePlanDto";
+import { User } from "../users/types/User";
+import UserPlanService from "../userPlans/UserPlan.service";
 
 const map = (data: any) => {
   return new Plan(
@@ -14,7 +14,8 @@ const map = (data: any) => {
     data.pricePerMonth,
     data.permissions,
     data.createdAt,
-    data.modifiedAt
+    data.modifiedAt,
+    data.deletable
   );
 };
 
@@ -24,11 +25,16 @@ const PlanService = {
     return map(response.data);
   },
 
-  getPlans: async ()=> {
+  getPlans: async () => {
     const response = await axios.get(`/plans`);
     return response.data;
   },
-  
+
+  getAll: async (): Promise<Plan[]> => {
+    const response = await axios.get(`/plans`);
+    return response.data.map((x: any) => map(x));
+  },
+
   remove: async (plan: Plan) => {
     return await axios.delete(`/plans/${plan.id}`);
   },
@@ -37,12 +43,11 @@ const PlanService = {
     const response = await axios.patch("/plans", dto);
     return map(response.data);
   },
-  
+
   save: async (plan: CreatePlanDto) => {
-    const response = await axios.post(`/plans`, plan)
-    return response.data as Plan
+    const response = await axios.post(`/plans`, plan);
+    return response.data as Plan;
   },
-  
 
   replacePermissions: async (plan: Plan, permissions: Permission[]) => {
     const dto = {
@@ -51,6 +56,13 @@ const PlanService = {
     };
     const response = await axios.put("/plans/permissions", dto);
     return map(response.data);
+  },
+
+  getAvailablePlans: async (user: User) => {
+    const userPlans = await UserPlanService.search(user.id, undefined, true);
+    const plansIds = userPlans.map((up) => up.planId);
+    const allPlans = await PlanService.getAll();
+    return allPlans.filter((p) => !plansIds.includes(p.id));
   },
 };
 

@@ -11,6 +11,8 @@ export class Plan {
   createdAt: Date;
   modifiedAt: Date;
 
+  deletable: boolean;
+
   constructor(
     id: string,
     name: string,
@@ -18,7 +20,8 @@ export class Plan {
     pricePerMonth: string,
     permissions: any[],
     createdAt: string,
-    modifiedAt: string
+    modifiedAt: string,
+    deletable: string
   ) {
     this.id = +id;
     this.name = name;
@@ -38,5 +41,7 @@ export class Plan {
 
     this.createdAt = parseISO(createdAt);
     this.modifiedAt = parseISO(modifiedAt);
+
+    this.deletable = Boolean(deletable);
   }
 }
