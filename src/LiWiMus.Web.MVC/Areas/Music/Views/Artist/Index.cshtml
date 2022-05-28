@@ -1,0 +1,27 @@
+@model LiWiMus.Web.MVC.Areas.Music.ViewModels.ArtistViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+посмотреть на внутриненние поля
+@Model.Name
+
+<p>@Model.About</p>
+
+@foreach (var album in Model.Albums)
+{
+    <p>@album.Title</p>
+}
+
+@foreach (var user in Model.Owners)
+{
+    <p>@user.UserName</p>
+}
+
+@Model.IsSubscribed
+<form asp-formhelper="true" asp-controller="Artist" asp-action="SubscribeOrUnsubscribe">
+    <input type="hidden" name="artistId" value="@Model.Id">
+    <button>Subscribe</button>
+</form>
