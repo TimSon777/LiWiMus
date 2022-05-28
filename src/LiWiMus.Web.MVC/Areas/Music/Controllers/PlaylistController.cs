@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LiWiMus.Web.MVC.Areas.Music.Controllers;
 
-[Area("Music")]
+[Area(AreasConstants.Music)]
 public class PlaylistController : Controller
 {
     private readonly IAuthorizationService _authorizationService;

@@ -1,0 +1,52 @@
+@model LiWiMus.Web.MVC.Areas.Music.ViewModels.AlbumViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div>
+    Должна быть картинка
+    @Model.CoverLocation
+</div>
+<div>
+    @Model.Title
+</div>
+
+<div>
+    @Model.PublishedAt
+</div>
+
+<div>
+    @foreach (var track in Model.Tracks)
+    {
+        <p>Должна быть ссылка </p>
+        <a>@track.Name</a>
+    }
+</div>
+
+<div>
+    @foreach (var artist in Model.Owners)
+    {
+        <p>Должна быть ссылка</p>
+        <a>@artist.Name</a>
+    }
+</div>
+
+<div>
+    Уже подписан (учесть при визуализации кнопки добавления в медиатеку)
+    @Model.IsSubscribe
+</div>
+
+@if (Model.IsSubscribe)
+{
+    <p>Вы подписаны</p>
+}
+else
+{
+    <form asp-formhelper="true" method="post" asp-action="SubscribeOrUnsubscribe">
+        <input name="albumId" value="@Model.Id">
+        <button>Subscribe</button>
+    </form>
+}
+
