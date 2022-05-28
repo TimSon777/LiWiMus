@@ -3,6 +3,7 @@
 public interface IRoleManager
 {
     Task<bool> IsInRoleAsync(User user, Role role);
+    Task<bool> IsInRoleAsync(User user, string roleName);
     Task AddToRoleAsync(User user, Role role);
     Task AddToRoleAsync(User user, string roleName);
 

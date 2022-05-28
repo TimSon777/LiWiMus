@@ -26,8 +26,13 @@ public class RoleManager : IRoleManager
 
     public async Task<bool> IsInRoleAsync(User user, Role role)
     {
+        return await IsInRoleAsync(user, role.Name);
+    }
+
+    public async Task<bool> IsInRoleAsync(User user, string roleName)
+    {
         var roles = await _roleRepository.GetByUserAsync(user);
-        return roles.Any(r => r.Name == role.Name);
+        return roles.Any(r => r.Name == roleName);
     }
 
     public async Task AddToRoleAsync(User user, Role role)

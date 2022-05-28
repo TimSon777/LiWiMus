@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using LiWiMus.Core.Roles;
+using LiWiMus.Core.Roles.Interfaces;
 using LiWiMus.Core.Users;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.Shared.Extensions;
@@ -11,6 +13,7 @@ namespace LiWiMus.Web.API.Users.LockOut;
 public class Endpoint : IEndpoint<IResult, string, Request>
 {
     private UserManager<User> _userManager = null!;
+    private IRoleManager _roleManager = null!;
     private readonly IValidator<Request> _validator;
     private readonly IMapper _mapper;
 
@@ -29,6 +32,12 @@ public class Endpoint : IEndpoint<IResult, string, Request>
         }
 
         var user = await _userManager.FindByIdAsync(id);
+
+        if (await _roleManager.IsInRoleAsync(user, DefaultRoles.Admin.Name))
+        {
+            return Results.UnprocessableEntity("Can't ban admin");
+        }
+        
         if (!await _userManager.GetLockoutEnabledAsync(user))
         {
             var enabledAsync = await _userManager.SetLockoutEnabledAsync(user, true);
@@ -50,8 +59,10 @@ public class Endpoint : IEndpoint<IResult, string, Request>
 
     public void AddRoute(IEndpointRouteBuilder app)
     {
-        app.MapPost(RouteConstants.Users.LockOut, async (string id, Request request, UserManager<User> userManager) =>
+        app.MapPost(RouteConstants.Users.LockOut,
+            async (string id, Request request, UserManager<User> userManager, IRoleManager roleManager) =>
         {
+            _roleManager = roleManager;
             _userManager = userManager;
             return await HandleAsync(id, request);
         });
