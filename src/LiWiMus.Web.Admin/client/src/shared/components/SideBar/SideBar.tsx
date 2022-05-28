@@ -11,7 +11,6 @@ import {
 import { AuthContext } from "../../contexts/Auth.context";
 import GroupIcon from "@mui/icons-material/Group";
 import ReceiptIcon from "@mui/icons-material/Receipt";
-import DashboardIcon from "@mui/icons-material/Dashboard";
 import AudiotrackIcon from "@mui/icons-material/Audiotrack";
 import QueueMusicIcon from "@mui/icons-material/QueueMusic";
 import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
@@ -70,13 +69,6 @@ export default function SideBar({
         )}
         <Divider />
         <List>
-          <ListLink
-            icon={<DashboardIcon />}
-            text={"Dashboard"}
-            to={"/admin/dashboard"}
-            onClick={linkClickHandler}
-          />
-
           <ListLink
             icon={<GroupIcon />}
             text={"Users"}

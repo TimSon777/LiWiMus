@@ -2,7 +2,6 @@ import React from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import LoginPage from "../login/Login.page";
 import UsersPage from "../users/pages/Users.page";
-import DashboardPage from "../dashboard/Dashboard.page";
 import ArtistsPage from "../artists/pages/Artists.page";
 import UserProfilePage from "../users/pages/UserProfile.page";
 import PlaylistDetailsPage from "../playlists/pages/PlaylistDetails.page";
@@ -28,11 +27,10 @@ import PlansPage from "../plans/pages/Plans.page";
 import CreateUserPlanPage from "../userPlans/pages/CreateUserPlan.page";
 import UserPlanDetailsPage from "../userPlans/pages/UserPlanDetails.page";
 
-export const useRoutes = (isAuthenticated: boolean) => {
+export const useRoutes = (isAuthenticated: boolean, adminId: string | null) => {
   if (isAuthenticated) {
     return (
       <Routes>
-        <Route path="/admin/dashboard" element={<DashboardPage />} />
         <Route path="/admin/users" element={<UsersPage />} />
         <Route path="/admin/artists" element={<ArtistsPage />} />
         <Route path="/admin/transactions" element={<TransactionsPage />} />
@@ -70,15 +68,18 @@ export const useRoutes = (isAuthenticated: boolean) => {
           element={<CreateUserPlanPage />}
         />
         <Route path="/admin/userplans/:id" element={<UserPlanDetailsPage />} />
-        <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
+        <Route
+          path="*"
+          element={<Navigate to={`/admin/users/${adminId}`} replace />}
+        />
       </Routes>
     );
   }
 
   return (
     <Routes>
-      <Route path={"/admin"} element={<LoginPage />} />
-      <Route path="*" element={<Navigate to="/admin" replace />} />
+      <Route path={"/admin/login"} element={<LoginPage />} />
+      <Route path="*" element={<Navigate to="/admin/login" replace />} />
     </Routes>
   );
 };

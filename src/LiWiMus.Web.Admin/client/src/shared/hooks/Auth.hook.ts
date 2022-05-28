@@ -55,6 +55,8 @@ export const useAuth = () => {
         .then()
         .catch((e) => console.error(e))
         .then(() => setReady(true));
+    } else {
+      setReady(true);
     }
   }, []);
 

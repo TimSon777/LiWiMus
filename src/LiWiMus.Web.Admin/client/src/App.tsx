@@ -16,7 +16,7 @@ import Loading from "./shared/components/Loading/Loading";
 function App() {
   const { user, token, payload, setUser, login, logout, ready } = useAuth();
   let isAuthenticated = !!token;
-  const routes = useRoutes(isAuthenticated);
+  const routes = useRoutes(isAuthenticated, payload?.sub ?? null);
 
   if (!ready) {
     return <Loading />;
