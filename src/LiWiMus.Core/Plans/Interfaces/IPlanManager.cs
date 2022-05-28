@@ -8,4 +8,5 @@ public interface IPlanManager
     Task GrantPermissionAsync(Plan plan, string permissionName);
 
     Task<bool> DeleteAsync(Plan plan);
+    Task<List<Plan>> GetByUserAsync(User user);
 }

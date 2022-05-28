@@ -13,4 +13,5 @@ public interface IRoleManager
     Task<bool> HasPermissionAsync(Role role, SystemPermission permission);
     Task GrantPermissionAsync(Role role, SystemPermission permission);
     Task GrantPermissionAsync(Role role, string permissionName);
+    Task<List<Role>> GetByUserAsync(User user);
 }

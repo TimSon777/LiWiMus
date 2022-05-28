@@ -2,6 +2,7 @@
 using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Plans.Specifications;
+using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Interfaces;
 
 namespace LiWiMus.Infrastructure.Services;
@@ -9,13 +10,15 @@ namespace LiWiMus.Infrastructure.Services;
 public class PlanManager : IPlanManager
 {
     private readonly IRepository<Plan> _planRepository;
+    private readonly IRepository<UserPlan> _userPlanRepository;
     private readonly IRepository<Permission> _permissionRepository;
 
     public PlanManager(IRepository<Plan> planRepository,
-                       IRepository<Permission> permissionRepository)
+                       IRepository<Permission> permissionRepository, IRepository<UserPlan> userPlanRepository)
     {
         _planRepository = planRepository;
         _permissionRepository = permissionRepository;
+        _userPlanRepository = userPlanRepository;
     }
 
 
@@ -57,5 +60,11 @@ public class PlanManager : IPlanManager
 
         await _planRepository.DeleteAsync(plan);
         return true;
+    }
+
+    public async Task<List<Plan>> GetByUserAsync(User user)
+    {
+        var userPlans = await _userPlanRepository.GetActiveAsync(user);
+        return userPlans.Select(up => up.Plan).ToList();
     }
 }

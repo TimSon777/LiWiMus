@@ -18,7 +18,7 @@ public sealed class ActiveUserPlansSpec : Specification<UserPlan>
         Query.Where(up => up.UserId == user.Id)
              .Where(UserPlan.IsActive)
              .Include(up => up.User)
-             .Include(up => up.Plan);
+             .Include(up => up.Plan.Permissions);
     }
 }
 

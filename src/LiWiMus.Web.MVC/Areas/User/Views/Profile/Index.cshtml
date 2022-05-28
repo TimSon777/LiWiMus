@@ -1,4 +1,8 @@
-﻿@model LiWiMus.Web.MVC.Areas.User.ViewModels.ProfileViewModel
+﻿@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using LiWiMus.Core.Plans
+@model LiWiMus.Web.MVC.Areas.User.ViewModels.ProfileViewModel
+@inject IAuthorizationService AuthorizationService;
 
 @{
     ViewBag.Title = "User Profile";
@@ -93,15 +97,17 @@
                             <span asp-validation-for="Email"></span>
                         </div>
 
-                        <label class="label-input" style="cursor: pointer">
-                            Change your avatar
-                            <input type="file" asp-for="Avatar" class="visually-hidden disabled-input" id="input" name="image" accept="image/*" disabled="disabled">
-                            <span asp-validation-for="Avatar"></span>
-                            <div class="camera-icon">
-                                <img src="https://liwimus.aslipatov.site/images/camera.png" width="48px" height="48px" alt="Camera icon."/>
-                            </div>
-                        </label>
-
+                        if (await AuthorizationService.AuthorizeAsync(User, DefaultPermissions.Avatar.Upload.Name) is {Succeeded: true})
+                        {
+                            <label class="label-input" style="cursor: pointer">
+                                Change your avatar
+                                <input type="file" asp-for="Avatar" class="visually-hidden disabled-input" id="input" name="image" accept="image/*" disabled="disabled">
+                                <span asp-validation-for="Avatar"></span>
+                                <div class="camera-icon">
+                                    <img src="https://liwimus.aslipatov.site/images/camera.png" width="48px" height="48px" alt="Camera icon."/>
+                                </div>
+                            </label>
+                        }
 
                         <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">

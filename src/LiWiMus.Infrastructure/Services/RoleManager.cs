@@ -121,4 +121,9 @@ public class RoleManager : IRoleManager
 
         await GrantPermissionAsync(role, permission);
     }
+
+    public async Task<List<Role>> GetByUserAsync(User user)
+    {
+        return await _roleRepository.GetByUserAsync(user);
+    }
 }
