@@ -39,7 +39,7 @@ export default function LoginPage() {
     const result = await response.json();
 
     if (response.ok) {
-      if (!auth.login(result.access_token)) {
+      if (!(await auth.login(result.access_token))) {
         setError("password", { message: "You don't have access here." });
       }
     } else {

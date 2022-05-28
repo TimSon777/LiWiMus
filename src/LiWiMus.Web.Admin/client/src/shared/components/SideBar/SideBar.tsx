@@ -4,28 +4,31 @@ import {
   Box,
   Divider,
   Drawer,
+  Link,
   List,
   Toolbar,
-  Typography,
 } from "@mui/material";
 import { AuthContext } from "../../contexts/Auth.context";
 import GroupIcon from "@mui/icons-material/Group";
-import ReceiptIcon from '@mui/icons-material/Receipt';
+import ReceiptIcon from "@mui/icons-material/Receipt";
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import AudiotrackIcon from '@mui/icons-material/Audiotrack';
-import QueueMusicIcon from '@mui/icons-material/QueueMusic';
-import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
-import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
+import AudiotrackIcon from "@mui/icons-material/Audiotrack";
+import QueueMusicIcon from "@mui/icons-material/QueueMusic";
+import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
+import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
 import ListButton from "../ListButton/ListButton";
 import "./SideBar.sass";
-import { UserData } from "../../types/UserData";
+import { User } from "../../../users/types/User";
+import FileService from "../../services/File.service";
+import avatarPlaceholder from "../../images/avatar-placeholder.jpg";
+import { Link as RLink } from "react-router-dom";
 
 const drawerWidth = 240;
 
 export interface SideBarProps {
-  userData: UserData | null;
+  user: User | null;
   mobileOpen: boolean;
   setMobileOpen: (state: boolean) => void;
 }
@@ -33,7 +36,7 @@ export interface SideBarProps {
 export default function SideBar({
   mobileOpen,
   setMobileOpen,
-  userData,
+  user,
 }: SideBarProps) {
   const { logout } = useContext(AuthContext);
 
@@ -45,10 +48,26 @@ export default function SideBar({
     <>
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>
-        <Box sx={{ m: 2, display: "inline-flex", alignItems: "center" }}>
-          <Avatar sx={{ mr: 2 }} />
-          <Typography noWrap>{userData?.name || "anonym"}</Typography>
-        </Box>
+        {user && (
+          <Box sx={{ m: 2, display: "inline-flex", alignItems: "center" }}>
+            <Avatar
+              sx={{ mr: 2 }}
+              src={
+                user.avatarLocation
+                  ? FileService.getLocation(user.avatarLocation)
+                  : avatarPlaceholder
+              }
+            />
+            <Link
+              underline={"none"}
+              color={"secondary"}
+              component={RLink}
+              to={`/admin/users/${user.id}`}
+            >
+              {user.userName}
+            </Link>
+          </Box>
+        )}
         <Divider />
         <List>
           <ListLink
@@ -72,37 +91,35 @@ export default function SideBar({
             onClick={linkClickHandler}
           />
           <ListLink
-              icon={<QueueMusicIcon />}
-              text={"Playlists"}
-              to={"/admin/playlists"}
-              onClick={linkClickHandler}
+            icon={<QueueMusicIcon />}
+            text={"Playlists"}
+            to={"/admin/playlists"}
+            onClick={linkClickHandler}
           />
           <ListLink
             icon={<AudiotrackIcon />}
             text={"Tracks"}
             to={"/admin/tracks"}
             onClick={linkClickHandler}
-            />
-          <ListLink
-              icon={<TheaterComedyIcon />}
-              text={"Genres"}
-              to={"/admin/genres"}
-              onClick={linkClickHandler}
           />
           <ListLink
-              icon={<ReceiptIcon />}
-              text={"Transactions"}
-              to={"/admin/transactions"}
-              onClick={linkClickHandler}
+            icon={<TheaterComedyIcon />}
+            text={"Genres"}
+            to={"/admin/genres"}
+            onClick={linkClickHandler}
           />
           <ListLink
-              icon={<MonetizationOnIcon />}
-              text={"Plans"}
-              to={"/admin/plans"}
-              onClick={linkClickHandler}
+            icon={<ReceiptIcon />}
+            text={"Transactions"}
+            to={"/admin/transactions"}
+            onClick={linkClickHandler}
           />
-          
-          
+          <ListLink
+            icon={<MonetizationOnIcon />}
+            text={"Plans"}
+            to={"/admin/plans"}
+            onClick={linkClickHandler}
+          />
         </List>
         <Divider />
         <List>

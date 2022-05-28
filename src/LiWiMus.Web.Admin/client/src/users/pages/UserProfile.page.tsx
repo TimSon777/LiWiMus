@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { User } from "../types/User";
 import UserService from "../User.service";
@@ -11,12 +11,21 @@ import UserInfoEditor from "../components/UserInfoEditor/UserInfoEditor";
 import UserRoles from "../components/UserRoles/UserRoles";
 import UserReadonlyInfo from "../components/UserReadonlyInfo/UserReadonlyInfo";
 import UserPlans from "../components/UserPlans/UserPlans";
+import { AuthContext } from "../../shared/contexts/Auth.context";
 
 export default function UserProfilePage() {
   const { id } = useParams() as { id: string };
-  const [user, setUser] = useState<User>();
+  const [user, setUserState] = useState<User>();
+  const { user: admin, setUser: setAdmin } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
+
+  const setUser = (newUser: User | undefined) => {
+    if (newUser && newUser.id == admin?.id) {
+      setAdmin(newUser);
+    }
+    setUserState(newUser);
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -24,7 +33,7 @@ export default function UserProfilePage() {
       .then(setUser)
       .catch(showError)
       .then(() => setLoading(false));
-  }, []);
+  }, [id]);
 
   if (loading) {
     return <Loading />;

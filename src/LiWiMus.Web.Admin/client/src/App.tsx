@@ -11,18 +11,29 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import ruLocale from "date-fns/locale/ru";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import "./App.sass";
+import Loading from "./shared/components/Loading/Loading";
 
 function App() {
-  const { userData, login, logout, ready } = useAuth();
-  const isAuthenticated = !!userData;
+  const { user, token, payload, setUser, login, logout, ready } = useAuth();
+  let isAuthenticated = !!token;
   const routes = useRoutes(isAuthenticated);
 
   if (!ready) {
-    return <div />;
+    return <Loading />;
   }
 
   return (
-    <AuthContext.Provider value={{ userData, login, logout, isAuthenticated }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        token,
+        login,
+        logout,
+        isAuthenticated,
+        payload,
+      }}
+    >
       <BrowserRouter>
         <LocalizationProvider dateAdapter={AdapterDateFns} locale={ruLocale}>
           <ThemeProvider theme={theme}>
@@ -35,7 +46,7 @@ function App() {
                 horizontal: "center",
               }}
             >
-              <Layout userData={userData}>{routes}</Layout>
+              <Layout user={user}>{routes}</Layout>
             </SnackbarProvider>
           </ThemeProvider>
         </LocalizationProvider>
