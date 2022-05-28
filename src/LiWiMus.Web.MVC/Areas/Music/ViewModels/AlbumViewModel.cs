@@ -13,5 +13,5 @@ public class AlbumViewModel : HasId
 
     public List<ArtistGeneralInfoViewModel> Owners { get; set; } = new();
     public List<TrackForListViewModel> Tracks { get; set; } = new();
-    public bool IsSubscribe { get; set; }
+    public bool IsSubscribed { get; set; }
 }

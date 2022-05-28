@@ -38,7 +38,7 @@ public class AlbumController : Controller
         }
 
         var albumVm = _mapper.Map<AlbumViewModel>(album);
-        albumVm.IsSubscribe = album.Subscribers.Any(s => s.User.UserName == User.Identity!.Name);
+        albumVm.IsSubscribed = album.Subscribers.Any(s => s.User.UserName == User.Identity!.Name);
         return View(albumVm);
     }
 
