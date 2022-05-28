@@ -8,9 +8,11 @@
 <div class="genres">
     @foreach (var genre in Model)
     {
-        <div class="genre-container search-item">
-            <p class="genre-name">@genre.Name</p>
-        </div>
+        <a asp-area="Music" asp-controller="Genre" asp-action="Index" asp-route-genreId="@genre.Id">
+            <div class="genre-container search-item">
+                <p class="genre-name">@genre.Name</p>
+            </div>
+        </a>
     }
 </div>
 

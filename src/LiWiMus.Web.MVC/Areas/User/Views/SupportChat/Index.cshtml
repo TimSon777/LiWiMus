@@ -3,14 +3,16 @@
     Layout = "_Layout";
 }
 
-<button class="btn-send-to-chat m-3" id="btn-close-chat-by-user">Close chat</button>
+<button class="btn-close-chat m-3" id="btn-close-chat-by-user">Close chat</button>
 
-<div class="chat-and-textarea-and-button" style="display: flex; flex-direction: column; align-items: center; ">
-    <div class="" id="chat" style="height: 68vh; width: 75%; overflow: auto"></div>
-    <div class="textarea-send-btn" style="height: 100%; width: 75%">
-        <textarea class="form-control text-area-custom" id="ta-send-to-consultant" rows="4" style="background: none;"></textarea>
-        <div>
-            <button class="btn-send-to-chat m-3" id="btn-send-to-consultant" style="text-align: center">Send</button>
+<div class="chat-and-textarea-and-button">
+    <div class="messages-area" id="chat"></div>
+    <div class="textarea-send-btn">
+        <textarea class="form-control text-area-custom" id="ta-send-to-consultant" rows="3"></textarea>
+        <div class="chat-btn-wrap">
+            <button class="btn-send-to-chat" id="btn-send-to-consultant">
+                Send
+            </button>
         </div>
     </div>
 </div>

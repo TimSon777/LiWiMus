@@ -5,12 +5,24 @@
     Layout = "_Layout";
 }
 
-@Model.Name
+<h1 class="music-genre-name">
+    @Model.Name
+</h1>
 
-тут много свойств у трека, посмотрите
-для трека вообще в одном стиле как-то выводить надо (фронту обсудить),
-Например, trackName - art1 & art2 & art3 $ ....
-@foreach (var track in Model.Tracks)
-{
-    <div>@track.Name</div>
-}
+<section class="music-track-section">
+    @foreach (var track in Model.Tracks)
+    {
+        <a>
+            <div class="music-track-container">
+                <div class="music-track-image-wrap">
+                    <img class="music-track-image" src="../images/album_cover.jpg" alt="Track cover."/>
+                </div>
+                <div class="music-track-text">
+                    <p class="music-track-name">@track.Name</p>
+                    <p class="music-track-artists">@string.Join(" & ", track.Owners.Select(x => x.Name).Take(3))</p>
+                    <p class="music-track-album-title">@track.Album.Title</p>
+                </div>
+            </div>
+        </a>
+    }
+</section>

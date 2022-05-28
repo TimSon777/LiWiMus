@@ -7,13 +7,12 @@
 <div class="tracks">
     @foreach (var e in Model)
     {
-        <div class="track-container search-item">
-            <img class="track-image" src="../images/logo.jpg" alt="Track cover."/>
+            <div class="track-container search-item">
+                <img class="track-image" src="../images/logo.jpg" alt="Track cover."/>
                 <p class="track-name">@e.Name</p>
                 <p class="track-album-title">@e.Album.Title</p>
                 <p class="track-owner">@e.Owners.FirstOrDefault()?.Name</p>
-
-        </div>
+            </div>
     }
 </div>
 
