@@ -37,6 +37,9 @@ export class User extends CommonEntity {
   @Column({ name: 'EmailConfirmed' })
   emailConfirmed: boolean;
 
+  @Column({ type: 'date', name: 'LockoutEnd' })
+  lockoutEnd: Date;
+
   @Exclude()
   @Column({ name: 'NormalizedEmail', length: 256 })
   normalizedEmail: string;
