@@ -9,6 +9,35 @@
     var sortingByName = string.Join(".", prefix, nameof(SearchViewModel.SortViewModel.SortingBy));
 }
 
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" asp-controller="Home" asp-action="Index" >LiWiMus</a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-mdb-toggle="collapse"
+      data-mdb-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav custom-nav">
+          <a class="nav-link" asp-controller="User" asp-action="Index">Users</a>
+          <a class="nav-link" asp-controller="Album" asp-action="Index">Albums</a>
+          <a class="nav-link" asp-controller="Artist" asp-action="Index">Artists</a>
+          <a class="nav-link" asp-controller="Genre" asp-action="Index">Genres</a>
+          <a class="nav-link" asp-controller="Playlist" asp-action="Index">Playlists</a>
+          <a class="nav-link" asp-controller="Track" asp-action="Index">Tracks</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
 <h1 class="text-white text-center mt-3 mb-4">@ViewData["Title"]</h1>
 
 <div>

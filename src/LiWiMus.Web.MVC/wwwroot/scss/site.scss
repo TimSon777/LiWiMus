@@ -747,3 +747,16 @@ div::-webkit-scrollbar-thumb {
 .track-album-title {
   
 }
+
+.custom-nav-container {
+  background: $color_3;
+}
+
+.custom-nav {
+  font-size: 22px;
+  .nav-link {
+    &:hover {
+      color: $color_1!important;
+    }
+  }
+}
