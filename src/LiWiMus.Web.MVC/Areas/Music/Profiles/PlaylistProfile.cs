@@ -12,7 +12,6 @@ public class PlaylistProfile : Profile
     public PlaylistProfile()
     {
         CreateMap<Track, TrackForPlaylistViewModel>();
-        CreateMap<PlaylistTrack, PlayListTrackViewMode>();
         CreateMap<Playlist, PlaylistViewModel>();
     }
 }
