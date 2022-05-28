@@ -1,0 +1,16 @@
+@model LiWiMus.Web.MVC.Areas.Music.ViewModels.GenreViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@Model.Name
+
+тут много свойств у трека, посмотрите
+для трека вообще в одном стиле как-то выводить надо (фронту обсудить),
+Например, trackName - art1 & art2 & art3 $ ....
+@foreach (var track in Model.Tracks)
+{
+    <div>@track.Name</div>
+}
