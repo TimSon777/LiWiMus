@@ -1,4 +1,4 @@
-﻿import React, {useState} from "react";
+﻿import React, {useState, useRef} from "react";
 import {Button, Grid, IconButton, InputAdornment, Paper, Stack, Typography} from "@mui/material";
 import ContrastTextField from "../../shared/components/ContrastTextField/ContrastTextField";
 import {useNotifier} from "../../shared/hooks/Notifier.hook";
@@ -12,6 +12,7 @@ type Inputs = {
     userName: string;
     email: string;
     password: string;
+    confirm_password: string
 };
 
 export default function CreateUserPage() {
@@ -20,10 +21,13 @@ export default function CreateUserPage() {
         handleSubmit,
         formState: {errors},
         setValue,
-        clearErrors,
+        clearErrors,watch
     } = useForm<Inputs>();
     const {showError, showSuccess} = useNotifier();
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const passwordRef = useRef({})
+    passwordRef.current = watch("password","")
     const navigate = useNavigate();
 
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -91,7 +95,7 @@ export default function CreateUserPage() {
                                     {...register("password", {
                                         required: {value: true, message: "Enter password"},
                                         pattern: {
-                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                            value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_=-])[A-Za-z\d@$!%*?&_=-]{8,}$/,
                                             message: "Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character"
                                         }
                                     })}
@@ -106,6 +110,31 @@ export default function CreateUserPage() {
                                                     edge="end"
                                                 >
                                                     {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                                <ContrastTextField
+                                    error={!!errors.confirm_password && !!errors.confirm_password.message}
+                                    label="Confirm password"
+                                    variant="outlined"
+                                    fullWidth
+                                    type={showConfirmPassword ? "text" : "password"}
+                                    {...register("confirm_password", {
+                                        validate: value => value === passwordRef.current || "Passwords do not match"
+                                    })}
+                                    helperText={errors.confirm_password?.message}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                    onMouseDown={(e) => e.preventDefault()}
+                                                    edge="end"
+                                                >
+                                                    {showConfirmPassword ? <VisibilityOff/> : <Visibility/>}
                                                 </IconButton>
                                             </InputAdornment>
                                         ),

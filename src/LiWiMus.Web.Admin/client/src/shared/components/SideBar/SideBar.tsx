@@ -18,7 +18,8 @@ import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOn';
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
-import ListButton from "../ListButton/ListButton";
+import ListButton from "../ListButton/ListButton"
+import AlbumIcon from '@mui/icons-material/Album';
 import "./SideBar.sass";
 import { UserData } from "../../types/UserData";
 
@@ -71,6 +72,12 @@ export default function SideBar({
             to={"/admin/artists"}
             onClick={linkClickHandler}
           />
+          <ListLink
+            icon={<AlbumIcon/>}
+            text={"Albums"}
+            to={"/admin/albums"}
+            onClick={linkClickHandler}
+            />
           <ListLink
               icon={<QueueMusicIcon />}
               text={"Playlists"}

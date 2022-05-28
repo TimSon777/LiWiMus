@@ -25,6 +25,8 @@ import RoleDetailsPage from "../roles/pages/RoleDetails.page";
 import CreateTransactionPage from "../transactions/pages/CreateTransaction.page"
 import CreatePlanPage from "../plans/pages/CreatePlan.page"
 import PlansPage from "../plans/pages/Plans.page"
+import AlbumsPage from "../albums/pages/Albums.page"
+import CreateAlbumPage from "../albums/pages/CreateAlbum.page"
 
 export const useRoutes = (isAuthenticated: boolean) => {
     if (isAuthenticated) {
@@ -47,6 +49,8 @@ export const useRoutes = (isAuthenticated: boolean) => {
                 <Route path="/admin/playlists/:id" element={<PlaylistDetailsPage/>}/>
                 <Route path="/admin/albums/:id" element={<AlbumDetailsPage/>}/>
                 <Route path="/admin/plans/create" element={<CreatePlanPage/>}/>
+                <Route path="/admin/albums" element={<AlbumsPage/>}/>
+                <Route path="/admin/albums/create" element={<CreateAlbumPage/>}/>
                 <Route path="/admin/playlists/create" element={<CreatePlaylistPage/>}/>
                 <Route path="/admin/transactions/create" element={<CreateTransactionPage/>}/>
                 <Route path="/admin/plans/:id" element={<PlanDetailsPage />} />

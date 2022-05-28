@@ -4,6 +4,8 @@ import FileService from "../shared/services/File.service";
 import { UpdateAlbumDto } from "./types/UpdateAlbumDto";
 import { PaginatedData } from "../shared/types/PaginatedData";
 import { Artist } from "../artists/types/Artist";
+import {FilterOptions} from "../shared/types/FilterOptions"
+import {CreateAlbumDto} from "./types/CreateAlbumDto"
 
 const AlbumService = {
   get: async (id: string | number) =>
@@ -18,6 +20,18 @@ const AlbumService = {
     return response.data as Album;
   },
 
+  getAlbums: async (options: FilterOptions<Album>) => {
+    const response = await axios.get(`/albums`, {
+      params: options,
+    });
+    return response.data as PaginatedData<Album>;
+  },
+
+  save: async (artist: CreateAlbumDto) => {
+    const response = await axios.post(`/albums`, artist);
+    return response.data as Album;
+  },
+  
   changeCover: async (album: Album, cover: File) => {
     if (album.coverLocation) {
       try {
@@ -27,7 +41,7 @@ const AlbumService = {
         console.log(e.message);
       }
     }
-
+    
     const coverLocation = await FileService.save(cover);
     const updateDto: UpdateAlbumDto = {
       id: album.id,
