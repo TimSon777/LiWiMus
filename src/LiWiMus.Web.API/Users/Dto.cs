@@ -15,4 +15,5 @@ public class Dto : BaseDto
     public virtual Gender? Gender { get; set; }
     public decimal Balance { get; set; }
     public string? AvatarLocation { get; set; }
+    public DateTimeOffset? LockoutEnd { get; set; }
 }

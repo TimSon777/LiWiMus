@@ -68,7 +68,8 @@ public static class RouteConstants
     public static class Users
     {
         public const string Create = $"{Prefix}/{nameof(Users)}";
-
+        public const string LockOut = $"{Prefix}/{nameof(Users)}/{{id:int}}/{nameof(LockOut)}";
+        
         public static class Roles
         {
             public const string List = $"{Prefix}/{nameof(Users)}/{{userId:int}}/{nameof(Roles)}";

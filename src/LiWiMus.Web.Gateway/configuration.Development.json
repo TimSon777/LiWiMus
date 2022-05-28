@@ -266,6 +266,21 @@
       "SwaggerKey" : "Auth"
     },
     {
+      "DownstreamPathTemplate": "/api/users/{id}/lockout",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5010
+        }
+      ],
+      "UpstreamPathTemplate": "/api/users/{id}/lockout",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "SwaggerKey" : "Admin.API.C#"
+    },
+    {
       "DownstreamPathTemplate": "/api/users/{id}/roles",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
