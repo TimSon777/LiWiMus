@@ -37,7 +37,7 @@ export const useAuth = () => {
     setToken(jwtToken);
     setPayload(payload);
 
-    localStorage.setItem(storageName, JSON.stringify(jwtToken));
+    localStorage.setItem(storageName, jwtToken);
     return true;
   }, []);
 
