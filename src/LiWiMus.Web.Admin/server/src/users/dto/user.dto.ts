@@ -62,6 +62,10 @@ export class UserDto extends IdDto {
     @ApiProperty()
     @Expose()
     balance: number;
+    
+    @ApiProperty()
+    @Expose()
+    lockoutEnd: Date;
 }
 
 
