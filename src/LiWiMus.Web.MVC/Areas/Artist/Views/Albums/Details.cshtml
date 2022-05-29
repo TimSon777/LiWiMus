@@ -24,7 +24,12 @@
                  Manage tracks
             </a>*@
         </div>
-
+        <div id="deleteAlbum" style="margin: 0 2% 2%;">
+            <form asp-formhelper="true" asp-callback="" method="post" asp-area="User" asp-action="SubscribeOrUnsubscribeTrack" asp-controller="Following">
+                <input name="" type="hidden" value="@Model.Id">
+                <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+            </form>
+        </div>
         <section class="edit-inputs-group">
             <div>
                 <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.CoverLocation" alt="album cover">

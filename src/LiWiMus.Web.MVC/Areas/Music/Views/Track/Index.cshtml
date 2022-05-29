@@ -1,26 +1,86 @@
 @model LiWiMus.Web.MVC.Areas.Music.ViewModels.TrackViewModel
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Track";
+    Layout = "_LayoutSidebar";
 }
+
+@section Header{
+    <partial name="Partials/_PlainHeaderPartial"/>
+}
+
+<style>
+    .img-container img {
+      max-width: 100%;
+    }
+</style>
 
 @Model.Name
 
-<div>
-    @Model.Album.Title
+<div class="p-0 album-profile">
+    <div class="editor-wrap">
+        <div>
+            <h2 class="your-profile-header">
+                @Model.Name
+            </h2>
+        </div>
+        <div id="subscriptionDiv" style="margin: 0 2% 2%;">
+            <form asp-formhelper="true" asp-callback="" method="post" asp-area="User" asp-action="SubscribeOrUnsubscribeTrack" asp-controller="Following">
+                <input name="trackId" type="hidden" value="@Model.Id">
+                @if (Model.IsUserSubscribed)
+                {
+                    <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                }
+                else
+                {
+                    <button id="subscribtionButton" class="edit-button">Subscribe</button>
+                }
+            </form>
+        </div>
+
+        <section class="edit-inputs-group">
+            <div>
+                @{
+                    if (Model.FileLocation.Equals("Location"))
+                    {
+                        <img style="margin: 2%; border-radius:100%; width: 120px; height: 120px" src="~/images/main-background.jpg" alt="album cover"/>
+                    }
+                    else
+                    {
+                        <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.FileLocation" alt="album cover">
+                    }
+                }
+            </div>
+        </section>
+        <div>
+            <h2 class="your-profile-header">
+                Artists
+            </h2>
+        </div>
+        <section class="edit-inputs-group">
+            <div>
+                @foreach (var artist in Model.Owners)
+                {
+                    <div>
+                        <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                    </div>
+                }
+            </div>
+        </section>
+        <div>
+            <h2 class="your-profile-header">
+                Genres
+            </h2>
+        </div>
+        <section class="edit-inputs-group">
+            <div>
+                @foreach (var genre in Model.Genres)
+                {
+                    <div>
+                        <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@genre.Id">@genre.Name</a>
+                    </div>
+                }
+            </div>
+        </section>
+    </div>
 </div>
-
-<div>
-    @Model.FileLocation
-</div>
-
-@foreach (var genre in Model.Genres)
-{
-    <p>@genre.Name</p>
-}
-
-@foreach (var artist in Model.Owners)
-{
-    <p>@artist.Name</p>
-}
