@@ -4,7 +4,9 @@ using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Settings;
+using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Helpers;
+using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
 using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
@@ -26,15 +28,17 @@ public class ProfileController : Controller
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly SharedSettings _settings;
+    private readonly IRepository<Core.Users.User> _userRepository;
 
     public ProfileController(UserManager<Core.Users.User> userManager,
                              IMapper mapper, IAvatarService avatarService, IFormFileSaver formFileSaver,
-                             IOptions<SharedSettings> settings)
+                             IOptions<SharedSettings> settings, IRepository<Core.Users.User> userRepository)
     {
         _userManager = userManager;
         _mapper = mapper;
         _avatarService = avatarService;
         _formFileSaver = formFileSaver;
+        _userRepository = userRepository;
         _settings = settings.Value;
     }
 
@@ -57,7 +61,13 @@ public class ProfileController : Controller
 
         var profile = _mapper.Map<ProfileViewModel>(user);
         profile.IsAccountOwner = currentUser == user;
-
+        var isFollower = await _userRepository.IsUserFollowAsync(currentUser.Id, user.Id);
+        
+        if (isFollower != null)
+        {
+            profile.IsSubscribed = isFollower.Value;
+        }
+        
         return View(profile);
     }
 

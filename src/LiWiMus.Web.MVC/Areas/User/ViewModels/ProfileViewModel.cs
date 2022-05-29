@@ -22,6 +22,6 @@ public class ProfileViewModel : HasId
 
     [DataType(DataType.Date)] public DateOnly? BirthDate { get; set; }
     public bool IsAccountOwner { get; set; }
-
+    public bool IsSubscribed { get; set; }
     public ImageFormFile? Avatar { get; set; }
 }
