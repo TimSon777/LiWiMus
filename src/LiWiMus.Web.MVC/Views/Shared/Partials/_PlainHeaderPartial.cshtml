@@ -1,21 +1,32 @@
-﻿<header style="background-color: #444444">
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">LiWiMus</a>
-            <button class="navbar-toggler custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
+﻿<header style="">
+    <div class="bg-dark custom-nav-container">
+        <nav class="navbar navbar-dark navbar-expand-sm">
+            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LiWiMus</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle Navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
+            <div class="collapse navbar-collapse" id="menuItems">
+                <ul class="navbar-nav custom-nav">
                     <li class="nav-item">
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        <a class="nav-link" asp-area="Search" asp-controller="User" asp-action="Index">Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        <a class="nav-link" asp-area="Search" asp-controller="Album" asp-action="Index">Albums</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Search" asp-controller="Artist" asp-action="Index">Artists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Search" asp-controller="Genre" asp-action="Index">Genres</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Search" asp-controller="Playlist" asp-action="Index">Playlists</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Search" asp-controller="Track" asp-action="Index">Tracks</a>
                     </li>
                 </ul>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </div>
 </header>

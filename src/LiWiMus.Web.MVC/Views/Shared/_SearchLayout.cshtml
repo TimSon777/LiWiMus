@@ -11,36 +11,35 @@
 
 
 <div class="bg-dark custom-nav-container">
-        <nav class="navbar navbar-dark navbar-expand-sm">
-            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LiWiMus</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle Navigation">
+    <nav class="navbar navbar-dark navbar-expand-sm">
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LiWiMus</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle Navigation">
             <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="menuItems">
-                <ul class="navbar-nav custom-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="User" asp-action="Index">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Album" asp-action="Index">Albums</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Artist" asp-action="Index">Artists</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Genre" asp-action="Index">Genres</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Playlist" asp-action="Index">Playlists</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Track" asp-action="Index">Tracks</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </div>
-
+        </button>
+        <div class="collapse navbar-collapse" id="menuItems">
+            <ul class="navbar-nav custom-nav">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="User" asp-action="Index">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Album" asp-action="Index">Albums</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Artist" asp-action="Index">Artists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Genre" asp-action="Index">Genres</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Playlist" asp-action="Index">Playlists</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Track" asp-action="Index">Tracks</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
 <h1 class="text-white text-center mt-3 mb-4">@ViewData["Title"]</h1>
 
 <div>
