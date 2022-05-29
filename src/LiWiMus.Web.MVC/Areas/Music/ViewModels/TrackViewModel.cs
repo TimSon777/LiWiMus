@@ -1,9 +1,8 @@
-﻿using LiWiMus.Web.MVC.ViewModels;
-using LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels;
+﻿using LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels;
 
 namespace LiWiMus.Web.MVC.Areas.Music.ViewModels;
 
-public class TrackForPlaylistViewModel
+public class TrackViewModel
 {
     public ICollection<ArtistGeneralInfoViewModel> Owners { get; set; } = null!;
     public ICollection<GenreGeneralInfoViewModel> Genres { get; set; } = null!;

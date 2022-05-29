@@ -1,13 +1,14 @@
 ﻿#region
 
 using System.ComponentModel.DataAnnotations;
+using LiWiMus.SharedKernel;
 using LiWiMus.Web.Shared;
 
 #endregion
 
 namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
-public class ProfileViewModel
+public class ProfileViewModel : HasId
 {
     public string UserName { get; set; } = null!;
 

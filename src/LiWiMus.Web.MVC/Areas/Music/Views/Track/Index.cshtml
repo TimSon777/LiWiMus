@@ -1,0 +1,26 @@
+@model LiWiMus.Web.MVC.Areas.Music.ViewModels.TrackViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+@Model.Name
+
+<div>
+    @Model.Album.Title
+</div>
+
+<div>
+    @Model.PathToFile
+</div>
+
+@foreach (var genre in Model.Genres)
+{
+    <p>@genre.Name</p>
+}
+
+@foreach (var artist in Model.Owners)
+{
+    <p>@artist.Name</p>
+}

@@ -72,7 +72,7 @@ public class TracksController : Controller
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Details(int artistId, int id)
     {
-        var track = await _tracksRepository.GetBySpecAsync(new DetailedTrackByIdSpec(id));
+        var track = await _tracksRepository.GetDetailedAsync(id);
         var artist = await _artistRepository.GetBySpecAsync(new ArtistWithOwnersByIdSpec(artistId));
 
         if (track is null || artist is null || track.Owners.All(a => a.Id != artistId))
@@ -94,7 +94,7 @@ public class TracksController : Controller
     [FormValidator]
     public async Task<IActionResult> Update(int artistId, UpdateTrackViewModel viewModel)
     {
-        var track = await _tracksRepository.GetBySpecAsync(new DetailedTrackByIdSpec(viewModel.Id));
+        var track = await _tracksRepository.GetDetailedAsync(viewModel.Id);
         var artist = await _artistRepository.GetBySpecAsync(new ArtistWithOwnersByIdSpec(artistId));
 
         if (track is null || artist is null || track.Owners.All(a => a.Id != artistId))
@@ -182,7 +182,7 @@ public class TracksController : Controller
     [FormValidator]
     public async Task<IActionResult> Delete(int artistId, int id)
     {
-        var track = await _tracksRepository.GetBySpecAsync(new DetailedTrackByIdSpec(id));
+        var track = await _tracksRepository.GetDetailedAsync(id);
         var artist = await _artistRepository.GetBySpecAsync(new ArtistWithOwnersByIdSpec(artistId));
 
         if (track is null || artist is null || track.Owners.All(a => a.Id != artistId))

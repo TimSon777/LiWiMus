@@ -3,6 +3,7 @@ using LiWiMus.Core.Payments;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Roles.Interfaces;
 using LiWiMus.Core.Users;
+using LiWiMus.Core.Users.Interfaces;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Infrastructure.Services;
 using LiWiMus.SharedKernel.Interfaces;
@@ -29,6 +30,7 @@ public static class CoreDependenciesConfiguration
         services.AddTransient<IAvatarService, AvatarService>();
         services.AddTransient<IPaymentService, PaymentService>();
         services.AddTransient<IUserValidator<User>, ApplicationUserValidator>();
+        services.AddScoped<IUserService, UserService>();
         // TODO: Add authorization handler
         return services;
     }
