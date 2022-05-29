@@ -5,43 +5,56 @@
     Layout = "_LayoutSidebar";
 }
 
-<div>
-    <h1>Pay</h1>
+<div class="payment-form-container change-password-container">
+    <div class="change-password-outline row justify-content-center">
+        <div class="change-password-form-container">
+            <h3 class="mb-4" style="padding-bottom: 4%; border-bottom: 2px solid #EF6817">Pay</h3>
+            <form class="change-password-form" asp-formhelper="true" asp-resetFormAfterSuccess="false" method="post">
+                @Html.HiddenFor(model => model.ReturnUrl)
+                @Html.HiddenFor(model => model.Reason)
 
-    <form asp-formhelper="true" asp-resetFormAfterSuccess="false" method="post">
-        @Html.HiddenFor(model => model.ReturnUrl)
-        @Html.HiddenFor(model => model.Reason)
+                <div class="label-input mt-2">
+                    <label asp-for="Amount" class="form-label"></label>
+                    <input asp-for="Amount" class="edit-profile-input">
+                    <div class="mt-2">
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
 
-        <div class="mb-3">
-            <label asp-for="Amount" class="form-label"></label>
-            <input asp-for="Amount" class="form-control">
-            <span asp-validation-for="Amount" class="text-danger"></span>
+                <div class="label-input mt-4">
+                    <label asp-for="CardNumber" class="form-label"></label>
+                    <input asp-for="CardNumber" class="edit-profile-input">
+                    <div class="mt-2">
+                        <span asp-validation-for="CardNumber" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="label-input mt-4">
+                    <label asp-for="CardExpires" class="form-label"></label>
+                    <input asp-for="CardExpires" class="edit-profile-input">
+                    <div class="mt-2">
+                        <span asp-validation-for="CardExpires" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="label-input mt-4">
+                    <label asp-for="CardHolder" class="form-label"></label>
+                    <input asp-for="CardHolder" class="edit-profile-input">
+                    <div class="mt-2">
+                        <span asp-validation-for="CardHolder" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="label-input mt-4">
+                    <label asp-for="CvvCode" class="form-label"></label>
+                    <input asp-for="CvvCode" class="edit-profile-input">
+                    <div class="mt-2">
+                        <span asp-validation-for="CvvCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <button type="submit" class="save-password-button">Submit</button>
+            </form>
         </div>
-
-        <div class="mb-3">
-            <label asp-for="CardNumber" class="form-label"></label>
-            <input asp-for="CardNumber" class="form-control">
-            <span asp-validation-for="CardNumber" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="CardExpires" class="form-label"></label>
-            <input asp-for="CardExpires" class="form-control">
-            <span asp-validation-for="CardExpires" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="CardHolder" class="form-label"></label>
-            <input asp-for="CardHolder" class="form-control">
-            <span asp-validation-for="CardHolder" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="CvvCode" class="form-label"></label>
-            <input asp-for="CvvCode" class="form-control">
-            <span asp-validation-for="CvvCode" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 </div>

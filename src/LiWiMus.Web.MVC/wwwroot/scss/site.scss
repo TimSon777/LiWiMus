@@ -138,11 +138,18 @@ h2 {
   background-color: #727271;
   text-align: center;
   color: white;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 }
 
 .change-password-outline {
   box-sizing: border-box;
   width: 60%;
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 480px) {
+    width: 90%;
+  }
   margin: 2% auto 0;
   outline: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 10px;
@@ -210,7 +217,7 @@ h2 {
 .save-password-button {
   @extend .change-password-button;
   background: none;
-  padding: 1%;
+  padding: 1rem;
 }
 
 .random-avatar-button {
@@ -1377,4 +1384,15 @@ and (max-device-width : 480px) {
   justify-content: center;
   align-items: center;
   gap: 5rem;
+}
+
+.payment-form-container {
+  .change-password-outline {
+    width: 80%;
+    @media only screen
+    and (min-device-width : 280px)
+    and (max-device-width : 480px) {
+      width: 90%;
+    }
+  }
 }

@@ -5,7 +5,14 @@
     {
         <div class="user-container search-item">
             <div class="user-image-container">
-                  <img class="user-image" src="../images/stars.jpg" alt="User avatar."/>
+                @if (user.AvatarLocation != null)
+                {
+                    <img class="user-image" src="@System.IO.Path.Combine(ViewData["fileServer"]?.ToString()!, user.AvatarLocation)" alt="User avatar."/>
+                }
+                else
+                {
+                    <img class="user-image" src="../images/main-background.jpg" alt="User avatar."/>
+                }
             </div>
             <div class="user-information">
                 <p class="user-name">@user.UserName</p>
