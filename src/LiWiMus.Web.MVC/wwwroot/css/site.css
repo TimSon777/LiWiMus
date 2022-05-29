@@ -1,6 +1,10 @@
 html {
+    position: relative;
+    min-height: 100%;
     font-size: 14px;
     overflow: auto;
+    font-family: 'Overpass', sans-serif;
+    font-style: normal;
 }
 
 @media (min-width: 768px) {
@@ -9,10 +13,6 @@ html {
     }
 }
 
-html {
-    position: relative;
-    min-height: 100%;
-}
 
 br {
     display: block;
@@ -64,13 +64,12 @@ body {
     justify-content: center;
 }
 
-.body-main {
+/*.body-main {
     display: grid;
-    grid-template-columns: 1.5fr 4fr 2fr;
+    grid-template-columns: 4fr 2fr;
     height: 100vh;
 }
-
-/*.body-sidebar {
+.body-sidebar {
     display: grid;
     grid-template-columns: 1.5fr 6fr;
     height: 100vh;

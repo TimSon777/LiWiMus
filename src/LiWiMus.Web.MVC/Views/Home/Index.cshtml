@@ -1,6 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = "_LayoutMainPage";
+    Layout = "_LayoutSidebar";
 }
 
 @section Header
@@ -8,19 +8,23 @@
     <partial name="Partials/_PlainHeaderPartial"/>
 }
 
-<div class="content-main" style="background-color: #727271;position: relative;overflow: hidden; display: flex; /*justify-content: center*/">
-    <img src="/images/main-background.jpg" alt="" style="position: absolute; height: 100%; opacity: 0.4;left: 50%; top: 50%; transform: translate(-50%, -50%);"/>
-    <div style="position:absolute; font-size: 48pt; height: auto; left: 5%; top: 5%; transform: translate(-5%, -5%); color: white">LiWiMus</div>
-    <div style="position:absolute; font-size: 72pt; height: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white">
-        Live<br/>
-        With<br/>
-        Music
+<div style="display: grid;
+                grid-template-columns: 4fr 2fr;
+                height: 100vh;">
+    <div class="content-main" style="background-color: #727271;position: relative;overflow: hidden; display: flex; /*justify-content: center*/">
+        <img src="/images/main-background.jpg" alt="" style="position: absolute; height: 100%; opacity: 0.4;left: 50%; top: 50%; transform: translate(-50%, -50%);"/>
+        <div style="position:absolute; font-size: 48pt; height: auto; left: 5%; top: 5%; transform: translate(-5%, -5%); color: white">LiWiMus</div>
+        <div style="position:absolute; font-size: 72pt; height: auto; left: 50%; top: 50%; transform: translate(-50%, -50%); color: white">
+            Live<br/>
+            With<br/>
+            Music
+        </div>
     </div>
-</div>
-<div class="about" style="background-color: #5F605D;position: relative">
-    <div class="about text-white" style="position: absolute; top: 25%; left: 20%;transform: translate(-20%, -25%); display: grid; grid-template-rows: 1fr 1fr">
-        <h1 style="padding-bottom: 10%; border-bottom: 2px solid #EF6817">About</h1>
-        <text style="margin-top: 10%">Welcome to our site!</text>
+    <div class="about" style="background-color: #5F605D;position: relative">
+        <div class="about text-white" style="position: absolute; top: 25%; left: 20%;transform: translate(-20%, -25%); display: grid; grid-template-rows: 1fr 1fr">
+            <h1 style="padding-bottom: 10%; border-bottom: 2px solid #EF6817">About</h1>
+            <text style="margin-top: 10%">Welcome to our site!</text>
+        </div>
     </div>
 </div>
 
