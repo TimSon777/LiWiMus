@@ -1,6 +1,5 @@
 ﻿#region
 
-using ByteSizeLib;
 using FluentValidation;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
 using LiWiMus.Web.Shared.Extensions;
@@ -24,10 +23,5 @@ public class CreateTrackVmValidator : AbstractValidator<CreateTrackViewModel>
 
         RuleFor(model => model.PublishedAt)
             .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now));
-
-        RuleFor(model => model.File)
-            .Cascade(CascadeMode.Stop)
-            .NotNull()
-            .MustWeightLessThan(ByteSize.FromMegaBytes(20));
     }
 }

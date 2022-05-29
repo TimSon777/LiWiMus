@@ -6,10 +6,8 @@ using FormHelper;
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Settings;
-using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -95,10 +93,9 @@ public class HomeController : Controller
         }
 
         _mapper.Map(viewModel, artist);
-        if (viewModel.Photo is not null)
+        if (viewModel.PhotoLocation is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, artist.PhotoLocation));
-            artist.PhotoLocation = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
+            artist.PhotoLocation = viewModel.PhotoLocation;
         }
 
         await _artistRepository.UpdateAsync(artist);
@@ -117,13 +114,11 @@ public class HomeController : Controller
     {
         var user = await _userManager.GetUserAsync(User);
 
-        var photoPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Photo);
-
         var artist = new Core.Artists.Artist
         {
             Name = viewModel.Name,
             About = viewModel.About,
-            PhotoLocation = photoPath
+            PhotoLocation = viewModel.PhotoLocation
         };
         artist.UserArtists = new List<UserArtist> {new() {User = user, Artist = artist}};
         artist = await _artistRepository.AddAsync(artist);

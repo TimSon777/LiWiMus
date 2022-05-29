@@ -126,10 +126,9 @@ public class TracksController : Controller
         }
 
         _mapper.Map(viewModel, track);
-        if (viewModel.File is not null)
+        if (viewModel.FileLocation is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, track.FileLocation));
-            track.FileLocation = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
+            track.FileLocation = viewModel.FileLocation;
         }
 
         await _tracksRepository.UpdateAsync(track);
@@ -160,7 +159,7 @@ public class TracksController : Controller
             return Forbid();
         }
 
-        var filePath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.File, DataType.Music);
+        var filePath = viewModel.FileLocation;
 
         var artists = new List<Core.Artists.Artist> {artist};
 
@@ -170,7 +169,8 @@ public class TracksController : Controller
             PublishedAt = viewModel.PublishedAt,
             Owners = artists,
             FileLocation = filePath,
-            Album = album
+            Album = album,
+            Duration = viewModel.Duration
         };
         track = await _tracksRepository.AddAsync(track);
 

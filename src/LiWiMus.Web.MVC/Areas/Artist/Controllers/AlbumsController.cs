@@ -9,7 +9,6 @@ using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.Shared.Extensions;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -111,11 +110,9 @@ public class AlbumsController : Controller
         }
 
         _mapper.Map(viewModel, album);
-        if (viewModel.Cover is not null)
+        if (viewModel.CoverLocation is not null)
         {
-            FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, album.CoverLocation));
-            album.CoverLocation =
-                await _formFileSaver.SaveWithRandomNameAsync(viewModel.Cover);
+            album.CoverLocation = viewModel.CoverLocation;
         }
 
         await _albumsRepository.UpdateAsync(album);
@@ -144,7 +141,7 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
-        var coverPath = await _formFileSaver.SaveWithRandomNameAsync(viewModel.Cover);
+        var coverPath = viewModel.CoverLocation;
 
         var artists = new List<Core.Artists.Artist> {artist};
 

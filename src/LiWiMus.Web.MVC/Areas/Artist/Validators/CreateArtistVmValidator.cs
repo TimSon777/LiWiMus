@@ -1,6 +1,5 @@
 ﻿#region
 
-using ByteSizeLib;
 using FluentValidation;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
 using LiWiMus.Web.Shared.Extensions;
@@ -25,10 +24,7 @@ public class CreateArtistVmValidator : AbstractValidator<CreateArtistViewModel>
             .MaximumLength(500)
             .DisableTags();
 
-        RuleFor(model => model.Photo)
-            .Cascade(CascadeMode.Stop)
-            .NotNull()
-            .SidesPercentageDifferenceMustBeLessThan(10)
-            .MustWeightLessThan(ByteSize.FromMegaBytes(1));
+        RuleFor(model => model.PhotoLocation)
+            .NotEmpty();
     }
 }
