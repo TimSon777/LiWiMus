@@ -28,7 +28,7 @@ public class SearchViewModel
         };
         _title = "";
         Page = 1;
-        ItemsPerPage = 2;
+        ItemsPerPage = 3;
     }
 
     public static readonly SearchViewModel Default = new();
