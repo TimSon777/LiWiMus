@@ -20,7 +20,7 @@
                             @plan.Description
                         </div>
                     </div>
-                    <div class="tariff-advantages mb-5 mt-4">
+                    <div class="tariff-advantages">
                         @foreach (var permission in plan.Permissions)
                         {
                             <div class="advantage mb-3">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="buy-tariff-button-container">
                         <a asp-action="Details" asp-route-planId="@plan.Id">
-                            <button class="buy-tariff-button">@Math.Round(@plan.PricePerMonth, 2)/month</button>
+                            <button class="buy-tariff-button">@Math.Round(plan.PricePerMonth, 2)/month</button>
                         </a>
                     </div>
                 </div>
