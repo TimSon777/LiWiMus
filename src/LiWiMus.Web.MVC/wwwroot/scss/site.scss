@@ -464,6 +464,26 @@ div::-webkit-scrollbar-thumb {
     background: #969696;
     color: #b2b2b2;
   }
+  
+  &:disabled {
+    background-color: #7c7c7c;
+    color: #b2b2b2;
+    cursor: auto;
+    &:hover {
+      background-color: #7c7c7c;
+    }
+
+    &:focus {
+      border-color: #ffffff;
+      background-color: #7c7c7c;
+    }
+
+    &:active {
+      border-color: #ffffff;
+      background-color: #7c7c7c;
+      color: #b2b2b2;
+    }
+  }
 }
 
 .albums {
@@ -677,18 +697,19 @@ div::-webkit-scrollbar-thumb {
   padding: 10px;
   margin: 1rem;
   border-radius: 10px;
+  width: 700px;
   justify-content: space-between;
   &:hover{
     background: black;
     cursor: pointer;
     outline: 1px solid $color_1;
   }
-  
+
   @media screen and (max-device-width: 1023px){
     display: block;
-    color: $color_3;
+    color: white;
     text-align: center;
-    background: #dcdbdb;
+    background: $color_3;
     padding: 15px;
     width: 330px;
     overflow: auto;
@@ -702,7 +723,6 @@ div::-webkit-scrollbar-thumb {
     padding: 5px;
     margin: 0 0 20px;
   }
-  
 }
 
 .playlist-image {
