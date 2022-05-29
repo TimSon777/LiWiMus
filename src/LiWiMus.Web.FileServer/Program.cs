@@ -43,4 +43,10 @@ app.MapControllers();
 var filesPath = Path.Combine(builder.Environment.ContentRootPath, "Files");
 Directory.CreateDirectory(filesPath);
 
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<FileContext>();
+    context.Database.Migrate();
+}
+
 app.Run();

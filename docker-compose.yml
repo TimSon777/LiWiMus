@@ -1,0 +1,39 @@
+version: "3.9"
+services:
+  db:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+  
+  file_server:
+    build:
+      context: .
+      dockerfile: Dockerfile_fileserver
+    restart: always
+    ports:
+      - "5223:80"
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=db;Database=liwimus-files;Uid=root;Pwd=example;"
+  
+  mail_server:
+    build:
+      context: .
+      dockerfile: Dockerfile_mailserver
+    restart: always
+    ports:
+      - "5193:80"
+  
+  mvc:
+    build:
+      context: .
+      dockerfile: Dockerfile_mvc
+    restart: always
+    ports:
+      - "5067:80"
+    depends_on:
+      - db
+    environment:
+      ConnectionStrings__DefaultConnection: "Server=db;Database=liwimus;Uid=root;Pwd=example;"
+      PullUrls__MailServer: "http://mail_server"
+      PullUrls__FileServer: "http://file_server"

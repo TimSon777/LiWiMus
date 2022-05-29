@@ -1,0 +1,24 @@
+﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
+WORKDIR /app
+EXPOSE 80
+EXPOSE 443
+
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+COPY ["src/LiWiMus.Web.FileServer/LiWiMus.Web.FileServer.csproj", "LiWiMus.Web.FileServer/"]
+COPY ["src/LiWiMus.SharedKernel/LiWiMus.SharedKernel.csproj", "LiWiMus.SharedKernel/"]
+COPY ["src/LiWiMus.Infrastructure/LiWiMus.Infrastructure.csproj", "LiWiMus.Infrastructure/"]
+COPY ["src/LiWiMus.Core/LiWiMus.Core.csproj", "LiWiMus.Core/"]
+COPY ["src/LiWiMus.Web.Shared/LiWiMus.Web.Shared.csproj", "LiWiMus.Web.Shared/"]
+RUN dotnet restore "LiWiMus.Web.FileServer/LiWiMus.Web.FileServer.csproj"
+COPY . .
+WORKDIR "/src/src/LiWiMus.Web.FileServer"
+RUN dotnet build "LiWiMus.Web.FileServer.csproj" -c Release -o /app/build
+
+FROM build AS publish
+RUN dotnet publish "LiWiMus.Web.FileServer.csproj" -c Release -o /app/publish
+
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "LiWiMus.Web.FileServer.dll"]

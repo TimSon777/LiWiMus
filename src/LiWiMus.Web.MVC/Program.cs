@@ -30,7 +30,7 @@ services.AddTriggers();
 var pullUrls = configuration.GetRequiredSection(nameof(PullUrls)).Get<PullUrls>();
 services
     .AddRefitClient<IMailService>()
-    .ConfigureHttpClient(c => c.BaseAddress = new Uri(pullUrls.GatewayUrl));
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri(pullUrls.MailServer));
 
 TriggersConfiguration.ConfigureTriggers();
 
