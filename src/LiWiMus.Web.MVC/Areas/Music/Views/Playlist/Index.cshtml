@@ -6,7 +6,7 @@
 }
 
 <section>
-    <form asp-formhelper="true" asp-area="User" asp-controller="Playlist" asp-action="Like">
+    <form asp-formhelper="true" asp-area="User" asp-controller="Playlist" asp-action="SubscribeOrUnsubscribe">
         <input type="hidden" value="@Model.Id" name="playlistId">
         <button>Like</button>
     </form>
@@ -27,7 +27,7 @@
         Count Subscribers: @Model.CountSubscribers
     </div>
     
-    @foreach (var e in Model.Tracks.Select(t => t.Track))
+    @foreach (var e in Model.Tracks)
     {
         <div>
             @e.Name

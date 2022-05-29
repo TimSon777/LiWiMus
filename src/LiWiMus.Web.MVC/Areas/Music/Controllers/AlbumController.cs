@@ -62,7 +62,7 @@ public class AlbumController : Controller
         else
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
-        
+            
             await _likedAlbumRepository.AddAsync(new LikedAlbum
             {
                 User = user,

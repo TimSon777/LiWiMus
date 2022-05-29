@@ -4,25 +4,25 @@
 <div class="playlists">
     @foreach (var playlist in Model)
     {
-        <div class="playlist-container search-item">
-            <div>
-                <img class="playlist-image" src="../images/playlist-cover.jpg" alt="Playlist cover."/>
-            </div>
-            <div class="playlist-information">
-                <p class="playlist-name">@playlist.Name</p>
-                 @if (playlist.IsOwner)
-                 {
-                     <p class="playlist-owner">Your playlist</p>
-                 }
-                 else
-                 {
-                     <p class="playlist-owner">Owner: @playlist.Owner.UserName</p>
-                 }
+        <a asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+            <div class="playlist-container search-item">
+                <div>
+                    <img class="playlist-image" src="../images/playlist-cover.jpg" alt="Playlist cover."/>
+                </div>
+                <div class="playlist-information">
+                    <p class="playlist-name">@playlist.Name</p>
+                    @if (playlist.IsOwner)
+                    {
+                        <p class="playlist-owner">Your playlist</p>
+                    }
+                    else
+                    {
+                        <p class="playlist-owner">Owner: @playlist.Owner.UserName</p>
+                    }
                 
-                <p class="playlist-subscribers">Subscribers: @playlist.CountSubscribers</p>
+                    <p class="playlist-subscribers">Subscribers: @playlist.CountSubscribers</p>
+                </div>
             </div>
-
-           
-        </div>
+        </a>
     }
 </div>

@@ -11,7 +11,8 @@ public sealed class GenreWithPopularSongsSpec : Specification<Genre, Genre>, ISi
             .Where(genre => genre.Id == id)
             .Include(genre => genre.Tracks
                 .OrderByDescending(t => t.Owners.Count)
-                .Take(countSongs));
+                .Take(countSongs))
+            .ThenInclude(track => track.Album);
     }
 }
 

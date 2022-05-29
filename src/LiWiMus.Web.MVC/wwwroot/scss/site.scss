@@ -8,6 +8,10 @@ body {
   background-color: $color_4;
 }
 
+h1 {
+  font-weight: lighter;
+}
+
 .edit-btns {
   color: $btn-text-color;
   min-width: 100px;
@@ -198,6 +202,9 @@ body {
   background-color: #727271;
   box-sizing: border-box;
   align-self: center;
+  &:hover{
+    background-color: #797878;
+  }
 }
 
 .camera-icon {
@@ -211,10 +218,26 @@ body {
 
 .btn-send-to-chat {
   @extend .random-avatar-button;
+  margin: 0;
+  border-radius: 5px;
+  background-color: $color_1;
+  &:hover {
+    background-color: #e15035;
+    border: none;
+  }
+}
+
+.btn-close-chat {
+  @extend .random-avatar-button;
 }
 
 .textarea-send-btn {
-  grid-column: 2/3;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%; 
+  width: 75%;
+  justify-content: center;
+  margin-top: 1rem;
 }
 
 .manage-chat-btns {
@@ -233,6 +256,12 @@ body {
   @extend .btn-send-to-chat;
 }
 
+.chat-and-textarea-and-button {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+}
+
 .chat {
   outline: 1px solid #fff7f7;
   margin: 20px;
@@ -247,6 +276,19 @@ body {
   color: white;
 }
 
+.messages-area {
+  height: 68vh; 
+  width: 75%; 
+  overflow: auto;
+  border-bottom: 2px solid $color_1;
+}
+
+.chat-btn-wrap {
+  button {
+    height: 100%;
+  }
+}
+
 .send-message {
   display: flex;
   flex-direction: row-reverse;
@@ -257,7 +299,6 @@ body {
   width: 100%;
   background: none;
 }
-
 
 div::-webkit-scrollbar {
   width: 10px;
@@ -275,13 +316,17 @@ div::-webkit-scrollbar-thumb {
 }
 
 .text-area-custom {
+  width: 70%;
   background: none;
-  width: 75%;
-}
-
-.textarea-send-btn {
-  display: flex;
-  flex-wrap: wrap;  
+  &::-webkit-scrollbar{
+    width: 0;
+  }
+  
+  &:focus {
+    background: none;
+    border-color: $color_1;
+    box-shadow: 0 0 0 0.05rem $color_1;
+  }
 }
 
 .track-form-search{
@@ -299,7 +344,6 @@ div::-webkit-scrollbar-thumb {
   border-radius: 5px;
   width: 40%;
   font-size: 20px;
-
 
   @media only screen
   and (min-device-width : 768px) {
@@ -492,9 +536,9 @@ div::-webkit-scrollbar-thumb {
 }
 
 .artist-container {
-  color: $color_3;
+  color: white;
   text-align: center;
-  background: #dcdbdb;
+  background: $color_3;
   padding: 15px;
   width: 300px;
   height: 440px;
@@ -503,7 +547,7 @@ div::-webkit-scrollbar-thumb {
   border-radius: 10px;
   word-wrap: break-word;
   &:hover{
-    background: #ffffff;
+    background: black;
   }
   @media screen and (max-device-width : 280px) {
     max-width: 250px;
@@ -551,6 +595,11 @@ div::-webkit-scrollbar-thumb {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
   @media screen and (max-device-width : 280px) {
     max-width: 250px;
     padding: 10px;
@@ -583,8 +632,8 @@ div::-webkit-scrollbar-thumb {
   }
   
   &:hover {
-    background-color: #131111;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.5);
+    background-color: black;
+    outline: 1px solid $color_1;
   }
 
 }
@@ -597,21 +646,25 @@ div::-webkit-scrollbar-thumb {
 }
 
 .playlists {
-  
+  a {
+    text-decoration: none;
+    color: white;
+  }
 }
 
 .playlist-container {
   display: flex;
-  color: $color_3;
+  color: white;
   text-align: center;
-  background: #dcdbdb;
+  background: $color_3;
   padding: 10px;
   margin: 1rem;
   border-radius: 10px;
   justify-content: space-between;
   &:hover{
-    background: #ffffff;
+    background: black;
     cursor: pointer;
+    outline: 1px solid $color_1;
   }
   
   @media screen and (max-device-width: 1023px){
@@ -665,24 +718,29 @@ div::-webkit-scrollbar-thumb {
 .users {
   display: flex;
   flex-direction: column;
+  
+  a {
+    text-decoration: none;
+    color: white;
+  }
 }
 
 .user-container {
   display: flex;
   text-align: center;
   padding: 10px;
-  margin: 1rem;
+  margin: 0.2rem;
   justify-content: start;
   border-radius: 3px;
-  background: none;
+  background: $color_3;
   height: fit-content;
   font-size: 20px;
   
   overflow: auto;
   &:hover{
     cursor: pointer;
-    background: #696666;
-    outline: 1px solid white;
+    background: black;
+    outline: 1px solid $color_1;
   }
 
   @media only screen
@@ -789,7 +847,6 @@ div::-webkit-scrollbar-thumb {
 
 .custom-nav-container {
   width: 100%;
-
   padding-left: 1rem;
   padding-right: 1rem;
   
@@ -825,7 +882,6 @@ div::-webkit-scrollbar-thumb {
     margin: 2rem;
   }
 }
-
 
 .box {
   display: flex;
@@ -903,5 +959,45 @@ div::-webkit-scrollbar-thumb {
 .custom-radio:disabled+label::before {
   background-color: #525252;
 }
+
+.music-genre-name {
+  text-align: center;
+  margin: 1rem;
+  border-bottom: 2px solid $color_1;
+  padding: 1rem;
+  color: white;
+}
+
+.music-track-section {
+  @extend .users;
+  margin-top: 3rem;
+}
+
+.music-track-container {
+  @extend .user-container;
+  margin: 0 auto;
+  width: 90%;
+}
+.music-track-image-wrap {
+  @extend .user-image-container;
+}
+.music-track-image {
+  @extend .user-image;
+}
+.music-track-text {
+  @extend .user-information;
+}
+
+.music-track-name {
+  margin: 0.1rem;
+}
+
+.music-track-artists {
+  
+}
+.music-track-album-title {
+  
+}
+
 
 

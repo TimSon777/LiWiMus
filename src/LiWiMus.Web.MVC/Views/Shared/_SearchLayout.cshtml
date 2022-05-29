@@ -55,12 +55,12 @@
             </div>
             <div class="box">
                 <select name="@sortingByName" class="selectpicker search-select">
-                    <option class="search-select-option" value="@((int) SortingBy.Popularity)">By pop</option>
+                    <option class="search-select-option" value="@((int) SortingBy.Popularity)" elected="selected">By pop</option>
                     <option value="@((int) SortingBy.Title)">By title</option>
                 </select>
                 <select name="@orderName" class="selectpicker search-select">
                     <option value="@((int) Order.Asc)">Asc</option>
-                    <option value="@((int) Order.Desc)">Desc</option>
+                    <option value="@((int) Order.Desc)" selected="selected">Desc</option>
                 </select>
             </div>
         </form>

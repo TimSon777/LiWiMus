@@ -46,7 +46,7 @@ public class AlbumsController : Controller
     [HttpGet("")]
     public async Task<IActionResult> Index(int artistId)
     {
-        var artist = await _artistRepository.GetBySpecAsync(new ArtistWithAlbumsAndOwnersByIdSpec(artistId));
+        var artist = await _artistRepository.GetBySpecAsync(new ArtistDetailedSpec(artistId));
 
         if (artist is null)
         {

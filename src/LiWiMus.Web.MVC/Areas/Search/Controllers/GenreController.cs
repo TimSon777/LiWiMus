@@ -12,20 +12,20 @@ namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 [Area(AreasConstants.Search)]
 public class GenreController : Controller
 {
-    private readonly IRepository<Genre> _artistRepository;
+    private readonly IRepository<Genre> _genreRepository;
     private readonly IMapper _mapper;
 
-    public GenreController(IRepository<Genre> artistRepository, 
+    public GenreController(IRepository<Genre> genreRepository, 
         IMapper mapper)
     {
-        _artistRepository = artistRepository;
+        _genreRepository = genreRepository;
         _mapper = mapper;
     }
     
     private async Task<IEnumerable<GenreForListViewModel>> GetGenresAsync(SearchViewModel searchVm)
     {
         var pagination = _mapper.Map<Pagination>(searchVm);
-        var genres = await _artistRepository.PaginateAsync(pagination);
+        var genres = await _genreRepository.PaginateAsync(pagination);
         return _mapper.Map<List<Genre>, List<GenreForListViewModel>>(genres);
     }
     
