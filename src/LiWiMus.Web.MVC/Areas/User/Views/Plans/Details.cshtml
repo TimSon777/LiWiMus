@@ -1,0 +1,16 @@
+﻿@model LiWiMus.Web.MVC.Areas.User.ViewModels.PlanViewModel
+
+@{
+    ViewData["Title"] = "Plan";
+}
+
+<h1>Plan @Model.Name (@Model.IsActive.ToString())</h1>
+
+@if (!Model.IsActive)
+{
+    <form asp-formhelper="true" asp-resetFormAfterSuccess="false" method="post" asp-action="BuyPlan">
+        <input type="text" hidden="hidden" name="planId" value="@Model.Id">
+        <input type="text" hidden="hidden" name="monthsNumber" value="1">
+        <button type="submit" class="btn btn-primary">Buy</button>
+    </form>
+}

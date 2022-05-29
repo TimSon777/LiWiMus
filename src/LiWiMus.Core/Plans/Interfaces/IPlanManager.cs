@@ -9,4 +9,7 @@ public interface IPlanManager
 
     Task<bool> DeleteAsync(Plan plan);
     Task<List<Plan>> GetByUserAsync(User user);
+
+    Task<List<Plan>> GetAllAsync();
+    Task<Plan?> GetByIdAsync(int planId);
 }

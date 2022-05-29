@@ -8,4 +8,6 @@ public interface IUserPlanManager
     Task<UserPlan> UpdateUserPlanAsync(UserPlan userPlan);
 
     Task<bool> IsInPlanAsync(User user, Plan plan);
+
+    Task BuyPlanAsync(User user, Plan plan, TimeSpan time);
 }

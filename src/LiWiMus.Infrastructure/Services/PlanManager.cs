@@ -67,4 +67,14 @@ public class PlanManager : IPlanManager
         var userPlans = await _userPlanRepository.GetActiveAsync(user);
         return userPlans.Select(up => up.Plan).ToList();
     }
+
+    public async Task<List<Plan>> GetAllAsync()
+    {
+        return await _planRepository.GetAllAsync();
+    }
+
+    public async Task<Plan?> GetByIdAsync(int planId)
+    {
+        return await _planRepository.GetWithPermissionsAsync(planId);
+    }
 }

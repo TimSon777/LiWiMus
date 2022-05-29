@@ -1,0 +1,23 @@
+﻿@model LiWiMus.Web.MVC.Areas.User.ViewModels.PlansIndexViewModel
+
+@{
+    ViewData["Title"] = "Plans";
+}
+
+<h1>Plans</h1>
+
+<h2>Active plans</h2>
+<ol>
+    @foreach (var plan in Model.ActivePlans)
+    {
+        <li><a asp-action="Details" asp-route-planId="@plan.Id">@plan.Name</a></li>
+    }
+</ol>
+
+<h2>Available plans</h2>
+<ol>
+    @foreach (var plan in Model.AvailablePlans)
+    {
+        <li><a asp-action="Details" asp-route-planId="@plan.Id">@plan.Name</a></li>
+    }
+</ol>

@@ -2,6 +2,7 @@
 using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
 using LiWiMus.Core.Plans.Specifications;
+using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Interfaces;
 
@@ -11,11 +12,14 @@ public class UserPlanManager : IUserPlanManager
 {
     private readonly IRepository<UserPlan> _userPlanRepository;
     private readonly IRepository<Plan> _planRepository;
+    private readonly IRepository<Transaction> _transactionRepository;
 
-    public UserPlanManager(IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository)
+    public UserPlanManager(IRepository<UserPlan> userPlanRepository, IRepository<Plan> planRepository,
+                           IRepository<Transaction> transactionRepository)
     {
         _userPlanRepository = userPlanRepository;
         _planRepository = planRepository;
+        _transactionRepository = transactionRepository;
     }
 
     public async Task<UserPlan> AddToDefaultPlanAsync(User user)
@@ -46,6 +50,24 @@ public class UserPlanManager : IUserPlanManager
     {
         var userPlan = await _userPlanRepository.GetActiveAsync(user, plan);
         return userPlan is not null;
+    }
+
+    public async Task BuyPlanAsync(User user, Plan plan, TimeSpan time)
+    {
+        var amount = plan.PricePerMonth * (decimal) time.TotalDays / 30;
+        if (user.Balance < amount)
+        {
+            throw new UserDoesntHaveEnoughMoneyException();
+        }
+
+        await AddToPlanAsync(user, plan, DateTime.UtcNow, DateTime.UtcNow.Add(time));
+        var transaction = new Transaction
+        {
+            User = user,
+            Amount = -amount,
+            Description = $"Buying a plan '{plan.Name}'"
+        };
+        await _transactionRepository.AddAsync(transaction);
     }
 
     public async Task<UserPlan> AddToPlanAsync(User user, Plan plan, DateTime start, DateTime end)
