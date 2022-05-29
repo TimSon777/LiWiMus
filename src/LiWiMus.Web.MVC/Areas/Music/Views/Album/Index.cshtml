@@ -21,28 +21,32 @@
                 @Model.Title
             </h2>
         </div>
-        <div id="subscriptionDiv">
-            @Model.IsSubscribed
-            @if (Model.IsSubscribed)
-            {
-                <form asp-formhelper="true" method="post" asp-action="SubscribeOrUnsubscribe">
-                    <input name="albumId" type="hidden" value="@Model.Id">
-
-                    <button class="edit-button" style="background-color: #21201F">Unsubscribe</button>
-
-                </form>
-            }
-            else
-            {
-                <form asp-formhelper="true" method="post" asp-action="SubscribeOrUnsubscribe">
-                    <input name="albumId" id="albumId" type="hidden" value="@Model.Id">
+        <div id="subscriptionDiv" style="margin: 0 2% 2%;">
+            <form asp-formhelper="true" asp-callback="" method="post" asp-action="SubscribeOrUnsubscribe">
+                <input name="albumId" type="hidden" value="@Model.Id">
+                @if (Model.IsSubscribed)
+                {
+                    <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                }
+                else
+                {
                     <button id="subscribtionButton" class="edit-button">Subscribe</button>
-                </form>
-            }
+                }
+            </form>
         </div>
+
         <section class="edit-inputs-group">
             <div>
-                <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.CoverLocation" alt="album cover">
+                @{
+                    if (Model.CoverLocation.Equals("Location"))
+                    {
+                        <img style="margin: 2%; border-radius:100%; width: 120px; height: 120px" src="~/images/main-background.jpg" alt="album cover"/>
+                    }
+                    else
+                    {
+                        <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.CoverLocation" alt="album cover">
+                    }
+                }
             </div>
 
             <div>
@@ -59,7 +63,9 @@
             <div>
                 @foreach (var artist in Model.Owners)
                 {
-                    <a>@artist.Name</a>
+                    <div>
+                        <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                    </div>
                 }
             </div>
         </section>
@@ -72,7 +78,9 @@
             <div>
                 @foreach (var track in Model.Tracks)
                 {
-                    <a>@track.Name</a>
+                    <div>
+                        <a class="text-link">@track.Name</a>
+                    </div>
                 }
             </div>
         </section>
