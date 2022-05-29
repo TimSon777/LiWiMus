@@ -10,31 +10,57 @@
 }
 
 <div class="editor-wrap">
-        <div>
-            <h2 class="your-profile-header">
-                Create artist profile
-            </h2>
-        </div>
-        <section class="edit-inputs-group">
-            <form method="post"
-                  enctype="multipart/form-data"
-                  asp-formhelper="true"
-                  asp-action="Create">
-                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
-                    <div class="label-input">
-                        <label asp-for="Name" class="form-label">Name</label>
-                        <input type="text" class="form-control" asp-for="Name">
-                        <span asp-validation-for="Name"></span>
-                    </div>
-                    <div class="label-input">
-                        <label asp-for="About" class="form-label">About</label>
-                        <input asp-for="About" type="text" class="form-control">
-                        <span asp-validation-for="About"></span>
-                    </div>
-                    <div class="" style="text-align: center">
-                        <button class="edit-button" type="submit" id="btn-edit-profile-info">Create</button>
-                    </div>
-                </div>
-            </form>
-        </section>
+    <div>
+        <h2 class="your-profile-header">
+            Create artist profile
+        </h2>
     </div>
+    <section class="edit-inputs-group">
+        <form method="post"
+              enctype="multipart/form-data"
+              asp-formhelper="true"
+              asp-action="Create">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
+                <div class="label-input">
+                    <label asp-for="Name" class="form-label">Name</label>
+                    <input type="text" class="form-control" asp-for="Name">
+                    <span asp-validation-for="Name"></span>
+                </div>
+                <div class="label-input">
+                    <label asp-for="About" class="form-label">About</label>
+                    <input asp-for="About" type="text" class="form-control">
+                    <span asp-validation-for="About"></span>
+                </div>
+                <div class="label-input">
+                    <label class="form-label">Photo</label>
+                    <input id="chooseFile" type="file" class="form-control"/>
+                </div>
+                <input asp-for="PhotoLocation" id="PhotoLocation" type="hidden" class="form-control" value="Location">
+                <div class="" style="text-align: center">
+                    <button class="edit-button" type="submit" id="btn-edit-profile-info">Create</button>
+                </div>
+            </div>
+        </form>
+    </section>
+</div>
+<script>
+function getFilePath() {
+    var blobFile = $('#chooseFile').files[0];
+    var formData = new FormData();
+    formData.append("file", blobFile);
+
+    $.ajax({
+       url: "/files",
+       type: "POST",
+       data: formData,
+       contentType: "Content-Type: multipart/form-data",
+       success: function(response) {
+          const input = $('#chooseFile');
+          $(input).val(response.toString())   
+       },
+       error: function() {
+           
+       }
+    });
+}
+</script>
