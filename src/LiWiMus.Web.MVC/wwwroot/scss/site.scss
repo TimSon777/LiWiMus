@@ -1250,3 +1250,92 @@ and (max-device-width : 480px) {
     padding: 0.5rem 0.5rem 2rem;
   }
 }
+
+.buy-tariff-section {
+  text-align: center;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  
+  .active-plan {
+    border: none;
+  }
+  
+  .contact-us-card-container {
+    box-sizing: border-box;
+    border: 2px solid rgba(255, 255, 255, 0.311);
+    border-radius: 10px;
+    height: fit-content;
+    padding: 1.5rem;
+  }
+  
+  .contact-us-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 5rem;
+  }
+
+  .contact-us-header {
+    box-sizing: border-box;
+    font-size: 48px;
+    line-height: 50px;
+    align-self: flex-end;
+    font-weight: lighter;
+  }
+
+  @media(max-width: 320px){
+    .tariff-container{
+      max-width: 260px;
+    }
+
+    .tariffs-header {
+      font-size: 40px;
+    }
+
+    .contact-us-header {
+      font-size: 40px;
+    }
+
+    .contact-us-section {
+      padding: 1rem!important;
+    }
+
+    .contact-us-card-container {
+      padding: 0.1rem!important;;
+    }
+  }
+  
+  .tariff-card {
+    justify-content: start;
+    gap: 2.5rem;
+    height: 370px;
+    overflow: auto;
+  }
+}
+
+.buy-tariff-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.buy-tariff-button {
+  @extend .contact-us-card-button;
+  
+  &:hover {
+    background: #cc3636;
+  }
+  
+  &:disabled {
+    background: $color_2;
+    border: 2px solid $color_2;
+  }
+}
+
+.tariff-curd-buy-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}
