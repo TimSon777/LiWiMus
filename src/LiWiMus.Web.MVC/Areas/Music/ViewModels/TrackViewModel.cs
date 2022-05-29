@@ -11,5 +11,5 @@ public class TrackViewModel
     
     public string Name { get; set; } = null!;
     
-    public string PathToFile { get; set; } = null!;
+    public string FileLocation { get; set; } = null!;
 }
