@@ -13,4 +13,5 @@ public class TrackViewModel : HasId
     public string Name { get; set; } = null!;
     
     public string FileLocation { get; set; } = null!;
+    public bool IsUserSubscribed { get; set; }
 }
