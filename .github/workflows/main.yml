@@ -33,6 +33,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: {context}/Dockerfile_mvc
+          file: "{context}/Dockerfile_mvc"
           push: true
           tags: aslipatov/liwimus-mvc:latest
