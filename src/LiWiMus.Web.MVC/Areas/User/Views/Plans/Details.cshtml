@@ -3,6 +3,14 @@
 @{
     ViewData["Title"] = "Plan";
 }
+<section>
+    <a asp-area="User" asp-controller="Plans" asp-action="Index">
+        <button class="random-avatar-button">
+            Back
+        </button>
+    </a>
+</section>
+
 <section class="tarif-section p-1">
     <div class="tariffs-header m-1" >
         <p>Plan @Model.Name</p>
@@ -30,10 +38,16 @@
                             @Model.Name
                         </div>
                         <div class="tariff-description">
+                            @Model.Description
                         </div>
                     </div>
                     <div class="tariff-advantages">
-                        @Model.Description
+                        @foreach (var permission in Model.Permissions)
+                        {
+                            <div class="advantage mb-3">
+                                <p class="advantage-text">@permission.Description</p>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
