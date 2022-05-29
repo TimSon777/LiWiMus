@@ -137,9 +137,9 @@ public class TracksController : Controller
     }
 
     [HttpGet("[action]")]
-    public IActionResult Create()
+    public IActionResult Create(int albumId)
     {
-        return View();
+        return View(new CreateTrackViewModel {AlbumId = albumId});
     }
 
     [HttpPost("[action]")]
