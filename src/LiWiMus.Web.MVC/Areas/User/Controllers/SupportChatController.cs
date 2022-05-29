@@ -4,6 +4,7 @@ using LiWiMus.Core.Messages;
 using LiWiMus.Core.Messages.Specifications;
 using LiWiMus.Core.OnlineConsultants;
 using LiWiMus.Core.OnlineConsultants.Specifications;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
@@ -35,14 +36,14 @@ public class SupportChatController : Controller
     }
 
     [HttpGet]
-    [Authorize(Roles = "Consultant")]
+    [Authorize(DefaultSystemPermissions.Chat.Answer.Name)]
     public IActionResult Chats()
     {
         return View();
     }
 
     [HttpGet]
-    [Authorize(Roles = "Consultant")]
+    [Authorize(DefaultSystemPermissions.Chat.Answer.Name)]
     public async Task<IActionResult> GetTextingUsersChats()
     {
         var user = await _userManager.GetUserAsync(User);

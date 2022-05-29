@@ -28,13 +28,16 @@ public class RoleSeeder : ISeeder
         await _applicationContext.SaveChangesAsync();
 
         var admin = await _roleRepository.GetByNameAsync(DefaultRoles.Admin.Name) ?? throw new SystemException();
-        var adminAccessPermission =
-            await _systemPermissionRepository.GetByNameAsync(DefaultSystemPermissions.Admin.Access.Name) ??
-            throw new SystemException();
 
-        if (!await _roleManager.HasPermissionAsync(admin, adminAccessPermission))
+        foreach (var systemPermissionRaw in DefaultSystemPermissions.GetAll())
         {
-            await _roleManager.GrantPermissionAsync(admin, adminAccessPermission);
+            var systemPermission = await _systemPermissionRepository.GetByNameAsync(systemPermissionRaw.Name) ??
+                                   throw new SystemException();
+
+            if (!await _roleManager.HasPermissionAsync(admin, systemPermission))
+            {
+                await _roleManager.GrantPermissionAsync(admin, systemPermission);
+            }
         }
     }
 

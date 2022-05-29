@@ -7,6 +7,7 @@ using LiWiMus.Core.Users.Interfaces;
 using LiWiMus.Infrastructure.Identity;
 using LiWiMus.Infrastructure.Services;
 using LiWiMus.SharedKernel.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -31,7 +32,7 @@ public static class CoreDependenciesConfiguration
         services.AddTransient<IPaymentService, PaymentService>();
         services.AddTransient<IUserValidator<User>, ApplicationUserValidator>();
         services.AddScoped<IUserService, UserService>();
-        // TODO: Add authorization handler
+        services.AddTransient<IAuthorizationHandler, ApplicationAuthorizationHandler>();
         return services;
     }
 }
