@@ -18,6 +18,11 @@ public class OfficesController : Controller
         _mapper = mapper;
     }
 
+
+    public IActionResult Offices()
+    {
+        return View();
+    }
     public async Task<IActionResult> Index()
     {
         var offices = await _repository.ListAsync();
