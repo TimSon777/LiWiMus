@@ -4,9 +4,11 @@ using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
@@ -15,11 +17,13 @@ public class TrackController : Controller
 {
     private readonly IRepository<Track> _trackRepository;
     private readonly IMapper _mapper;
+    private readonly IOptions<PullUrls> _options;
 
-    public TrackController(IRepository<Track> trackRepository, IMapper mapper)
+    public TrackController(IRepository<Track> trackRepository, IMapper mapper, IOptions<PullUrls> options)
     {
         _trackRepository = trackRepository;
         _mapper = mapper;
+        _options = options;
     }
 
     private async Task<IEnumerable<TrackForListViewModel>> GetTracksAsync(SearchViewModel searchVm)
@@ -33,6 +37,7 @@ public class TrackController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        ViewData["fileServer"] = _options.Value.FileServer;
         var tracks = await GetTracksAsync(SearchViewModel.Default);
         return View(tracks);
     }
