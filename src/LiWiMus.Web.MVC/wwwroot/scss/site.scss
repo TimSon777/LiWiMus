@@ -8,9 +8,26 @@ body {
   background-color: $color_4;
 }
 
-h1 {
+h1, h2 {
   font-weight: lighter;
 }
+
+h1 {
+  font-size: 64px;
+
+  @media only screen and (max-device-width: 480px){
+    font-size: 44px;
+  }
+}
+
+h2 {
+  font-size: 46px;
+  
+  @media only screen and (max-device-width: 480px){
+    font-size: 32px;
+  }
+}
+
 
 .edit-btns {
   color: $btn-text-color;
@@ -836,13 +853,17 @@ div::-webkit-scrollbar-thumb {
   background: $color_3;
 }
 
-.custom-nav {
-  font-size: 22px;
-  .nav-link {
-    &:hover {
-      color: $color_1!important;
-    }
+.nav-link {
+  &:hover {
+    color: $color_1!important;
   }
+}
+
+.navbar-nav {
+  font-size: 22px;
+}
+
+.custom-nav {
 }
 
 .custom-nav-container {
@@ -999,5 +1020,322 @@ div::-webkit-scrollbar-thumb {
   
 }
 
+.tarif-section, .contact-us-section {
+  width: 100%;
+  background: $color_4;
+  color: white;
+  font-weight: lighter;
+  padding: 2rem;
+  h2 {
+    text-align: center;
+  }
+}
 
+.contact-us-section {
+  background: $color_2;
+}
 
+.tariffs-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: white;
+  font-size: 64px;
+  font-weight: lighter;
+}
+
+.tariff-container {
+  box-sizing: border-box;
+  background: $color_3;
+  border-radius: 10px;
+  filter: drop-shadow(4px 8px 4px rgba(0, 0, 0, 0.25));
+  padding: 20px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.tariff-card {
+  display: flex;
+  box-sizing: border-box;
+  border: 1px solid #FFFFFF;
+  border-radius: 10px;
+  padding: 20px;
+  height: 380px;
+  overflow: auto;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  font-size: 18px;
+}
+
+.tariff-card-header {
+  margin-bottom: 10px;
+  border-bottom: 1px solid white;
+  font-size: 22px;
+}
+
+.tariffs-cards {
+  display: grid;
+  align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  grid-gap: 15px;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.advantage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.advantage-text {
+  font-size: 18px;
+  padding: 10px 0 0;
+  margin: 0 0 0 10px;
+  white-space: normal;
+}
+
+.advantage-icon {
+  margin: 0 auto;
+}
+
+.tariff-advantages {
+  word-wrap: break-word;
+  width: 100%;
+}
+
+.buy-tariff-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.buy-tariff-button {
+  color: white;
+  background: $color_1;
+  box-shadow: 4px 8px 4px rgba(0, 0, 0, 0.35);
+  border-radius: 50px;
+  padding: 20px 40px;
+  border: none;
+}
+
+.buy-tariff-button:hover {
+  background: #cc3636;
+}
+
+.contact-us-section {
+  text-align: center;
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+}
+
+.contact-us-card-container {
+  box-sizing: border-box;
+  border: 2px solid rgba(255, 255, 255, 0.311);
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.contact-us-header {
+  box-sizing: border-box;
+  font-size: 48px;
+  line-height: 50px;
+  align-self: flex-end;
+
+  @media(max-width: 480px) {
+    font-size: 36px;
+  }
+}
+
+.contact-us-card {
+  background: $color_3;
+  box-shadow: 8px 16px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+}
+
+.contact-us-card-header {
+  font-size: 36px;
+
+  @media(max-width: 480px) {
+    font-size: 28px;
+  }
+}
+
+.contact-us-card-button {
+  text-transform: uppercase;
+  color: white;
+  background: $color_1;
+  box-shadow: 4px 8px 4px rgba(0, 0, 0, 0.35);
+  border-radius: 50px;
+  font-size: 20px;
+  border: none;
+  padding: 1rem 2rem;
+}
+
+.contact-us-card-button:hover {
+  background: #cc3636;
+}
+
+@media(max-width: 320px){
+  .tariff-container{
+    max-width: 265px;
+  }
+
+  .tariffs-header {
+    font-size: 40px;
+  }
+
+  .contact-us-header {
+    font-size: 28px;
+  }
+
+  .contact-us-section {
+    padding: 1rem!important;
+  }
+
+  .contact-us-card-container {
+    padding: 0.1rem!important;;
+  }
+}
+
+.plans-header {
+  text-align: center;
+  color: white;
+  margin-top: 1rem;
+}
+
+.active-plan {
+  padding: 2rem 2rem 3rem;
+  border-bottom: 2px solid $color_1;
+  @media only screen
+  and (min-device-width : 320px)
+  and (max-device-width : 480px) {
+    padding: 0 0 3rem;
+  }
+
+  @media only screen
+  and (max-device-width : 320px) {
+    padding: 0 0 1rem;
+  }
+  
+  .tariff-container {
+    width: 500px;
+    margin: 0 auto;
+    @media only screen 
+      and (min-device-width : 320px) 
+      and (max-device-width : 480px) {
+      width: 90%;
+    }
+
+    @media only screen
+    and (min-device-width : 280px)
+    and (max-device-width : 320px) {
+      margin: 0;
+    }
+  }
+  .tariff-card {
+    border: 1px solid $color_1;
+  }
+  .tariff-card-header {
+    border-color: $color_1;
+  }
+}
+
+@media only screen
+and (min-device-width : 280px)
+and (max-device-width : 480px) {
+  .tarif-section {
+    padding: 0.5rem 0.5rem 2rem;
+  }
+}
+
+.buy-tariff-section {
+  text-align: center;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  color: white;
+  
+  .active-plan {
+    border: none;
+  }
+  
+  .contact-us-card-container {
+    box-sizing: border-box;
+    border: 2px solid rgba(255, 255, 255, 0.311);
+    border-radius: 10px;
+    height: fit-content;
+    padding: 1.5rem;
+  }
+  
+  .contact-us-card {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 5rem;
+  }
+
+  .contact-us-header {
+    box-sizing: border-box;
+    font-size: 48px;
+    line-height: 50px;
+    align-self: flex-end;
+    font-weight: lighter;
+  }
+
+  @media(max-width: 320px){
+    .tariff-container{
+      max-width: 260px;
+    }
+
+    .tariffs-header {
+      font-size: 40px;
+    }
+
+    .contact-us-header {
+      font-size: 40px;
+    }
+
+    .contact-us-section {
+      padding: 1rem!important;
+    }
+
+    .contact-us-card-container {
+      padding: 0.1rem!important;;
+    }
+  }
+  
+  .tariff-card {
+    justify-content: start;
+    gap: 2.5rem;
+    height: 370px;
+    overflow: auto;
+  }
+}
+
+.buy-tariff-button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.buy-tariff-button {
+  @extend .contact-us-card-button;
+  
+  &:hover {
+    background: #cc3636;
+  }
+  
+  &:disabled {
+    background: $color_2;
+    border: 2px solid $color_2;
+  }
+}
+
+.tariff-curd-buy-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 5rem;
+}

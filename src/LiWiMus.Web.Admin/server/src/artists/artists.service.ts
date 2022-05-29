@@ -23,7 +23,6 @@ export class ArtistsService {
         return plainToInstance(ArtistsDto, Artist.findOne(artist.id));
     }
     
-    
     async addUsers(id: number, dto: UserArtistDto) : Promise<UserDto[]>{
         if (!dto.userIds) {
             throw new HttpException({
@@ -85,7 +84,7 @@ export class ArtistsService {
         if(!artist) {
             throw new HttpException({
                 message: "Artist was not found."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.UNPROCESSABLE_ENTITY)
         }
         
         let users = await User.find({
@@ -118,7 +117,7 @@ export class ArtistsService {
         if (!artist){
             throw new HttpException({
                 message: `Artist was not found.`
-            }, HttpStatus.NOT_FOUND);
+            }, HttpStatus.UNPROCESSABLE_ENTITY);
         }
         
         let updatedArtist = await Artist.create(dto);
@@ -132,7 +131,7 @@ export class ArtistsService {
         if (!artist){
             throw new HttpException({
                 message: `Artist was not found.`
-            }, HttpStatus.NOT_FOUND);
+            }, HttpStatus.UNPROCESSABLE_ENTITY);
         }
         
         await Artist.remove(artist);
