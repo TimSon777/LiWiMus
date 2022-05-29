@@ -41,12 +41,19 @@
             }
             else
             {
-                <form method="post" asp-formhelper="true" asp-controller="Following" asp-action="SubscribeOrUnsubscribeUser" style="display: flex; justify-content: center">
-                    <input type="hidden" name="username" value="@Model.UserName"/>
-                    <div>
-                        <button>Subscribe</button>
-                    </div>
-                </form>
+                <div id="subscriptionDiv" style="margin: 0 2% 2%;">
+                    <form asp-formhelper="true" asp-callback="" asp-area="User" asp-controller="Following"  method="post" asp-action="SubscribeOrUnsubscribeUser">
+                        <input name="username" type="hidden" value="@Model.UserName">
+                        @if (Model.IsSubscribed)
+                        {
+                            <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                        }
+                        else
+                        {
+                            <button id="subscribtionButton" class="edit-button">Subscribe</button>
+                        }
+                    </form>
+                </div>
             }
         </div>
 
