@@ -22,6 +22,12 @@ public class FilesController : ControllerBase
         _client = clientFactory.CreateClient();
     }
 
+    [HttpGet("test")]
+    public IActionResult Test()
+    {
+        return Ok("test");
+    }
+
     [HttpPost("url")]
     public async Task<ActionResult<FileDto>> Save([FromBody] SaveUrlRequest request)
     {

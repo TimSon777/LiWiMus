@@ -3,7 +3,6 @@ using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Seeders;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace LiWiMus.Web.Shared.Configuration;
@@ -26,15 +25,12 @@ public static class ConfigureSeeder
 
     public static async Task UseSeedersAsync(IServiceProvider serviceProvider, ILogger logger, IWebHostEnvironment environment)
     {
-        using var scope = serviceProvider.CreateScope();
-        var applicationContext = scope.ServiceProvider.GetRequiredService<ApplicationContext>();
-        logger.LogInformation("Seeding Database...");
-        var seeders = scope.ServiceProvider.GetServices<ISeeder>();
         try
         {
+            using var scope = serviceProvider.CreateScope();
             var envType = Enum.Parse<EnvironmentType>(environment.EnvironmentName);
-            await ApplicationContextSeed.SeedAsync(applicationContext, envType, logger, seeders.ToArray());
-            await ApplicationContextClear.ClearAsync(applicationContext, logger, environment.IsDevelopment());
+            await ApplicationContextSeed.SeedAsync(scope.ServiceProvider, envType, logger);
+            //await ApplicationContextClear.ClearAsync(applicationContext, logger, environment.IsDevelopment());
         }
         catch (Exception ex)
         {
