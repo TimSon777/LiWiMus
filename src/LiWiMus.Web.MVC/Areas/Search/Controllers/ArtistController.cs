@@ -3,8 +3,10 @@ using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Shared;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
@@ -13,12 +15,14 @@ public class ArtistController : Controller
 {
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IMapper _mapper;
+    private readonly IOptions<PullUrls> _options;
 
     public ArtistController(IRepository<Core.Artists.Artist> artistRepository, 
-        IMapper mapper)
+        IMapper mapper, IOptions<PullUrls> options)
     {
         _artistRepository = artistRepository;
         _mapper = mapper;
+        _options = options;
     }
     
     private async Task<IEnumerable<ArtistForListViewModel>> GetArtistsAsync(SearchViewModel searchVm)
@@ -31,6 +35,7 @@ public class ArtistController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        ViewData["fileServer"] = _options.Value.FileServer;
         var artists = await GetArtistsAsync(SearchViewModel.Default);
         return View(artists);
     }

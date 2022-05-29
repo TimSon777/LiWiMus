@@ -7,7 +7,14 @@
         <a asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
             <div class="playlist-container search-item">
                 <div>
-                    <img class="playlist-image" src="../images/playlist-cover.jpg" alt="Playlist cover." width="250px" height="250px"/>
+                    @if (playlist.PhotoLocation != null)
+                    {
+                        <img class="playlist-image" src="@System.IO.Path.Combine(ViewData["fileServer"]?.ToString()!, playlist.PhotoLocation)" alt="Playlist cover." width="250px" height="250px"/>
+                    }
+                    else
+                    {
+                        <img class="playlist-image" src="../images/main-background.jpg" alt="Playlist cover." width="250px" height="250px"/>
+                    }
                 </div>
                 <div class="playlist-information">
                     <p class="playlist-name">@playlist.Name</p>

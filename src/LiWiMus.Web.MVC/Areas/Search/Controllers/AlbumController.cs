@@ -4,22 +4,26 @@ using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Shared;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
 [Area(AreasConstants.Search)]
 public class AlbumController : Controller
 {
+    private readonly IOptions<PullUrls> _options;
     private readonly IRepository<Album> _albumRepository;
     private readonly IMapper _mapper;
 
     public AlbumController(IRepository<Album> albumRepository, 
-        IMapper mapper)
+        IMapper mapper, IOptions<PullUrls> options)
     {
         _albumRepository = albumRepository;
         _mapper = mapper;
+        _options = options;
     }
     
     private async Task<IEnumerable<AlbumForListViewModel>> GetAlbumsAsync(SearchViewModel searchVm)
@@ -32,6 +36,7 @@ public class AlbumController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        ViewData["fileServer"] = _options.Value.FileServer;
         var albums = await GetAlbumsAsync(SearchViewModel.Default);
         return View(albums);
     }

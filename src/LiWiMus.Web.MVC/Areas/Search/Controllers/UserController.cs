@@ -3,8 +3,10 @@ using LiWiMus.Core.Shared;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.Search.Controllers;
 
@@ -13,11 +15,13 @@ public class UserController : Controller
 {
     private readonly IRepository<Core.Users.User> _userRepository;
     private readonly IMapper _mapper;
+    private readonly IOptions<PullUrls> _options;
 
-    public UserController(IRepository<Core.Users.User> userRepository, IMapper mapper)
+    public UserController(IRepository<Core.Users.User> userRepository, IMapper mapper, IOptions<PullUrls> options)
     {
         _userRepository = userRepository;
         _mapper = mapper;
+        _options = options;
     }
 
     private async Task<IEnumerable<UserForListViewModel>> GetUsersAsync(SearchViewModel searchVm)
@@ -30,6 +34,7 @@ public class UserController : Controller
     [HttpGet]
     public async Task<IActionResult> Index()
     {
+        ViewData["fileServer"] = _options.Value.FileServer;
         var users = await GetUsersAsync(SearchViewModel.Default);
         return View(users);
     }
