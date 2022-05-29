@@ -4,8 +4,12 @@ using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.Core.Settings;
+using LiWiMus.Core.Tracks;
+using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
+using LiWiMus.Web.MVC.Areas.Music.ViewModels;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
+using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
 using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,14 +24,45 @@ public class PlaylistController : Controller
     private readonly IRepository<LikedPlaylist> _likedPlaylistRepository;
     private readonly IFormFileSaver _formFileSaver;
     private readonly UserManager<Core.Users.User> _userManager;
+    private readonly IRepository<Track> _trackRepository;
 
-    public PlaylistController(IMapper mapper, IRepository<Playlist> playlistRepository, IFormFileSaver formFileSaver, UserManager<Core.Users.User> userManager, IRepository<LikedPlaylist> likedPlaylistRepository)
+    public PlaylistController(IMapper mapper, IRepository<Playlist> playlistRepository, IFormFileSaver formFileSaver, UserManager<Core.Users.User> userManager, IRepository<LikedPlaylist> likedPlaylistRepository, IRepository<Track> trackRepository)
     {
         _mapper = mapper;
         _playlistRepository = playlistRepository;
         _formFileSaver = formFileSaver;
         _userManager = userManager;
         _likedPlaylistRepository = likedPlaylistRepository;
+        _trackRepository = trackRepository;
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Index(int playlistId)
+    {
+        var playlist = await _playlistRepository.GetPlaylistDetailedAsync(playlistId);
+        
+        if (playlist is null)
+        {
+            return NotFound();
+        }
+
+        var playlistVm = _mapper.Map<PlaylistViewModel>(playlist);
+        playlistVm.CountSubscribers = await _playlistRepository.GetCountSubscribersAsync(playlistId);
+        return View(playlistVm);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Search(SearchForPlaylistViewModel model)
+    {
+        var tracks = await _trackRepository.SearchToPlaylistAsync(model.Title, model.PlaylistId);
+        var trackVms = _mapper.Map<List<TrackForListViewModel>>(tracks);
+        
+        var result = new TracksPlaylistViewModel
+        {
+            Tracks = trackVms,
+            PlaylistId = model.PlaylistId
+        };
+        return PartialView("TracksSearchPartial", result);
     }
 
     [HttpGet]
@@ -47,11 +82,9 @@ public class PlaylistController : Controller
         var user = await _userManager.GetUserAsync(User);
 
         var mappedPlaylist = _mapper.Map<Playlist>(vm);
-        var path = await _formFileSaver.SaveWithRandomNameAsync(vm.Picture, DataType.Picture);
-        mappedPlaylist.PhotoLocation = path;
         mappedPlaylist.Owner = user;
         var playlist = await _playlistRepository.AddAsync(mappedPlaylist);
-        return FormResult.CreateSuccessResult("Ok", $"/Music/Playlist/Index?playlistId={playlist.Id}");
+        return FormResult.CreateSuccessResult("Ok", $"/User/Playlist/Index?playlistId={playlist.Id}");
     }
 
     [HttpPost, FormValidator]
@@ -88,6 +121,45 @@ public class PlaylistController : Controller
             await _likedPlaylistRepository.AddAsync(lp);
         }
 
+        return FormResult.CreateSuccessResult("Ok");
+    }
+
+    [HttpPost]
+    [IgnoreAntiforgeryToken]
+    public async Task<IActionResult> AddOrRemoveTrack(TrackPlaylistViewModel vm)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        
+        if (user is null)
+        {
+            return Forbid();
+        }
+
+        var track = await _trackRepository.GetByIdAsync(vm.TrackId);
+        
+        if (track is null)
+        {
+            return FormResult.CreateErrorResult("Track was not found");
+        }
+        
+        var playlist = await _playlistRepository.WithTracksAsync(vm.PlaylistId);
+
+        if (playlist is null)
+        {
+            return FormResult.CreateErrorResult("Playlist was not found");
+        }
+
+        var trackInPlaylist = playlist.Tracks.FirstOrDefault(x => x == track);
+
+        if (trackInPlaylist is not null)
+        {
+            playlist.Tracks.Remove(track);
+            await _playlistRepository.SaveChangesAsync();
+            return FormResult.CreateSuccessResult("Ok");
+        }
+        
+        playlist.Tracks.Add(track);
+        await _playlistRepository.SaveChangesAsync();
         return FormResult.CreateSuccessResult("Ok");
     }
 }
