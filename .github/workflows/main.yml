@@ -28,3 +28,11 @@ jobs:
           file: "Dockerfile_mvc"
           push: true
           tags: aslipatov/liwimus-mvc:latest
+
+      - name: Restart azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          environment: 'AzureStack'
+        - run: |
+            az webapp list --query "[?state=='Running']"
