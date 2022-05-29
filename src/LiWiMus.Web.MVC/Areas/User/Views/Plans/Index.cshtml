@@ -17,10 +17,16 @@
                             @plan.Name
                         </div>
                         <div class="tariff-description">
+                            @plan.Description
                         </div>
                     </div>
                     <div class="tariff-advantages mb-5 mt-4">
-                        @plan.Description
+                        @foreach (var permission in plan.Permissions)
+                        {
+                            <div class="advantage mb-3">
+                                <p class="advantage-text">@permission.Description</p>
+                            </div>
+                        }
                     </div>
                     <div class="buy-tariff-button-container">
                         <a asp-action="Details" asp-route-planId="@plan.Id">
