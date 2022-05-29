@@ -70,11 +70,11 @@ body {
     height: 100vh;
 }
 
-/*.body-sidebar {
+.body-sidebar {
     display: grid;
     grid-template-columns: 1.5fr 6fr;
     height: 100vh;
-}*/
+}
 
 .content {
     position: absolute;
@@ -99,6 +99,8 @@ body {
     left: 50%;
     transform: translate(-50%, -15%);
     display: grid;
+    width: 20%;
+    min-width: 120px;
 }
 
 .text-link {
