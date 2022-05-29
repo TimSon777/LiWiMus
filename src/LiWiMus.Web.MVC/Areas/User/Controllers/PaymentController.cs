@@ -1,6 +1,7 @@
-﻿using FormHelper;
+﻿using AutoMapper;
+using FormHelper;
 using LiWiMus.Core.Exceptions;
-using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Payments;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,11 +13,13 @@ public class PaymentController : Controller
 {
     private readonly IPaymentService _paymentService;
     private readonly UserManager<Core.Users.User> _userManager;
+    private readonly IMapper _mapper;
 
-    public PaymentController(IPaymentService paymentService, UserManager<Core.Users.User> userManager)
+    public PaymentController(IPaymentService paymentService, UserManager<Core.Users.User> userManager, IMapper mapper)
     {
         _paymentService = paymentService;
         _userManager = userManager;
+        _mapper = mapper;
     }
 
     public IActionResult Index()
@@ -43,7 +46,8 @@ public class PaymentController : Controller
         var user = await _userManager.GetUserAsync(User);
         try
         {
-            await _paymentService.PayAsync(user, model.Amount, model.Reason);
+            var cardInfo = _mapper.Map<CardInfo>(model);
+            await _paymentService.PayAsync(user, cardInfo, model.Amount, model.Reason);
         }
         catch (PaymentException)
         {

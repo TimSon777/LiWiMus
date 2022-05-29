@@ -1,6 +1,6 @@
 ﻿using Ardalis.GuardClauses;
 using LiWiMus.Core.Exceptions;
-using LiWiMus.Core.Interfaces;
+using LiWiMus.Core.Payments;
 using LiWiMus.Core.Transactions;
 using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Extensions;
@@ -17,7 +17,7 @@ public class PaymentService : IPaymentService
         _transactionRepository = transactionRepository;
     }
 
-    public async Task PayAsync(User user, decimal amount, string? reason = null)
+    public async Task PayAsync(User user, CardInfo card, decimal amount, string? reason = null)
     {
         var transaction = new Transaction
         {

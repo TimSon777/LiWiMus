@@ -18,6 +18,30 @@
             <span asp-validation-for="Amount" class="text-danger"></span>
         </div>
 
+        <div class="mb-3">
+            <label asp-for="CardNumber" class="form-label"></label>
+            <input asp-for="CardNumber" class="form-control">
+            <span asp-validation-for="CardNumber" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CardExpires" class="form-label"></label>
+            <input asp-for="CardExpires" class="form-control">
+            <span asp-validation-for="CardExpires" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CardHolder" class="form-label"></label>
+            <input asp-for="CardHolder" class="form-control">
+            <span asp-validation-for="CardHolder" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CvvCode" class="form-label"></label>
+            <input asp-for="CvvCode" class="form-control">
+            <span asp-validation-for="CvvCode" class="text-danger"></span>
+        </div>
+
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
