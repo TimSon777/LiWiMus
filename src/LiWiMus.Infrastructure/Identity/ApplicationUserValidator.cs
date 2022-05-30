@@ -26,6 +26,15 @@ public class ApplicationUserValidator : UserValidator<User>
                 break;
         }
 
+        var russianChars = "абвгдеёжзийклмнопрстуфхцчшщъыьэюя".ToCharArray();
+        if (user.UserName.Any(c => russianChars.Contains(c)))
+        {
+            errors.Add(new IdentityError
+            {
+                Description = "Russian characters are prohibited"
+            });
+        }
+
         return errors.Count == 0 ? IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
     }
 }

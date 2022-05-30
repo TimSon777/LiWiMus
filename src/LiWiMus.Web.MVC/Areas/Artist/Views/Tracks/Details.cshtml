@@ -37,14 +37,20 @@
                   enctype="multipart/form-data"
                   asp-formhelper="true"
                   asp-action="Update"
-                  asp-route-artistId="@ViewContext.RouteData.Values["id"]"
-                  asp-enableButtonAfterSuccess="true">
+                  asp-route-artistId="@ViewContext.RouteData.Values["artistId"]"
+                  asp-enableButtonAfterSuccess="true"
+                  asp-resetFormAfterSuccess="false">
                 <input type="text" hidden name="Id" value="@Model.Id">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
                         <label for="Name" class="form-label">Name</label>
                         <input id="Name" name="Name" type="text" class="form-control" value="@Model.Name">
                         <span data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                    </div>
+                    <div class="label-input">
+                        <label for="PublishedAt" class="form-label">Published at</label>
+                        <input id="PublishedAt" name="PublishedAt" class="form-control" type="date" value="@Model.PublishedAt.ToString("yyyy-MM-dd")">
+                        <span data-valmsg-for="PublishedAt" data-valmsg-replace="true"></span>
                     </div>
                     <div class="label-input">
                         <label for="File" class="form-label">Change file</label>
