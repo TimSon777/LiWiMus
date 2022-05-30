@@ -1,8 +1,8 @@
 import React from "react";
 import ImageEditor from "../../../shared/components/ImageEditor/ImageEditor";
 import { Playlist } from "../../types/Playlist";
-import PlaylistService from "../../Playlist.service";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import { usePlaylistService } from "../../PlaylistService.hook";
 
 type Props = {
   playlist: Playlist;
@@ -15,6 +15,8 @@ export default function PlaylistImageEditor({
   playlistPhoto,
   setPlaylistWithPhoto,
 }: Props) {
+  const playlistService = usePlaylistService();
+
   const { showSuccess, showError } = useNotifier();
 
   const updatePhotoHandler = (input: HTMLInputElement) => {
@@ -26,7 +28,7 @@ export default function PlaylistImageEditor({
       return;
     }
     try {
-      const response = await PlaylistService.removePhoto(playlist);
+      const response = await playlistService.removePhoto(playlist);
       setPlaylistWithPhoto(response);
       showSuccess("Photo removed");
     } catch (error) {
@@ -45,7 +47,7 @@ export default function PlaylistImageEditor({
     try {
       const photo = input.files[0];
 
-      const response = await PlaylistService.changePhoto(playlist, photo);
+      const response = await playlistService.changePhoto(playlist, photo);
       setPlaylistWithPhoto(response);
       showSuccess("Photo updated");
     } catch (error) {

@@ -2,9 +2,9 @@ import React from "react";
 import { Track } from "../../types/Track";
 import { Artist } from "../../../artists/types/Artist";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import TrackService from "../../../tracks/Track.service";
 import ArtistsList from "../../../artists/components/ArtistsList/ArtistsList";
 import AlertDialog from "../../../shared/components/AlertDialog/AlertDialog";
+import { useTrackService } from "../../TrackService.hook";
 
 type Props = {
   track: Track;
@@ -12,11 +12,13 @@ type Props = {
 };
 
 export default function ArtistsInTrack({ track, setTrack }: Props) {
+  const trackService = useTrackService();
+
   const { showError, showSuccess } = useNotifier();
 
   const removeArtist = async (artist: Artist) => {
     try {
-      await TrackService.removeArtist(track, artist);
+      await trackService.removeArtist(track, artist);
       setTrack({
         ...track,
         artists: track.artists.filter((a) => a.id !== artist.id),

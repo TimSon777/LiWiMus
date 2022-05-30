@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Plan } from "../types/Plan";
-import PlanService from "../Plan.service";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
@@ -11,8 +10,11 @@ import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { formatDistanceToNow } from "date-fns";
 import PlanDeleter from "../components/PlanDeleter/PlanDeleter";
 import PlanPermissionsEditor from "../components/PlanPermissionsEditor/PlanPermissionsEditor";
+import { usePlanService } from "../PlanService.hook";
 
 export default function PlanDetailsPage() {
+  const PlanService = usePlanService();
+
   const { id } = useParams() as { id: string };
   const [plan, setPlan] = useState<Plan>();
   const [loading, setLoading] = useState(true);

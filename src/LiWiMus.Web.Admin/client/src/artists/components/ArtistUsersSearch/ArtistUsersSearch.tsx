@@ -3,12 +3,12 @@ import { Artist } from "../../types/Artist";
 import { PaginatedData } from "../../../shared/types/PaginatedData";
 import { User } from "../../../users/types/User";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import ArtistService from "../../Artist.service";
 import Loading from "../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button } from "@mui/material";
-import UserService from "../../../users/User.service";
 import UsersList from "../../../users/components/UsersList/UsersList";
+import { useArtistService } from "../../ArtistService.hook";
+import { useUserService } from "../../../users/UserService.hook";
 
 type Props = {
   artist: Artist;
@@ -29,11 +29,14 @@ export default function ArtistUsersSearch({
   loading,
   filter,
 }: Props) {
+  const artistService = useArtistService();
+  const userService = useUserService();
+
   const { showError, showSuccess } = useNotifier();
 
   const fetchMore = async () => {
     try {
-      const newUsers = await UserService.getUsers({
+      const newUsers = await userService.getUsers({
         filters: [
           { columnName: "userName", operator: "cnt", value: filter },
           {
@@ -58,7 +61,7 @@ export default function ArtistUsersSearch({
 
   const addOwner = async (user: User) => {
     try {
-      await ArtistService.addOwner(artist, user);
+      await artistService.addOwner(artist, user);
       setOwners([...owners, user]);
       setUsers({
         ...users,

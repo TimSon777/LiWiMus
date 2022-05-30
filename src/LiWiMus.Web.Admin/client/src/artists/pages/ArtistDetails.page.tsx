@@ -8,21 +8,24 @@ import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { format } from "date-fns";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import { Artist } from "../types/Artist";
-import ArtistService from "../Artist.service";
 import ArtistImageEditor from "../components/ArtistImageEditor/ArtistImageEditor";
 import ArtistInfoEditor from "../components/ArtistInfoEditor/ArtistInfoEditor";
 import ArtistDeleter from "../components/ArtistDeleter/ArtistDeleter";
 import ArtistUsers from "../components/ArtistUsers/ArtistUsers";
 import AlbumsList from "../../albums/components/AlbumsList/AlbumsList";
+import { useArtistService } from "../ArtistService.hook";
 
 export default function ArtistDetailsPage() {
+  const artistService = useArtistService();
+
   const { id } = useParams() as { id: string };
   const [artist, setArtist] = useState<Artist>();
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
 
   useEffect(() => {
-    ArtistService.get(id)
+    artistService
+      .get(id)
       .then((artist) => {
         setArtist(artist);
       })

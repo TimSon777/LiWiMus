@@ -10,15 +10,18 @@ import PlaylistInfoEditor from "../components/PlaylistInfoEditor/PlaylistInfoEdi
 import PlaylistPublicityEditor from "../components/PlaylistPublicityEditor/PlaylistPublicityEditor";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import PlaylistDeleter from "../components/PlaylistDeleter/PlaylistDeleter";
-import PlaylistService from "../Playlist.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import PlaylistTracks from "../components/PlaylistTracks/PlaylistTracks";
 // @ts-ignore
 import dateFormat from "dateformat";
-import FileService from "../../shared/services/File.service";
+import { usePlaylistService } from "../PlaylistService.hook";
+import { useFileService } from "../../shared/hooks/FileService.hook";
 
 export default function PlaylistDetailsPage() {
+  const playlistService = usePlaylistService();
+  const fileService = useFileService();
+
   const { id } = useParams() as { id: string };
   const [playlist, setPlaylist] = useState<Playlist>();
   const [playlistPhoto, setPlaylistPhoto] = useState<string>("");
@@ -27,14 +30,15 @@ export default function PlaylistDetailsPage() {
 
   const setPlaylistWithPhoto = (playlist: Playlist) => {
     const photoLocation = playlist.photoLocation
-      ? FileService.getLocation(playlist.photoLocation)
+      ? fileService.getLocation(playlist.photoLocation)
       : playlistCover;
     setPlaylist({ ...playlist });
     setPlaylistPhoto(photoLocation);
   };
 
   useEffect(() => {
-    PlaylistService.get(id)
+    playlistService
+      .get(id)
       .then((playlist) => {
         setPlaylistWithPhoto(playlist);
       })

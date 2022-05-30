@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
-import UserService from "../../users/User.service";
 import { User } from "../../users/types/User";
+import { useUserService } from "../../users/UserService.hook";
 
 const storageName = "userData";
 
@@ -14,6 +14,8 @@ type JwtPayload = {
 };
 
 export const useAuth = () => {
+  const userService = useUserService();
+
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState<boolean>(false);
   const [payload, setPayload] = useState<JwtPayload | null>(null);
@@ -27,7 +29,7 @@ export const useAuth = () => {
 
     const userId = payload.sub;
     try {
-      const user = await UserService.get(userId);
+      const user = await userService.get(userId);
 
       setUser(user);
     } catch (e) {

@@ -1,13 +1,5 @@
 import React, { useContext } from "react";
-import {
-  Avatar,
-  Box,
-  Divider,
-  Drawer,
-  Link,
-  List,
-  Toolbar,
-} from "@mui/material";
+import { Avatar, Box, Divider, Drawer, Link, List, Toolbar } from "@mui/material";
 import { AuthContext } from "../../contexts/Auth.context";
 import GroupIcon from "@mui/icons-material/Group";
 import ReceiptIcon from "@mui/icons-material/Receipt";
@@ -17,13 +9,13 @@ import TheaterComedyIcon from "@mui/icons-material/TheaterComedy";
 import MonetizationOnIcon from "@mui/icons-material/MonetizationOn";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListLink from "../ListLink/ListLink";
-import ListButton from "../ListButton/ListButton"
-import AlbumIcon from '@mui/icons-material/Album';
+import ListButton from "../ListButton/ListButton";
+import AlbumIcon from "@mui/icons-material/Album";
 import "./SideBar.sass";
 import { User } from "../../../users/types/User";
-import FileService from "../../services/File.service";
 import avatarPlaceholder from "../../images/avatar-placeholder.jpg";
 import { Link as RLink } from "react-router-dom";
+import { useFileService } from "../../hooks/FileService.hook";
 
 const drawerWidth = 240;
 
@@ -38,6 +30,8 @@ export default function SideBar({
   setMobileOpen,
   user,
 }: SideBarProps) {
+  const fileService = useFileService();
+
   const { logout } = useContext(AuthContext);
 
   const linkClickHandler = () => {
@@ -54,7 +48,7 @@ export default function SideBar({
               sx={{ mr: 2 }}
               src={
                 user.avatarLocation
-                  ? FileService.getLocation(user.avatarLocation)
+                  ? fileService.getLocation(user.avatarLocation)
                   : avatarPlaceholder
               }
             />
@@ -84,11 +78,11 @@ export default function SideBar({
             onClick={linkClickHandler}
           />
           <ListLink
-            icon={<AlbumIcon/>}
+            icon={<AlbumIcon />}
             text={"Albums"}
             to={"/admin/albums"}
             onClick={linkClickHandler}
-            />
+          />
           <ListLink
             icon={<QueueMusicIcon />}
             text={"Playlists"}

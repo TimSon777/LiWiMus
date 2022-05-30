@@ -3,7 +3,7 @@ import { Track } from "../../types/Track";
 import { useNavigate } from "react-router-dom";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Deleter from "../../../shared/components/Deleter/Deleter";
-import TrackService from "../../Track.service";
+import { useTrackService } from "../../TrackService.hook";
 
 type Props = {
   track: Track;
@@ -11,12 +11,14 @@ type Props = {
 };
 
 export default function TrackDeleter({ track, setTrack }: Props) {
+  const trackService = useTrackService();
+
   const navigate = useNavigate();
   const { showSuccess, showError } = useNotifier();
 
   const deleteHandler = async () => {
     try {
-      await TrackService.remove(track);
+      await trackService.remove(track);
       setTrack(undefined);
       showSuccess("Track deleted");
 

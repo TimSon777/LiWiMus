@@ -1,21 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  DataGrid,
-  GridColDef,
-  GridRowsProp,
-  GridSelectionModel,
-  GridSortModel,
-} from "@mui/x-data-grid";
+import { DataGrid, GridColDef, GridRowsProp, GridSelectionModel, GridSortModel } from "@mui/x-data-grid";
 import { Button, Fab } from "@mui/material";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import AddIcon from "@mui/icons-material/Add";
 import FiltersPopover from "../../shared/components/FiltersPopover/FiltersPopover";
 import FilterListIcon from "@mui/icons-material/FilterList";
-import UserService from "../User.service";
 import { FilterOptions } from "../../shared/types/FilterOptions";
 import { User } from "../types/User";
 import DateFormat from "date-fns/format";
+import { useUserService } from "../UserService.hook";
 
 type FilterItem = {
   id: number;
@@ -27,6 +21,8 @@ type FilterItem = {
 interface FilterModel extends Array<FilterItem> {}
 
 export default function UsersPage() {
+  const userService = useUserService();
+
   const [rowsCount, setRowsCount] = useState<number>();
   const [rows, setRows] = useState<GridRowsProp>([]);
   const [page, setPage] = useState(0);
@@ -204,7 +200,7 @@ export default function UsersPage() {
         page: { pageNumber: page + 1, numberOfElementsOnPage: limitItems },
         sorting: [{ columnName: testColumn, order: order }],
       };
-      const res = await UserService.getUsers(options);
+      const res = await userService.getUsers(options);
 
       if (!active) {
         return;

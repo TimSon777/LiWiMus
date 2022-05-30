@@ -3,9 +3,9 @@ import { Genre } from "../../../genres/types/Genre";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { Track } from "../../types/Track";
-import TrackService from "../../Track.service";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import ActionCard from "../../../shared/components/ActionCard/ActionCard";
+import { useTrackService } from "../../TrackService.hook";
 
 type Props = {
   genre: Genre;
@@ -14,6 +14,8 @@ type Props = {
 };
 
 export default function GenreCard({ genre, track, setTrack }: Props) {
+  const trackService = useTrackService();
+
   const { showError, showSuccess } = useNotifier();
 
   const removeGenre = async () => {
@@ -23,7 +25,7 @@ export default function GenreCard({ genre, track, setTrack }: Props) {
     }
 
     try {
-      await TrackService.removeGenre(track, genre);
+      await trackService.removeGenre(track, genre);
       setTrack({
         ...track,
         genres: track.genres.filter((t) => t.id !== genre.id),

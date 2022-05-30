@@ -1,22 +1,21 @@
 import React, { useState } from "react";
 import { FormControlLabel, Switch } from "@mui/material";
-import TrackService from "../../../tracks/Track.service";
-import {
-  DefaultPaginatedData,
-  PaginatedData,
-} from "../../../shared/types/PaginatedData";
+import { DefaultPaginatedData, PaginatedData } from "../../../shared/types/PaginatedData";
 import { Track } from "../../../tracks/types/Track";
 import { Album } from "../../types/Album";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "../../../shared/components/Loading/Loading";
 import TracksList from "../../../tracks/components/TracksList/TracksList";
+import { useTrackService } from "../../../tracks/TrackService.hook";
 
 type Props = {
   album: Album;
 };
 
 export default function AlbumTracks({ album }: Props) {
+  const trackService = useTrackService();
+
   const [open, setOpen] = useState(false);
   const [tracks, setTracks] =
     useState<PaginatedData<Track>>(DefaultPaginatedData);
@@ -28,7 +27,7 @@ export default function AlbumTracks({ album }: Props) {
 
   const fetchMore = async () => {
     try {
-      const newTracks = await TrackService.getTracks({
+      const newTracks = await trackService.getTracks({
         page: {
           pageNumber: tracks.actualPage + 1,
           numberOfElementsOnPage: 10,

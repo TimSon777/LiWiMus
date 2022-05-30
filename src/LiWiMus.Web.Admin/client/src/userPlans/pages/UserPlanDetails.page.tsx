@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { UserPlan } from "../types/UserPlan";
-import UserPlanService from "../UserPlan.service";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
@@ -10,8 +9,11 @@ import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import { formatDistanceToNow } from "date-fns";
 import UserPlanInfoEditor from "../components/UserPlanInfoEditor/UserPlanInfoEditor";
 import UserPlanDeleter from "../components/UserPlanDeleter/UserPlanDeleter";
+import { useUserPlanService } from "../UserPlanService.hook";
 
 export default function UserPlanDetailsPage() {
+  const userPlanService = useUserPlanService();
+
   const { id } = useParams() as { id: string };
   const [userPlan, setUserPlan] = useState<UserPlan>();
   const [loading, setLoading] = useState(true);
@@ -19,7 +21,8 @@ export default function UserPlanDetailsPage() {
 
   useEffect(() => {
     setLoading(true);
-    UserPlanService.get(id)
+    userPlanService
+      .get(id)
       .then(setUserPlan)
       .catch(showError)
       .then(() => setLoading(false));

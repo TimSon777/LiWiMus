@@ -6,10 +6,8 @@ import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
 import { Album } from "../types/Album";
-import AlbumService from "../Album.service";
 import { Grid, Stack, Typography } from "@mui/material";
 import AlbumImageEditor from "../components/AlbumImageEditor/AlbumImageEditor";
-import FileService from "../../shared/services/File.service";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import AlbumInfoEditor from "../components/AlbumInfoEditor/AlbumInfoEditor";
@@ -18,6 +16,8 @@ import { format, parse } from "date-fns";
 import AlbumDeleter from "../components/AlbumDeleter/AlbumDeleter";
 import AlbumTracks from "../components/AlbumTracks/AlbumTracks";
 import AlbumArtists from "../components/AlbumArtists/AlbumArtists";
+import { useAlbumService } from "../AlbumService.hook";
+import { useFileService } from "../../shared/hooks/FileService.hook";
 
 export default function AlbumDetailsPage() {
   const { id } = useParams() as { id: string };
@@ -25,15 +25,18 @@ export default function AlbumDetailsPage() {
   const [albumCover, setAlbumCover] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
+  const albumService = useAlbumService();
+  const fileService = useFileService();
 
   const setAlbumWithCover = (newAlbum: Album) => {
-    const coverLocation = FileService.getLocation(newAlbum.coverLocation);
+    const coverLocation = fileService.getLocation(newAlbum.coverLocation);
     setAlbum(newAlbum);
     setAlbumCover(coverLocation);
   };
 
   useEffect(() => {
-    AlbumService.get(id)
+    albumService
+      .get(id)
       .then((album) => {
         setAlbumWithCover(album);
       })

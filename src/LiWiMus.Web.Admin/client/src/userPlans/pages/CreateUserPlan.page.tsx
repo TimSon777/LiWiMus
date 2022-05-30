@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../users/types/User";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import { useNavigate, useParams } from "react-router-dom";
-import UserService from "../../users/User.service";
 import {
   Button,
   FormControl,
@@ -13,7 +12,7 @@ import {
   Paper,
   Select,
   Stack,
-  Typography,
+  Typography
 } from "@mui/material";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import UserLink from "../../users/components/UserLink/UserLink";
@@ -21,10 +20,11 @@ import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Plan } from "../../plans/types/Plan";
-import UserPlanService from "../UserPlan.service";
-import PlanService from "../../plans/Plan.service";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import ContrastTextField from "../../shared/components/ContrastTextField/ContrastTextField";
+import { useUserPlanService } from "../UserPlanService.hook";
+import { usePlanService } from "../../plans/PlanService.hook";
+import { useUserService } from "../../users/UserService.hook";
 
 type Inputs = {
   userId: number;
@@ -33,6 +33,10 @@ type Inputs = {
 };
 
 export default function CreateUserPlanPage() {
+  const userPlanService = useUserPlanService();
+  const planService = usePlanService();
+  const userService = useUserService();
+
   const { userId } = useParams() as { userId: string };
   const [user, setUser] = useState<User>();
   const [loading, setLoading] = useState(true);
@@ -49,11 +53,11 @@ export default function CreateUserPlanPage() {
   });
 
   const fetchData = async () => {
-    const user = await UserService.get(userId);
+    const user = await userService.get(userId);
     setUser(user);
 
-    const userPlans = await UserPlanService.search(userId, undefined, true);
-    const allPlans = await PlanService.getAll();
+    const userPlans = await userPlanService.search(userId, undefined, true);
+    const allPlans = await planService.getAll();
     const available = allPlans.filter(
       (p) => !userPlans.map((up) => up.planId).includes(p.id)
     );
@@ -71,12 +75,12 @@ export default function CreateUserPlanPage() {
   const handleCreate: SubmitHandler<Inputs> = async (data) => {
     try {
       // @ts-ignore
-      const result = await UserPlanService.create({
+      const result = await userPlanService.create({
         ...data,
         start: new Date(),
       });
       showSuccess("UserPlan created");
-      navigate(`/admin/userplans/${result.id}`);
+      navigate(`/admin/userPlans/${result.id}`);
     } catch (e) {
       showError(e);
     }

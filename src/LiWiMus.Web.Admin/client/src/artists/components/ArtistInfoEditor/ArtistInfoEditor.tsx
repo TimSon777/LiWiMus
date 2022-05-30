@@ -3,9 +3,9 @@ import { Artist } from "../../types/Artist";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateArtistDto } from "../../types/UpdateArtistDto";
-import ArtistService from "../../Artist.service";
 import { Box, Button, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
+import { useArtistService } from "../../ArtistService.hook";
 
 type Inputs = {
   name: string;
@@ -18,6 +18,8 @@ type Props = {
 };
 
 export default function ArtistInfoEditor({ artist, setArtist }: Props) {
+  const artistService = useArtistService();
+
   const { showSuccess, showError } = useNotifier();
   let defaultValues = { about: artist.about, name: artist.name };
   const {
@@ -46,7 +48,7 @@ export default function ArtistInfoEditor({ artist, setArtist }: Props) {
         name: data.name,
         about: data.about,
       };
-      const response = await ArtistService.update(req);
+      const response = await artistService.update(req);
       showSuccess("Info updated");
       setArtist({ ...artist, ...response });
     } catch (error) {

@@ -3,19 +3,13 @@ import { Track } from "../../types/Track";
 import { Button, Stack } from "@mui/material";
 import ReadonlyInfo from "../../../shared/components/InfoItem/ReadonlyInfo";
 import formatDuration from "format-duration";
-import {
-  addHours,
-  formatDistanceToNow,
-  formatISO,
-  parse,
-  parseISO,
-} from "date-fns";
+import { addHours, formatDistanceToNow, formatISO, parse, parseISO } from "date-fns";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateTrackDto } from "../../types/UpdateTrackDto";
-import TrackService from "../../Track.service";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { DatePicker } from "@mui/x-date-pickers";
+import { useTrackService } from "../../TrackService.hook";
 
 type Inputs = {
   name: string;
@@ -28,6 +22,8 @@ type Props = {
 };
 
 export default function TrackInfoEditor({ track, setTrack }: Props) {
+  const trackService = useTrackService();
+
   const defaultInputs: Inputs = {
     name: track.name,
     publishedAt: parse(track.publishedAt, "yyyy-MM-dd", new Date()),
@@ -59,7 +55,7 @@ export default function TrackInfoEditor({ track, setTrack }: Props) {
         name: data.name,
         publishedAt: formatISO(data.publishedAt),
       };
-      const response = await TrackService.update(req);
+      const response = await trackService.update(req);
       showSuccess("Info updated");
       setTrack({ ...track, ...response });
     } catch (error) {

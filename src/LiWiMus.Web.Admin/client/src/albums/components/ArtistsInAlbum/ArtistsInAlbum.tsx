@@ -5,9 +5,9 @@ import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import AlertDialog from "../../../shared/components/AlertDialog/AlertDialog";
-import AlbumService from "../../Album.service";
 import { Artist } from "../../../artists/types/Artist";
 import ArtistsList from "../../../artists/components/ArtistsList/ArtistsList";
+import { useAlbumService } from "../../AlbumService.hook";
 
 type Props = {
   album: Album;
@@ -22,12 +22,13 @@ export default function ArtistsInAlbum({
   artists,
   setArtists,
 }: Props) {
+  const albumService = useAlbumService();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { showError, showSuccess } = useNotifier();
 
   const fetchMore = async () => {
     try {
-      const newArtists = await AlbumService.getArtists(
+      const newArtists = await albumService.getArtists(
         album,
         artists.actualPage + 1,
         10
@@ -55,7 +56,7 @@ export default function ArtistsInAlbum({
 
   const removeArtist = async (artist: Artist) => {
     try {
-      await AlbumService.removeArtist(album, artist);
+      await albumService.removeArtist(album, artist);
       setArtists({
         ...artists,
         data: artists.data.filter((t) => t.id !== artist.id),

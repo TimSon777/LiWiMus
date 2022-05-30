@@ -3,12 +3,12 @@ import { Track } from "../../types/Track";
 import { PaginatedData } from "../../../shared/types/PaginatedData";
 import { Artist } from "../../../artists/types/Artist";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import ArtistService from "../../../artists/Artist.service";
-import TrackService from "../../../tracks/Track.service";
 import Loading from "../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArtistsList from "../../../artists/components/ArtistsList/ArtistsList";
 import { Button } from "@mui/material";
+import { useTrackService } from "../../TrackService.hook";
+import { useArtistService } from "../../../artists/ArtistService.hook";
 
 type Props = {
   track: Track;
@@ -27,10 +27,13 @@ export default function ArtistsInSearch({
   filter,
   loading,
 }: Props) {
+  const trackService = useTrackService();
+  const artistService = useArtistService();
+
   const { showError, showSuccess } = useNotifier();
 
   const getArtists = async (filter: string, page: number) => {
-    return await ArtistService.getArtists({
+    return await artistService.getArtists({
       filters: [
         { columnName: "name", operator: "cnt", value: filter },
         {
@@ -64,7 +67,7 @@ export default function ArtistsInSearch({
 
   const addArtist = async (artist: Artist) => {
     try {
-      await TrackService.addArtist(track, artist);
+      await trackService.addArtist(track, artist);
       setArtists({
         ...artists,
         totalItems: artists.totalItems - 1,

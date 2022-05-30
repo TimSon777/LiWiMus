@@ -4,8 +4,8 @@ import { User } from "../../../users/types/User";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import AlertDialog from "../../../shared/components/AlertDialog/AlertDialog";
-import ArtistService from "../../Artist.service";
 import UsersList from "../../../users/components/UsersList/UsersList";
+import { useArtistService } from "../../ArtistService.hook";
 
 type Props = {
   artist: Artist;
@@ -14,12 +14,14 @@ type Props = {
 };
 
 export default function ArtistOwners({ setOwners, owners, artist }: Props) {
+  const artistService = useArtistService();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { showError, showSuccess } = useNotifier();
 
   const fetchMore = async () => {
     try {
-      const newArtists = await ArtistService.getOwners(artist);
+      const newArtists = await artistService.getOwners(artist);
       setOwners(newArtists);
     } catch (e) {
       showError(e);
@@ -40,7 +42,7 @@ export default function ArtistOwners({ setOwners, owners, artist }: Props) {
 
   const removeOwner = async (user: User) => {
     try {
-      await ArtistService.removeOwner(artist, user);
+      await artistService.removeOwner(artist, user);
       setOwners(owners.filter((t) => t.id !== user.id));
       showSuccess("User removed from album");
     } catch (e) {

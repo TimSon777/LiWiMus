@@ -2,8 +2,8 @@ import React from "react";
 import { Artist } from "../../types/Artist";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import ImageEditor from "../../../shared/components/ImageEditor/ImageEditor";
-import ArtistService from "../../Artist.service";
-import FileService from "../../../shared/services/File.service";
+import { useArtistService } from "../../ArtistService.hook";
+import { useFileService } from "../../../shared/hooks/FileService.hook";
 
 type Props = {
   artist: Artist;
@@ -11,8 +11,11 @@ type Props = {
 };
 
 export default function ArtistImageEditor({ artist, setArtist }: Props) {
+  const artistService = useArtistService();
+  const fileService = useFileService();
+
   const { showSuccess, showError } = useNotifier();
-  const photoSrc = FileService.getLocation(artist.photoLocation);
+  const photoSrc = fileService.getLocation(artist.photoLocation);
 
   const updatePhotoHandler = (input: HTMLInputElement) => {
     input.click();
@@ -28,7 +31,7 @@ export default function ArtistImageEditor({ artist, setArtist }: Props) {
     try {
       const photo = input.files[0];
 
-      const response = await ArtistService.changePhoto(artist, photo);
+      const response = await artistService.changePhoto(artist, photo);
       setArtist({ ...artist, ...response });
       showSuccess("Photo updated");
     } catch (error) {

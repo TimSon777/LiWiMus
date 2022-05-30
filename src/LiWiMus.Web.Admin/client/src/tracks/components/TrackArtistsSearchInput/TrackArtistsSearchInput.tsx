@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { PaginatedData } from "../../../shared/types/PaginatedData";
 import { Artist } from "../../../artists/types/Artist";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import ArtistService from "../../../artists/Artist.service";
 import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import { useArtistService } from "../../../artists/ArtistService.hook";
 
 type Props = {
   artistsInTrack: Artist[];
@@ -21,6 +21,8 @@ export default function TrackArtistsSearchInput({
   setArtists,
   setLoading,
 }: Props) {
+  const artistService = useArtistService();
+
   const [value, setValue] = useState(filter);
   const { showError } = useNotifier();
 
@@ -31,7 +33,7 @@ export default function TrackArtistsSearchInput({
 
     setLoading(true);
     try {
-      const artists = await ArtistService.getArtists({
+      const artists = await artistService.getArtists({
         filters: [
           { columnName: "name", operator: "cnt", value },
           {

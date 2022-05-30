@@ -1,21 +1,14 @@
 import React from "react";
 import { User } from "../../types/User";
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Stack,
-} from "@mui/material";
+import { Button, FormControl, InputLabel, MenuItem, Select, Stack } from "@mui/material";
 import { formatISO } from "date-fns";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateUserDto } from "../../types/UpdateUserDto";
-import UserService from "../../User.service";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { DatePicker } from "@mui/x-date-pickers";
 import { Gender } from "../../types/Gender";
+import { useUserService } from "../../UserService.hook";
 
 type Props = {
   user: User;
@@ -31,6 +24,8 @@ type Inputs = {
 };
 
 export default function UserInfoEditor({ user, setUser }: Props) {
+  const userService = useUserService();
+
   const defaultInputs: Inputs = {
     firstName: user.firstName ?? "",
     gender: user.gender ?? "",
@@ -68,7 +63,7 @@ export default function UserInfoEditor({ user, setUser }: Props) {
         patronymic: data.patronymic ? data.patronymic : undefined,
         secondName: data.secondName ? data.secondName : undefined,
       };
-      const response = await UserService.update(req);
+      const response = await userService.update(req);
       showSuccess("Info updated");
       setUser({ ...user, ...response });
     } catch (error) {

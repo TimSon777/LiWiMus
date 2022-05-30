@@ -1,21 +1,12 @@
 import React, { ReactElement } from "react";
-import {
-  Avatar,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { format } from "date-fns";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import FileService from "../../../shared/services/File.service";
 import { Album } from "../../types/Album";
 import AlbumLink from "../AlbumLink/AlbumLink";
 import ArtistsLinks from "../../../artists/components/ArtistsLinks/ArtistsLinks";
+import { useFileService } from "../../../shared/hooks/FileService.hook";
 
 type Props = {
   albums: Album[];
@@ -38,6 +29,8 @@ export default function AlbumsList({
   title,
   modifiedAt,
 }: Props) {
+  const fileService = useFileService();
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -67,7 +60,7 @@ export default function AlbumsList({
               <TableCell>{index + 1}</TableCell>
               {cover && (
                 <TableCell>
-                  <Avatar src={FileService.getLocation(album.coverLocation)} />
+                  <Avatar src={fileService.getLocation(album.coverLocation)} />
                 </TableCell>
               )}
               {title && (

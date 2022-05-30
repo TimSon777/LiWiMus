@@ -1,7 +1,7 @@
 import React from "react";
-import {Button} from "@mui/material";
-import PlaylistService from "../../Playlist.service";
-import {useNotifier} from "../../../shared/hooks/Notifier.hook";
+import { Button } from "@mui/material";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import { usePlaylistService } from "../../PlaylistService.hook";
 
 type Inputs = {
   isPublic: boolean;
@@ -14,12 +14,14 @@ type Props = {
 };
 
 export default function PlaylistPublicityEditor({ id, dto, setDto }: Props) {
+  const playlistService = usePlaylistService();
+
   const { showError, showSuccess } = useNotifier();
 
   const publicityHandler = async () => {
     const req = { id, isPublic: !dto.isPublic };
     try {
-      const data = (await PlaylistService.update(req)) as Inputs;
+      const data = (await playlistService.update(req)) as Inputs;
       setDto(data);
       showSuccess(`Playlist is ${data.isPublic ? "public" : "private"}`);
     } catch (error) {

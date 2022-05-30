@@ -1,8 +1,8 @@
 import React from "react";
 import { Track } from "../../types/Track";
 import { Button } from "@mui/material";
-import TrackService from "../../Track.service";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import { useTrackService } from "../../TrackService.hook";
 
 type Props = {
   track: Track;
@@ -10,6 +10,8 @@ type Props = {
 };
 
 export default function TrackFileEditor({ track, setTrack }: Props) {
+  const trackService = useTrackService();
+
   const { showError, showSuccess } = useNotifier();
 
   const changeHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,7 +20,7 @@ export default function TrackFileEditor({ track, setTrack }: Props) {
         return;
       }
       const file = event.target.files[0];
-      const updated = await TrackService.updateFile(track, file);
+      const updated = await trackService.updateFile(track, file);
       setTrack({ ...track, ...updated });
       showSuccess("Audio file updated");
     } catch (e) {

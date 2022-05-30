@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from "react";
-import {Plan} from "../../types/Plan";
-import {Permission} from "../../../permissions/Permission";
-import PermissionService from "../../../permissions/Permission.service";
-import {useNotifier} from "../../../shared/hooks/Notifier.hook";
+import React, { useEffect, useState } from "react";
+import { Plan } from "../../types/Plan";
+import { Permission } from "../../../permissions/Permission";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import {
-    Box,
-    Button,
-    Checkbox,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Stack,
-    Tooltip,
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Tooltip
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
-import PlanService from "../../Plan.service";
+import { usePlanService } from "../../PlanService.hook";
+import { usePermissionService } from "../../../permissions/PermissionService.hook";
 
 type Prop = {
   plan: Plan;
@@ -26,6 +26,9 @@ type Prop = {
 };
 
 export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
+  const planService = usePlanService();
+  const permissionService = usePermissionService();
+
   const [permissions, setPermissions] = useState<Permission[]>();
   const [loading, setLoading] = useState(true);
   const [checked, setChecked] = useState(plan.permissions);
@@ -33,7 +36,8 @@ export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
 
   useEffect(() => {
     setLoading(true);
-    PermissionService.getAll()
+    permissionService
+      .getAll()
       .then(setPermissions)
       .catch(showError)
       .then(() => setLoading(false));
@@ -62,7 +66,7 @@ export default function PlanPermissionsEditor({ plan, setPlan }: Prop) {
 
   const saveHandler = async () => {
     try {
-      const response = await PlanService.replacePermissions(plan, checked);
+      const response = await planService.replacePermissions(plan, checked);
       setPlan({ ...plan, ...response });
       showSuccess("Permissions updated");
     } catch (e) {

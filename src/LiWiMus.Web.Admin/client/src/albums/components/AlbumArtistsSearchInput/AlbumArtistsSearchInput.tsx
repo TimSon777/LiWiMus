@@ -4,7 +4,7 @@ import { Artist } from "../../../artists/types/Artist";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import ArtistService from "../../../artists/Artist.service";
+import { useArtistService } from "../../../artists/ArtistService.hook";
 
 type Props = {
   artistsInAlbum: Artist[];
@@ -21,6 +21,7 @@ export default function AlbumArtistsSearchInput({
   setArtists,
   setLoading,
 }: Props) {
+  const artistService = useArtistService();
   const [value, setValue] = useState(filter);
   const { showError } = useNotifier();
 
@@ -31,7 +32,7 @@ export default function AlbumArtistsSearchInput({
 
     setLoading(true);
     try {
-      const artists = await ArtistService.getArtists({
+      const artists = await artistService.getArtists({
         filters: [
           { columnName: "name", operator: "cnt", value },
           {

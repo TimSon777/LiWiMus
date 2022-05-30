@@ -6,9 +6,9 @@ import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
 import Loading from "../../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { Button } from "@mui/material";
-import TrackService from "../../../../tracks/Track.service";
-import PlaylistService from "../../../Playlist.service";
 import TracksList from "../../../../tracks/components/TracksList/TracksList";
+import { usePlaylistService } from "../../../PlaylistService.hook";
+import { useTrackService } from "../../../../tracks/TrackService.hook";
 
 type Props = {
   playlist: Playlist;
@@ -31,11 +31,14 @@ export default function TracksInSearch({
   tracksInPlaylist,
   setTracksInPlaylist,
 }: Props) {
+  const trackService = useTrackService();
+  const playlistService = usePlaylistService();
+
   const { showError, showSuccess } = useNotifier();
 
   const fetchMore = async () => {
     try {
-      const newTracks = await TrackService.getTracks({
+      const newTracks = await trackService.getTracks({
         filters: [
           { columnName: "name", operator: "cnt", value: filter },
           {
@@ -54,7 +57,7 @@ export default function TracksInSearch({
 
   const addTrack = async (track: Track) => {
     try {
-      await PlaylistService.addTrack(playlist, track);
+      await playlistService.addTrack(playlist, track);
       setPlaylist({ ...playlist, tracksCount: playlist.tracksCount + 1 });
       setTracksInPlaylist({
         ...tracksInPlaylist,

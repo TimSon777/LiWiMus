@@ -4,13 +4,13 @@ import { Action } from "../../../shared/types/Action";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdateUserPlanDto } from "../../types/UpdateUserPlanDto";
-import UserPlanService from "../../UserPlan.service";
 import { Button, Link, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { format } from "date-fns";
 import ReadonlyInfo from "../../../shared/components/InfoItem/ReadonlyInfo";
 import { Link as RouterLink } from "react-router-dom";
+import { useUserPlanService } from "../../UserPlanService.hook";
 
 type Props = {
   userPlan: UserPlan;
@@ -22,6 +22,8 @@ type Inputs = {
 };
 
 export default function UserPlanInfoEditor({ userPlan, setUserPlan }: Props) {
+  const userPlanService = useUserPlanService();
+
   const { showSuccess, showError } = useNotifier();
   const [defaultInputs, setDefaultInputs] = useState<Inputs>();
   const {
@@ -53,7 +55,7 @@ export default function UserPlanInfoEditor({ userPlan, setUserPlan }: Props) {
       const req: UpdateUserPlanDto = {
         end: data.end,
       };
-      const response = await UserPlanService.update(userPlan.id, req);
+      const response = await userPlanService.update(userPlan.id, req);
       showSuccess("Info updated");
       setUserPlan({ ...userPlan, ...response });
     } catch (error) {

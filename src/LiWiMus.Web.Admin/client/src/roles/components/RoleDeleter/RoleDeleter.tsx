@@ -1,9 +1,9 @@
 import React from "react";
-import {Role} from "../../types/Role";
-import {useNavigate} from "react-router-dom";
-import {useNotifier} from "../../../shared/hooks/Notifier.hook";
+import { Role } from "../../types/Role";
+import { useNavigate } from "react-router-dom";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Deleter from "../../../shared/components/Deleter/Deleter";
-import RoleService from "../../Role.service";
+import { useRoleService } from "../../RoleService.hook";
 
 type Props = {
   role: Role;
@@ -11,12 +11,14 @@ type Props = {
 };
 
 export default function RoleDeleter({ role, setRole }: Props) {
+  const roleService = useRoleService();
+
   const navigate = useNavigate();
   const { showSuccess, showError } = useNotifier();
 
   const deleteHandler = async () => {
     try {
-      await RoleService.remove(role);
+      await roleService.remove(role);
       setRole(undefined);
       showSuccess("Role deleted");
 

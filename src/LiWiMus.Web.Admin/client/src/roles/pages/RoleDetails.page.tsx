@@ -1,18 +1,20 @@
-import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
-import {Role} from "../types/Role";
-import RoleService from "../Role.service";
-import {useNotifier} from "../../shared/hooks/Notifier.hook";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { Role } from "../types/Role";
+import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import {Grid, Paper, Stack, Typography} from "@mui/material";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
 import RoleInfoEditor from "../components/RoleInfoEditor/RoleInfoEditor";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
-import {formatDistanceToNow} from "date-fns";
+import { formatDistanceToNow } from "date-fns";
 import RoleDeleter from "../components/RoleDeleter/RoleDeleter";
 import RolePermissionsEditor from "../components/RolePermissionsEditor/RolePermissionsEditor";
+import { useRoleService } from "../RoleService.hook";
 
 export default function RoleDetailsPage() {
+  const roleService = useRoleService();
+
   const { id } = useParams() as { id: string };
   const [role, setRole] = useState<Role>();
   const [loading, setLoading] = useState(true);
@@ -20,7 +22,8 @@ export default function RoleDetailsPage() {
 
   useEffect(() => {
     setLoading(true);
-    RoleService.get(id)
+    roleService
+      .get(id)
       .then((role) => setRole(role))
       .catch(showError)
       .then(() => setLoading(false));

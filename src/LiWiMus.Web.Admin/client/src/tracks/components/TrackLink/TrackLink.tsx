@@ -1,21 +1,22 @@
 import React from "react";
-import {Link, Stack} from "@mui/material";
-import {Link as RouterLink} from "react-router-dom";
-import {Track} from "../../types/Track";
+import { Link, Stack } from "@mui/material";
+import { Link as RouterLink } from "react-router-dom";
+import { Track } from "../../types/Track";
+import { useFileService } from "../../../shared/hooks/FileService.hook";
 
 type Props = {
   track: Track;
   cover?: boolean;
 };
 
-const API_URL = process.env.REACT_APP_API_URL;
-
 export default function TrackLink({ track, cover = false }: Props) {
+  const fileService = useFileService();
+
   return (
     <Stack direction={"row"} spacing={2} alignItems={"center"}>
       {cover && track.album && (
         <img
-          src={API_URL + track.album.coverLocation}
+          src={fileService.getLocation(track.album.coverLocation)}
           alt={track.name}
           width={40}
           height={40}

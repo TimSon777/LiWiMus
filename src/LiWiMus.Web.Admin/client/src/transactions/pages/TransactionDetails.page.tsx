@@ -9,17 +9,20 @@ import { Grid, Link, Stack, Typography } from "@mui/material";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import { Transaction } from "../types/Transaction";
-import TransactionService from "../Transaction.service";
 import TransactionInfoEditor from "../components/TransactionInfoEditor/TransactionInfoEditor";
+import { useTransactionService } from "../TransactionService.hook";
 
 export default function TransactionDetailsPage() {
+  const transactionService = useTransactionService();
+
   const { id } = useParams() as { id: string };
   const [transaction, setTransaction] = useState<Transaction>();
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
 
   useEffect(() => {
-    TransactionService.get(id)
+    transactionService
+      .get(id)
       .then((transaction) => {
         setTransaction(transaction);
       })

@@ -1,7 +1,6 @@
 ﻿import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { User } from "../types/User";
-import UserService from "../User.service";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
@@ -13,8 +12,11 @@ import UserReadonlyInfo from "../components/UserReadonlyInfo/UserReadonlyInfo";
 import UserPlans from "../components/UserPlans/UserPlans";
 import { AuthContext } from "../../shared/contexts/Auth.context";
 import UserBanner from "../components/UserBanner/UserBanner";
+import { useUserService } from "../UserService.hook";
 
 export default function UserProfilePage() {
+  const userService = useUserService();
+
   const { id } = useParams() as { id: string };
   const [user, setUserState] = useState<User>();
   const { user: admin, setUser: setAdmin } = useContext(AuthContext);
@@ -30,7 +32,8 @@ export default function UserProfilePage() {
 
   useEffect(() => {
     setLoading(true);
-    UserService.get(id)
+    userService
+      .get(id)
       .then(setUser)
       .catch(showError)
       .then(() => setLoading(false));

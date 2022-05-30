@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from "react";
-import {Role} from "../../types/Role";
-import {useNotifier} from "../../../shared/hooks/Notifier.hook";
+import React, { useEffect, useState } from "react";
+import { Role } from "../../types/Role";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import {
-    Box,
-    Button,
-    Checkbox,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Stack,
-    Tooltip,
+  Box,
+  Button,
+  Checkbox,
+  IconButton,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Tooltip
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
-import RoleService from "../../Role.service";
-import {SystemPermission} from "../../../systemPermissions/SystemPermission";
-import SystemPermissionService from "../../../systemPermissions/SystemPermission.service";
+import { SystemPermission } from "../../../systemPermissions/SystemPermission";
+import { useRoleService } from "../../RoleService.hook";
+import { useSystemPermissionService } from "../../../systemPermissions/SystemPermissionService.hook";
 
 type Prop = {
   role: Role;
@@ -26,6 +26,10 @@ type Prop = {
 };
 
 export default function RolePermissionsEditor({ role, setRole }: Prop) {
+  const systemPermissionService = useSystemPermissionService();
+
+  const roleService = useRoleService();
+
   const [permissions, setPermissions] = useState<SystemPermission[]>();
   const [loading, setLoading] = useState(true);
   const [checked, setChecked] = useState(role.permissions);
@@ -33,7 +37,8 @@ export default function RolePermissionsEditor({ role, setRole }: Prop) {
 
   useEffect(() => {
     setLoading(true);
-    SystemPermissionService.getAll()
+    systemPermissionService
+      .getAll()
       .then(setPermissions)
       .catch(showError)
       .then(() => setLoading(false));
@@ -62,7 +67,7 @@ export default function RolePermissionsEditor({ role, setRole }: Prop) {
 
   const saveHandler = async () => {
     try {
-      const response = await RoleService.replacePermissions(role, checked);
+      const response = await roleService.replacePermissions(role, checked);
       setRole({ ...role, ...response });
       showSuccess("Permissions updated");
     } catch (e) {

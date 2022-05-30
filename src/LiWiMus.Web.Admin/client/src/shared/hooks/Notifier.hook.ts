@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack";
-import { getMessage } from "../services/Axios";
+import { getMessage } from "./Axios.hook";
 
 export const useNotifier = () => {
   const { enqueueSnackbar } = useSnackbar();

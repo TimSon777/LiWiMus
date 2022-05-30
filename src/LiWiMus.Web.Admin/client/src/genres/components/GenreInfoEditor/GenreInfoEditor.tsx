@@ -3,7 +3,7 @@ import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
-import GenreService from "../../Genre.service";
+import { useGenreService } from "../../GenreService.hook";
 
 type Inputs = {
   name: string;
@@ -16,6 +16,8 @@ type Props = {
 };
 
 export default function GenreInfoEditor({ id, dto, setDto }: Props) {
+  const genreService = useGenreService();
+
   const { showSuccess, showError } = useNotifier();
 
   const {
@@ -39,7 +41,7 @@ export default function GenreInfoEditor({ id, dto, setDto }: Props) {
     }
     try {
       const req = { ...data, id: +id };
-      const response = (await GenreService.update(req)) as Inputs;
+      const response = (await genreService.update(req)) as Inputs;
       showSuccess("Info updated");
       setDto(response);
     } catch (error) {

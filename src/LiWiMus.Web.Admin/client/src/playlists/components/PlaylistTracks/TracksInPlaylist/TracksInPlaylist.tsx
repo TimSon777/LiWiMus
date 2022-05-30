@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Track } from "../../../../tracks/types/Track";
 import { Playlist } from "../../../types/Playlist";
-import PlaylistService from "../../../Playlist.service";
 import Loading from "../../../../shared/components/Loading/Loading";
 import AlertDialog from "../../../../shared/components/AlertDialog/AlertDialog";
 import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PaginatedData } from "../../../../shared/types/PaginatedData";
 import TracksList from "../../../../tracks/components/TracksList/TracksList";
+import { usePlaylistService } from "../../../PlaylistService.hook";
 
 type Props = {
   playlist: Playlist;
@@ -22,12 +22,14 @@ export default function TracksInPlaylist({
   tracks,
   setTracks,
 }: Props) {
+  const playlistService = usePlaylistService();
+
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { showError, showSuccess } = useNotifier();
 
   const fetchMore = async () => {
     try {
-      const newTracks = await PlaylistService.getTracks(
+      const newTracks = await playlistService.getTracks(
         playlist,
         tracks.actualPage + 1,
         10
@@ -56,7 +58,7 @@ export default function TracksInPlaylist({
 
   const removeTrack = async (track: Track) => {
     try {
-      await PlaylistService.removeTrack(playlist, track);
+      await playlistService.removeTrack(playlist, track);
       setPlaylist({
         ...playlist,
         tracksCount: tracks.totalItems - 1,

@@ -1,11 +1,11 @@
 import { FilterOptions } from "../shared/types/FilterOptions";
-import axios from "../shared/services/Axios";
 import { PaginatedData } from "../shared/types/PaginatedData";
 import { User } from "./types/User";
 import { CreateUserDto } from "./types/CreateUserDto";
-import FileService from "../shared/services/File.service";
 import { UpdateUserDto } from "./types/UpdateUserDto";
 import { Role } from "../roles/types/Role";
+import { useAxios } from "../shared/hooks/Axios.hook";
+import { useFileService } from "../shared/hooks/FileService.hook";
 
 const map = (data: any) =>
   new User(
@@ -25,11 +25,14 @@ const map = (data: any) =>
     data.lockoutEnd
   );
 
-const UserService = {
-  getUsers: async (
+export const useUserService = () => {
+  const axios = useAxios("/users");
+  const fileService = useFileService();
+
+  const getUsers = async (
     options: FilterOptions<User>
   ): Promise<PaginatedData<User>> => {
-    const response = await axios.get(`/users`, {
+    const response = await axios.get(``, {
       params: options,
     });
     const data = response.data;
@@ -41,65 +44,65 @@ const UserService = {
       hasMore: data.hasMore,
       data: data.data.map((x: any) => map(x)),
     };
-  },
+  };
 
-  save: async (user: CreateUserDto) => {
-    const response = await axios.post("/users", user);
+  const save = async (user: CreateUserDto) => {
+    const response = await axios.post("", user);
     return map(response.data);
-  },
+  };
 
-  get: async (id: number | string) => {
-    const response = await axios.get(`/users/${id}`);
+  const get = async (id: number | string) => {
+    const response = await axios.get(`/${id}`);
     return map(response.data);
-  },
+  };
 
-  update: async (updateDto: UpdateUserDto) => {
-    const response = await axios.patch("/users", updateDto);
+  const update = async (updateDto: UpdateUserDto) => {
+    const response = await axios.patch("", updateDto);
     return map(response.data);
-  },
+  };
 
-  removeAvatar: async (user: User) => {
+  const removeAvatar = async (user: User) => {
     if (!user.avatarLocation) {
       return user;
     }
     try {
-      await FileService.remove(user.avatarLocation);
+      await fileService.remove(user.avatarLocation);
     } catch (e) {}
-    const response = await axios.post(`/users/${user.id}/removeAvatar`);
+    const response = await axios.post(`/${user.id}/removeAvatar`);
     return map(response.data);
-  },
+  };
 
-  changeAvatar: async (user: User, avatar: File) => {
+  const changeAvatar = async (user: User, avatar: File) => {
     if (user.avatarLocation) {
       try {
-        await FileService.remove(user.avatarLocation);
+        await fileService.remove(user.avatarLocation);
       } catch (e) {}
     }
 
-    const location = await FileService.save(avatar);
+    const location = await fileService.save(avatar);
     const updateDto: UpdateUserDto = { id: +user.id, avatarLocation: location };
-    return await UserService.update(updateDto);
-  },
+    return await update(updateDto);
+  };
 
-  getRoles: async (user: User) => {
-    const response = await axios.get(`/users/${user.id}/roles`);
+  const getRoles = async (user: User) => {
+    const response = await axios.get(`/${user.id}/roles`);
     return response.data as Role[];
-  },
+  };
 
-  addRole: async (user: User, role: Role) => {
+  const addRole = async (user: User, role: Role) => {
     const dto = { userId: user.id, roleId: role.id };
-    return await axios.post("/users/roles", dto);
-  },
+    return await axios.post("/roles", dto);
+  };
 
-  removeRole: async (user: User, role: Role) => {
+  const removeRole = async (user: User, role: Role) => {
     const dto = { userId: user.id, roleId: role.id };
-    return await axios.delete("/users/roles", { data: dto });
-  },
+    return await axios.delete("/roles", { data: dto });
+  };
 
-  setRandomAvatar: async (user: User) => {
+  const setRandomAvatar = async (user: User) => {
     if (user.avatarLocation) {
       try {
-        await FileService.remove(user.avatarLocation);
+        await fileService.remove(user.avatarLocation);
       } catch (e) {}
     }
 
@@ -107,17 +110,29 @@ const UserService = {
     const seed = (Math.random() * 1000000000).toFixed(0);
     const url = `https://avatars.dicebear.com/api/adventurer/${seed}.svg?background=%23EF6817`;
 
-    const location = await FileService.saveByUrl(url);
+    const location = await fileService.saveByUrl(url);
     const updateDto: UpdateUserDto = { id: +user.id, avatarLocation: location };
-    return await UserService.update(updateDto);
-  },
+    return await update(updateDto);
+  };
 
-  lockOut: async (user: User, lockOutEndDate: Date) => {
-    const response = await axios.post(`/users/${user.id}/lockout`, {
+  const lockOut = async (user: User, lockOutEndDate: Date) => {
+    const response = await axios.post(`/${user.id}/lockout`, {
       end: lockOutEndDate,
     });
     return map(response.data);
-  },
-};
+  };
 
-export default UserService;
+  return {
+    lockOut,
+    get,
+    setRandomAvatar,
+    save,
+    update,
+    addRole,
+    changeAvatar,
+    getRoles,
+    getUsers,
+    removeAvatar,
+    removeRole,
+  };
+};

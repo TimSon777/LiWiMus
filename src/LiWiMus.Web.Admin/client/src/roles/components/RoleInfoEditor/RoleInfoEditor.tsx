@@ -1,11 +1,11 @@
 import React from "react";
-import {Role} from "../../types/Role";
-import {Button, Stack} from "@mui/material";
-import {useNotifier} from "../../../shared/hooks/Notifier.hook";
-import {Controller, SubmitHandler, useForm} from "react-hook-form";
-import {UpdateRoleDto} from "../../types/UpdateRoleDto";
-import RoleService from "../../Role.service";
+import { Role } from "../../types/Role";
+import { Button, Stack } from "@mui/material";
+import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { UpdateRoleDto } from "../../types/UpdateRoleDto";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
+import { useRoleService } from "../../RoleService.hook";
 
 type Props = {
   role: Role;
@@ -17,6 +17,8 @@ type Inputs = {
 };
 
 export default function RoleInfoEditor({ role, setRole }: Props) {
+  const roleService = useRoleService();
+
   const defaultInputs: Inputs = {
     description: role.description,
   };
@@ -51,7 +53,7 @@ export default function RoleInfoEditor({ role, setRole }: Props) {
         id: +role.id,
         description: data.description,
       };
-      const response = await RoleService.update(req);
+      const response = await roleService.update(req);
       showSuccess("Info updated");
       setRole({ ...role, ...response });
     } catch (error) {

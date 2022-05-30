@@ -1,20 +1,11 @@
 import React, { ReactElement } from "react";
 import { Artist } from "../../types/Artist";
-import {
-  Avatar,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { format } from "date-fns";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import ArtistLink from "../ArtistLink/ArtistLink";
-import FileService from "../../../shared/services/File.service";
+import { useFileService } from "../../../shared/hooks/FileService.hook";
 
 type Props = {
   artists: Artist[];
@@ -35,6 +26,8 @@ export default function ArtistsList({
   modifiedAt,
   action,
 }: Props) {
+  const fileService = useFileService();
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -63,7 +56,7 @@ export default function ArtistsList({
               <TableCell>{index + 1}</TableCell>
               {photo && (
                 <TableCell>
-                  <Avatar src={FileService.getLocation(artist.photoLocation)} />
+                  <Avatar src={fileService.getLocation(artist.photoLocation)} />
                 </TableCell>
               )}
               {name && (

@@ -3,18 +3,10 @@ import { Role } from "../../../roles/types/Role";
 import { User } from "../../types/User";
 import { Action } from "../../../shared/types/Action";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import RoleService from "../../../roles/Role.service";
-import UserService from "../../User.service";
-import {
-  Box,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Modal,
-  Paper,
-} from "@mui/material";
+import { Box, IconButton, List, ListItem, ListItemText, Modal, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import { useRoleService } from "../../../roles/RoleService.hook";
+import { useUserService } from "../../UserService.hook";
 
 type Props = {
   user: User;
@@ -43,13 +35,16 @@ const contentStyle = {
 };
 
 export default function AddRole({ user, userRoles, setUserRoles }: Props) {
+  const roleService = useRoleService();
+  const userService = useUserService();
+
   const [roles, setRoles] = useState<Role[]>([]);
   const [open, setOpen] = useState(false);
   const { showError, showSuccess } = useNotifier();
 
   const handleOpen = async () => {
     try {
-      const roles = (await RoleService.getAll()).filter(
+      const roles = (await roleService.getAll()).filter(
         (r) => userRoles.map((ur) => ur.id).indexOf(r.id) === -1
       );
       setRoles(roles);
@@ -66,7 +61,7 @@ export default function AddRole({ user, userRoles, setUserRoles }: Props) {
 
   const addRole = async (role: Role) => {
     try {
-      await UserService.addRole(user, role);
+      await userService.addRole(user, role);
       setUserRoles([...userRoles, role]);
       setRoles(roles.filter((r) => r.id !== role.id));
       showSuccess("User added into role");

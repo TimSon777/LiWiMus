@@ -4,8 +4,8 @@ import { Button, Stack } from "@mui/material";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { UpdatePlanDto } from "../../types/UpdatePlanDto";
-import PlanService from "../../Plan.service";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
+import { usePlanService } from "../../PlanService.hook";
 
 type Props = {
   plan: Plan;
@@ -18,6 +18,8 @@ type Inputs = {
 };
 
 export default function PlanInfoEditor({ plan, setPlan }: Props) {
+  const planService = usePlanService();
+
   const defaultInputs: Inputs = {
     description: plan.description,
     pricePerMonth: plan.pricePerMonth,
@@ -56,7 +58,7 @@ export default function PlanInfoEditor({ plan, setPlan }: Props) {
         description: data.description,
         pricePerMonth: data.pricePerMonth,
       };
-      const response = await PlanService.update(req);
+      const response = await planService.update(req);
       showSuccess("Info updated");
       setPlan({ ...plan, ...response });
     } catch (error) {

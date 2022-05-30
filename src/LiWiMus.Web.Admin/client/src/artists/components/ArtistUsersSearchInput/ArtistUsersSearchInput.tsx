@@ -4,7 +4,7 @@ import { PaginatedData } from "../../../shared/types/PaginatedData";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import UserService from "../../../users/User.service";
+import { useUserService } from "../../../users/UserService.hook";
 
 type Props = {
   exclude: User[];
@@ -21,6 +21,8 @@ export default function ArtistUsersSearchInput({
   exclude,
   setLoading,
 }: Props) {
+  const userService = useUserService();
+
   const [value, setValue] = useState(filter);
   const { showError } = useNotifier();
 
@@ -31,7 +33,7 @@ export default function ArtistUsersSearchInput({
 
     setLoading(true);
     try {
-      const users = await UserService.getUsers({
+      const users = await userService.getUsers({
         filters: [
           { columnName: "userName", operator: "cnt", value },
           {

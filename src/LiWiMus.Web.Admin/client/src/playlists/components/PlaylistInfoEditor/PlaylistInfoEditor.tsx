@@ -2,8 +2,8 @@ import React from "react";
 import { Box, Button, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { SubmitHandler, useForm } from "react-hook-form";
-import PlaylistService from "../../Playlist.service";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
+import { usePlaylistService } from "../../PlaylistService.hook";
 
 type Inputs = {
   name: string;
@@ -16,6 +16,8 @@ type Props = {
 };
 
 export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
+  const playlistService = usePlaylistService();
+
   const { showSuccess, showError } = useNotifier();
 
   const {
@@ -39,7 +41,7 @@ export default function PlaylistInfoEditor({ id, dto, setDto }: Props) {
     }
     try {
       const req = { ...data, id };
-      const response = (await PlaylistService.update(req)) as Inputs;
+      const response = (await playlistService.update(req)) as Inputs;
       showSuccess("Info updated");
       setDto(response);
     } catch (error) {

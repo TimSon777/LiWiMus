@@ -1,20 +1,11 @@
 import React, { ReactElement } from "react";
 import { User } from "../../types/User";
-import {
-  Avatar,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EditIcon from "@mui/icons-material/Edit";
-import FileService from "../../../shared/services/File.service";
 import { format } from "date-fns";
 import UserLink from "../UserLink/UserLink";
+import { useFileService } from "../../../shared/hooks/FileService.hook";
 
 type Props = {
   users: User[];
@@ -47,6 +38,8 @@ export default function UsersList({
   createdAt,
   action,
 }: Props) {
+  const fileService = useFileService();
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -77,7 +70,7 @@ export default function UsersList({
                   <Avatar
                     src={
                       user.avatarLocation
-                        ? FileService.getLocation(user.avatarLocation)
+                        ? fileService.getLocation(user.avatarLocation)
                         : undefined
                     }
                   />

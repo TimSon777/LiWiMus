@@ -3,7 +3,7 @@ import { Album } from "../../types/Album";
 import { useNavigate } from "react-router-dom";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Deleter from "../../../shared/components/Deleter/Deleter";
-import AlbumService from "../../Album.service";
+import { useAlbumService } from "../../AlbumService.hook";
 
 type Props = {
   album: Album;
@@ -13,10 +13,11 @@ type Props = {
 export default function AlbumDeleter({ album, setAlbum }: Props) {
   const navigate = useNavigate();
   const { showSuccess, showError } = useNotifier();
+  const albumService = useAlbumService();
 
   const deleteHandler = async () => {
     try {
-      await AlbumService.remove(album);
+      await albumService.remove(album);
       setAlbum(undefined);
       showSuccess("Album deleted");
 

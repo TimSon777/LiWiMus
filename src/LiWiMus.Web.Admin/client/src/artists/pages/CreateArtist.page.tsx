@@ -5,10 +5,10 @@ import ImageEditor from "../../shared/components/ImageEditor/ImageEditor";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import artistPlaceholder from "../../shared/images/avatar-placeholder.jpg";
 import { SubmitHandler, useForm } from "react-hook-form";
-import ArtistService from "../Artist.service";
-import FileService from "../../shared/services/File.service";
 import { CreateArtistDto } from "../types/CreateArtistDto";
 import { useNavigate } from "react-router-dom";
+import { useArtistService } from "../ArtistService.hook";
+import { useFileService } from "../../shared/hooks/FileService.hook";
 
 type Inputs = {
   name: string;
@@ -17,6 +17,9 @@ type Inputs = {
 };
 
 export default function CreateArtistPage() {
+  const artistService = useArtistService();
+  const fileService = useFileService();
+
   const {
     register,
     handleSubmit,
@@ -33,13 +36,13 @@ export default function CreateArtistPage() {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
       // @ts-ignore
-      const photoLocation = await FileService.save(photo);
+      const photoLocation = await fileService.save(photo);
       const dto: CreateArtistDto = {
         name: data.name,
         about: data.about,
         photoLocation,
       };
-      const artist = await ArtistService.save(dto);
+      const artist = await artistService.save(dto);
       showSuccess("Artist created");
       navigate(`/admin/artists/${artist.id}`);
     } catch (e) {

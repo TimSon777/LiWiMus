@@ -3,7 +3,7 @@ import { Plan } from "../../types/Plan";
 import { useNavigate } from "react-router-dom";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Deleter from "../../../shared/components/Deleter/Deleter";
-import PlanService from "../../Plan.service";
+import { usePlanService } from "../../PlanService.hook";
 
 type Props = {
   plan: Plan;
@@ -11,12 +11,14 @@ type Props = {
 };
 
 export default function PlanDeleter({ plan, setPlan }: Props) {
+  const planService = usePlanService();
+
   const navigate = useNavigate();
   const { showSuccess, showError } = useNotifier();
 
   const deleteHandler = async () => {
     try {
-      await PlanService.remove(plan);
+      await planService.remove(plan);
       setPlan(undefined);
       showSuccess("Plan deleted");
 

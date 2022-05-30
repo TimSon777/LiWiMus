@@ -2,13 +2,13 @@ import React from "react";
 import { PaginatedData } from "../../../shared/types/PaginatedData";
 import { Album } from "../../types/Album";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import ArtistService from "../../../artists/Artist.service";
-import AlbumService from "../../../albums/Album.service";
 import Loading from "../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArtistsList from "../../../artists/components/ArtistsList/ArtistsList";
 import { Button } from "@mui/material";
 import { Artist } from "../../../artists/types/Artist";
+import { useAlbumService } from "../../AlbumService.hook";
+import { useArtistService } from "../../../artists/ArtistService.hook";
 
 type Props = {
   album: Album;
@@ -31,11 +31,14 @@ export default function ArtistsInSearch({
   filter,
   loading,
 }: Props) {
+  const albumService = useAlbumService();
+  const artistService = useArtistService();
+
   const { showError, showSuccess } = useNotifier();
 
   const fetchMore = async () => {
     try {
-      const newArtists = await ArtistService.getArtists({
+      const newArtists = await artistService.getArtists({
         filters: [
           { columnName: "name", operator: "cnt", value: filter },
           {
@@ -60,7 +63,7 @@ export default function ArtistsInSearch({
 
   const addArtist = async (artist: Artist) => {
     try {
-      await AlbumService.addArtist(album, artist);
+      await albumService.addArtist(album, artist);
       setArtistsInAlbum({
         ...artistsInAlbum,
         totalItems: artistsInAlbum.totalItems + 1,

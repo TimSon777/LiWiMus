@@ -3,24 +3,27 @@ import { User } from "../../types/User";
 import { Grid, IconButton, Typography } from "@mui/material";
 import { Role } from "../../../roles/types/Role";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import UserService from "../../User.service";
 import ActionCard from "../../../shared/components/ActionCard/ActionCard";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddRole from "../AddRole/AddRole";
 import Loading from "../../../shared/components/Loading/Loading";
+import { useUserService } from "../../UserService.hook";
 
 type Props = {
   user: User;
 };
 
 export default function UserRoles({ user }: Props) {
+  const userService = useUserService();
+
   const [userRoles, setUserRoles] = useState<Role[]>([]);
   const [loading, setLoading] = useState(true);
   const { showError, showSuccess } = useNotifier();
 
   useEffect(() => {
     setLoading(true);
-    UserService.getRoles(user)
+    userService
+      .getRoles(user)
       .then(setUserRoles)
       .catch(showError)
       .then(() => setLoading(false));
@@ -28,7 +31,7 @@ export default function UserRoles({ user }: Props) {
 
   const removeRole = async (role: Role) => {
     try {
-      await UserService.removeRole(user, role);
+      await userService.removeRole(user, role);
       setUserRoles(userRoles?.filter((r) => r.id !== role.id));
       showSuccess("User removed from role");
     } catch (e) {

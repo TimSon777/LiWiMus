@@ -1,8 +1,8 @@
 import React from "react";
 import { Album } from "../../types/Album";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import AlbumService from "../../Album.service";
 import ImageEditor from "../../../shared/components/ImageEditor/ImageEditor";
+import { useAlbumService } from "../../AlbumService.hook";
 
 type Props = {
   album: Album;
@@ -15,6 +15,7 @@ export default function AlbumImageEditor({
   coverSrc,
   setAlbumWithCover,
 }: Props) {
+  const albumService = useAlbumService();
   const { showSuccess, showError } = useNotifier();
 
   const updatePhotoHandler = (input: HTMLInputElement) => {
@@ -31,7 +32,7 @@ export default function AlbumImageEditor({
     try {
       const cover = input.files[0];
 
-      const response = await AlbumService.changeCover(album, cover);
+      const response = await albumService.changeCover(album, cover);
       setAlbumWithCover(response);
       showSuccess("Cover updated");
     } catch (error) {

@@ -3,7 +3,7 @@ import { Genre } from "../../types/Genre";
 import { useNavigate } from "react-router-dom";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Deleter from "../../../shared/components/Deleter/Deleter";
-import GenreService from "../../Genre.service";
+import { useGenreService } from "../../GenreService.hook";
 
 type Props = {
   genre: Genre;
@@ -11,12 +11,14 @@ type Props = {
 };
 
 export default function GenreDeleter({ genre, setGenre }: Props) {
+  const genreService = useGenreService();
+
   const navigate = useNavigate();
   const { showSuccess, showError } = useNotifier();
 
   const deleteHandler = async () => {
     try {
-      await GenreService.remove(genre);
+      await genreService.remove(genre);
       setGenre(undefined);
       showSuccess("Genre deleted");
 

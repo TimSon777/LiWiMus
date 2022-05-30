@@ -1,26 +1,15 @@
 import React, { useState } from "react";
 import { Track } from "../../types/Track";
-import {
-  Box,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Modal,
-  Paper,
-} from "@mui/material";
+import { Box, IconButton, List, ListItem, ListItemText, Modal, Paper } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { Genre } from "../../../genres/types/Genre";
-import {
-  DefaultPaginatedData,
-  PaginatedData,
-} from "../../../shared/types/PaginatedData";
-import GenreService from "../../../genres/Genre.service";
+import { DefaultPaginatedData, PaginatedData } from "../../../shared/types/PaginatedData";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";
-import TrackService from "../../Track.service";
+import { useGenreService } from "../../../genres/GenreService.hook";
+import { useTrackService } from "../../TrackService.hook";
 
 type Props = {
   track: Track;
@@ -50,6 +39,9 @@ const contentStyle = {
 };
 
 export default function AddGenreCard({ track, setTrack }: Props) {
+  const genreService = useGenreService();
+  const trackService = useTrackService();
+
   const [genres, setGenres] =
     useState<PaginatedData<Genre>>(DefaultPaginatedData);
   const [open, setOpen] = React.useState(false);
@@ -67,7 +59,7 @@ export default function AddGenreCard({ track, setTrack }: Props) {
   };
 
   const getGenres = async (filter: string, page: number) => {
-    return await GenreService.getGenres({
+    return await genreService.getGenres({
       filters: [
         { columnName: "name", operator: "cnt", value: filter },
         {
@@ -98,7 +90,7 @@ export default function AddGenreCard({ track, setTrack }: Props) {
 
   const addGenre = async (genre: Genre) => {
     try {
-      await TrackService.addGenre(track, genre);
+      await trackService.addGenre(track, genre);
       setTrack({ ...track, genres: [...track.genres, genre] });
       setGenres({
         ...genres,

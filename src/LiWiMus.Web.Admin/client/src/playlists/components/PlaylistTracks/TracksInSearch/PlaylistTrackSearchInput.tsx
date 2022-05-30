@@ -3,8 +3,8 @@ import { Box, IconButton, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { PaginatedData } from "../../../../shared/types/PaginatedData";
 import { Track } from "../../../../tracks/types/Track";
-import TrackService from "../../../../tracks/Track.service";
 import { useNotifier } from "../../../../shared/hooks/Notifier.hook";
+import { useTrackService } from "../../../../tracks/TrackService.hook";
 
 type Props = {
   tracksInPlaylist: Track[];
@@ -21,6 +21,8 @@ export default function PlaylistTrackSearchInput({
   setTracks,
   setLoading,
 }: Props) {
+  const trackService = useTrackService();
+
   const [value, setValue] = useState(filter);
   const { showError } = useNotifier();
 
@@ -31,7 +33,7 @@ export default function PlaylistTrackSearchInput({
 
     setLoading(true);
     try {
-      const tracks = await TrackService.getTracks({
+      const tracks = await trackService.getTracks({
         filters: [
           { columnName: "name", operator: "cnt", value },
           {

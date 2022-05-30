@@ -2,26 +2,29 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../types/User";
 import { UserPlan } from "../../../userPlans/types/UserPlan";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import UserPlanService from "../../../userPlans/UserPlan.service";
 import Loading from "../../../shared/components/Loading/Loading";
 import { Button, Grid, Paper, Typography } from "@mui/material";
 import ActionCard from "../../../shared/components/ActionCard/ActionCard";
 import EditIcon from "@mui/icons-material/Edit";
 import AddIcon from "@mui/icons-material/Add";
 import { Link } from "react-router-dom";
+import { useUserPlanService } from "../../../userPlans/UserPlanService.hook";
 
 type Props = {
   user: User;
 };
 
 export default function UserPlans({ user }: Props) {
+  const userPlanService = useUserPlanService();
+
   const [userPlans, setUserPlans] = useState<UserPlan[]>([]);
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
 
   useEffect(() => {
     setLoading(true);
-    UserPlanService.search(user.id, undefined, true)
+    userPlanService
+      .search(user.id, undefined, true)
       .then(setUserPlans)
       .catch(showError)
       .then(() => setLoading(false));
@@ -52,7 +55,7 @@ export default function UserPlans({ user }: Props) {
                     minWidth: "48px",
                   }}
                   component={Link}
-                  to={`/admin/userplans/${plan.id}`}
+                  to={`/admin/userPlans/${plan.id}`}
                 >
                   <EditIcon sx={{ fontSize: "2rem" }} />
                 </Button>
@@ -79,7 +82,7 @@ export default function UserPlans({ user }: Props) {
                 transform: "translate(-50%, -50%)",
               }}
               component={Link}
-              to={`/admin/userplans/create/${user.id}`}
+              to={`/admin/userPlans/create/${user.id}`}
             >
               <AddIcon sx={{ fontSize: "2rem" }} />
             </Button>

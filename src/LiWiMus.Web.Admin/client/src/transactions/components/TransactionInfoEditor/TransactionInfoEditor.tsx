@@ -3,7 +3,7 @@ import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Box, Button, Stack } from "@mui/material";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
-import TransactionService from "../../Transaction.service";
+import { useTransactionService } from "../../TransactionService.hook";
 
 type Inputs = {
   description: string;
@@ -16,6 +16,8 @@ type Props = {
 };
 
 export default function TransactionInfoEditor({ id, dto, setDto }: Props) {
+  const transactionService = useTransactionService();
+
   const { showSuccess, showError } = useNotifier();
 
   const {
@@ -39,7 +41,7 @@ export default function TransactionInfoEditor({ id, dto, setDto }: Props) {
     }
     try {
       const req = { ...data, id: +id };
-      const response = (await TransactionService.update(req)) as Inputs;
+      const response = (await transactionService.update(req)) as Inputs;
       showSuccess("Info updated");
       setDto(response);
     } catch (error) {

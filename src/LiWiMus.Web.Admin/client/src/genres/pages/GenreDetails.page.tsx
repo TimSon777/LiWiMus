@@ -4,7 +4,6 @@ import { Genre } from "../types/Genre";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import GenreService from "../Genre.service";
 import { Grid, Stack, Typography } from "@mui/material";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 // @ts-ignore
@@ -12,15 +11,19 @@ import dateFormat from "dateformat";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
 import GenreInfoEditor from "../components/GenreInfoEditor/GenreInfoEditor";
 import GenreDeleter from "../components/GenreDeleter/GenreDeleter";
+import { useGenreService } from "../GenreService.hook";
 
 export default function GenreDetailsPage() {
+  const genreService = useGenreService();
+
   const { id } = useParams() as { id: string };
   const [genre, setGenre] = useState<Genre>();
   const [loading, setLoading] = useState(true);
   const { showError } = useNotifier();
 
   useEffect(() => {
-    GenreService.get(id)
+    genreService
+      .get(id)
       .then((genre) => {
         setGenre(genre);
       })

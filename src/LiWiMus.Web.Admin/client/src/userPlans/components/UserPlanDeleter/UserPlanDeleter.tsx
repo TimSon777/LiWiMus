@@ -2,9 +2,9 @@ import React from "react";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import { UserPlan } from "../../types/UserPlan";
 import { Action } from "../../../shared/types/Action";
-import UserPlanService from "../../UserPlan.service";
 import { UpdateUserPlanDto } from "../../types/UpdateUserPlanDto";
 import AlertDialog from "../../../shared/components/AlertDialog/AlertDialog";
+import { useUserPlanService } from "../../UserPlanService.hook";
 
 type Props = {
   userPlan: UserPlan;
@@ -12,12 +12,14 @@ type Props = {
 };
 
 export default function UserPlanDeleter({ userPlan, setUserPlan }: Props) {
+  const userPlanService = useUserPlanService();
+
   const { showSuccess, showError } = useNotifier();
 
   const deleteHandler = async () => {
     try {
       const dto: UpdateUserPlanDto = { end: new Date() };
-      const result = await UserPlanService.update(userPlan.id, dto);
+      const result = await userPlanService.update(userPlan.id, dto);
       setUserPlan(result);
       showSuccess("UserPlan end date set to now");
     } catch (error) {
