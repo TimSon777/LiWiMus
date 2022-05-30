@@ -1,8 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@using LiWiMus.Web.MVC.Models
 @using LiWiMus.Core.Plans
 @model LiWiMus.Web.MVC.Areas.User.ViewModels.ProfileViewModel
-@inject IAuthorizationService AuthorizationService;
+@inject IAuthorizationService AuthorizationService
+@inject IOptions<PullUrls> Urls
 
 @{
     ViewBag.Title = "User Profile";
@@ -63,6 +66,8 @@
                   asp-beforeSubmit="beforeSubmit"
                   asp-area="User" asp-controller="Profile" asp-action="Update">
 
+                <input asp-for="Id" hidden="hidden">
+                
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
                         <label asp-for="FirstName"></label>
@@ -174,7 +179,7 @@
         <section class="change-password-random-avatar-btns">
             @if (Model.IsAccountOwner)
             {
-                <form asp-formhelper="true" asp-action="ChangeAvatarToRandom" style="display: flex; justify-content: center">
+                <form asp-formhelper="true" asp-action="ChangeAvatarToRandom" style="display: flex; justify-content: center" asp-callback="callback">
                     <button class="random-avatar-button">Set random avatar</button>
                 </form>
                 <div class="change-password-button">

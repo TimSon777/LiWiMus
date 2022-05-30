@@ -8,6 +8,9 @@ public interface IFileService
     [Post("/files")]
     Task<IApiResponse<FileLocation>> Save(StreamPart file);
 
+    [Post("/files/url")]
+    Task<IApiResponse<FileLocation>> Save(SaveUrlRequest request);
+
     [Delete("/{**path}")]
     Task<IApiResponse> Remove(string path);
 }

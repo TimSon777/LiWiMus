@@ -1,4 +1,8 @@
-﻿successUpdate = function (xhr) {
+﻿callback = (response) => {
+    $("#avatar").attr("src", response.object.avatarLocation);
+}
+
+successUpdate = function (xhr) {
     alert(xhr);
 };
 

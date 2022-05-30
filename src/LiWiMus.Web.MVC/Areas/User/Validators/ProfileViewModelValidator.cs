@@ -1,6 +1,5 @@
 ﻿#region
 
-using ByteSizeLib;
 using FluentValidation;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
 using LiWiMus.Web.Shared.Extensions;
@@ -43,10 +42,5 @@ public class ProfileViewModelValidator : AbstractValidator<ProfileViewModel>
         RuleFor(vm => vm.BirthDate)
             .LessThan(DateOnly.FromDateTime(DateTime.Now))
             .GreaterThan(new DateOnly(1900, 1, 1));
-
-        RuleFor(vm => vm.Avatar!)
-            .SidesPercentageDifferenceMustBeLessThan(10)
-            .MustWeightLessThan(ByteSize.FromMegaBytes(1))
-            .When(vm => vm.Avatar is not null);
     }
 }

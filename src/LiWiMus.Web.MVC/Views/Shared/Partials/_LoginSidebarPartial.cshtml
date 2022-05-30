@@ -1,28 +1,30 @@
 ﻿@using LiWiMus.Core.Users
+@using LiWiMus.Web.MVC.Models
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using LiWiMus.Core.Roles
-@inject SignInManager<User> _signInManager
-@inject UserManager<User> _userManager
+@using Microsoft.Extensions.Options
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@inject IOptions<PullUrls> Urls
+
+@{
+    var currentUser = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
+    var avatarSrc = currentUser?.AvatarLocation is not null ? Urls.Value.FileServer + currentUser.AvatarLocation : "/images/avatar-placeholder.jpg";
+}
+
 <div class="w3-sidebar w3-bar-block w3-collapse w3-card " style="width:300px;  background-color: #212529" id="mySidebar">
     <button class="w3-bar-item w3-button w3-large w3-hide-large" style="color: wheat" onclick="w3_close()">&times;</button>
     @{
-        User? currentUser;
-        if (_signInManager.IsSignedIn(User) && (currentUser = await _userManager.GetUserAsync(User)) is not null)
+        if (currentUser is not null)
         {
             <div class="user-sidebar-nav">
-                <img id="avatar" src="~/@currentUser.AvatarLocation" alt="" class="img-fluid" style="width: 120px; border-radius: 100%"/>
+                <img id="avatar" src="@avatarSrc" alt="" class="img-fluid" style="width: 120px; border-radius: 100%"/>
                 <div style="padding-top: 7%; padding-bottom : 10%">
                     <p class="text-white" style="font-weight: bold; word-wrap: break-word; text-align: center; margin: auto; width: 120px; font-size: larger">
                         @currentUser.UserName
                     </p>
                 </div>
-                @if (User.HasClaim(SystemPermission.ClaimType, DefaultSystemPermissions.Admin.Access.Name))
-                {
-                    <div>
-                        <a class="text-link" href="/admin">Admin</a>
-                    </div>
-                }
+
                 <div>
                     <a class="text-link" asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
                 </div>

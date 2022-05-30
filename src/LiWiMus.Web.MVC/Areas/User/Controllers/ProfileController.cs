@@ -3,13 +3,12 @@
 using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Interfaces;
-using LiWiMus.Core.Settings;
+using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.Users.Specifications;
-using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.Shared.Extensions;
-using LiWiMus.Web.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,23 +22,24 @@ namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 [Route("[area]/[controller]")]
 public class ProfileController : Controller
 {
-    private readonly IFormFileSaver _formFileSaver;
     private readonly IAvatarService _avatarService;
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
-    private readonly SharedSettings _settings;
     private readonly IRepository<Core.Users.User> _userRepository;
+    private readonly IFileService _fileService;
+    private readonly IOptions<PullUrls> _pullUrls;
 
     public ProfileController(UserManager<Core.Users.User> userManager,
-                             IMapper mapper, IAvatarService avatarService, IFormFileSaver formFileSaver,
-                             IOptions<SharedSettings> settings, IRepository<Core.Users.User> userRepository)
+                             IMapper mapper, IAvatarService avatarService,
+                             IRepository<Core.Users.User> userRepository, IFileService fileService,
+                             IOptions<PullUrls> pullUrls)
     {
         _userManager = userManager;
         _mapper = mapper;
         _avatarService = avatarService;
-        _formFileSaver = formFileSaver;
         _userRepository = userRepository;
-        _settings = settings.Value;
+        _fileService = fileService;
+        _pullUrls = pullUrls;
     }
 
     [HttpGet("{userName?}")]
@@ -114,11 +114,21 @@ public class ProfileController : Controller
 
         if (model.Avatar is not null)
         {
-            if (user.AvatarLocation is not null)
+            if (model.Avatar is not null)
             {
-                FileHelper.DeleteIfExists(Path.Combine(_settings.SharedDirectory, user.AvatarLocation));
+                var fileResult = await _fileService.Save(model.Avatar.ToStreamPart());
+                if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+                {
+                    return FormResult.CreateErrorResult("Bad photo");
+                }
+
+                if (user.AvatarLocation is not null)
+                {
+                    await _fileService.Remove(user.AvatarLocation[1..]);
+                }
+
+                user.AvatarLocation = fileResult.Content.Location;
             }
-            user.AvatarLocation = await _formFileSaver.SaveWithRandomNameAsync(model.Avatar);
         }
 
         var result = await _userManager.UpdateAsync(user);
@@ -135,6 +145,8 @@ public class ProfileController : Controller
         var user = await _userManager.GetUserAsync(User);
         await _avatarService.SetRandomAvatarAsync(user);
         await _userManager.UpdateAsync(user);
-        return FormResult.CreateSuccessResult("Refresh the page (ctrl f5) for the changes to take effect");
+        return FormResult.CreateSuccessResultWithObject(
+            new {AvatarLocation = _pullUrls.Value.FileServer + user.AvatarLocation},
+            "Refresh the page (ctrl f5) for the changes to take effect");
     }
 }
