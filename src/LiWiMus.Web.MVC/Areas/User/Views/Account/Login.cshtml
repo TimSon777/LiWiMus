@@ -68,11 +68,7 @@
             <p>Forgot password?</p>
         </div>
         <div>
-            <form asp-area="User" asp-controller="Account" asp-action="ResetPassword"
-                  data-ajax="true"
-                  data-ajax-method="post"
-                  data-ajax-success="successResetPassword"
-                  data-ajax-failure="failureResetPassword">
+            <form asp-formhelper="true" asp-area="User" asp-controller="Account" asp-action="ResetPassword">
                 <input name="userName" type="text" placeholder="Input username" class="account-input-field" style="margin-bottom: 3%"/>
                 <input type="submit" class="btn text-white account-submit-button" value="Reset password">
             </form>
