@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using FormHelper;
+using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.LikedPlaylists;
+using LiWiMus.Core.Plans;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.Core.Tracks;
@@ -9,6 +11,7 @@ using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
+using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +27,12 @@ public class PlaylistController : Controller
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly IRepository<Track> _trackRepository;
     private readonly IAuthorizationService _authorizationService;
+    private readonly IFileService _fileService;
 
     public PlaylistController(IMapper mapper, IRepository<Playlist> playlistRepository,
                               UserManager<Core.Users.User> userManager,
                               IRepository<LikedPlaylist> likedPlaylistRepository, IRepository<Track> trackRepository,
-                              IAuthorizationService authorizationService)
+                              IAuthorizationService authorizationService, IFileService fileService)
     {
         _mapper = mapper;
         _playlistRepository = playlistRepository;
@@ -36,6 +40,7 @@ public class PlaylistController : Controller
         _likedPlaylistRepository = likedPlaylistRepository;
         _trackRepository = trackRepository;
         _authorizationService = authorizationService;
+        _fileService = fileService;
     }
 
     [HttpGet]
@@ -53,17 +58,82 @@ public class PlaylistController : Controller
         return View(playlistVm);
     }
 
-    /*
     [HttpPost("[action]")]
-    public async Task<IActionResult> MakePrivate(int playlistId)
+    [Authorize(DefaultPermissions.Playlist.Private.Name)]
+    public async Task<IActionResult> TogglePublicity(int playlistId)
     {
         var playlist = await _playlistRepository.GetPlaylistDetailedAsync(playlistId);
+
+        if (playlist is null)
+        {
+            return NotFound();
+        }
+        
         if (await _authorizationService.AuthorizeAsync(User, playlist, "SameAuthorPolicy") is {Succeeded: false})
         {
             return Forbid();
         }
+
+        playlist.IsPublic = !playlist.IsPublic;
+        await _playlistRepository.UpdateAsync(playlist);
+
+        return FormResult.CreateSuccessResult("Playlist is " + (playlist.IsPublic ? "public" : "private"));
     }
-    */
+
+    [HttpPut]
+    [FormValidator]
+    public async Task<IActionResult> Update(UpdatePlaylistViewModel model)
+    {
+        var playlist = await _playlistRepository.GetPlaylistDetailedAsync(model.Id);
+        if (playlist is null)
+        {
+            return NotFound();
+        }
+
+        if (await _authorizationService.AuthorizeAsync(User, playlist, "SameAuthorPolicy") is {Succeeded: false})
+        {
+            return Forbid();
+        }
+
+        playlist.Name = model.Name;
+        await _playlistRepository.UpdateAsync(playlist);
+
+        return FormResult.CreateSuccessResult("Updated");
+    }
+
+    [HttpPost("[action]")]
+    [FormValidator]
+    [Authorize(DefaultPermissions.Playlist.Cover.Name)]
+    public async Task<IActionResult> UpdatePhoto(UpdatePlaylistPhotoViewModel model)
+    {
+        var playlist = await _playlistRepository.GetPlaylistDetailedAsync(model.Id);
+        if (playlist is null)
+        {
+            return NotFound();
+        }
+
+        if (await _authorizationService.AuthorizeAsync(User, playlist, "SameAuthorPolicy") is {Succeeded: false})
+        {
+            return Forbid();
+        }
+
+        var fileResult = await _fileService.Save(model.Photo.ToStreamPart());
+        if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+        {
+            return FormResult.CreateErrorResult("Bad photo");
+        }
+
+        if (playlist.PhotoLocation is not null)
+        {
+            var r = await _fileService.Remove(playlist.PhotoLocation[1..]);
+        }
+
+        playlist.PhotoLocation = fileResult.Content.Location;
+
+        await _playlistRepository.UpdateAsync(playlist);
+
+        return FormResult.CreateSuccessResult("Updated");
+    }
 
     [HttpGet]
     public async Task<IActionResult> Search(SearchForPlaylistViewModel model)
