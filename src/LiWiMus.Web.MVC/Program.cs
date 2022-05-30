@@ -86,6 +86,7 @@ services.AddWebOptimizer(pipeline =>
     
     if (builder.Environment.IsProduction())
     {
+        pipeline.MinifyCssFiles("/css/**/*.css");
         pipeline.MinifyJsFiles("/js/**/*.js");
     }
 });
