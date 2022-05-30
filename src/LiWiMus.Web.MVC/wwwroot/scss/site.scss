@@ -1874,3 +1874,22 @@ and (max-device-width : 480px) {
     margin-left: 0;
   }
 }
+
+.download-button {
+  @extend .change-password-button;
+  text-decoration: none;
+  &:hover {
+    color: white;
+  }
+  margin-top: 20px;
+}
+
+.audio-container {
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}

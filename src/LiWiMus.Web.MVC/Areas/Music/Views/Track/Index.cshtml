@@ -15,42 +15,45 @@
     }
 </style>
 
-@Model.Name
 
-<figure>
-    <figcaption>AAAAAAAAAAA</figcaption>
-    <audio
-        @{
-            var src = $"http://localhost:5223{Model.FileLocation}";
-        }
-        controls
-        src="@src">
-        Your browser does not support the
-        <code>audio</code> element.
-    </audio>
-</figure>
-
-<a asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@Model.Name">
-    Download
-</a>
-
-<div class="p-0 album-profile">
+<div class="p-0 album-profile" style="background-color: #727271">
     <div class="editor-wrap">
         <div>
             <h2 class="your-profile-header">
                 @Model.Name
             </h2>
         </div>
+        <div class="audio-container">
+            <figure>
+                <figcaption>@Model.Name</figcaption>
+                <audio
+                    @{
+                        var src = $"http://localhost:5223{Model.FileLocation}";
+                    }
+                    controls
+                    src="@src">
+                    Your browser does not support the
+                    <code>audio</code> element.
+                </audio>
+            </figure>
+                
+            <div class="download-button-container">
+                <a class="download-button" asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@Model.Name">
+                    Download
+                </a>
+            </div>
+        </div>
+        
         <div id="subscriptionDiv" style="margin: 0 2% 2%;">
             <form asp-formhelper="true" asp-callback="" method="post" asp-area="User" asp-action="SubscribeOrUnsubscribeTrack" asp-controller="Following">
                 <input name="trackId" type="hidden" value="@Model.Id">
                 @if (Model.IsUserSubscribed)
                 {
-                    <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                    <button class="subscribe-button subscribed" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
                 }
                 else
                 {
-                    <button id="subscribtionButton" class="edit-button">Subscribe</button>
+                    <button id="subscribtionButton" class="subscribe-button">Subscribe</button>
                 }
             </form>
         </div>
