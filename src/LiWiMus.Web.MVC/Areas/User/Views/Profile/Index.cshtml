@@ -44,7 +44,7 @@
             else
             {
                 <div id="subscriptionDiv" style="margin: 0 2% 2%;">
-                    <form asp-formhelper="true" asp-callback="" asp-area="User" asp-controller="Following"  method="post" asp-action="SubscribeOrUnsubscribeUser">
+                    <form asp-formhelper="true" asp-callback="" asp-area="User" asp-controller="Following" method="post" asp-action="SubscribeOrUnsubscribeUser">
                         <input name="username" type="hidden" value="@Model.UserName">
                         @if (Model.IsSubscribed)
                         {
@@ -67,7 +67,7 @@
                   asp-area="User" asp-controller="Profile" asp-action="Update">
 
                 <input asp-for="Id" hidden="hidden">
-                
+
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
                         <label asp-for="FirstName"></label>
@@ -175,6 +175,21 @@
                 </div>
             </form>
         </section>
+
+        @if (!Model.EmailConfirmed)
+        {
+            @:(Your account has not been verified)
+            <div>
+                <form asp-formhelper="true" method="post" asp-controller="Account" asp-action="SendConfirmEmailAgain">
+                    <input type="submit" value="Send a confirmation email">
+                </form>
+            </div>
+        }
+        else
+        {
+            @:(Your account is verified)
+        }
+
 
         <section class="change-password-random-avatar-btns">
             @if (Model.IsAccountOwner)

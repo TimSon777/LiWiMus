@@ -23,4 +23,5 @@ public class ProfileViewModel : HasId
     public bool IsAccountOwner { get; set; }
     public bool IsSubscribed { get; set; }
     public IFormFile? Avatar { get; set; }
+    public bool EmailConfirmed { get; set; }
 }
