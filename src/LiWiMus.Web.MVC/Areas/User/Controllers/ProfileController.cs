@@ -56,7 +56,7 @@ public class ProfileController : Controller
 
         if (user is null)
         {
-            return View("Error");
+            return NotFound();
         }
 
         var profile = _mapper.Map<ProfileViewModel>(user);
@@ -147,6 +147,6 @@ public class ProfileController : Controller
         await _userManager.UpdateAsync(user);
         return FormResult.CreateSuccessResultWithObject(
             new {AvatarLocation = _pullUrls.Value.FileServer + user.AvatarLocation},
-            "Refresh the page (ctrl f5) for the changes to take effect");
+            "Ok");
     }
 }

@@ -3,14 +3,13 @@ using FormHelper;
 using LiWiMus.Core.LikedPlaylists;
 using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Playlists.Specifications;
-using LiWiMus.Core.Settings;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
-using LiWiMus.Web.Shared.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,18 +21,21 @@ public class PlaylistController : Controller
     private readonly IMapper _mapper;
     private readonly IRepository<Playlist> _playlistRepository;
     private readonly IRepository<LikedPlaylist> _likedPlaylistRepository;
-    private readonly IFormFileSaver _formFileSaver;
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly IRepository<Track> _trackRepository;
+    private readonly IAuthorizationService _authorizationService;
 
-    public PlaylistController(IMapper mapper, IRepository<Playlist> playlistRepository, IFormFileSaver formFileSaver, UserManager<Core.Users.User> userManager, IRepository<LikedPlaylist> likedPlaylistRepository, IRepository<Track> trackRepository)
+    public PlaylistController(IMapper mapper, IRepository<Playlist> playlistRepository,
+                              UserManager<Core.Users.User> userManager,
+                              IRepository<LikedPlaylist> likedPlaylistRepository, IRepository<Track> trackRepository,
+                              IAuthorizationService authorizationService)
     {
         _mapper = mapper;
         _playlistRepository = playlistRepository;
-        _formFileSaver = formFileSaver;
         _userManager = userManager;
         _likedPlaylistRepository = likedPlaylistRepository;
         _trackRepository = trackRepository;
+        _authorizationService = authorizationService;
     }
 
     [HttpGet]
@@ -50,6 +52,18 @@ public class PlaylistController : Controller
         playlistVm.CountSubscribers = await _playlistRepository.GetCountSubscribersAsync(playlistId);
         return View(playlistVm);
     }
+
+    /*
+    [HttpPost("[action]")]
+    public async Task<IActionResult> MakePrivate(int playlistId)
+    {
+        var playlist = await _playlistRepository.GetPlaylistDetailedAsync(playlistId);
+        if (await _authorizationService.AuthorizeAsync(User, playlist, "SameAuthorPolicy") is {Succeeded: false})
+        {
+            return Forbid();
+        }
+    }
+    */
 
     [HttpGet]
     public async Task<IActionResult> Search(SearchForPlaylistViewModel model)

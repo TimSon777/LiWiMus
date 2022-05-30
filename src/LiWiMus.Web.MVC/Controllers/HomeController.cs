@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using LiWiMus.Web.MVC.ViewModels;
+﻿using LiWiMus.Web.MVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +7,6 @@ namespace LiWiMus.Web.MVC.Controllers;
 [AllowAnonymous]
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
         return View();
@@ -25,9 +17,16 @@ public class HomeController : Controller
         return View();
     }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [HttpGet("[action]/{code:int}")]
+    public IActionResult Errors(int code)
+    {
+        var model = new ErrorViewModel {StatusCode = code};
+        return View(model);
+    }
+
+    [HttpGet("[action]")]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+        return View();
     }
 }
