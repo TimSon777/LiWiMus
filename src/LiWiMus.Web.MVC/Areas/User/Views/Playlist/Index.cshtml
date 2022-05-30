@@ -2,29 +2,41 @@
 @model LiWiMus.Web.MVC.Areas.Music.ViewModels.PlaylistViewModel
 
 @{
-    ViewBag.Title = "title";
+    ViewBag.Title = "Add tracks";
     Layout = "_LayoutSidebar";
 }
 
-@foreach (var track in Model.Tracks)
-{
-    <p>@track.Name</p>
-                  
-    <form class="form-add-track-to-playlist" method="post" asp-action="AddOrRemoveTrack">
-        <input type="hidden" name="@nameof(TrackPlaylistViewModel.TrackId)" value="@track.Id">
-        <input type="hidden" name="@nameof(TrackPlaylistViewModel.PlaylistId)" value="@Model.Id">
-        <input type="submit" value="Remove">
-    </form>
+@section Header{
+    <partial name="Partials/_PlainHeaderPartial"/>
 }
 
-<form id="search-tracks-to-playlist" method="get" asp-action="Search">
-    <input type="text" name="@nameof(SearchForPlaylistViewModel.Title)"/>
-    <input type="hidden" name="@nameof(SearchForPlaylistViewModel.PlaylistId)" value="@Model.Id"/>
-    <button>Search</button>
-</form>
+<div class="editor-wrap">
+    <div>
+        <h2 class="your-profile-header">
+            Add tracks to playlist
+        </h2>
+    </div>
+    <section class="edit-inputs-group">
+    @foreach (var track in Model.Tracks)
+    {
+        <p>@track.Name</p>
 
-<div id="tracks-to-playlist">
-    
+        <form class="form-add-track-to-playlist" method="post" asp-action="AddOrRemoveTrack">
+            <input type="hidden" name="@nameof(TrackPlaylistViewModel.TrackId)" value="@track.Id">
+            <input type="hidden" name="@nameof(TrackPlaylistViewModel.PlaylistId)" value="@Model.Id">
+            <input type="submit" value="Remove">
+        </form>
+    }
+
+    <form id="search-tracks-to-playlist" method="get" asp-action="Search">
+        <input type="text" name="@nameof(SearchForPlaylistViewModel.Title)"/>
+        <input type="hidden" name="@nameof(SearchForPlaylistViewModel.PlaylistId)" value="@Model.Id"/>
+        <button>Search</button>
+    </form>
+</section>
+    <div id="tracks-to-playlist">
+
+    </div>
 </div>
 
 @section Scripts

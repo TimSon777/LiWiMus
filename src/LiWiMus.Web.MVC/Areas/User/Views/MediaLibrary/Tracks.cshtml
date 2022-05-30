@@ -5,29 +5,35 @@
     Layout = "_MediaLibraryLayout";
     var fileUrl = _pullUrls.Value.FileServer;
 }
+<div class="editor-wrap">
+    <div>
+        <h3 class="your-profile-header">
+            Tracks
+        </h3>
+    </div>
+    <section class="edit-inputs-group">
+        @foreach (var track in Model)
+        {
+            <figure>
+                <figcaption>AAAAAAAAAAA</figcaption>
+                <audio
+                    controls
+                    src="@(fileUrl + track.FileLocation)">
+                    Your browser does not support the
+                    <code>audio</code> element.
+                </audio>
+            </figure>
 
-<section>
-    @foreach (var track in Model)
-    {
-        <figure>
-            <figcaption>AAAAAAAAAAA</figcaption>
-            <audio
-                controls
-                src="@(fileUrl + track.FileLocation)">
-                Your browser does not support the
-                <code>audio</code> element.
-            </audio>
-        </figure>
+            <div>
+                <a asp-area="Music" class="text-center" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
+                    @track.Name
+                </a>
+            </div>
 
-        <div>
-            <a asp-area="Music" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
-                @track.Name
-            </a>
-        </div>
+        @*<img src="@(fileUrl + track.Album.CoverLocation)" alt=""/>*@
 
-        <img src="@(fileUrl + track.Album.CoverLocation)" alt=""/>
-
-        @:Genres @string.Join(" & ", track.Genres.Select(a => a.Name))
-        @:Artists @string.Join(" & ", track.Owners.Select(a => a.Name))
-    }
-</section>
+            @:Genres @string.Join(" & ", track.Genres.Select(a => a.Name))
+            @:Artists @string.Join(" & ", track.Owners.Select(a => a.Name))
+        }
+    </section>
+</div>
