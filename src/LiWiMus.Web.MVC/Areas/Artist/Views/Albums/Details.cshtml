@@ -82,7 +82,9 @@
             @{
                 foreach (var track in Model.Tracks)
                 {
-                    <a class="text-link" asp-area="Artist" asp-controller="Tracks" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-route-id="@track.Id" asp-action="Details">@track.Name</a>
+                    <div>
+                        <a class="text-link" asp-area="Artist" asp-controller="Tracks" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-route-id="@track.Id" asp-action="Details">@track.Name</a>
+                    </div>
                 }
             }
         </section>
