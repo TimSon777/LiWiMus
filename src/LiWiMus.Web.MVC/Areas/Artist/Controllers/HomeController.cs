@@ -6,10 +6,12 @@ using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 
@@ -22,16 +24,19 @@ public class HomeController : Controller
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly IFileService _fileService;
+    private readonly IOptions<PullUrls> _pullUrls;
 
     public HomeController(UserManager<Core.Users.User> userManager,
                           IAuthorizationService authorizationService,
-                          IMapper mapper, IRepository<Core.Artists.Artist> artistRepository, IFileService fileService)
+                          IMapper mapper, IRepository<Core.Artists.Artist> artistRepository, IFileService fileService,
+                          IOptions<PullUrls> pullUrls)
     {
         _userManager = userManager;
         _authorizationService = authorizationService;
         _mapper = mapper;
         _artistRepository = artistRepository;
         _fileService = fileService;
+        _pullUrls = pullUrls;
     }
 
     [HttpGet("")]
@@ -98,7 +103,8 @@ public class HomeController : Controller
         }
 
         await _artistRepository.UpdateAsync(artist);
-        return FormResult.CreateSuccessResult("Updated successfully");
+        return FormResult.CreateSuccessResultWithObject(
+            new {PhotoLocation = _pullUrls.Value.FileServer + artist.PhotoLocation}, "Updated successfully");
     }
 
     [HttpGet("[action]")]

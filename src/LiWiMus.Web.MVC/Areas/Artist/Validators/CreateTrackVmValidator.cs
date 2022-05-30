@@ -20,5 +20,8 @@ public class CreateTrackVmValidator : AbstractValidator<CreateTrackViewModel>
 
         RuleFor(model => model.AlbumId)
             .NotEmpty();
+
+        RuleFor(model => model.File)
+            .NotEmpty();
     }
 }

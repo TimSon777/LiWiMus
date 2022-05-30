@@ -16,7 +16,6 @@
     </div>
     <section class="edit-inputs-group">
         <form method="post" enctype="multipart/form-data"
-              asp-formhelper="true"
               asp-action="Create">
             <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                 <div class="label-input">
@@ -30,10 +29,10 @@
                     <span asp-validation-for="PublishedAt"></span>
                 </div>
                 <div class="label-input">
-                    <label class="form-label">Cover</label>
-                    <input id="chooseCover" type="file" class="form-control"/>
+                    <label asp-for="Cover" class="form-label">Cover</label>
+                    <input asp-for="Cover" type="file" class="form-control"/>
+                    <span asp-validation-for="Cover"></span>
                 </div>
-                <input asp-for="CoverLocation" id="PhotoLocation" type="hidden" class="form-control" value="Location">
                 <div class="" style="text-align: center">
                     <button class="edit-button" type="submit" id="btn-edit-profile-info">Create</button>
                 </div>
@@ -41,24 +40,3 @@
         </form>
     </section>
 </div>
-<script>
-function getFilePath() {
-    var blobFile = $('#chooseCover').files[0];
-    var formData = new FormData();
-    formData.append("file", blobFile);
-
-    $.ajax({
-       url: "/files",
-       type: "POST",
-       data: formData,
-       contentType: "Content-Type: multipart/form-data",
-       success: function(response) {
-          const input = $('#chooseCover');
-          $(input).val(response.toString())   
-       },
-       error: function() {
-           
-       }
-    });
-}
-</script>

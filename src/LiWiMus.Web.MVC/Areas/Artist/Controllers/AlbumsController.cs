@@ -5,11 +5,13 @@ using FormHelper;
 using LiWiMus.Core.Albums;
 using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists.Specifications;
+using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.Settings;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.Shared.Services.Interfaces;
+using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -22,23 +24,25 @@ namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 [Route("Artist/{artistId:int}/[controller]")]
 public class AlbumsController : Controller
 {
-    private readonly IFormFileSaver _formFileSaver;
     private readonly IRepository<Album> _albumsRepository;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
     private readonly IMapper _mapper;
     private readonly SharedSettings _settings;
+    private readonly IFileService _fileService;
+    private readonly IOptions<PullUrls> _pullUrls;
 
     public AlbumsController(IRepository<Album> albumsRepository,
                             IRepository<Core.Artists.Artist> artistRepository,
-                            IAuthorizationService authorizationService, IMapper mapper, IFormFileSaver formFileSaver,
-                            IOptions<SharedSettings> settings)
+                            IAuthorizationService authorizationService, IMapper mapper,
+                            IOptions<SharedSettings> settings, IFileService fileService, IOptions<PullUrls> pullUrls)
     {
         _albumsRepository = albumsRepository;
         _artistRepository = artistRepository;
         _authorizationService = authorizationService;
         _mapper = mapper;
-        _formFileSaver = formFileSaver;
+        _fileService = fileService;
+        _pullUrls = pullUrls;
         _settings = settings.Value;
     }
 
@@ -110,13 +114,22 @@ public class AlbumsController : Controller
         }
 
         _mapper.Map(viewModel, album);
-        if (viewModel.CoverLocation is not null)
+        if (viewModel.Cover is not null)
         {
-            album.CoverLocation = viewModel.CoverLocation;
+            var fileResult = await _fileService.Save(viewModel.Cover.ToStreamPart());
+            if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+            {
+                return FormResult.CreateErrorResult("Bad photo");
+            }
+
+            var r = await _fileService.Remove(artist.PhotoLocation[1..]);
+            album.CoverLocation = fileResult.Content.Location;
         }
 
         await _albumsRepository.UpdateAsync(album);
-        return FormResult.CreateSuccessResult("Updated successfully");
+        return FormResult.CreateSuccessResultWithObject(
+            new {CoverLocation = _pullUrls.Value.FileServer + album.CoverLocation},
+            "Updated successfully");
     }
 
     [HttpGet("[action]")]
@@ -126,9 +139,13 @@ public class AlbumsController : Controller
     }
 
     [HttpPost("[action]")]
-    [FormValidator]
     public async Task<IActionResult> Create(int artistId, CreateAlbumViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+        
         var artist = await _artistRepository.GetBySpecAsync(new ArtistWithOwnersByIdSpec(artistId));
 
         if (artist is null)
@@ -141,7 +158,14 @@ public class AlbumsController : Controller
             return Forbid();
         }
 
-        var coverPath = viewModel.CoverLocation;
+        var fileResult = await _fileService.Save(viewModel.Cover.ToStreamPart());
+        if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+        {
+            ModelState.AddModelError(nameof(CreateArtistViewModel.Photo), "Bad photo");
+            return View(viewModel);
+        }
+
+        var coverPath = fileResult.Content.Location;
 
         var artists = new List<Core.Artists.Artist> {artist};
 
@@ -154,8 +178,7 @@ public class AlbumsController : Controller
         };
         album = await _albumsRepository.AddAsync(album);
 
-        return FormResult.CreateSuccessResult("Created successfully",
-            Url.Action("Details", "Albums", new {Area = "Artist", album.Id, artistId}));
+        return RedirectToAction("Details", "Albums", new {Area = "Artist", album.Id, artistId});
     }
 
     [HttpDelete("{id:int}")]

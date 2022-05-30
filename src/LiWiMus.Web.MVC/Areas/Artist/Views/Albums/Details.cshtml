@@ -1,7 +1,13 @@
-﻿@model LiWiMus.Core.Albums.Album
+﻿@using LiWiMus.Web.MVC.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@model LiWiMus.Core.Albums.Album
+@inject IOptions<PullUrls> Urls
+
 @{
     ViewData["Title"] = "Details";
     Layout = "_LayoutSidebar";
+    var coverSrc = Urls.Value.FileServer + Model.CoverLocation;
 }
 
 @section Header{
@@ -32,27 +38,30 @@
         </div>
         <section class="edit-inputs-group">
             <div>
-                <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.CoverLocation" alt="album cover">
+                <img style="margin: 2%; border-radius:100%; width: 120px" src="@coverSrc" id="album-cover" alt="album cover">
             </div>
             <form method="put"
                   enctype="multipart/form-data"
                   asp-formhelper="true"
-                  asp-action="Update" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]">
+                  asp-action="Update"
+                  asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-route-id="@ViewContext.RouteData.Values["id"]"
+                  asp-enableButtonAfterSuccess="true"
+                  asp-callback="callback">
                 <input type="text" hidden name="Id" value="@Model.Id">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
-                        <label for="Name" class="form-label">Title</label>
-                        <input id="Name" name="Name" type="text" class="form-control" value="@Model.Title">
-                        <span data-valmsg-for="Name" data-valmsg-replace="true"></span>
+                        <label for="Title" class="form-label">Title</label>
+                        <input id="Title" name="Title" type="text" class="form-control" value="@Model.Title">
+                        <span data-valmsg-for="Title" data-valmsg-replace="true"></span>
                     </div>
                     <div class="label-input">
-                        <label for="About" class="form-label">Published At</label>
-                        <input id="About" name="About" type="date" class="form-control" value="@Model.PublishedAt">
-                        <span data-valmsg-for="About" data-valmsg-replace="true"></span>
+                        <label for="PublishedAt" class="form-label">Published At</label>
+                        <input id="PublishedAt" name="PublishedAt" type="date" class="form-control" value="@Model.PublishedAt.ToString("yyyy-MM-dd")">
+                        <span data-valmsg-for="PublishedAt" data-valmsg-replace="true"></span>
                     </div>
                     <div class="label-input">
                         <label for="Cover" class="form-label">Change cover</label>
-                        <input name="Cover" class="form-control" type="file">
+                        <input id="Cover" name="Cover" class="form-control" type="file">
                         <span data-valmsg-for="Cover" data-valmsg-replace="true"></span>
                     </div>
                     <div class="" style="text-align: center">
@@ -82,6 +91,9 @@
 
 @section Scripts
 {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js" integrity="sha512-IlZV3863HqEgMeFLVllRjbNOoh8uVj0kgx0aYxgt4rdBABTZCl/h5MfshHD9BrnVs6Rs9yNN7kUQpzhcLkNmHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/js/update_profile.js"></script>
+    <script>
+        function callback(e) {
+            $("#album-cover").attr("src", e.object.coverLocation)
+        }
+    </script>
 }

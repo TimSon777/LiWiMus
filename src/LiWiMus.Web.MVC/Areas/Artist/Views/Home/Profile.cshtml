@@ -40,12 +40,14 @@
 
         <section class="edit-inputs-group">
             <div>
-                <img style="margin: 2%; border-radius:100%; width: 120px" src="@photoPath" alt="artist photo">
+                <img style="margin: 2%; border-radius:100%; width: 120px" src="@photoPath" id="artist-photo" alt="artist photo">
             </div>
             <form method="put"
                   enctype="multipart/form-data"
                   asp-formhelper="true"
-                  asp-action="Update">
+                  asp-action="Update"
+                  asp-callback="callback"
+                  asp-enableButtonAfterSuccess="true">
                 <input type="text" hidden name="Id" value="@Model.Id">
                 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3">
                     <div class="label-input">
@@ -92,6 +94,9 @@
 
 @section Scripts
 {
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js" integrity="sha512-IlZV3863HqEgMeFLVllRjbNOoh8uVj0kgx0aYxgt4rdBABTZCl/h5MfshHD9BrnVs6Rs9yNN7kUQpzhcLkNmHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="/js/update_profile.js"></script>
+    <script>
+        function callback(e) {
+            $("#artist-photo").attr("src", e.object.photoLocation)
+        }
+    </script>
 }
