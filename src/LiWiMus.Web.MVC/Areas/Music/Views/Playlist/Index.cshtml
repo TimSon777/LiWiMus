@@ -6,7 +6,7 @@
     ViewBag.Title = "title";
     Layout = "_LayoutSidebar";
 }
-
+<div class="editor-wrap">
 <input type="hidden" id="playlist-id" value="@Model.Id">
 <div class="wrapper">
     <div class="top-bar">
@@ -64,7 +64,7 @@
         </ul>
     </div>
 </div>
-
+</div>
 @section Scripts
 {
     <script src="~/js/player.js"></script>
