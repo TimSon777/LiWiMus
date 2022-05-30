@@ -21,8 +21,10 @@ public class UpdateTrackVmValidator : AbstractValidator<UpdateTrackViewModel>
         RuleFor(model => model.Id)
             .NotEmpty();
 
-        RuleFor(model => model.PublishedAt)
-            .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now));
+        RuleFor(r => r.PublishedAt)
+            .NotEmpty()
+            .Must(d => d <= DateOnly.FromDateTime(DateTime.UtcNow))
+            .WithMessage("The publication date must be less than or equal to the current date in Utc format");
 
         RuleFor(model => model.ArtistsIds)
             .NotEmpty()

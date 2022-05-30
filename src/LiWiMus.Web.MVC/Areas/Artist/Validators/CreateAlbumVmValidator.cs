@@ -13,7 +13,10 @@ public class CreateAlbumVmValidator : AbstractValidator<CreateAlbumViewModel>
             .NotEmpty()
             .MaximumLength(50);
         RuleFor(model => model.PublishedAt)
-            .NotEmpty();
+            .NotEmpty()
+            .Must(d => d <= DateOnly.FromDateTime(DateTime.UtcNow))
+            .WithMessage("The publication date must be less than or equal to the current date in Utc format");
+        
         RuleFor(model => model.Cover)
             .NotEmpty()
             .Must(cover => cover.ContentType.StartsWith("image"))
