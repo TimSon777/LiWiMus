@@ -1,19 +1,5 @@
-$(document).ready(() => {
-    let allMusic;
-    $.get({
-        url: `/Music/Playlist/Json?playlistId=${$('#playlist-id').val()}`,
-        success: (playlist) => {
-            allMusic = playlist.tracks.map(track => {
-                return {
-                    name: track.name,
-                    artist: track.owners.map(o => o.name).join(' & '),
-                    img: track.album.coverLocation,
-                    src: playlist.prefixFiles + track.fileLocation
-                } 
-            });
-        }
-    });
-    
+function configurePlayer(allMusic) {
+
     const wrapper = document.querySelector(".wrapper"),
         musicImg = wrapper.querySelector(".img-area img"),
         musicName = wrapper.querySelector(".song-details .name"),
@@ -238,5 +224,23 @@ $(document).ready(() => {
         playMusic();
         playingSong();
     }
+}
 
+$(document).ready(() => {
+    $.get({
+        url: `/Music/Playlist/Json?playlistId=${$('#playlist-id').val()}`,
+        success: (playlist) => {
+            let allMusic = playlist.tracks.map(track => {
+                return {
+                    name: track.name,
+                    artist: track.owners.map(o => o.name).join(' & '),
+                    img: track.album.coverLocation,
+                    src: playlist.prefixFiles + track.fileLocation
+                } 
+            });
+            
+            configurePlayer(allMusic);
+        }
+    });
+   
 })
