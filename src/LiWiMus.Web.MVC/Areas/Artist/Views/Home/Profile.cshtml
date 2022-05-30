@@ -1,7 +1,14 @@
-﻿@model LiWiMus.Core.Artists.Artist
+﻿@using LiWiMus.Web.MVC.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@model LiWiMus.Core.Artists.Artist
+@inject IOptions<PullUrls> Urls;
+
 @{
     ViewData["Title"] = "Artist Profile";
     Layout = "_LayoutSidebar";
+
+    var photoPath = Urls.Value.FileServer + Model.PhotoLocation;
 }
 
 @section Header{
@@ -33,7 +40,7 @@
 
         <section class="edit-inputs-group">
             <div>
-                <img style="margin: 2%; border-radius:100%; width: 120px" src="/@Model.PhotoLocation" alt="artist photo">
+                <img style="margin: 2%; border-radius:100%; width: 120px" src="@photoPath" alt="artist photo">
             </div>
             <form method="put"
                   enctype="multipart/form-data"

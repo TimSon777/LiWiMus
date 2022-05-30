@@ -1,20 +1,15 @@
-﻿#region
-
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Artists;
 using LiWiMus.Core.Artists.Specifications;
-using LiWiMus.Core.Settings;
+using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.Shared.Services.Interfaces;
+using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-
-#endregion
 
 namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 
@@ -22,24 +17,21 @@ namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 [Route("[area]")]
 public class HomeController : Controller
 {
-    private readonly IFormFileSaver _formFileSaver;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
-    private readonly SharedSettings _settings;
+    private readonly IFileService _fileService;
 
     public HomeController(UserManager<Core.Users.User> userManager,
                           IAuthorizationService authorizationService,
-                          IMapper mapper, IRepository<Core.Artists.Artist> artistRepository,
-                          IFormFileSaver formFileSaver, IOptions<SharedSettings> settings)
+                          IMapper mapper, IRepository<Core.Artists.Artist> artistRepository, IFileService fileService)
     {
         _userManager = userManager;
         _authorizationService = authorizationService;
         _mapper = mapper;
         _artistRepository = artistRepository;
-        _formFileSaver = formFileSaver;
-        _settings = settings.Value;
+        _fileService = fileService;
     }
 
     [HttpGet("")]
@@ -109,21 +101,31 @@ public class HomeController : Controller
     }
 
     [HttpPost("[action]")]
-    [FormValidator]
     public async Task<IActionResult> Create(CreateArtistViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+
+        var fileResult = await _fileService.Save(viewModel.Photo.ToStreamPart());
+        if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+        {
+            ModelState.AddModelError(nameof(CreateArtistViewModel.Photo), "Bad photo");
+            return View(viewModel);
+        }
+
         var user = await _userManager.GetUserAsync(User);
 
         var artist = new Core.Artists.Artist
         {
             Name = viewModel.Name,
             About = viewModel.About,
-            PhotoLocation = viewModel.PhotoLocation
+            PhotoLocation = fileResult.Content.Location
         };
         artist.UserArtists = new List<UserArtist> {new() {User = user, Artist = artist}};
         artist = await _artistRepository.AddAsync(artist);
 
-        return FormResult.CreateSuccessResult("Created successfully",
-            Url.Action("Profile", "Home", new {Area = "Artist", artist.Id}));
+        return RedirectToAction("Profile", "Home", new {Area = "Artist", artist.Id});
     }
 }

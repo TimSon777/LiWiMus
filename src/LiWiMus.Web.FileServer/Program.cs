@@ -27,7 +27,16 @@ builder.Services.AddFluentValidation(options =>
 
 builder.Services.AddSwaggerWithAuthorize(builder.Environment.ApplicationName);
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(policyBuilder =>
+{
+    policyBuilder.AllowAnyMethod();
+    policyBuilder.AllowAnyOrigin();
+    policyBuilder.AllowAnyHeader();
+}));
+
 var app = builder.Build();
+
+app.UseCors();
 
 app.UseAuthorization();
 

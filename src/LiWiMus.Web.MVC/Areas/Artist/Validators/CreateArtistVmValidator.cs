@@ -24,7 +24,7 @@ public class CreateArtistVmValidator : AbstractValidator<CreateArtistViewModel>
             .MaximumLength(500)
             .DisableTags();
 
-        RuleFor(model => model.PhotoLocation)
+        RuleFor(model => model.Photo)
             .NotEmpty();
     }
 }

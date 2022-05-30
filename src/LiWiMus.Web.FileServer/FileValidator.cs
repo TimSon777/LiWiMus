@@ -9,7 +9,9 @@ public class FileValidator : AbstractValidator<SaveFileRequest>
     {
         const long maxLength = 10_000_000;
 
-        RuleFor(request => request.File.Length)
-            .LessThan(maxLength);
+        RuleFor(request => request.File)
+            .Cascade(CascadeMode.Stop)
+            .NotNull()
+            .Must(file => file.Length < maxLength);
     }
 }

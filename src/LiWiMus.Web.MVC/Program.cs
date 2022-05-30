@@ -2,6 +2,7 @@ using System.Reflection;
 using EntityFrameworkCore.Triggers;
 using FluentValidation.AspNetCore;
 using FormHelper;
+using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.Interfaces.Mail;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data.Config;
@@ -28,14 +29,17 @@ services.AddDbContext(configuration.GetConnectionString("DefaultConnection"));
 services.AddCoreServices();
 services.AddTriggers();
 var section = configuration.GetRequiredSection(nameof(PullUrls));
+var pullUrls = section.Get<PullUrls>();
 services.Configure<PullUrls>(section);
 services
     .AddRefitClient<IMailService>()
     .ConfigureHttpClient(c =>
     {
-        var pullUrls = section.Get<PullUrls>();
         c.BaseAddress = new Uri(pullUrls.MailServer);
     });
+services
+    .AddRefitClient<IFileService>()
+    .ConfigureHttpClient(c => { c.BaseAddress = new Uri(pullUrls.FileServer); });
 
 TriggersConfiguration.ConfigureTriggers();
 
