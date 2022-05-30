@@ -1,0 +1,16 @@
+@model System.Collections.Generic.List<LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels.UserGeneralInfoViewModel>
+
+@{
+    Layout = "_MediaLibraryLayout";
+}
+
+<section>
+    @foreach (var user in Model)
+    {
+        <div>
+            <a asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@user.Id">
+                @user.UserName
+            </a>
+        </div>
+    }
+</section>
