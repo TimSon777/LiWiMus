@@ -52,9 +52,9 @@
         <div class="m-3">
             @if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Private.Name) is {Succeeded:true})
             {
-                <form method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity">
+                <form class="m-3" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity">
                     <input type="hidden" name="playlistId" value="@Model.Id">
-                    <input class="edit-button" type="submit" value="Toggle publicity">
+                    <input class="change-password-button" type="submit" value="Toggle publicity">
                 </form>
             }
             else
@@ -67,10 +67,10 @@
         <div class="m-3">
             @if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Cover.Name) is {Succeeded:true})
                     {
-                        <form method="post" asp-area="User" asp-controller="Playlist" asp-action="" enctype="multipart/form-data">
+                        <form class="m-3" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="" enctype="multipart/form-data">
                             <input type="hidden" name="Id" value="@Model.Id">
                             <input class="form-control" type="file" name="Photo" accept="image/*">
-                            <input class="edit-button" type="submit" value="Update photo">
+                            <input class="change-password-button" type="submit" value="Update photo">
                         </form>
                     }
                     else
@@ -80,7 +80,7 @@
         </div>
         
 
-        <form class="m-5" method="post" asp-area="User" asp-controller="Playlist" asp-action="Update">
+        <form asp-formhelper="true" class="m-3" method="post" asp-area="User" asp-controller="Playlist" asp-action="Update">
             <input type="hidden" name="Id" value="@Model.Id">
             <input class="form-control" type="text" name="Name">
             <input class="edit-button" type="submit" value="Edit">
