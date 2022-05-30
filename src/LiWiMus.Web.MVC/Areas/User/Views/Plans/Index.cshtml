@@ -11,7 +11,7 @@
 
 <h1 class="plans-header">Plans</h1>
 <section class="tarif-section">
-    <h2>Active plans</h2> 
+    <h2>Active plans</h2>
     <div class="tariffs-cards active-plan">
         @foreach (var plan in Model.ActivePlans)
         {
@@ -45,7 +45,7 @@
 </section>
 
 <section class="tarif-section">
-    <h2>Available plans</h2> 
+    <h2>Available plans</h2>
     <div class="tariffs-cards">
         @foreach (var plan in Model.AvailablePlans)
         {
@@ -56,10 +56,16 @@
                             @plan.Name
                         </div>
                         <div class="tariff-description">
+                            @plan.Description
                         </div>
                     </div>
                     <div class="tariff-advantages mb-5 mt-4">
-                        @plan.Description
+                        @foreach (var permission in plan.Permissions)
+                        {
+                            <div class="advantage mb-3">
+                                <p class="advantage-text">@permission.Description</p>
+                            </div>
+                        }
                     </div>
                     <div class="buy-tariff-button-container">
                         <a asp-action="Details" asp-route-planId="@plan.Id">

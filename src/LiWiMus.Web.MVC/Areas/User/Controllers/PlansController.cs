@@ -17,14 +17,16 @@ public class PlansController : Controller
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly IMapper _mapper;
     private readonly IUserPlanManager _userPlanManager;
+    private readonly SignInManager<Core.Users.User> _signInManager;
 
     public PlansController(IPlanManager planManager, UserManager<Core.Users.User> userManager, IMapper mapper,
-                           IUserPlanManager userPlanManager)
+                           IUserPlanManager userPlanManager, SignInManager<Core.Users.User> signInManager)
     {
         _planManager = planManager;
         _userManager = userManager;
         _mapper = mapper;
         _userPlanManager = userPlanManager;
+        _signInManager = signInManager;
     }
 
     public async Task<IActionResult> Index()
@@ -80,6 +82,7 @@ public class PlansController : Controller
         try
         {
             await _userPlanManager.BuyPlanAsync(user, plan, TimeSpan.FromDays(30 * model.MonthsNumber));
+            await _signInManager.RefreshSignInAsync(user);
             return FormResult.CreateSuccessResult("Ok");
         }
         catch (UserDoesntHaveEnoughMoneyException)
