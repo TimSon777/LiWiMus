@@ -1660,11 +1660,76 @@ ul li.playing{
 }
 
 .wrapper {
-
   box-sizing: border-box;
   backdrop-filter: blur(10px);
 }
 
 .for-background {
   /*background-image: url('/Music Player in JavaScript/images/Orb.gif');*/
+}
+
+.map-container {
+  padding: 2rem;
+
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 480px) {
+    padding: 1rem;
+  }
+}
+
+.map {
+  width: 600px; 
+  height: 400px;
+  border: 1px solid white;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 10px;
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 540px) {
+    padding: 0.3rem;
+    width: 90%;
+    height: 50%;
+  }
+}
+
+.map-menu {
+  font-size: 18px;
+  padding: 1rem;
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 480px) {
+    padding: 0.2rem;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    padding: 0;
+    li {
+      text-align: center;
+      color: white;
+      background-color: $color_2;
+      margin: 1rem;
+      padding: 1rem;
+      border: 1px solid white;
+      border-radius: 10px;
+      @media only screen
+      and (min-device-width : 280px)
+      and (max-device-width : 480px) {
+        padding: 0.3rem;
+      }
+      
+      a{
+        text-decoration: none;
+
+        &:hover {
+          color: $color_1;
+        }
+      }
+
+    }
+  }
 }
