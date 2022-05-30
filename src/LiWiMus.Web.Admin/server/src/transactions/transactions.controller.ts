@@ -35,7 +35,7 @@ export class TransactionsController {
                 throw new HttpException({
                     message: err.message
                 }, HttpStatus.BAD_REQUEST)});
-        let count = await Transaction.count({where: obj.where});
+        let count = await Transaction.count({where: obj.where, relations: obj.relations});
         return new PaginatedData<TransactionDto>(data, normalizedOptions, count);
     }
 }

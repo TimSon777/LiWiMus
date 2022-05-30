@@ -40,6 +40,22 @@ export class FilterService {
             }
         }
     }
+
+    private createRecObj(propArr, resultingObj, index: number = 0) {
+        for (let j = index, len1 = propArr.length; j < len1; j += 1) {
+            let prop = propArr[j];
+            if (!resultingObj[prop]) {
+                resultingObj[prop] = {};
+            }
+            if (propArr[j + 1] === propArr[propArr.length-1]) {
+                resultingObj[prop] = propArr[j + 1];
+                j += 1;
+            } else {
+                this.createRecObj(propArr, resultingObj[prop], j + 1);
+                j = len1;
+            }
+        }
+    }
     
     public GetWhereObject(filters : Filter[]) : any {
         let whereObj = {};
@@ -47,7 +63,8 @@ export class FilterService {
            const filter = filters[i];
            const conditional = FilterService.GetConditionalByOperator(filter.operator, filter.value);
            if (conditional) {
-               whereObj[filter.columnName] = conditional;
+               let recursiveColumnName : any[] = filter.columnName.split('.').concat(conditional);
+               this.createRecObj(recursiveColumnName, whereObj);
            }
         }
         
