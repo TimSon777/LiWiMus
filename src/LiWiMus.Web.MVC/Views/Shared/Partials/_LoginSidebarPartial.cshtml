@@ -29,7 +29,10 @@
                     <a class="text-link" asp-area="User" asp-controller="Profile" asp-action="Index">Profile</a>
                 </div>
                 <div>
-                    <a class="text-link">Media library</a>
+                    <a class="text-link" asp-area="User" asp-controller="MediaLibrary" asp-action="Tracks">Media library</a>
+                </div>
+                <div>
+                    <a class="text-link" asp-area="Search" asp-controller="Track" asp-action="Index">Search</a>
                 </div>
                 <div>
                     <form class="form-inline" asp-area="User" asp-controller="Account" asp-action="Logout">
@@ -60,7 +63,7 @@
         <div>
             <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-link">Privacy</a>
         </div>
-<div>
+        <div>
             <a asp-area="User" asp-controller="Plans" asp-action="Index" class="text-link">Plans</a>
         </div>
         <div>
