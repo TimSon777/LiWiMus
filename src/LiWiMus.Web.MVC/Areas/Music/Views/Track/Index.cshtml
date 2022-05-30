@@ -25,10 +25,14 @@
         }
         controls
         src="@src">
-            Your browser does not support the
-            <code>audio</code> element.
+        Your browser does not support the
+        <code>audio</code> element.
     </audio>
 </figure>
+
+<a asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@Model.Name">
+    Download
+</a>
 
 <div class="p-0 album-profile">
     <div class="editor-wrap">
