@@ -57,7 +57,7 @@ public class PlaylistController : Controller
             return Json(playlistVm);
         }
         
-        return View(playlistVm);
+        return View("Index", playlistVm);
     }
     [HttpGet]
     public async Task<IActionResult> Index(int playlistId)
