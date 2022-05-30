@@ -17,26 +17,32 @@
         </h2>
     </div>
     <section class="edit-inputs-group">
-    @foreach (var track in Model.Tracks)
-    {
-        <p>@track.Name</p>
+        @foreach (var track in Model.Tracks)
+        {
+            <p>@track.Name</p>
 
-        <form class="form-add-track-to-playlist" method="post" asp-action="AddOrRemoveTrack">
-            <input type="hidden" name="@nameof(TrackPlaylistViewModel.TrackId)" value="@track.Id">
-            <input type="hidden" name="@nameof(TrackPlaylistViewModel.PlaylistId)" value="@Model.Id">
-            <input type="submit" value="Remove">
+            <form class="form-add-track-to-playlist" method="post" asp-action="AddOrRemoveTrack">
+                <input type="hidden" name="@nameof(TrackPlaylistViewModel.TrackId)" value="@track.Id">
+                <input type="hidden" name="@nameof(TrackPlaylistViewModel.PlaylistId)" value="@Model.Id">
+                <input type="submit" class="edit-button" value="Remove">
+            </form>
+        }
+
+        <form id="search-tracks-to-playlist" method="get" asp-action="Search">
+            <div class="label-input">
+                <input type="text" class="form-control" name="@nameof(SearchForPlaylistViewModel.Title)"/>
+                <input type="hidden" name="@nameof(SearchForPlaylistViewModel.PlaylistId)" value="@Model.Id"/>
+            </div>
+            <div>
+                <button class="edit-button">Search</button>
+
+            </div>
         </form>
-    }
 
-    <form id="search-tracks-to-playlist" method="get" asp-action="Search">
-        <input type="text" name="@nameof(SearchForPlaylistViewModel.Title)"/>
-        <input type="hidden" name="@nameof(SearchForPlaylistViewModel.PlaylistId)" value="@Model.Id"/>
-        <button>Search</button>
-    </form>
-</section>
-    <div id="tracks-to-playlist">
+        <div id="tracks-to-playlist">
 
-    </div>
+        </div>
+    </section>
 </div>
 
 @section Scripts
