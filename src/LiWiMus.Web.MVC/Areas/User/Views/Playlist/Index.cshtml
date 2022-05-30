@@ -54,7 +54,7 @@
             {
                 <form class="m-3" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity" asp-enableButtonAfterSuccess="true">
                     <input type="hidden" name="playlistId" value="@Model.Id">
-                    <input class="mt-2 change-password-button" type="submit" value="Toggle publicity">
+                    <input class="mt-2 change-password-button" type="submit" value="Toggle publicity" style="background: none; border-color: #EF6817">
                 </form>
             }
             else
@@ -70,7 +70,7 @@
                         <form class="m-3" asp-enableButtonAfterSuccess="true" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="UpdatePhoto" enctype="multipart/form-data">
                             <input type="hidden" name="Id" value="@Model.Id">
                             <input class="form-control" type="file" name="Photo" accept="image/*">
-                            <input class="mt-2 change-password-button" type="submit" value="Update photo">
+                            <input class="mt-2 change-password-button" type="submit" value="Update photo" style="background: none; border-color: #EF6817">
                         </form>
                     }
                     else
