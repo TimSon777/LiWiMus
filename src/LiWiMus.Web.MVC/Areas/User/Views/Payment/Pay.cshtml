@@ -1,11 +1,16 @@
-﻿@model LiWiMus.Web.MVC.Areas.User.ViewModels.PaymentViewModel
-
+﻿@using Microsoft.AspNetCore.Identity
+@using LiWiMus.Core.Users
+@model LiWiMus.Web.MVC.Areas.User.ViewModels.PaymentViewModel
+@inject UserManager<User> _userManager
 @{
     ViewData["Title"] = "Pay";
     Layout = "_LayoutSidebar";
 }
-
+@{ var user = await _userManager.GetUserAsync(User);}
 <div class="payment-form-container change-password-container">
+    <div class="p-4" style="outline: 1px solid wheat; width: fit-content; border-radius:10px; margin: 0 auto ">
+       Balance: @Math.Round(user.Balance,2)
+    </div>
     <div class="change-password-outline row justify-content-center">
         <div class="change-password-form-container">
             <h3 class="mb-4" style="padding-bottom: 4%; border-bottom: 2px solid #EF6817">Pay</h3>

@@ -19,12 +19,22 @@
         </div>
         @foreach (var playlist in Model.Playlists)
         {
-            <div>
-                <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
-                    @playlist.Name
-                </a>
+            <div style=" display: grid;
+                          grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                        /*  grid-gap: 1rem;*/
+                          margin-bottom: 1rem;">
+                <div>
+                    <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+                        @playlist.Name
+                    </a>
+                </div>
+                <div>
+                    <a asp-area="User" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+                        <button class="edit-button" type="submit" id="btn-edit-profile-info">Edit</button>
+                    </a>
+                </div>
 
-                <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
+
             </div>
         }
     </section>
