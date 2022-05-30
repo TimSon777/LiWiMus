@@ -42,5 +42,10 @@ public class ProfileViewModelValidator : AbstractValidator<ProfileViewModel>
         RuleFor(vm => vm.BirthDate)
             .LessThan(DateOnly.FromDateTime(DateTime.Now))
             .GreaterThan(new DateOnly(1900, 1, 1));
+
+        RuleFor(vm => vm.Avatar)
+            .Must(avatar => avatar!.ContentType.StartsWith("image"))
+            .When(vm => vm.Avatar is not null)
+            .WithMessage("Bad image");
     }
 }

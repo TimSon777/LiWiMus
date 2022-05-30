@@ -23,5 +23,10 @@ public class UpdateArtistVmValidator : AbstractValidator<UpdateArtistViewModel>
             .NotEmpty()
             .MaximumLength(500)
             .DisableTags();
+
+        RuleFor(model => model.Photo)
+            .Must(cover => cover!.ContentType.StartsWith("image"))
+            .When(model => model.Photo is not null)
+            .WithMessage("Bad image");
     }
 }

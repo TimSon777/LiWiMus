@@ -22,6 +22,8 @@ public class CreateTrackVmValidator : AbstractValidator<CreateTrackViewModel>
             .NotEmpty();
 
         RuleFor(model => model.File)
-            .NotEmpty();
+            .NotEmpty()
+            .Must(file => file.ContentType.StartsWith("audio"))
+            .WithMessage("Bad audio file");
     }
 }

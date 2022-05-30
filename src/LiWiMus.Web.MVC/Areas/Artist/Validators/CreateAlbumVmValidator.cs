@@ -14,5 +14,9 @@ public class CreateAlbumVmValidator : AbstractValidator<CreateAlbumViewModel>
             .MaximumLength(50);
         RuleFor(model => model.PublishedAt)
             .NotEmpty();
+        RuleFor(model => model.Cover)
+            .NotEmpty()
+            .Must(cover => cover.ContentType.StartsWith("image"))
+            .WithMessage("Bad image");
     }
 }

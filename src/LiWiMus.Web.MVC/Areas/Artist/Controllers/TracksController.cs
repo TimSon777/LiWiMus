@@ -127,9 +127,16 @@ public class TracksController : Controller
         }
 
         _mapper.Map(viewModel, track);
-        if (viewModel.FileLocation is not null)
+        if (viewModel.File is not null)
         {
-            track.FileLocation = viewModel.FileLocation;
+            var fileResult = await _fileService.Save(viewModel.File.ToStreamPart());
+            if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+            {
+                return FormResult.CreateErrorResult("Bad Image");
+            }
+
+            var r = await _fileService.Remove(track.FileLocation[1..]);
+            track.FileLocation = fileResult.Content.Location;
         }
 
         await _tracksRepository.UpdateAsync(track);
@@ -145,6 +152,11 @@ public class TracksController : Controller
     [HttpPost("[action]")]
     public async Task<IActionResult> Create(int artistId, CreateTrackViewModel viewModel)
     {
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+        
         var artist = await _artistRepository.GetBySpecAsync(new ArtistWithOwnersByIdSpec(artistId));
         var album = await _albumsRepository.GetBySpecAsync(new DetailedAlbumByIdSpec(viewModel.AlbumId));
 

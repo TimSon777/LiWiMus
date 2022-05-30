@@ -25,6 +25,8 @@ public class CreateArtistVmValidator : AbstractValidator<CreateArtistViewModel>
             .DisableTags();
 
         RuleFor(model => model.Photo)
-            .NotEmpty();
+            .NotEmpty()
+            .Must(photo => photo.ContentType.StartsWith("image"))
+            .WithMessage("Bad image");
     }
 }
