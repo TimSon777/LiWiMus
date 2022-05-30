@@ -28,6 +28,11 @@ h2 {
   }
 }
 
+textarea {
+  &::-webkit-scrollbar{
+    width: 0;
+  }
+}
 
 .edit-btns {
   color: $btn-text-color;
@@ -253,6 +258,10 @@ h2 {
     background-color: #e15035;
     border-color: #e15035;
   }
+  &:focus {
+    background-color: #e15035;
+    border-color: #e15035;
+  }
 }
 
 .btn-close-chat {
@@ -273,7 +282,7 @@ h2 {
   justify-content: center; 
   outline: 1px solid white;
   padding: 20px; 
-  margin: 3% auto 0;
+  margin: 1rem auto 0;
   border-radius: 10px; 
   width: fit-content; 
   background-color: rgba(68,68,68,0.15); 
@@ -288,20 +297,6 @@ h2 {
   display: flex; 
   flex-direction: column; 
   align-items: center;
-}
-
-.chat {
-  outline: 1px solid #fff7f7;
-  margin: 20px;
-  max-height: 400px;
-  overflow: auto;
-  padding: 6px;
-  border-radius: 10px;
-  width: fit-content;
-  background-color: rgba(68,68,68,0.15);
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  max-width: 100%;
-  color: white;
 }
 
 .messages-area {
@@ -319,7 +314,6 @@ h2 {
 
 .send-message {
   display: flex;
-  flex-direction: row-reverse;
   flex-wrap: wrap;
 }
 
@@ -346,10 +340,6 @@ div::-webkit-scrollbar-thumb {
 .text-area-custom {
   width: 70%;
   background: none;
-  &::-webkit-scrollbar{
-    width: 0;
-  }
-  
   &:focus {
     background: none;
     border-color: $color_1;
@@ -1749,7 +1739,45 @@ ul li.playing{
           color: $color_1;
         }
       }
-
     }
   }
+}
+
+.chats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+}
+
+.chat-textarea {
+  overflow: auto;
+  max-height: 300px;
+}
+
+.chat {
+  outline: 1px solid #fff7f7;
+  margin: 20px;
+  max-height: 600px;
+  padding: 6px;
+  border-radius: 10px;
+  width: fit-content;
+  background-color: rgba(68,68,68,0.15);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+  max-width: 100%;
+  color: white;
+
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 480px) {
+    max-width: 80%;
+  }
+}
+
+.consultant-chat-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  width: 260px;
 }
