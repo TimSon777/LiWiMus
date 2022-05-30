@@ -29,8 +29,8 @@ function configurePlayer(allMusic) {
     function loadMusic(indexNumb){
         musicName.innerText = allMusic[indexNumb - 1].name;
         musicArtist.innerText = allMusic[indexNumb - 1].artist;
-        musicImg.src = `images/${allMusic[indexNumb - 1].src}.jpg`;
-        mainAudio.src = `songs/${allMusic[indexNumb - 1].src}.mp3`;
+        musicImg.src = `${allMusic[indexNumb - 1].img}`;
+        mainAudio.src = `${allMusic[indexNumb - 1].realSrc}`;
     }
 
 
@@ -175,7 +175,7 @@ function configurePlayer(allMusic) {
                   <p>${allMusic[i].artist}</p>
                 </div>
                 <span id="${allMusic[i].src}" class="audio-duration">3:40</span>
-                <audio class="${allMusic[i].src}" src="songs/${allMusic[i].src}.mp3"></audio>
+                <audio class="${allMusic[i].src}" src="${allMusic[i].realSrc}"></audio>
               </li>`;
         ulTag.insertAdjacentHTML("beforeend", liTag); //inserting the li inside ul tag
 
@@ -234,8 +234,9 @@ $(document).ready(() => {
                 return {
                     name: track.name,
                     artist: track.owners.map(o => o.name).join(' & '),
-                    img: track.album.coverLocation,
-                    src: playlist.prefixFiles + track.fileLocation
+                    img: playlist.prefixFiles + track.album.coverLocation,
+                    src: track.fileLocation.split('/')[1],
+                    realSrc: playlist.prefixFiles + track.fileLocation,
                 } 
             });
             
