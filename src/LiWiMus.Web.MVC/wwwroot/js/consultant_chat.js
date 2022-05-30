@@ -97,7 +97,7 @@ async function displayNewChat(connection) {
                 method: 'GET',
                 url: `/User/SupportChat/ChatForConsultant?userName=${userName}`,
                 success: async (html) => {
-                    $('#chats').html(html);
+                    $('#chats').append(html);
                     await refreshHandlerAsync(connection, userName);
                 },
                 error: (jqXHR, exception) => {
