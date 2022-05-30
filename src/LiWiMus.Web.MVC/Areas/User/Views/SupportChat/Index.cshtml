@@ -8,7 +8,7 @@
 <div class="chat-and-textarea-and-button">
     <div class="messages-area" id="chat"></div>
     <div class="textarea-send-btn">
-        <textarea class="form-control text-area-custom" id="ta-send-to-consultant" rows="3"></textarea>
+        <textarea class="form-control text-area-custom" id="ta-send-to-consultant" rows="3" pattern="^[^<>]*$" minlength="1" maxlength="200"></textarea>
         <div class="chat-btn-wrap">
             <button class="btn-send-to-chat" id="btn-send-to-consultant">
                 Send

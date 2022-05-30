@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using FormHelper;
 using LiWiMus.Core.Interfaces.Mail;
 using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
@@ -125,6 +126,20 @@ public class AccountController : Controller
         return RedirectToAction("Index", "Home", new {area = ""});
     }
 
+    [HttpPost]
+    [FormValidator]
+    public async Task<IActionResult> SendConfirmEmailAgain()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        
+        if (user.EmailConfirmed)
+        {
+            return FormResult.CreateInfoResult("Your account is verified");
+        }
+        
+        return await SendConfirmEmailAsync(user);
+    }
+
     private async Task<IActionResult> SendConfirmEmailAsync(Core.Users.User user)
     {
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -139,8 +154,8 @@ public class AccountController : Controller
             new ConfirmAccountRequest(user.UserName, user.Email, confirmUrl!));
 
         return response.IsSuccessStatusCode
-            ? Ok("Проверьте почтовый ящик")
-            : BadRequest(response.Error);
+            ? FormResult.CreateSuccessResult("Check your mailbox")
+            : FormResult.CreateErrorResult("Some error with sending email, try again later");
     }
 
     [HttpPost]

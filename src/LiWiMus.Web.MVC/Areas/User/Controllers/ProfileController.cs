@@ -30,9 +30,9 @@ public class ProfileController : Controller
     private readonly IOptions<PullUrls> _pullUrls;
 
     public ProfileController(UserManager<Core.Users.User> userManager,
-                             IMapper mapper, IAvatarService avatarService,
-                             IRepository<Core.Users.User> userRepository, IFileService fileService,
-                             IOptions<PullUrls> pullUrls)
+        IMapper mapper, IAvatarService avatarService,
+        IRepository<Core.Users.User> userRepository, IFileService fileService,
+        IOptions<PullUrls> pullUrls)
     {
         _userManager = userManager;
         _mapper = mapper;
@@ -62,12 +62,12 @@ public class ProfileController : Controller
         var profile = _mapper.Map<ProfileViewModel>(user);
         profile.IsAccountOwner = currentUser == user;
         var isFollower = await _userRepository.IsUserFollowAsync(currentUser.Id, user.Id);
-        
+
         if (isFollower != null)
         {
             profile.IsSubscribed = isFollower.Value;
         }
-        
+
         return View(profile);
     }
 
@@ -111,31 +111,33 @@ public class ProfileController : Controller
         var user = await _userManager.GetUserAsync(User);
 
         _mapper.Map(model, user);
-
+        
+        if (user.Email != model.Email)
+        {
+            user.EmailConfirmed = false;
+        }
+        
         if (model.Avatar is not null)
         {
-            if (model.Avatar is not null)
+            var fileResult = await _fileService.Save(model.Avatar.ToStreamPart());
+            if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
             {
-                var fileResult = await _fileService.Save(model.Avatar.ToStreamPart());
-                if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
-                {
-                    return FormResult.CreateErrorResult("Bad photo");
-                }
-
-                if (user.AvatarLocation is not null)
-                {
-                    await _fileService.Remove(user.AvatarLocation[1..]);
-                }
-
-                user.AvatarLocation = fileResult.Content.Location;
+                return FormResult.CreateErrorResult("Bad photo");
             }
+
+            if (user.AvatarLocation is not null)
+            {
+                await _fileService.Remove(user.AvatarLocation[1..]);
+            }
+
+            user.AvatarLocation = fileResult.Content.Location;
         }
 
         var result = await _userManager.UpdateAsync(user);
 
         return result.Succeeded
             ? FormResult.CreateSuccessResult("Ok")
-            : FormResult.CreateErrorResult("Fu");
+            : FormResult.CreateErrorResult(result.Errors.FirstOrDefault()?.Description ?? "Some error");
     }
 
     [HttpPost("[action]")]

@@ -1016,7 +1016,8 @@ div::-webkit-scrollbar-thumb {
 
 .music-track-section {
   @extend .users;
-  margin-top: 3rem;
+  background-color: $color_4;
+  padding-top: 1rem;
 }
 
 .music-track-container {
@@ -1822,5 +1823,54 @@ ul li.playing{
   and (min-device-width : 280px)
   and (max-device-width : 480px) {
     font-size: 32px;
+  }
+}
+
+.verified-text {
+  margin-left: 2rem;
+  margin-bottom: 0;
+}
+
+.verify-account-container {
+  form {
+    input {
+      background: none;
+    }
+  }
+}
+
+.manage-artist {
+  @extend .random-avatar-button;
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 480px) {
+    font-size: 14px;
+    margin: 0 auto;
+  }
+}
+
+
+.top-buttons-container {
+  display: flex;
+  flex-direction: column;
+
+  @media only screen
+  and (min-device-width : 280px)
+  and (max-device-width : 480px) {
+      justify-content: center;
+      align-items: center;
+    gap: 1rem;
+  }
+}
+
+@media only screen
+and (min-device-width : 280px)
+and (max-device-width : 480px) {
+  .your-profile-header {
+    text-align: center;
+  }
+
+  .verified-text {
+    margin-left: 0;
   }
 }
