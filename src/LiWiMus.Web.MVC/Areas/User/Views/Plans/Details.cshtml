@@ -3,7 +3,13 @@
 @{
     ViewData["Title"] = "Plan";
 }
-<section>
+
+@section Header
+{
+    <partial name="Partials/_PlainHeaderPartial"/>
+}
+
+<section class="p-3">
     <a asp-area="User" asp-controller="Plans" asp-action="Index">
         <button class="random-avatar-button">
             Back
@@ -59,10 +65,11 @@
                 </p>
                 @if (!Model.IsActive)
                 {
-                    <form asp-formhelper="true" asp-resetFormAfterSuccess="false" method="post" asp-action="BuyPlan">
+                    <form class="buy-plan-form" asp-formhelper="true" asp-resetFormAfterSuccess="false" method="post" asp-action="BuyPlan"
+                          asp-callback="changeBuyButton">
                         <input type="text" hidden="hidden" name="planId" value="@Model.Id">
                         <input type="text" hidden="hidden" name="monthsNumber" value="1">
-                        <button type="submit" class="buy-tariff-button ">Buy</button>
+                        <button type="submit" class="buy-tariff-button">Buy</button>
                     </form>
                 }
                 else
@@ -73,3 +80,9 @@
         </div>
     </div>
 </section>
+<script>
+    function changeBuyButton() {
+        const btn = $(this).find('button[type="submit"]')[0];
+        btn.target.innerText = 'Purchased';
+    }
+</script>
