@@ -25,7 +25,7 @@
             </div>
         </div>
         
-        <textarea class="ta-send-message-to-user" id="@Model.chat.UserConnectionId"></textarea>
+        <textarea class="ta-send-message-to-user" id="@Model.chat.UserConnectionId" maxlength="200" required="required"></textarea>
         <div class="consultant-chat-buttons">
                 <button id="btn-@Model.chat.User.UserName" class="btn-send-to-user m-3" value="@Model.chat.UserConnectionId">Send</button>
             <button class="btn-close-chat-by-consultant-@Model.chat.User.UserName btn-send-to-chat" value="@Model.chat.User.UserName" style="outline: 1px solid red">Close chat</button>

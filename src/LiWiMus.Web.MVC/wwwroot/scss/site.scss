@@ -1016,7 +1016,8 @@ div::-webkit-scrollbar-thumb {
 
 .music-track-section {
   @extend .users;
-  margin-top: 3rem;
+  background-color: $color_4;
+  padding-top: 1rem;
 }
 
 .music-track-container {
