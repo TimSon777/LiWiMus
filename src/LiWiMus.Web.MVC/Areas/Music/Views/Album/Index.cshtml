@@ -26,11 +26,11 @@
                 <input name="albumId" type="hidden" value="@Model.Id">
                 @if (Model.IsSubscribed)
                 {
-                    <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                    <button class="subscribe-button subscribed" id="unsubscribtionButton">Unsubscribe</button>
                 }
                 else
                 {
-                    <button id="subscribtionButton" class="edit-button">Subscribe</button>
+                    <button id="subscribtionButton" class="subscribe-button">Subscribe</button>
                 }
             </form>
         </div>
