@@ -5,6 +5,7 @@ namespace LiWiMus.Web.MVC.Areas.Music.ViewModels;
 
 public class GenreViewModel : HasId
 {
-    public string Name { get; set; }
-    public List<TrackForListViewModel> Tracks { get; set; }
+    public string Name { get; set; }  = "";
+    // ReSharper disable once CollectionNeverUpdated.Global
+    public List<TrackForListViewModel> Tracks { get; set; } = new();
 }

@@ -4,6 +4,8 @@ namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
 public class TracksPlaylistViewModel
 {
-    public List<TrackForListViewModel> Tracks { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public List<TrackForListViewModel> Tracks { get; set; } = new();
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public int PlaylistId { get; set; }
 }

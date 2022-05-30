@@ -2,11 +2,18 @@
 
 public class PaymentViewModel
 {
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public int Amount { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string ReturnUrl { get; set; } = null!;
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? Reason { get; set; }
-    public string CardNumber { get; set; }
-    public string CardExpires { get; set; }
-    public string CardHolder { get; set; }
-    public string CvvCode { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string CardNumber { get; set; } = "";
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string CardExpires { get; set; } = "";
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string CardHolder { get; set; } = "";
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string CvvCode { get; set; } = "";
 }

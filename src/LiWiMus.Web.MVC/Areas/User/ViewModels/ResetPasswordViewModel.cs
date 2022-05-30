@@ -4,11 +4,16 @@ namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
 public class ResetPasswordViewModel
 {
-    [Required] public string UserId { get; set; }
+    [Required] 
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string UserId { get; set; } = "";
 
-    [Required] public string Token { get; set; }
+    [Required] 
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string Token { get; set; } = "";
 
     [Required]
     [DataType(DataType.Password)]
-    public string Password { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string Password { get; set; } = "";
 }

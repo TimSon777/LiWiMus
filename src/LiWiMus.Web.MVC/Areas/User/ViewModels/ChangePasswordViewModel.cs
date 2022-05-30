@@ -6,9 +6,11 @@ public class ChangePasswordViewModel
 {
     [Required]
     [DataType(DataType.Password)]
-    public string NewPassword { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string NewPassword { get; set; } = null!;
 
     [Required]
     [DataType(DataType.Password)]
-    public string OldPassword { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string OldPassword { get; set; } = null!;
 }

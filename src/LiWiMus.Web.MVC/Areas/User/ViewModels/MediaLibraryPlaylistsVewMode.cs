@@ -4,6 +4,8 @@ namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
 public class MediaLibraryPlaylistsVewMode
 {
-    public List<PlaylistGeneralInfoViewModel> Playlists { get; set; }
-    public List<PlaylistGeneralInfoViewModel> SubscribedPlaylists { get; set; }
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public List<PlaylistGeneralInfoViewModel> Playlists { get; set; } = null!;
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public List<PlaylistGeneralInfoViewModel> SubscribedPlaylists { get; set; } = null!;
 }
