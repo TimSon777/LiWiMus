@@ -11,7 +11,7 @@
     @foreach (var e in Model)
     {
         var src = Urls.Value.FileServer + e.Album.CoverLocation;
-        
+
         <a asp-area="Music" asp-controller="Track" asp-action="Index" asp-route-trackId="@e.Id">
             <div class="track-container search-item">
                 <img class="track-image" src="@src" alt="Track cover." width="230px" height="230px"/>

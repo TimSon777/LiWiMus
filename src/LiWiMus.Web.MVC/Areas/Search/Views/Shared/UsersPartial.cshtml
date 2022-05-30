@@ -1,4 +1,8 @@
-﻿@model System.Collections.Generic.IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.UserForListViewModel>
+﻿@using LiWiMus.Web.MVC.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@model IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.UserForListViewModel>
+@inject IOptions<PullUrls> Urls
 
 <div class="users">
     @foreach (var user in Model)
@@ -9,11 +13,13 @@
                 <div class="user-image-container">
                     @if (user.AvatarLocation != null)
                     {
-                        <img class="user-image" src="@System.IO.Path.Combine(ViewData["fileServer"]?.ToString()!, user.AvatarLocation)" alt="User avatar."/>
+                        var src = Urls.Value.FileServer + user.AvatarLocation;
+                        
+                        <img class="user-image" src="@src" alt="User avatar."/>
                     }
                     else
                     {
-                        <img class="user-image" src="../images/main-background.jpg" alt="User avatar."/>
+                        <img class="user-image" src="~/images/avatar-placeholder.jpg" alt="User avatar."/>
                     }
                 </div>
                 <div class="user-information">

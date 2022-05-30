@@ -13,7 +13,7 @@
                     @if (playlist.PhotoLocation != null)
                     {
                         var src = Urls.Value.FileServer + playlist.PhotoLocation;
-                        
+
                         <img class="playlist-image" src="@src" alt="Playlist cover." width="250px" height="250px"/>
                     }
                     else
@@ -31,7 +31,7 @@
                     {
                         <p class="playlist-owner">Owner: @playlist.Owner.UserName</p>
                     }
-                
+
                     <p class="playlist-subscribers">Subscribers: @playlist.CountSubscribers</p>
                 </div>
             </div>
