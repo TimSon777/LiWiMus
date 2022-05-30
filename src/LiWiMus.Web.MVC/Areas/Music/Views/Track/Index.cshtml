@@ -38,7 +38,7 @@
             </figure>
                 
             <div class="download-button-container">
-                <a class="download-button" asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@Model.Name">
+                <a class="download-button" asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@(Model.Name+".mp3")">
                     Download
                 </a>
             </div>

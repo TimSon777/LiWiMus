@@ -1,5 +1,8 @@
-﻿@model IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.PlaylistForListViewModel>
-
+﻿@using LiWiMus.Web.MVC.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@model IEnumerable<LiWiMus.Web.MVC.ViewModels.ForListViewModels.PlaylistForListViewModel>
+@inject IOptions<PullUrls> Urls
 
 <div class="playlists">
     @foreach (var playlist in Model)
@@ -9,7 +12,9 @@
                 <div>
                     @if (playlist.PhotoLocation != null)
                     {
-                        <img class="playlist-image" src="@System.IO.Path.Combine(ViewData["fileServer"]?.ToString()!, playlist.PhotoLocation)" alt="Playlist cover." width="250px" height="250px"/>
+                        var src = Urls.Value.FileServer + playlist.PhotoLocation;
+                        
+                        <img class="playlist-image" src="@src" alt="Playlist cover." width="250px" height="250px"/>
                     }
                     else
                     {
