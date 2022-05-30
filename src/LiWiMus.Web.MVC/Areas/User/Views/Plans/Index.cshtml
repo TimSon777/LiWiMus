@@ -87,9 +87,11 @@
             <p class="contact-us-card-header mb-5">
                 Contact Us!
             </p>
-            <button class="contact-us-card-button m-1">
-                To chat
-            </button>
+            <a asp-area="User" asp-controller="SupportChat" asp-action="Index">
+                <button class="contact-us-card-button m-1">
+                    To chat
+                </button>
+            </a>
         </div>
     </div>
 </section>
