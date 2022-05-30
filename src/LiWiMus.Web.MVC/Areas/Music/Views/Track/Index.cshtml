@@ -20,8 +20,11 @@
 <figure>
     <figcaption>AAAAAAAAAAA</figcaption>
     <audio
+        @{
+            var src = $"http://localhost:5223{Model.FileLocation}";
+        }
         controls
-        src="http://localhost:5223@Model.FileLocation">
+        src="@src">
             Your browser does not support the
             <code>audio</code> element.
     </audio>
