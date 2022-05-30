@@ -10,6 +10,7 @@ import {Playlist} from "./playlists/playlist.entity";
 import {serialize} from "v8";
 import {UserArtist} from "./userArtist/userArtist.entity";
 import {MoreThan} from "typeorm";
+import {AuthorizeAdmin} from "./auth/auth.guard";
 
 @Controller()
 export class AppController {
@@ -122,5 +123,11 @@ export class AppController {
     //   } 
     // })
     return User.find({ skip: 0, take:10, relations: ["userArtists", "externalLogins", "transactions", "playlists"]});
+  }
+  
+  @Get('authtest')
+  @AuthorizeAdmin()
+  async fff(): Promise<string> {
+    return "OKKKK";
   }
 }

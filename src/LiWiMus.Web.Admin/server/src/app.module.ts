@@ -12,6 +12,8 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { GenresModule } from './genres/genres.module';
 import { AlbumsModule } from './albums/albums.module';
 import { PlaylistsModule } from './playlists/playlists.module';
+import {AuthModule} from "./auth/auth.module";
+import {ConfigModule} from "@nestjs/config";
 
 @Module({
   imports: [
@@ -20,13 +22,15 @@ import { PlaylistsModule } from './playlists/playlists.module';
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/admin',
     }),
+    ConfigModule.forRoot(),
     UsersModule,
     ArtistsModule,
     TracksModule,
     TransactionsModule,
     GenresModule,
     AlbumsModule,
-    PlaylistsModule
+    PlaylistsModule,
+    AuthModule  
   ],
   controllers: [AppController],
   providers: [AppService],
