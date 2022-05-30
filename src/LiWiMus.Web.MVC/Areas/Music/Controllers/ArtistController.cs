@@ -5,9 +5,11 @@ using LiWiMus.Core.LikedArtists;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
+using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.Music.Controllers;
 
@@ -18,18 +20,21 @@ public class ArtistController : Controller
     private readonly IMapper _mapper;
     private readonly UserManager<Core.Users.User> _userManager;
     private readonly IRepository<Core.Users.User> _userRepository;
+    private readonly IOptions<PullUrls> _options;
 
-    public ArtistController(IRepository<Core.Artists.Artist> artistRepository, IMapper mapper, UserManager<Core.Users.User> userManager, IRepository<Core.Users.User> userRepository)
+    public ArtistController(IRepository<Core.Artists.Artist> artistRepository, IMapper mapper, UserManager<Core.Users.User> userManager, IRepository<Core.Users.User> userRepository, IOptions<PullUrls> options)
     {
         _artistRepository = artistRepository;
         _mapper = mapper;
         _userManager = userManager;
         _userRepository = userRepository;
+        _options = options;
     }
     
     [HttpGet]
     public async Task<IActionResult> Index(int artistId)
     {
+        ViewData["fileServer"] = _options.Value.FileServer;
         var artist = await _artistRepository.WithAlbumsAndOwnersAsync(artistId);
     
         if (artist is null)
