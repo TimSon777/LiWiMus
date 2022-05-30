@@ -7,6 +7,7 @@ public sealed class ArtistWithOwnersByIdSpec : Specification<Artist>, ISingleRes
     public ArtistWithOwnersByIdSpec(int id)
     {
         Query.Where(artist => artist.Id == id)
-             .Include(artist => artist.Owners);
+             .Include(artist => artist.Owners)
+             .Include(artist => artist.Albums);
     }
 }

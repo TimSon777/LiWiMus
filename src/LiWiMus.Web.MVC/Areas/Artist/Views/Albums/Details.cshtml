@@ -68,7 +68,7 @@
         </div>
         <section class="edit-inputs-group">
             <div style="">
-                <a class="text-link" style="font-size: larger; font-weight: bolder" asp-area="Artist" asp-controller="Tracks" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-action="Create">Create new track</a>
+                <a class="text-link" style="font-size: larger; font-weight: bolder" asp-area="Artist" asp-controller="Tracks" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-route-albumId="@ViewContext.RouteData.Values["id"]" asp-action="Create">Create new track</a>
             </div>
             @{
                 foreach (var track in Model.Tracks)

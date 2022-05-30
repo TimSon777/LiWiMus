@@ -7,6 +7,5 @@ public class CreateTrackViewModel
     public string Name { get; set; } = null!;
 
     public DateOnly PublishedAt { get; set; }
-    public string FileLocation { get; set; } = null!;
-    public double Duration { get; set; }
+    public IFormFile File { get; set; } = null!;
 }

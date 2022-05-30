@@ -20,8 +20,5 @@ public class CreateTrackVmValidator : AbstractValidator<CreateTrackViewModel>
 
         RuleFor(model => model.AlbumId)
             .NotEmpty();
-
-        RuleFor(model => model.PublishedAt)
-            .LessThanOrEqualTo(DateOnly.FromDateTime(DateTime.Now));
     }
 }

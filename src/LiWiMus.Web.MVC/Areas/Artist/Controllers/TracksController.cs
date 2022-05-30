@@ -7,13 +7,14 @@ using LiWiMus.Core.Albums.Specifications;
 using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Genres;
 using LiWiMus.Core.Genres.Specifications;
+using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Helpers;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.Shared.Services.Interfaces;
+using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -26,7 +27,6 @@ namespace LiWiMus.Web.MVC.Areas.Artist.Controllers;
 [Route("Artist/{artistId:int}/[controller]")]
 public class TracksController : Controller
 {
-    private readonly IFormFileSaver _formFileSaver;
     private readonly IRepository<Album> _albumsRepository;
     private readonly IRepository<Core.Artists.Artist> _artistRepository;
     private readonly IAuthorizationService _authorizationService;
@@ -34,11 +34,12 @@ public class TracksController : Controller
     private readonly IRepository<Genre> _genresRepository;
     private readonly IMapper _mapper;
     private readonly IRepository<Track> _tracksRepository;
+    private readonly IFileService _fileService;
 
     public TracksController(IRepository<Core.Artists.Artist> artistRepository, IRepository<Track> tracksRepository,
                             IOptions<SharedSettings> settings, IAuthorizationService authorizationService,
                             IMapper mapper, IRepository<Album> albumsRepository, IRepository<Genre> genresRepository,
-                            IFormFileSaver formFileSaver)
+                            IFileService fileService)
     {
         _artistRepository = artistRepository;
         _tracksRepository = tracksRepository;
@@ -47,7 +48,7 @@ public class TracksController : Controller
         _mapper = mapper;
         _albumsRepository = albumsRepository;
         _genresRepository = genresRepository;
-        _formFileSaver = formFileSaver;
+        _fileService = fileService;
     }
 
     [HttpGet("")]
@@ -142,7 +143,6 @@ public class TracksController : Controller
     }
 
     [HttpPost("[action]")]
-    [FormValidator]
     public async Task<IActionResult> Create(int artistId, CreateTrackViewModel viewModel)
     {
         var artist = await _artistRepository.GetBySpecAsync(new ArtistWithOwnersByIdSpec(artistId));
@@ -159,7 +159,12 @@ public class TracksController : Controller
             return Forbid();
         }
 
-        var filePath = viewModel.FileLocation;
+        var fileResult = await _fileService.Save(viewModel.File.ToStreamPart());
+        if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+        {
+            ModelState.AddModelError(nameof(CreateTrackViewModel.File), "Bad file");
+            return View(viewModel);
+        }
 
         var artists = new List<Core.Artists.Artist> {artist};
 
@@ -168,14 +173,13 @@ public class TracksController : Controller
             Name = viewModel.Name,
             PublishedAt = viewModel.PublishedAt,
             Owners = artists,
-            FileLocation = filePath,
+            FileLocation = fileResult.Content.Location,
             Album = album,
-            Duration = viewModel.Duration
+            Duration = 123
         };
         track = await _tracksRepository.AddAsync(track);
 
-        return FormResult.CreateSuccessResult("Created successfully",
-            Url.Action("Details", "Tracks", new {Area = "Artist", track.Id, artistId}));
+        return RedirectToAction("Details", "Tracks", new {Area = "Artist", track.Id, artistId});
     }
     
     [HttpDelete("{id:int}")]

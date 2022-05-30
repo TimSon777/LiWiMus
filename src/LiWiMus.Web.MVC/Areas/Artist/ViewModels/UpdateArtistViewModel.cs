@@ -10,5 +10,5 @@ public class UpdateArtistViewModel
     public string Name { get; set; } = null!;
     public string About { get; set; } = null!;
 
-    public string? PhotoLocation { get; set; }
+    public IFormFile? Photo { get; set; }
 }

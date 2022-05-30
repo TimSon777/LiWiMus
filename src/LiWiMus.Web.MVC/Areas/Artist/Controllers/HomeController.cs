@@ -85,9 +85,16 @@ public class HomeController : Controller
         }
 
         _mapper.Map(viewModel, artist);
-        if (viewModel.PhotoLocation is not null)
+        if (viewModel.Photo is not null)
         {
-            artist.PhotoLocation = viewModel.PhotoLocation;
+            var fileResult = await _fileService.Save(viewModel.Photo.ToStreamPart());
+            if (!fileResult.IsSuccessStatusCode || fileResult.Content is null)
+            {
+                return FormResult.CreateErrorResult("Bad photo");
+            }
+
+            var r = await _fileService.Remove(artist.PhotoLocation[1..]);
+            artist.PhotoLocation = fileResult.Content.Location;
         }
 
         await _artistRepository.UpdateAsync(artist);
