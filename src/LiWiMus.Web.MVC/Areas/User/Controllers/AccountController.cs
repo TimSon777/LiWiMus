@@ -60,14 +60,14 @@ public class AccountController : Controller
     {
         if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(code))
         {
-            return View("Error");
+            return NotFound();
         }
 
         var user = await _userManager.FindByIdAsync(userId);
 
         if (user == null)
         {
-            return View("Error");
+            return NotFound();
         }
 
         var result = await _userManager.ConfirmEmailAsync(user, code);
@@ -77,7 +77,7 @@ public class AccountController : Controller
             return RedirectToAction("Index", "Home", new {area = ""});
         }
 
-        return View("Error");
+        return NotFound();
     }
 
     [HttpGet]
@@ -199,14 +199,14 @@ public class AccountController : Controller
     {
         if (userId.IsNullOrEmpty() || token.IsNullOrEmpty())
         {
-            return View("Error");
+            return NotFound();
         }
 
         var user = await _userManager.FindByIdAsync(userId);
 
         if (user is null)
         {
-            return View("Error");
+            return NotFound();
         }
 
         var resetPasswordVm = new ResetPasswordViewModel

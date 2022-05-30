@@ -17,21 +17,11 @@
     </div>
     <section class="edit-inputs-group">
         <form asp-formhelper="true" method="post" asp-action="Create" enctype="multipart/form-data">
-            <div class="label-input">
-                <label asp-for="Name"></label>
-                <input class="form-control" asp-for="Name">
-                <span asp-validation-for="Name"></span>
-            </div>
-            <div class="label-input">
-                <label asp-for="IsPublic"></label>
-                <input asp-for="IsPublic">
-                <span asp-validation-for="IsPublic"></span>
-            </div>
-            <div class="label-input">
-                <label asp-for="Picture"></label>
-                <input class="form-control" asp-for="Picture" type="file">
-                <span asp-validation-for="Picture"></span>
-            </div>
+            < <div>
+                         <label asp-for="Name"></label>
+                         <input class="form-control" asp-for="Name">
+                         <span asp-validation-for="Name"></span>
+                     </div>
 
             <div class="" style="text-align: center">
                 <button class="edit-button" type="submit" id="btn-edit-profile-info">Create</button>
