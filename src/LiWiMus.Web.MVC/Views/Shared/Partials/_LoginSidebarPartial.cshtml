@@ -1,15 +1,17 @@
 ﻿@using LiWiMus.Core.Users
 @using LiWiMus.Web.MVC.Models
+@using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-@inject IOptions<PullUrls> Urls
-
+@using LiWiMus.Core.Roles
+@inject SignInManager<User> _signInManager
+@inject UserManager<User> _userManager
+@inject IOptions<PullUrls> _urls
+@inject IAuthorizationService _authorizationService
 @{
-    var currentUser = SignInManager.IsSignedIn(User) ? await UserManager.GetUserAsync(User) : null;
-    var avatarSrc = currentUser?.AvatarLocation is not null ? Urls.Value.FileServer + currentUser.AvatarLocation : "/images/avatar-placeholder.jpg";
+    var currentUser = _signInManager.IsSignedIn(User) ? await _userManager.GetUserAsync(User) : null;
+    var avatarSrc = currentUser?.AvatarLocation is not null ? _urls.Value.FileServer + currentUser.AvatarLocation : "/images/avatar-placeholder.jpg";
 }
 
 <div class="w3-sidebar w3-bar-block w3-collapse w3-card " style="width:300px;  background-color: #212529" id="mySidebar">
@@ -34,6 +36,12 @@
                 <div>
                     <a class="text-link" asp-area="Search" asp-controller="Track" asp-action="Index">Search</a>
                 </div>
+                @if (await _authorizationService.AuthorizeAsync(User, DefaultSystemPermissions.Chat.Answer.Name) is {Succeeded: true})
+                {
+                    <div>
+                        <a class="text-link" asp-area="User" asp-controller="SupportChat" asp-action="Chats">Support Chats</a>
+                    </div>
+                }
                 <div>
                     <form class="form-inline" asp-area="User" asp-controller="Account" asp-action="Logout">
                         <button type="submit" class="nav-link btn btn-link text-link" style="padding:0; font-weight: lighter; font-size: smaller">Logout</button>
