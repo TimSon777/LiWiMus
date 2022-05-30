@@ -31,9 +31,9 @@
             </a>*@
         </div>
         <div id="deleteAlbum" style="margin: 0 2% 2%;">
-            <form asp-formhelper="true" asp-callback="" method="post" asp-area="User" asp-action="SubscribeOrUnsubscribeTrack" asp-controller="Following">
+            <form asp-formhelper="true" asp-callback="" method="post" asp-area="Artist" asp-action="Delete" asp-controller="Albums">
                 <input name="" type="hidden" value="@Model.Id">
-                <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                <button class="edit-button" id="deleteButton" style="background-color: #21201F; max-width: none">Delete</button>
             </form>
         </div>
         <section class="edit-inputs-group">
@@ -82,7 +82,7 @@
             @{
                 foreach (var track in Model.Tracks)
                 {
-                    <div>@track.Name </div>
+                    <a class="text-link" asp-area="Artist" asp-controller="Tracks" asp-route-artistId="@ViewContext.RouteData.Values["artistId"]" asp-route-id="@track.Id" asp-action="Details">@track.Name</a>
                 }
             }
         </section>

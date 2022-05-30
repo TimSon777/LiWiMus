@@ -30,52 +30,61 @@
 
     <div class="editor-wrap">
         <div>
-            <h2 class="your-profile-header">
-                Your profile
-            </h2>
-            
+            @if (Model.IsAccountOwner)
+            {
+                <h2 class="your-profile-header">
+                    Your profile
+                </h2>
+            }
+            else
+            {
+                <h2 class="your-profile-header">
+                    @Model.UserName profile
+                </h2>  
+            }
             <div class="top-buttons-container">
-                @if (!Model.EmailConfirmed)
-                {
-                    @:<p class="verified-text fw-bold">(Your account has not been verified)</p>
-                    <div class="verify-account-container">
-                        <form class="confirmation-form" asp-formhelper="true" method="post" asp-controller="Account" asp-action="SendConfirmEmailAgain">
-                            <input class="change-password-button" type="submit" value="Send a confirmation email">
-                        </form>
-                    </div>
-                }
-                else
-                {
-                    @:<p class="verified-text fw-bold">(Your account is verified)</p>
-                }
-                    
                 @if (Model.IsAccountOwner)
                 {
-                    <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Home">
-                        <button class="manage-artist">
-                            Manage artists
-                        </button>
-                    </a>
-                }
-                else
-                {
-                    <div id="subscriptionDiv" style="margin: 0 2% 2%;">
-                        <form asp-formhelper="true" asp-callback="" asp-area="User" asp-controller="Following" method="post" asp-action="SubscribeOrUnsubscribeUser">
-                            <input name="username" type="hidden" value="@Model.UserName">
-                            @if (Model.IsSubscribed)
-                            {
-                                <button class="edit-button" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
-                            }
-                            else
-                            {
-                                <button id="subscribtionButton" class="edit-button">Subscribe</button>
-                            }
-                        </form>
-                    </div>
+                    @if (!Model.EmailConfirmed)
+                    {
+                        @:<p class="verified-text fw-bold">(Your account has not been verified)</p>
+                        <div class="verify-account-container">
+                            <form class="confirmation-form" asp-formhelper="true" method="post" asp-controller="Account" asp-action="SendConfirmEmailAgain">
+                                <input class="change-password-button" type="submit" value="Send a confirmation email">
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        @:<p class="verified-text fw-bold">(Your account is verified)</p>
+                    }
                 }
             </div>
+            @if (Model.IsAccountOwner)
+            {
+                <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Home">
+                    <button class="random-avatar-button">
+                        Manage artists
+                    </button>
+                </a>
+            }
+            else
+            {
+                <div id="subscriptionDiv" style="margin: 0 2% 2%;">
+                    <form asp-formhelper="true" asp-callback="" asp-area="User" asp-controller="Following" method="post" asp-action="SubscribeOrUnsubscribeUser">
+                        <input name="username" type="hidden" value="@Model.UserName">
+                        @if (Model.IsSubscribed)
+                        {
+                            <button class="subscribe-button subscribed" id="unsubscribtionButton">Unsubscribe</button>
+                        }
+                        else
+                        {
+                            <button id="subscribtionButton" class="subscribe-button">Subscribe</button>
+                        }
+                    </form>
+                </div>
+            }
         </div>
-        
 
         <section class="edit-inputs-group">
             <form asp-formhelper="true"
@@ -215,4 +224,5 @@
 {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/2.0.0-alpha.2/cropper.min.js" integrity="sha512-IlZV3863HqEgMeFLVllRjbNOoh8uVj0kgx0aYxgt4rdBABTZCl/h5MfshHD9BrnVs6Rs9yNN7kUQpzhcLkNmHw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/js/update_profile.js"></script>
+    <script src="/js/subscribeUnsubscribe.js"></script>
 }

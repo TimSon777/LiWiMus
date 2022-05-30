@@ -78,12 +78,14 @@
         </div>
         <section class="edit-inputs-group">
             <div style="">
-                        <a class="text-link" style="font-size: larger; font-weight: bolder" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["id"]" asp-action="Create">Create new album</a>
-                    </div>
+                <a class="text-link" style="font-size: larger; font-weight: bolder" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["id"]" asp-action="Create">Create new album</a>
+            </div>
             @{
                 foreach (var album in Model.Albums)
                 {
-                    <a class="text-link" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["id"]" asp-action="Details" asp-route-id="@album.Id">@album.Title</a>
+                    <div>
+                        <a class="text-link" asp-area="Artist" asp-controller="Albums" asp-route-artistId="@ViewContext.RouteData.Values["id"]" asp-action="Details" asp-route-id="@album.Id">@album.Title</a>
+                    </div>
                 }
             }
         </section>
