@@ -8,7 +8,6 @@ namespace LiWiMus.Web.MVC.Hubs.SupportChat;
 
 public partial class SupportChatHub
 {
-    //[Authorize(DefaultPermissions.Chat.Answer)]
     public async Task ConnectConsultant()
     {
         var user = await _userManager.GetUserAsync(Context.User);
@@ -28,10 +27,7 @@ public partial class SupportChatHub
         await _onlineConsultantsRepository.AddAsync(consultant);
         await _onlineConsultantsRepository.SaveChangesAsync();
     }
-
-    //[Authorize(DefaultPermissions.Chat.Answer)]
-    // ReSharper disable once MemberCanBePrivate.Global
-    // ReSharper disable once UnusedMethodReturnValue.Global
+    
     public async Task<Result> SendMessageToUser(string connectionId, string text)
     {
         var user = await _userManager.GetUserAsync(Context.User);
@@ -62,7 +58,6 @@ public partial class SupportChatHub
         return Result.Success(message.Id);
     }
 
-    //[Authorize(DefaultPermissions.Chat.Answer)]
     public async Task<Result> CloseChatByConsultant(string userName)
     {
         var user = await _userManager.GetUserAsync(Context.User);
@@ -81,9 +76,7 @@ public partial class SupportChatHub
         await SendMessageToUser(chat.UserConnectionId, "Chat was closed by cons");
         return Result.Success();
     }
-
-    //[Authorize(DefaultPermissions.Chat.Answer)]
-    // ReSharper disable once MemberCanBePrivate.Global
+    
     public async Task DisconnectConsultant()
     {
         var user = await _userManager.GetUserAsync(Context.User);
