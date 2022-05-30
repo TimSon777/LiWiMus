@@ -12,7 +12,7 @@ import {
   Paper,
   Select,
   Stack,
-  Typography
+  Typography,
 } from "@mui/material";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import UserLink from "../../users/components/UserLink/UserLink";

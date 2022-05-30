@@ -1,6 +1,15 @@
 import React, { ReactElement } from "react";
 import { Artist } from "../../types/Artist";
-import { Avatar, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import {
+  Avatar,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import { format } from "date-fns";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";

@@ -13,7 +13,7 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { SystemPermission } from "../../../systemPermissions/SystemPermission";

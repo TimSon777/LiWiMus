@@ -14,7 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   Stack,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import { usePlanService } from "../../PlanService.hook";

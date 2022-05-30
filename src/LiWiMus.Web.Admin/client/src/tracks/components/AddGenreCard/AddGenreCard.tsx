@@ -1,10 +1,21 @@
 import React, { useState } from "react";
 import { Track } from "../../types/Track";
-import { Box, IconButton, List, ListItem, ListItemText, Modal, Paper } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Modal,
+  Paper,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import ContrastTextField from "../../../shared/components/ContrastTextField/ContrastTextField";
 import { Genre } from "../../../genres/types/Genre";
-import { DefaultPaginatedData, PaginatedData } from "../../../shared/types/PaginatedData";
+import {
+  DefaultPaginatedData,
+  PaginatedData,
+} from "../../../shared/types/PaginatedData";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
 import Loading from "../../../shared/components/Loading/Loading";
 import InfiniteScroll from "react-infinite-scroll-component";

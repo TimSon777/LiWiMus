@@ -3,7 +3,15 @@ import { Role } from "../../../roles/types/Role";
 import { User } from "../../types/User";
 import { Action } from "../../../shared/types/Action";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";
-import { Box, IconButton, List, ListItem, ListItemText, Modal, Paper } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Modal,
+  Paper,
+} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useRoleService } from "../../../roles/RoleService.hook";
 import { useUserService } from "../../UserService.hook";

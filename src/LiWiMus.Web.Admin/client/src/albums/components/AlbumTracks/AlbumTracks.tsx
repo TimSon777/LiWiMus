@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { FormControlLabel, Switch } from "@mui/material";
-import { DefaultPaginatedData, PaginatedData } from "../../../shared/types/PaginatedData";
+import {
+  DefaultPaginatedData,
+  PaginatedData,
+} from "../../../shared/types/PaginatedData";
 import { Track } from "../../../tracks/types/Track";
 import { Album } from "../../types/Album";
 import { useNotifier } from "../../../shared/hooks/Notifier.hook";

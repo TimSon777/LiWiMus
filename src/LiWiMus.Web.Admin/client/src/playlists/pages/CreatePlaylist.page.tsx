@@ -1,5 +1,13 @@
 ﻿import React, { useState } from "react";
-import { Button, Checkbox, FormControlLabel, Grid, Paper, Stack, Typography } from "@mui/material";
+import {
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Grid,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
 import ContrastTextField from "../../shared/components/ContrastTextField/ContrastTextField";
 import ImageEditor from "../../shared/components/ImageEditor/ImageEditor";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
