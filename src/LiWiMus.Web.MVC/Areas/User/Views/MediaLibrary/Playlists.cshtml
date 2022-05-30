@@ -1,0 +1,35 @@
+@model LiWiMus.Web.MVC.Areas.User.ViewModels.MediaLibraryPlaylistsVewMode
+@inject Microsoft.Extensions.Options.IOptions<LiWiMus.Web.MVC.Models.PullUrls> _pullUrls
+
+@{
+    Layout = "_MediaLibraryLayout";
+    var fileUrl = _pullUrls.Value.FileServer;
+}
+
+Мои плейлисты
+<section>
+    @foreach (var playlist in Model.Playlists)
+    {
+        <div>
+            <a asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+                @playlist.Name
+            </a>
+
+            <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
+        </div>
+    }
+</section>
+
+Подписанные плейлисты
+<section>
+    @foreach (var playlist in Model.SubscribedPlaylists)
+    {
+        <div>
+            <a asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+                @playlist.Name
+            </a>
+
+            <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
+        </div>
+    }
+</section>
