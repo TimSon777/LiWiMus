@@ -1,23 +1,20 @@
 @{
+    ViewData["Title"] = "Create";
     Layout = "_LayoutSidebar";
 }
+<div class="editor-wrap">
+<div class="p-0">
+    <div>
+        <a class="text-link" asp-action="Artists">Followed artists</a>
+    
+        <a class="text-link" asp-action="Playlists">Playlists</a>
+    
+        <a  class="text-link" asp-action="Users">Followed users</a>
+    
+        <a  class="text-link" asp-action="Tracks">Followed tracks</a>
+    </div>
 
-<div>
-    <a asp-action="Artists">Artists</a>
-</div>
-
-<div>
-    <a asp-action="Playlists">Playlists</a>
-</div>
-
-<div>
-    <a asp-action="Users">Playlists</a>
-</div>
-
-<div>
-    <a asp-action="Tracks">Playlists</a>
-</div>
-
-<div>
-    @RenderBody()
-</div>
+    <div>
+        @RenderBody()
+    </div>
+</div></div>
