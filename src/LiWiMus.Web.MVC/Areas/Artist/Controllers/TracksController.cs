@@ -91,7 +91,7 @@ public class TracksController : Controller
     }
 
 
-    [HttpPut("{id:int}")]
+    [HttpPut()]
     [FormValidator]
     public async Task<IActionResult> Update(int artistId, UpdateTrackViewModel viewModel)
     {

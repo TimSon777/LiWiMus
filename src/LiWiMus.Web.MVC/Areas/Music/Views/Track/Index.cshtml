@@ -1,4 +1,8 @@
+@using LiWiMus.Web.MVC.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
 @model LiWiMus.Web.MVC.Areas.Music.ViewModels.TrackViewModel
+@inject IOptions<PullUrls> Urls
 
 @{
     ViewBag.Title = "Track";
@@ -41,7 +45,7 @@
                 <figcaption>@Model.Name</figcaption>
                 <audio
                     @{
-                        var src = $"http://localhost:5223{Model.FileLocation}";
+                        var src = Urls.Value.FileServer + Model.FileLocation;
                     }
                     controls
                     src="@src">

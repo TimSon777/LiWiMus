@@ -14,37 +14,6 @@
     <partial name="Partials/_PlainHeaderPartial"/>
 }
 
-@if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Private.Name) is {Succeeded:true})
-{
-    <form method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity">
-        <input type="hidden" name="playlistId" value="@Model.Id">
-        <input class="edit-button" type="submit" value="Toggle publicity">
-    </form>
-}
-else
-{
-    <a class="text-link" asp-area="User" asp-controller="Plans" asp-action="Index">Buy plan to make playlist public</a>
-}
-
-@if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Cover.Name) is {Succeeded:true})
-{
-    <form method="post" asp-area="User" asp-controller="Playlist" asp-action="" enctype="multipart/form-data">
-        <input type="hidden" name="Id" value="@Model.Id">
-        <input class="form-control" type="file" name="Photo" accept="image/*">
-        <input class="edit-button" type="submit" value="Update photo">
-    </form>
-}
-else
-{
-    <a class="text-link" asp-area="User" asp-controller="Plans" asp-action="Index">Buy plan to set photo</a>
-}
-
-<form method="post" asp-area="User" asp-controller="Playlist" asp-action="Update">
-    <input type="hidden" name="Id" value="@Model.Id">
-    <input class="form-control" type="text" name="Name">
-    <input class="edit-button" type="submit" value="Edit">
-</form>
-
 <div class="editor-wrap">
     <div>
         <h2 class="your-profile-header">
@@ -77,6 +46,45 @@ else
         <div id="tracks-to-playlist">
 
         </div>
+    </section>
+    
+    <section class="edit-inputs-group">
+        <div class="m-3">
+            @if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Private.Name) is {Succeeded:true})
+            {
+                <form method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity">
+                    <input type="hidden" name="playlistId" value="@Model.Id">
+                    <input class="edit-button" type="submit" value="Toggle publicity">
+                </form>
+            }
+            else
+            {
+                 <a class="text-link" asp-area="User" asp-controller="Plans" asp-action="Index">Buy plan to make playlist public</a>
+            }
+        </div>
+
+
+        <div class="m-3">
+            @if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Cover.Name) is {Succeeded:true})
+                    {
+                        <form method="post" asp-area="User" asp-controller="Playlist" asp-action="" enctype="multipart/form-data">
+                            <input type="hidden" name="Id" value="@Model.Id">
+                            <input class="form-control" type="file" name="Photo" accept="image/*">
+                            <input class="edit-button" type="submit" value="Update photo">
+                        </form>
+                    }
+                    else
+                    {
+                        <a class="text-link" asp-area="User" asp-controller="Plans" asp-action="Index">Buy plan to set photo</a>
+                    }
+        </div>
+        
+
+        <form class="m-5" method="post" asp-area="User" asp-controller="Playlist" asp-action="Update">
+            <input type="hidden" name="Id" value="@Model.Id">
+            <input class="form-control" type="text" name="Name">
+            <input class="edit-button" type="submit" value="Edit">
+        </form>
     </section>
 </div>
 
