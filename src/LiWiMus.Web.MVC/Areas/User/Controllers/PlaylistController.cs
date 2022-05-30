@@ -58,7 +58,7 @@ public class PlaylistController : Controller
         return View(playlistVm);
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     [Authorize(DefaultPermissions.Playlist.Private.Name)]
     public async Task<IActionResult> TogglePublicity(int playlistId)
     {
@@ -101,7 +101,7 @@ public class PlaylistController : Controller
         return FormResult.CreateSuccessResult("Updated");
     }
 
-    [HttpPost("[action]")]
+    [HttpPost]
     [FormValidator]
     [Authorize(DefaultPermissions.Playlist.Cover.Name)]
     public async Task<IActionResult> UpdatePhoto(UpdatePlaylistPhotoViewModel model)
