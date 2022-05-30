@@ -35,7 +35,7 @@ public class UpdateTrackVmValidator : AbstractValidator<UpdateTrackViewModel>
             .When(model => model.GenresIds is not null);
 
         RuleFor(model => model.File)
-            .Must(file => file.ContentType.StartsWith("audio"))
+            .Must(file => file!.ContentType.StartsWith("audio"))
             .When(model => model.File is not null)
             .WithMessage("Bad audio file");
     }

@@ -81,7 +81,14 @@ services.AddAuthorization(options =>
 });
 
 services.AddWebOptimizer(pipeline =>
-    pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css"));
+{
+    pipeline.AddScssBundle("/css/bundle.css", "/scss/**/*.scss", "/css/**/*.css");
+    
+    if (builder.Environment.IsProduction())
+    {
+        pipeline.MinifyJsFiles("/js/**/*.js");
+    }
+});
 
 services.AddSignalR();
 services.AddSeeders();

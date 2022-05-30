@@ -2,7 +2,7 @@ namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
 public class SearchForPlaylistViewModel
 {
-    private string _title;
+    private string _title = "";
 
     public string Title
     {

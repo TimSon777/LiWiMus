@@ -5,13 +5,17 @@
     Layout = "_MediaLibraryLayout";
     var fileUrl = _pullUrls.Value.FileServer;
 }
-
-Мои плейлисты
-<section>
+<div class="editor-wrap">
+<div>
+            <h3 class="your-profile-header">
+                My playlists
+            </h3>
+        </div>
+<section class="edit-inputs-group">
     @foreach (var playlist in Model.Playlists)
     {
         <div>
-            <a asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+            <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
                 @playlist.Name
             </a>
 
@@ -20,16 +24,20 @@
     }
 </section>
 
-Подписанные плейлисты
-<section>
+<div>
+            <h3 class="your-profile-header">
+                Followed playlists
+            </h3>
+        </div>
+<section class="edit-inputs-group">
     @foreach (var playlist in Model.SubscribedPlaylists)
     {
         <div>
-            <a asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+            <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
                 @playlist.Name
             </a>
 
             <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
         </div>
     }
-</section>
+</section></div>

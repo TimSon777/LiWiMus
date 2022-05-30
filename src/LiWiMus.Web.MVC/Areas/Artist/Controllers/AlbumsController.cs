@@ -181,7 +181,7 @@ public class AlbumsController : Controller
         return RedirectToAction("Details", "Albums", new {Area = "Artist", album.Id, artistId});
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpPost]
     [FormValidator]
     public async Task<IActionResult> Delete(int artistId, int id)
     {

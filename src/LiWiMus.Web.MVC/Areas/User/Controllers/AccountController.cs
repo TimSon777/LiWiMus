@@ -105,14 +105,11 @@ public class AccountController : Controller
         {
             return RedirectToAction("Index", "Home", new {area = ""});
         }
-        else if (result.IsLockedOut)
-        {
-            ModelState.AddModelError("", "The user has been banned");
-        }
-        else
-        {
-            ModelState.AddModelError("", "Неправильный логин и (или) пароль");
-        }
+
+        ModelState.AddModelError("",
+            result.IsLockedOut 
+                ? "The user has been banned" 
+                : "Неправильный логин и (или) пароль");
 
         model.ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         return View(model);
@@ -159,23 +156,24 @@ public class AccountController : Controller
     }
 
     [HttpPost]
+    [FormValidator]
     public async Task<IActionResult> ResetPassword(string userName)
     {
         if (userName.IsNullOrEmpty())
         {
-            return BadRequest("Введите имя пользователя");
+            return FormResult.CreateErrorResult("Enter user name");
         }
 
         var user = await _userManager.FindByNameAsync(userName);
 
         if (user is null)
         {
-            return BadRequest("Пользователь не найден");
+            return FormResult.CreateErrorResult("User was not found");
         }
 
         if (!user.EmailConfirmed)
         {
-            return BadRequest("Ваш email не подтвержден");
+            return FormResult.CreateErrorResult("Email was not confirmed");
         }
 
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -190,8 +188,8 @@ public class AccountController : Controller
             .SendMailToResetPasswordAsync(new ResetPasswordRequest(user.UserName, user.Email, resetUrl!));
 
         return response.IsSuccessStatusCode
-            ? Ok("Проверьте почтовый ящик")
-            : BadRequest(response.Error);
+            ? FormResult.CreateSuccessResult("Check your mailbox")
+            : FormResult.CreateErrorResult("Couldn't send the email, try again later");
     }
 
     [HttpGet]

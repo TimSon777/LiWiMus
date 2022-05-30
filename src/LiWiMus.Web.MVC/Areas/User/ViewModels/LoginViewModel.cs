@@ -5,14 +5,15 @@ namespace LiWiMus.Web.MVC.Areas.User.ViewModels;
 
 public class LoginViewModel
 {
-    [Required] public string UserName { get; set; }
+    [Required] public string UserName { get; set; } = "";
 
     [Required]
     [DataType(DataType.Password)]
-    public string Password { get; set; }
-
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
+    public string Password { get; set; } = "";
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public bool RememberMe { get; set; }
-
+    // ReSharper disable once PropertyCanBeMadeInitOnly.Global
     public string? ReturnUrl { get; set; }
 
     public IList<AuthenticationScheme>? ExternalLogins { get; set; }

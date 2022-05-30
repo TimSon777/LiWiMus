@@ -1,23 +1,26 @@
 @{
+    ViewData["Title"] = "Media";
     Layout = "_LayoutSidebar";
 }
+<div class="editor-wrap">
+    <div class="p-0">
+        <div style="justify-content: space-around; display: flex">
+            <div>
+                <a class="text-link" asp-action="Artists">Followed artists</a>
+            </div>
+            <div>
+                <a class="text-link" asp-action="Playlists">Playlists</a>
+            </div>
+            <div>
+                <a class="text-link" asp-action="Users">Followed users</a>
+            </div>
+            <div>
+                <a class="text-link" asp-action="Tracks">Followed tracks</a>
+            </div>
+        </div>
 
-<div>
-    <a asp-action="Artists">Artists</a>
-</div>
-
-<div>
-    <a asp-action="Playlists">Playlists</a>
-</div>
-
-<div>
-    <a asp-action="Users">Playlists</a>
-</div>
-
-<div>
-    <a asp-action="Tracks">Playlists</a>
-</div>
-
-<div>
-    @RenderBody()
+        <div>
+            @RenderBody()
+        </div>
+    </div>
 </div>

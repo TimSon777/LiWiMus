@@ -3,14 +3,20 @@
 @{
     Layout = "_MediaLibraryLayout";
 }
-
-<section>
-    @foreach (var artist in Model)
-    {
-        <div>
-            <a asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">
-                @artist.Name
-            </a>
+<div class="editor-wrap">
+    <div>
+            <h3 class="your-profile-header">
+                Followed artists
+            </h3>
         </div>
-    }
-</section>
+    <section class="edit-inputs-group">
+        @foreach (var artist in Model)
+        {
+            <div>
+                <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">
+                    @artist.Name
+                </a>
+            </div>
+        }
+    </section>
+</div>

@@ -6,13 +6,13 @@
     ViewBag.Title = "title";
     Layout = "_LayoutSidebar";
 }
-
+<div class="editor-wrap">
 <input type="hidden" id="playlist-id" value="@Model.Id">
 <div class="wrapper">
     <div class="top-bar">
-        <i class="material-icons">
+        @*<i class="material-icons">
             download
-        </i>
+        </i>*@
 
         <i id="song-lyrics-btn" class="material-icons ">
             article
@@ -45,7 +45,6 @@
         </div>
     </div>
     <div class="controls">
-        <!--<i id="repeat-plist" class="material-icons" title="Playlist looped">repeat</i>-->
         <div class="fav-btn" >
             <i class="material-icons favorite-button" style="font-size: 36px">favorite_border</i>
         </div>
@@ -62,11 +61,10 @@
             <i id="close" class="material-icons">highlight_off</i>
         </div>
         <ul>
-            <!-- here li list are coming from js -->
         </ul>
     </div>
 </div>
-
+</div>
 @section Scripts
 {
     <script src="~/js/player.js"></script>
