@@ -15,4 +15,5 @@ public class PlaylistViewModel : HasId
     public List<TrackViewModel> Tracks { get; set; } = null!;
     public int CountSubscribers { get; set; }
     public bool IsOwner { get; set; }
+    public string PrefixFiles { get; set; }
 }
