@@ -1,43 +1,36 @@
 using FormHelper;
 using LiWiMus.Core.LikedSongs;
-using LiWiMus.Core.Playlists;
-using LiWiMus.Core.PlaylistTracks;
+using LiWiMus.Core.Plans;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
+using LiWiMus.Web.MVC.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 
 [Area("User")]
 public class TrackController : Controller
 {
-    private readonly IRepository<Playlist> _playlistRepository;
     private readonly IRepository<Track> _trackRepository;
-    private readonly IRepository<PlaylistTrack> _playlistTrackRepository;
     private readonly IRepository<LikedSong> _likedSongRepository;
-    private readonly IAuthorizationService _authorizationService;
-    private readonly IWebHostEnvironment _environment;
     private readonly UserManager<Core.Users.User> _userManager;
+    private readonly IOptions<PullUrls> _pullUrls;
 
-    public TrackController(IRepository<Playlist> playlistRepository,
-        IAuthorizationService authorizationService,
-        IRepository<Track> trackRepository, IRepository<PlaylistTrack> playlistTrackRepository,
-        IWebHostEnvironment environment, UserManager<Core.Users.User> userManager,
-        IRepository<LikedSong> likedSongRepository)
+    public TrackController(IRepository<Track> trackRepository, UserManager<Core.Users.User> userManager,
+                           IRepository<LikedSong> likedSongRepository, IOptions<PullUrls> pullUrls)
     {
-        _playlistRepository = playlistRepository;
-        _authorizationService = authorizationService;
         _trackRepository = trackRepository;
-        _playlistTrackRepository = playlistTrackRepository;
-        _environment = environment;
         _userManager = userManager;
         _likedSongRepository = likedSongRepository;
+        _pullUrls = pullUrls;
     }
 
     [HttpGet]
+    [Authorize(DefaultPermissions.Track.Download.Name)]
     public async Task<IActionResult> Download(int trackId)
     {
         var track = await _trackRepository.GetBySpecAsync(new TrackWithArtistsByIdSpecification(trackId));
@@ -47,27 +40,7 @@ public class TrackController : Controller
             return BadRequest();
         }
 
-        // var authorizationResult = await _authorizationService
-        //     .AuthorizeAsync(User, track, "SameAuthorPolicy");
-        //
-        // if (!authorizationResult.Succeeded)
-        // {
-        //     if (User.Identity is {IsAuthenticated: true})
-        //     {
-        //         return new ForbidResult();
-        //     }
-        //
-        //     return new ChallengeResult();
-        // }
-
-        var pathToTrack = Path.Combine(_environment.ContentRootPath, track.FileLocation);
-
-        if (!System.IO.File.Exists(pathToTrack))
-        {
-            return BadRequest();
-        }
-
-        return PhysicalFile(pathToTrack, "audio/mpeg");
+        return Redirect(_pullUrls.Value.FileServer + track.FileLocation);
     }
 
     [HttpPost]
