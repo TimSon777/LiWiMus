@@ -13,19 +13,20 @@
     </div>
     <section class="edit-inputs-group">
         <div>
-                    <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="Track" asp-action="Index">
-                        Search new tracks
-                    </a>
-                </div>
+            <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="Track" asp-action="Index">
+                Search new tracks
+            </a>
+        </div>
         @foreach (var track in Model)
         {
-            <div><a asp-area="Music" class="text-center text-link" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
-                                                                 @track.Name
-                                                             </a></div>
-               
-                
+            <div>
+                <a asp-area="Music" class="text-center text-link" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
+                    @track.Name
+                </a>
+            </div>
 
-            @*<div>
+
+@*<div>
                 <a asp-area="Music" class="text-center text-link" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
                     @track.Name
                 </a>

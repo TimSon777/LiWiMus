@@ -27,6 +27,19 @@
                 @Model.Name
             </h2>
         </div>
+        <div id="subscriptionDiv" style="margin: 0 2% 2%;">
+                    <form asp-formhelper="true" asp-callback="" method="post" asp-area="User" asp-action="SubscribeOrUnsubscribeTrack" asp-controller="Following">
+                        <input name="trackId" type="hidden" value="@Model.Id">
+                        @if (Model.IsUserSubscribed)
+                        {
+                            <button class="subscribe-button subscribed" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
+                        }
+                        else
+                        {
+                            <button id="subscribtionButton" class="subscribe-button">Subscribe</button>
+                        }
+                    </form>
+                </div>
         <div class="audio-container">
             <figure>
                 <figcaption>@Model.Name</figcaption>
@@ -40,29 +53,17 @@
                     <code>audio</code> element.
                 </audio>
             </figure>
-                
+
             <div class="download-button-container">
-                <a class="download-button" asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@(Model.Name+".mp3")">
+                <a class="download-button" asp-area="User" asp-controller="Track" asp-action="Download" asp-route-trackId="@Model.Id" download="@(Model.Name + ".mp3")">
                     Download
                 </a>
             </div>
         </div>
-        
-        <div id="subscriptionDiv" style="margin: 0 2% 2%;">
-            <form asp-formhelper="true" asp-callback="" method="post" asp-area="User" asp-action="SubscribeOrUnsubscribeTrack" asp-controller="Following">
-                <input name="trackId" type="hidden" value="@Model.Id">
-                @if (Model.IsUserSubscribed)
-                {
-                    <button class="subscribe-button subscribed" id="unsubscribtionButton" style="background-color: #21201F; max-width: none">Unsubscribe</button>
-                }
-                else
-                {
-                    <button id="subscribtionButton" class="subscribe-button">Subscribe</button>
-                }
-            </form>
-        </div>
 
-        <section class="edit-inputs-group">
+        
+
+        @*<section class="edit-inputs-group">
             <div>
                 @{
                     if (Model.FileLocation.Equals("Location"))
@@ -75,36 +76,42 @@
                     }
                 }
             </div>
-        </section>
-        <div>
-            <h2 class="your-profile-header">
-                Artists
-            </h2>
-        </div>
-        <section class="edit-inputs-group">
+        </section>*@
+        @if (Model.Owners.Count != 0)
+        {
             <div>
-                @foreach (var artist in Model.Owners)
-                {
-                    <div>
-                        <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
-                    </div>
-                }
+                <h2 class="your-profile-header">
+                    Artists
+                </h2>
             </div>
-        </section>
-        <div>
+            <section class="edit-inputs-group">
+                <div>
+                    @foreach (var artist in Model.Owners)
+                    {
+                        <div>
+                            <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">@artist.Name</a>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+        @if (Model.Genres.Count != 0)
+        {
+            <div>
             <h2 class="your-profile-header">
                 Genres
             </h2>
         </div>
-        <section class="edit-inputs-group">
-            <div>
-                @foreach (var genre in Model.Genres)
-                {
-                    <div>
-                        <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@genre.Id">@genre.Name</a>
-                    </div>
-                }
-            </div>
-        </section>
+            <section class="edit-inputs-group">
+                <div>
+                    @foreach (var genre in Model.Genres)
+                    {
+                        <div>
+                            <a class="text-link" asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@genre.Id">@genre.Name</a>
+                        </div>
+                    }
+                </div>
+            </section>
+        }
     </div>
 </div>
