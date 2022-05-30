@@ -4,9 +4,12 @@
 <div class="artists">
     @foreach (var artist in Model)
     {
-        <div class="artist-container search-item">
-            <img class="artist-image" src="@System.IO.Path.Combine(ViewData["fileServer"]?.ToString()!, artist.PhotoLocation)" alt="Artist avatar." width="250px" height="250px"/>
-            <p class="artist-name">@artist.Name </p>
-            <p class="artist-about">@artist.About</p>
-        </div>    }
+        <a asp-area="Music" asp-controller="Artist" asp-action="Index" asp-route-artistId="@artist.Id">
+            <div class="artist-container search-item">
+                <img class="artist-image" src="@System.IO.Path.Combine(ViewData["fileServer"]?.ToString()!, artist.PhotoLocation)" alt="Artist avatar." width="250px" height="250px"/>
+                <p class="artist-name">@artist.Name </p>
+                <p class="artist-about">@artist.About</p>
+            </div>    
+        </a>
+    }
 </div>

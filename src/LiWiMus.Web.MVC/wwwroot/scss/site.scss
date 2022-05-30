@@ -247,7 +247,11 @@ h2 {
   background-color: $color_1;
   &:hover {
     background-color: #e15035;
-    border: none;
+    border-color: #e15035;
+  }
+  &:active {
+    background-color: #e15035;
+    border-color: #e15035;
   }
 }
 
@@ -1070,6 +1074,11 @@ div::-webkit-scrollbar-thumb {
   font-size: 64px;
   font-weight: lighter;
   text-align: center;
+  @media screen 
+    and (min-device-width : 280px)
+      and (max-device-width : 480px) {
+    font-size: 40px;
+  }
 }
 
 .tariff-container {
@@ -1314,6 +1323,7 @@ and (max-device-width : 480px) {
     border-radius: 10px;
     height: fit-content;
     padding: 1.5rem;
+    margin-bottom: 2rem;
   }
   
   .contact-us-card {
@@ -1328,6 +1338,11 @@ and (max-device-width : 480px) {
     line-height: 50px;
     align-self: flex-end;
     font-weight: lighter;
+    @media screen 
+      and (min-device-width : 280px)
+      and (max-device-width : 480px) {
+      font-size: 36px;
+    }
   }
 
   @media(max-width: 320px){
@@ -1384,6 +1399,11 @@ and (max-device-width : 480px) {
   justify-content: center;
   align-items: center;
   gap: 5rem;
+  @media screen
+  and (min-device-width : 280px)
+    and (max-device-width : 480px) {
+    gap: 1rem;
+  }
 }
 
 .payment-form-container {

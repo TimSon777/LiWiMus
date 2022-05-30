@@ -26,9 +26,6 @@
     </section>
 
     <div class="editor-wrap">
-        <!-- <div class="stars-image">
-        </div> -->
-
         <div>
             <h2 class="your-profile-header">
                 Your profile
@@ -36,7 +33,9 @@
             @if (Model.IsAccountOwner)
             {
                 <a class="text-link your-profile-header" asp-area="Artist" asp-controller="Home">
-                    Manage artists
+                    <button class="random-avatar-button">
+                        Manage artists
+                    </button>
                 </a>
             }
             else
@@ -111,7 +110,7 @@
                                 <input type="file" asp-for="Avatar" class="visually-hidden disabled-input" id="input" name="image" accept="image/*" disabled="disabled">
                                 <span asp-validation-for="Avatar"></span>
                                 <div class="camera-icon">
-                                    <img src="https://liwimus.aslipatov.site/images/camera.png" width="48px" height="48px" alt="Camera icon."/>
+                                    <img src="../images/camera.png" width="48px" height="48px" alt="Camera icon."/>
                                 </div>
                             </label>
                         }
