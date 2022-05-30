@@ -5,11 +5,16 @@
 }
 <div class="editor-wrap">
     <div>
-            <h3 class="your-profile-header">
-                Followed artists
-            </h3>
-        </div>
+        <h3 class="your-profile-header">
+            Followed artists
+        </h3>
+    </div>
     <section class="edit-inputs-group">
+        <div>
+            <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="Artist" asp-action="Index">
+                Search new artists
+            </a>
+        </div>
         @foreach (var artist in Model)
         {
             <div>

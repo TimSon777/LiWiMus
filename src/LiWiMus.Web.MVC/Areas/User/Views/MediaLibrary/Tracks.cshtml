@@ -12,28 +12,29 @@
         </h3>
     </div>
     <section class="edit-inputs-group">
+        <div>
+                    <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="Track" asp-action="Index">
+                        Search new tracks
+                    </a>
+                </div>
         @foreach (var track in Model)
         {
-            <figure>
-                <figcaption>AAAAAAAAAAA</figcaption>
-                <audio
-                    controls
-                    src="@(fileUrl + track.FileLocation)">
-                    Your browser does not support the
-                    <code>audio</code> element.
-                </audio>
-            </figure>
+            <div><a asp-area="Music" class="text-center text-link" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
+                                                                 @track.Name
+                                                             </a></div>
+               
+                
 
-            <div>
-                <a asp-area="Music" class="text-center" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
+            @*<div>
+                <a asp-area="Music" class="text-center text-link" asp-controller="Track" asp-action="Index" asp-route-trackId="@track.Id">
                     @track.Name
                 </a>
-            </div>
+            </div>*@
 
-        @*<img src="@(fileUrl + track.Album.CoverLocation)" alt=""/>*@
+        @*$1$<img src="@(fileUrl + track.Album.CoverLocation)" alt=""/>#1#
 
             @:Genres @string.Join(" & ", track.Genres.Select(a => a.Name))
-            @:Artists @string.Join(" & ", track.Owners.Select(a => a.Name))
+            @:Artists @string.Join(" & ", track.Owners.Select(a => a.Name))*@
         }
     </section>
 </div>

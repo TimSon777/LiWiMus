@@ -6,38 +6,49 @@
     var fileUrl = _pullUrls.Value.FileServer;
 }
 <div class="editor-wrap">
-<div>
-            <h3 class="your-profile-header">
-                My playlists
-            </h3>
-        </div>
-<section class="edit-inputs-group">
-    @foreach (var playlist in Model.Playlists)
-    {
+    <div>
+        <h3 class="your-profile-header">
+            My playlists
+        </h3>
+    </div>
+    <section class="edit-inputs-group">
         <div>
-            <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
-                @playlist.Name
+            <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="User" asp-controller="Playlist" asp-action="Create">
+                Create new playlist
             </a>
-
-            <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
         </div>
-    }
-</section>
+        @foreach (var playlist in Model.Playlists)
+        {
+            <div>
+                <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+                    @playlist.Name
+                </a>
 
-<div>
-            <h3 class="your-profile-header">
-                Followed playlists
-            </h3>
-        </div>
-<section class="edit-inputs-group">
-    @foreach (var playlist in Model.SubscribedPlaylists)
-    {
+                <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
+            </div>
+        }
+    </section>
+
+    <div>
+        <h3 class="your-profile-header">
+            Followed playlists
+        </h3>
+    </div>
+    <section class="edit-inputs-group">
         <div>
-            <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
-                @playlist.Name
+            <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="Playlist" asp-action="Index">
+                Search new playlists
             </a>
-
-            <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
         </div>
-    }
-</section></div>
+        @foreach (var playlist in Model.SubscribedPlaylists)
+        {
+            <div>
+                <a class="text-link" asp-area="Music" asp-controller="Playlist" asp-action="Index" asp-route-playlistId="@playlist.Id">
+                    @playlist.Name
+                </a>
+
+                <img src="@(fileUrl + playlist.PhotoLocation)" alt=""/>
+            </div>
+        }
+    </section>
+</div>
