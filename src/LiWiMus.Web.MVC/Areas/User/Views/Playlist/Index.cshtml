@@ -1,5 +1,5 @@
-@using LiWiMus.Web.MVC.Areas.User.ViewModels
 @using Microsoft.AspNetCore.Authorization
+@using LiWiMus.Web.MVC.Areas.User.ViewModels
 @using LiWiMus.Core.Plans
 @model LiWiMus.Web.MVC.Areas.Music.ViewModels.PlaylistViewModel
 @inject IAuthorizationService _authorizationService
@@ -52,7 +52,7 @@
         <div class="m-3">
             @if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Private.Name) is {Succeeded:true})
             {
-                <form class="m-3" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity">
+                <form class="m-3" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="TogglePublicity" asp-enableButtonAfterSuccess="true">
                     <input type="hidden" name="playlistId" value="@Model.Id">
                     <input class="mt-2 change-password-button" type="submit" value="Toggle publicity" style="background: none; border-color: #EF6817; color: #EF6817">
                 </form>
@@ -67,7 +67,7 @@
         <div class="m-3">
             @if (await _authorizationService.AuthorizeAsync(User, DefaultPermissions.Playlist.Cover.Name) is {Succeeded:true})
                     {
-                        <form class="m-3" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="" enctype="multipart/form-data">
+                        <form class="m-3" asp-enableButtonAfterSuccess="true" asp-formhelper="true" method="post" asp-area="User" asp-controller="Playlist" asp-action="UpdatePhoto" enctype="multipart/form-data">
                             <input type="hidden" name="Id" value="@Model.Id">
                             <input class="form-control" type="file" name="Photo" accept="image/*">
                             <input class="mt-3 change-password-button" type="submit" value="Update photo" style="background: none; border-color: #EF6817; color: #EF6817">
@@ -80,9 +80,9 @@
         </div>
         
 
-        <form asp-formhelper="true" class="m-3" method="post" asp-area="User" asp-controller="Playlist" asp-action="Update">
+        <form asp-formhelper="true" class="m-3" method="put" asp-resetFormAfterSuccess="false" asp-area="User" asp-controller="Playlist" asp-action="Update" asp-enableButtonAfterSuccess="true">
             <input type="hidden" name="Id" value="@Model.Id">
-            <input class="form-control" type="text" name="Name">
+            <input class="form-control" type="text" name="Name" value="@Model.Name">
             <input class="mt-2 edit-button" type="submit" value="Edit">
         </form>
     </section>
