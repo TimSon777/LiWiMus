@@ -39,7 +39,12 @@ public class ArtistSeeder : ISeeder
                     UserName = userName
                 };
 
-                await _userManager.CreateAsync(user, "Password");
+                var result = await _userManager.CreateAsync(user, "Password");
+
+                if (!result.Succeeded)
+                {
+                    throw new SystemException();
+                }
                 
                 var album = new Album
                 {

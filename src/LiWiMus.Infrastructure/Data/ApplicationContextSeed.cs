@@ -33,7 +33,11 @@ public static class ApplicationContextSeed
         }
         catch (Exception ex)
         {
-            //File.WriteAllText(@"C:\Users\Тимур\Desktop\LiWiMus\src\LiWiMus.Web.API/EXCEPTION" + Guid.NewGuid().ToString()[..10] + ".txt", ex.Message + "\n" + ex.StackTrace);
+            // if (Random.Shared.TryProbability(5))
+            // {
+            //     File.WriteAllText(@"C:\Users\Тимур\Desktop\LiWiMus\src\LiWiMus.Web.API/EXCEPTION" + Guid.NewGuid().ToString()[..10] + ".txt", ex.Message + "\n" + ex.StackTrace + "\n" + ex.GetType());
+            // }
+            
             if (retry >= 10)
             {
                 throw;

@@ -12,7 +12,6 @@ open System.Linq
 
 type TestApplicationFactory() =
     inherit WebApplicationFactory<Program>()
-
     override this.ConfigureWebHost(builder) =
         
         builder.ConfigureServices(fun services ->
@@ -29,11 +28,8 @@ type TestApplicationFactory() =
             services.Remove(avatarServiceDescriptor) |> ignore
             services.AddTransient<IAvatarService, MockAvatarService>() |> ignore
             
-            let sp = services.BuildServiceProvider()
-            use scope = sp.CreateScope()
             services.AddSingleton<IPolicyEvaluator, MockPolicyEvaluator>() |> ignore)
         |> ignore
 
         base.ConfigureWebHost(builder)
-       
         

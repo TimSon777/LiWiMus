@@ -45,7 +45,12 @@ public class UserSeeder : ISeeder
         
         if (user == null)
         {
-            await _userManager.CreateAsync(admin, _adminSettings.Password);
+            var result = await _userManager.CreateAsync(admin, _adminSettings.Password);
+
+            if (!result.Succeeded)
+            {
+                throw new SystemException();
+            }
         }
         else
         {

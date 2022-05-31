@@ -38,8 +38,13 @@ public class TransactionSeeder : ISeeder
                     Email = "mockEmail@mock.mock_Trans"
                 };
 
-                await _userManager.CreateAsync(user, "Password");
-                await _userManager.UpdateAsync(user);
+                var result = await _userManager.CreateAsync(user, "Password");
+
+                if (!result.Succeeded)
+                {
+                    throw new SystemException();
+                }
+                
                 var transaction = new Transaction
                 {
                     Id = 1000,

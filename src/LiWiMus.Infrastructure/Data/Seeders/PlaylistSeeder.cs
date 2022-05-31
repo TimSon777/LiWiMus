@@ -95,8 +95,13 @@ public class PlaylistSeeder : ISeeder
                     Gender = Gender.Female,
                 };
 
-                await _userManager.CreateAsync(user, "Password");
-                await _userManager.UpdateAsync(user);
+                var result = await _userManager.CreateAsync(user, "Password");
+
+                if (!result.Succeeded)
+                {
+                    throw new SystemException();
+                }
+                
                 var playlist = new Playlist
                 {
                     Id = 24,

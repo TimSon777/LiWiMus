@@ -47,6 +47,7 @@
         <Compile Include="Tracks\Generators\CreateTestsGeneratorFailure.fs" />
         <Compile Include="Tracks\Owners\ListTests.fs" />
         <Compile Include="Tracks\CreateTests.fs" />
+        <Compile Include="SystemPermissions\ListTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

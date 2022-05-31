@@ -41,6 +41,7 @@ public class TrackSeeder : ISeeder
                 };
 
                 var result = await _userManager.CreateAsync(user, "Password");
+                
                 if (!result.Succeeded)
                 {
                     throw new SystemException();
