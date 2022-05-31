@@ -1,11 +1,11 @@
-﻿namespace LiWiMus.Web.API.Tests.Playlists
+﻿namespace LiWiMus.Web.API.Tests.Playlists.Photo
 
 open LiWiMus.Web.API.Shared
 open LiWiMus.Web.API.Tests
 open Xunit
 open FluentAssertions
 
-type RemovePhotoTests(factory: TestApplicationFactory) =
+type RemoveTests(factory: TestApplicationFactory) =
     let url = RouteConstants.Playlists.RemovePhoto
     interface IClassFixture<TestApplicationFactory>
     

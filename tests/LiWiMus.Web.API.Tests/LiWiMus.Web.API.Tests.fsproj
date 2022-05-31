@@ -24,9 +24,10 @@
         <Compile Include="Playlists\UpdateTests.fs" />
         <Compile Include="Playlists\ReadTests.fs" />
         <Compile Include="Playlists\DeleteTests.fs" />
-        <Compile Include="Playlists\RemovePhotoTests.fs" />
-        <Compile Include="Playlists\AddTrackTests.fs" />
-        <Compile Include="Playlists\RemoveTrackTests.fs" />
+        <Compile Include="Playlists\Tracks\AddTrackTests.fs" />
+        <Compile Include="Playlists\Tracks\RemoveTrackTests.fs" />
+        <Compile Include="Playlists\Tracks\ListTests.fs" />
+        <Compile Include="Playlists\Photo\RemoveTests.fs" />
         <Compile Include="Transactions\Generators\UpdateTestsGeneratorSuccess.fs" />
         <Compile Include="Transactions\Generators\UpdateTestsGeneratorFailure.fs" />
         <Compile Include="Transactions\UpdateTests.fs" />

@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.API.Tests.Playlists
+﻿namespace LiWiMus.Web.API.Tests.Playlists.Tracks
 
 open LiWiMus.Web.API
 open LiWiMus.Web.API.Shared
@@ -7,7 +7,7 @@ open Xunit
 open FluentAssertions
 open System.Net.Http.Json
 
-type AddTrackTests(factory: TestApplicationFactory) =
+type AddTests(factory: TestApplicationFactory) =
     let url = RouteConstants.Playlists.Tracks.Add
     interface IClassFixture<TestApplicationFactory>
     

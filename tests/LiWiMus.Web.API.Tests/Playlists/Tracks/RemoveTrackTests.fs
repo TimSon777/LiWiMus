@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.API.Tests.Playlists
+﻿namespace LiWiMus.Web.API.Tests.Playlists.Tracks
 
 open LiWiMus.Web.API
 open LiWiMus.Web.API.Shared
@@ -8,7 +8,7 @@ open FluentAssertions
 open System.Net.Http.Json
 open LiWiMus.Web.Shared.Extensions
 
-type RemoveTrackTests(factory: TestApplicationFactory) =
+type RemoveTests(factory: TestApplicationFactory) =
     let url = RouteConstants.Playlists.Tracks.Remove
     interface IClassFixture<TestApplicationFactory>
     
