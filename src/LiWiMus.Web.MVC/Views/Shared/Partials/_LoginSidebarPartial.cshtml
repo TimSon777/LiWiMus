@@ -1,10 +1,11 @@
 ﻿@using LiWiMus.Core.Users
-@using LiWiMus.Web.MVC.Models
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
 @using LiWiMus.Core.Roles
+@using LiWiMus.Web.Shared
+
 @inject SignInManager<User> _signInManager
 @inject UserManager<User> _userManager
 @inject IOptions<PullUrls> _urls

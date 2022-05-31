@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.MVC.Models;
+﻿namespace LiWiMus.Web.Shared;
 
 public class PullUrls
 {

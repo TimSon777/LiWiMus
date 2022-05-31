@@ -3,7 +3,7 @@ using LiWiMus.Core.Genres;
 using LiWiMus.Core.Genres.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
-using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

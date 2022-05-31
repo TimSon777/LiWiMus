@@ -1,20 +1,20 @@
-@model System.Collections.Generic.List<LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels.UserGeneralInfoViewModel>
+@model List<LiWiMus.Web.MVC.ViewModels.GeneralInfoViewModels.UserGeneralInfoViewModel>
 
 @{
     Layout = "_MediaLibraryLayout";
 }
 <div class="editor-wrap">
     <div>
-            <h3 class="your-profile-header">
-                Followed users
-            </h3>
-        </div>
+        <h3 class="your-profile-header">
+            Followed users
+        </h3>
+    </div>
     <section class="edit-inputs-group">
         <div>
-                            <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="User" asp-action="Index">
-                                Search new users
-                            </a>
-                        </div>
+            <a class="text-link" style="font-weight: bolder; font-size: larger" asp-area="Search" asp-controller="User" asp-action="Index">
+                Search new users
+            </a>
+        </div>
         @foreach (var user in Model)
         {
             <div>

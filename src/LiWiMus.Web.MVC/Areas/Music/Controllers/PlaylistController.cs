@@ -5,7 +5,7 @@ using LiWiMus.Core.Playlists;
 using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
-using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;

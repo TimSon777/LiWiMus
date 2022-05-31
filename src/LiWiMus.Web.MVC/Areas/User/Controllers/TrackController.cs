@@ -4,7 +4,7 @@ using LiWiMus.Core.Plans;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Tracks.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
-using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

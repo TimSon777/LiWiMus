@@ -1,9 +1,12 @@
+@using LiWiMus.Web.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
 @model LiWiMus.Web.MVC.Areas.User.ViewModels.MediaLibraryPlaylistsVewMode
-@inject Microsoft.Extensions.Options.IOptions<LiWiMus.Web.MVC.Models.PullUrls> _pullUrls
+@inject IOptions<PullUrls> PullUrls
 
 @{
     Layout = "_MediaLibraryLayout";
-    var fileUrl = _pullUrls.Value.FileServer;
+    var fileUrl = PullUrls.Value.FileServer;
 }
 <div class="editor-wrap">
     <div>

@@ -3,8 +3,8 @@ using LiWiMus.Core.Shared;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Search.ViewModels;
-using LiWiMus.Web.MVC.Models;
 using LiWiMus.Web.MVC.ViewModels.ForListViewModels;
+using LiWiMus.Web.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 

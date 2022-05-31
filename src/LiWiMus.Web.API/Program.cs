@@ -2,13 +2,9 @@ using System.Reflection;
 using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
 using LiWiMus.Core.Settings;
-using LiWiMus.Infrastructure.Data;
 using LiWiMus.Infrastructure.Data.Config;
-using LiWiMus.Web.API;
 using LiWiMus.Web.Shared.Configuration;
-using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Http.Json;
-using Microsoft.EntityFrameworkCore;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
 
@@ -54,6 +50,8 @@ builder.Services
        });
 
 builder.Services.AddSeeders();
+
+builder.AddMicroServices();
 
 // TODO: Remove cors
 builder.Services.AddCors(options => options

@@ -5,7 +5,7 @@ using LiWiMus.Core.LikedArtists;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Music.ViewModels;
-using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

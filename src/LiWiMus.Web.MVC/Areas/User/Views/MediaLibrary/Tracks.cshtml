@@ -1,9 +1,12 @@
-@model System.Collections.Generic.List<LiWiMus.Web.MVC.Areas.Music.ViewModels.TrackViewModel>
-@inject Microsoft.Extensions.Options.IOptions<LiWiMus.Web.MVC.Models.PullUrls> _pullUrls
+@using LiWiMus.Web.Shared
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Microsoft.Extensions.Options
+@model List<LiWiMus.Web.MVC.Areas.Music.ViewModels.TrackViewModel>
+@inject IOptions<PullUrls> PullUrls
 
 @{
     Layout = "_MediaLibraryLayout";
-    var fileUrl = _pullUrls.Value.FileServer;
+    var fileUrl = PullUrls.Value.FileServer;
 }
 <div class="editor-wrap">
     <div>

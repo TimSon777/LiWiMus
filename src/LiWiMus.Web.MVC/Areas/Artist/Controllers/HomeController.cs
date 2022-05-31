@@ -6,7 +6,7 @@ using LiWiMus.Core.Artists.Specifications;
 using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.Artist.ViewModels;
-using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

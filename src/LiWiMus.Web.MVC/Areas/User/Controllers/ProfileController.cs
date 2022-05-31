@@ -1,20 +1,16 @@
-﻿#region
-
-using AutoMapper;
+﻿using AutoMapper;
 using FormHelper;
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.Users.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.MVC.Areas.User.ViewModels;
-using LiWiMus.Web.MVC.Models;
+using LiWiMus.Web.Shared;
 using LiWiMus.Web.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-
-#endregion
 
 namespace LiWiMus.Web.MVC.Areas.User.Controllers;
 
