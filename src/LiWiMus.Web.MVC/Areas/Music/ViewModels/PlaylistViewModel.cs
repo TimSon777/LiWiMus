@@ -16,4 +16,5 @@ public class PlaylistViewModel : HasId
     public bool IsOwner { get; set; }
     // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public string PrefixFiles { get; set; } = "";
+    public bool IsSubscribed { get; set; }
 }

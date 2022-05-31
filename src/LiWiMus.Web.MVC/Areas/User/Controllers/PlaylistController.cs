@@ -55,6 +55,7 @@ public class PlaylistController : Controller
 
         var playlistVm = _mapper.Map<PlaylistViewModel>(playlist);
         playlistVm.CountSubscribers = await _playlistRepository.GetCountSubscribersAsync(playlistId);
+        playlistVm.IsSubscribed = await _playlistRepository.IsUserSubscribedAsync(User.GetId()!.Value, playlistId);
         return View(playlistVm);
     }
 
