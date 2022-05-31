@@ -40,6 +40,7 @@ type IServiceCollection with
                 |> ignore)
             .AddServer(fun options ->
                 options
+                    .SetAccessTokenLifetime(TimeSpan.FromDays(365))
                     .AllowPasswordFlow()
                     .SetTokenEndpointUris("/auth/connect/token")
                     .AcceptAnonymousClients()

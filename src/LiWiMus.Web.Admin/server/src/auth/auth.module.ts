@@ -8,7 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
         JwtModule.register({
             secret: Buffer.from(process.env.SECRET, 'base64'),
             signOptions: {
-                expiresIn: '1h',
+                expiresIn: '365d',
             }
         }),
     ],
