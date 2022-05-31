@@ -1,8 +1,11 @@
 ﻿module LiWiMus.Web.Auth.Extensions.ServicesExtensions
 
+open System
+open Microsoft.Extensions.Configuration
 open Microsoft.AspNetCore.Authentication.JwtBearer
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.AspNetCore.Identity
+open Microsoft.IdentityModel.Tokens
 open OpenIddict.Abstractions
 open LiWiMus.Infrastructure.Data
 
@@ -27,7 +30,7 @@ type IServiceCollection with
 
         services
 
-    member public services.AddOpenIdConnect() =
+    member public services.AddOpenIdConnect(configuration:IConfiguration) =
         services
             .AddOpenIddict()
             .AddCore(fun options ->
@@ -45,9 +48,10 @@ type IServiceCollection with
                             .DisableTransportSecurityRequirement()
                             .EnableTokenEndpointPassthrough()
                         |> ignore)
-
-                    .AddDevelopmentEncryptionCertificate()
+                    .AddSigningKey(SymmetricSecurityKey(
+                        Convert.FromBase64String(configuration.["SigninKey"])))
                     .AddDevelopmentSigningCertificate()
+                    .AddDevelopmentEncryptionCertificate()
                     .DisableAccessTokenEncryption()
                 |> ignore)
             .AddValidation(fun options ->

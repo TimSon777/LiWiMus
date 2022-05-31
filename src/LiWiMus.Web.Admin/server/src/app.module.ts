@@ -12,6 +12,10 @@ import { TransactionsModule } from './transactions/transactions.module';
 import { GenresModule } from './genres/genres.module';
 import { AlbumsModule } from './albums/albums.module';
 import { PlaylistsModule } from './playlists/playlists.module';
+import {AuthModule} from "./auth/auth.module";
+import {ConfigModule} from "@nestjs/config";
+import {APP_GUARD} from "@nestjs/core";
+import {AdminAuthGuard} from "./auth/admin.auth.guard";
 
 @Module({
   imports: [
@@ -20,15 +24,23 @@ import { PlaylistsModule } from './playlists/playlists.module';
       rootPath: join(__dirname, '..', 'public'),
       serveRoot: '/admin',
     }),
+    ConfigModule.forRoot(),
     UsersModule,
     ArtistsModule,
     TracksModule,
     TransactionsModule,
     GenresModule,
     AlbumsModule,
-    PlaylistsModule
+    PlaylistsModule,
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+      AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AdminAuthGuard,
+    }
+  ],
 })
 export class AppModule {}

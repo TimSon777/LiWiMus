@@ -51,7 +51,7 @@ type Program() =
         services
             .AddIdentity(builder.Environment)
             .ConfigureIdentityOptions()
-            .AddOpenIdConnect()
+            .AddOpenIdConnect(builder.Configuration)
             .AddSwaggerWithAuthorize(builder.Environment.ApplicationName)
             
         services

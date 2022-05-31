@@ -123,4 +123,9 @@ export class AppController {
     // })
     return User.find({ skip: 0, take:10, relations: ["userArtists", "externalLogins", "transactions", "playlists"]});
   }
+  
+  @Get('authtest')
+  async fff(): Promise<string> {
+    return "OKKKK";
+  }
 }
