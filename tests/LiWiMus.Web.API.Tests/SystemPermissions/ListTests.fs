@@ -6,6 +6,7 @@ open LiWiMus.Web.API.Tests
 open Xunit
 open LiWiMus.Web.API
 open LiWiMus.Web.API.Tests.HttpResponseMessage
+
 type ListTests(factory: TestApplicationFactory) =
     let url = RouteConstants.SystemPermissions.List
     interface IClassFixture<TestApplicationFactory>
@@ -26,7 +27,7 @@ type ListTests(factory: TestApplicationFactory) =
                 .Should()
                 .BeSuccessful("database must contains some system permissions") |> ignore
                 
-            let! list = httpMessage.ToArrayAsync<Plans.Dto>()
+            let! list = httpMessage.ToArrayAsync<SystemPermissions.Dto>()
             
             list
                 .Should()
