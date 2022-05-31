@@ -14,6 +14,8 @@ import { AlbumsModule } from './albums/albums.module';
 import { PlaylistsModule } from './playlists/playlists.module';
 import {AuthModule} from "./auth/auth.module";
 import {ConfigModule} from "@nestjs/config";
+import {APP_GUARD} from "@nestjs/core";
+import {AdminAuthGuard} from "./auth/admin.auth.guard";
 
 @Module({
   imports: [
@@ -30,9 +32,15 @@ import {ConfigModule} from "@nestjs/config";
     GenresModule,
     AlbumsModule,
     PlaylistsModule,
-    AuthModule  
+    AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+      AppService,
+    {
+      provide: APP_GUARD,
+      useClass: AdminAuthGuard,
+    }
+  ],
 })
 export class AppModule {}

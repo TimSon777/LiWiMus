@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 import {JwtService} from '@nestjs/jwt';
 
 @Injectable()
-export class JwtAuthGuard implements CanActivate {
+export class AdminAuthGuard implements CanActivate {
     constructor(private jwtService: JwtService) {
     }
 
@@ -68,5 +68,3 @@ export class JwtAuthGuard implements CanActivate {
         return true;
     }
 }
-
-export const AuthorizeAdmin = () => UseGuards(JwtAuthGuard);
