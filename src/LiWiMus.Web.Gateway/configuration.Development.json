@@ -62,23 +62,6 @@
       "SwaggerKey" : "FileServer"
     },
     {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 3001
-        }
-      ],
-      "UpstreamPathTemplate": "/api/n/{everything}",
-      "UpstreamHttpMethod": [
-        "POST",
-        "PUT",
-        "GET"
-      ],
-      "SwaggerKey" : "Admin.API.Nest"
-    },
-    {
       "DownstreamPathTemplate": "/api/userPlans/{id}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
@@ -213,23 +196,6 @@
         "GET",
         "PATCH",
         "DELETE"
-      ],
-      "SwaggerKey" : "Admin.API.C#"
-    },
-    {
-      "DownstreamPathTemplate": "/api/{everything}",
-      "DownstreamScheme": "http",
-      "DownstreamHostAndPorts": [
-        {
-          "Host": "localhost",
-          "Port": 5010
-        }
-      ],
-      "UpstreamPathTemplate": "/api/c/{everything}",
-      "UpstreamHttpMethod": [
-        "POST",
-        "PUT",
-        "GET"
       ],
       "SwaggerKey" : "Admin.API.C#"
     },
