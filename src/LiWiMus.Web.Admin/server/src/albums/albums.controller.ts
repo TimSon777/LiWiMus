@@ -21,11 +21,11 @@ export class AlbumsController {
     @Get(':id')
     @ApiOkResponse({ type: AlbumDto })
     async getAlbumById(@Param('id') id : string) : Promise<AlbumDto> {
-        let album = Album.findOne(+id, {relations: ['artists']});
+        let album = await Album.findOne(+id, {relations: ['artists']});
         if (!album){
             throw new HttpException({
                 message: "The album does not exist."
-            }, HttpStatus.BAD_REQUEST)
+            }, HttpStatus.UNPROCESSABLE_ENTITY)
         }
         return plainToInstance(AlbumDto, album);
     }
@@ -36,7 +36,10 @@ export class AlbumsController {
         let normalizedOptions = this.filterOptionsService.NormalizeOptions(options);
         let obj = this.filterOptionsService.GetFindOptionsObject(options);
         let data = await Album.find(obj).then(items => items.map(data => plainToInstance(AlbumDto, data)))
-            .catch(err => {throw new HttpException({message: err.message}, HttpStatus.BAD_REQUEST)});
+            .catch(err => {
+                throw new HttpException(
+                    {message: err.message}, HttpStatus.BAD_REQUEST)
+            });
         let count = await Album.count({where: obj.where});
         return new PaginatedData<AlbumDto>(data, normalizedOptions, count);
     }

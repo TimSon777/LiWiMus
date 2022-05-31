@@ -26,25 +26,21 @@ export class ArtistsService {
     async addUsers(id: number, dto: UserArtistDto) : Promise<UserDto[]>{
         if (!dto.userIds) {
             throw new HttpException({
-                message: "Enter users."
-            }, HttpStatus.NOT_FOUND)
+                message: "Enter user."
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let artist = await Artist.findOne(id);
         if(!artist) {
             throw new HttpException({
                 message: "Artist was not found."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.UNPROCESSABLE_ENTITY)
         }
-    
+        
+        
         let users = await User.find({
             where: dto.userIds.map((id) => ({id} as User))
-        })
-            .catch(err => {
-                throw new HttpException({
-                    message: "One of entered users was not found."
-                }, HttpStatus.NOT_FOUND)
-            });
+        });
 
         let userArtists: UserArtist[] = [];
 
@@ -55,17 +51,14 @@ export class ArtistsService {
                     message: `Artist already have this user: id: ${user.id}`}, 
                     HttpStatus.CONFLICT)
             }
+            
             let date = await this.dateSetter.setDate();
             artist.modifiedAt = date;
             let userArtist = UserArtist.create({user: user, artist: artist, createdAt: date, modifiedAt: date});
             userArtists.push(userArtist)
         }
         
-        await UserArtist.save(userArtists)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
+        await UserArtist.save(userArtists);
         return UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
             .then(i => i.map((u) => (u.user)))
             .then(u => u.map(data => plainToInstance(UserDto, data)));
@@ -76,7 +69,7 @@ export class ArtistsService {
         if (!dto.userIds) {
             throw new HttpException({
                 message: "Enter users."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let date = await this.dateSetter.setDate();
@@ -88,18 +81,14 @@ export class ArtistsService {
         }
         
         let users = await User.find({
-            where: dto.userIds.map((id) => ({id} as User))})
-            .catch(err => {
-                throw new HttpException({
-                    message: "One of entered users was not found."
-                }, HttpStatus.NOT_FOUND)});
+            where: dto.userIds.map((id) => ({id} as User))});
         
         for (let user of users) {
             let relation = await UserArtist.findOne({where: {artist: artist, user: user}});
             if (!relation){
                 throw new HttpException({
                     message: `Relation was not found.`
-                }, HttpStatus.NOT_FOUND);
+                }, HttpStatus.UNPROCESSABLE_ENTITY);
             }
             
             let userArtist = await UserArtist.find({where: {user: user, artist: artist}});
@@ -123,7 +112,7 @@ export class ArtistsService {
         let updatedArtist = await Artist.create(dto);
         updatedArtist.modifiedAt = await this.dateSetter.setDate();
         await Artist.save(updatedArtist);
-        return plainToInstance(ArtistsDto, Artist.findOne(dto.id));
+        return plainToInstance(ArtistsDto, updatedArtist);
     }
     
     async deleteArtist(id: number) {

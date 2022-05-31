@@ -15,6 +15,4 @@ import {DateSetterService} from "../shared/setDate/set.date";
   providers: [FilterService, SortService, PaginationService, FilterOptionsService, GenresService, DateSetterService],
 })
 
-export class GenresModule {
-  
-}
+export class GenresModule {}

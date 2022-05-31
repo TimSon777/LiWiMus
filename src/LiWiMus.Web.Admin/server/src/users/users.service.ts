@@ -16,6 +16,11 @@ export class UsersService {
             await User.save(updatedUser);
             return plainToInstance(UserDto, User.findOne(dto.id));
         }
+        else {
+            throw new HttpException({
+                message: "User does not exist."
+            }, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
     }
     
     async removeAvatar(id: number) : Promise<UserDto> {
@@ -26,7 +31,7 @@ export class UsersService {
         else {
             throw new HttpException({
                 message: "User does not exist."
-            }, HttpStatus.BAD_REQUEST);
+            }, HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

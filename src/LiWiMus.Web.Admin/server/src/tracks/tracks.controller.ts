@@ -41,14 +41,13 @@ export class TracksController {
         if (!track) {
             throw new HttpException({
                 message: 'The track does not exist.'
-            }, HttpStatus.UNPROCESSABLE_ENTITY)
+            }, HttpStatus.BAD_REQUEST)
         }
         return plainToInstance(TrackDto, track);
     }
 
 
     @Get()
-   // @UseInterceptors(new TransformInterceptor(TrackDto))
     @ApiOkResponse({ type: [TrackDto] })
     async getTracks(@Query() options : FilterOptions)
         : Promise<PaginatedData<TrackDto>> {
@@ -73,12 +72,7 @@ export class TracksController {
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiCreatedResponse({ type: TrackDto })
     async updateTrack(@Body() dto: UpdateTrackDto) : Promise<TrackDto> {
-        return await this.trackService.updateTrack(dto) 
-            .catch(err => {
-            throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
+        return await this.trackService.updateTrack(dto);
     }
     
     @Post(":id/genres")
@@ -86,36 +80,21 @@ export class TracksController {
     @ApiCreatedResponse({ type: TrackDto })
     async addGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) 
     :Promise<TrackDto> {
-        return await this.trackService.addTrackGenre(+id, dto)
-            .catch(err => {
-            throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
+        return await this.trackService.addTrackGenre(+id, dto);
     }
 
     @Delete(":id/genres")
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiOkResponse({ type: TrackDto })
     async deleteGenres(@Param('id') id: string, @Body() dto: TrackGenreDto) : Promise<TrackDto> {
-        return await this.trackService.deleteTrackGenre(+id, dto)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+        return await this.trackService.deleteTrackGenre(+id, dto);
     }
     
     @Delete(":id")
     @ApiOkResponse({ type: Boolean })
     async deleteTrack(@Param('id') id: string)
     : Promise<boolean> {
-        return await this.trackService.deleteTrack(+id)
-            .catch(err => {
-            throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
+        return await this.trackService.deleteTrack(+id);
     }
 
     @Patch(":id/album")
@@ -123,11 +102,7 @@ export class TracksController {
     @ApiCreatedResponse({ type: TrackDto })
     async updateAlbum(@Param('id') id: string, @Body() dto: TrackAlbumDto)
     :Promise<TrackDto> {
-       return await this.trackService.updateTrackAlbum(+id, dto).catch(err => {
-           throw new HttpException({
-               message: err.message
-           }, HttpStatus.BAD_REQUEST)
-       });
+       return await this.trackService.updateTrackAlbum(+id, dto);
     }
 
     @Post(":id/artists")
@@ -135,23 +110,13 @@ export class TracksController {
     @ApiCreatedResponse({ type: TrackDto })
     async addGArtist(@Param('id') id: string, @Body() dto: TrackArtistDto)
         :Promise<TrackDto> {
-        return await this.trackService.addTrackArtist(+id, dto)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+        return await this.trackService.addTrackArtist(+id, dto);
     }
 
     @Delete(":id/artists")
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     @ApiOkResponse({ type: TrackDto })
     async deleteArtist(@Param('id') id: string, @Body() dto: TrackArtistDto) : Promise<TrackDto> {
-        return await this.trackService.deleteTrackArtist(+id, dto)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+        return await this.trackService.deleteTrackArtist(+id, dto);
     }
 }

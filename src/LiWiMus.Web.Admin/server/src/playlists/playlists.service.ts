@@ -19,14 +19,14 @@ export class PlaylistsService {
         if (!dto.owner) {
             throw new HttpException({
                 message: "Enter owner."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let owner = await User.findOne(dto.owner);
         if (!owner) {
             throw new HttpException({
-                message: "Enter existing owner."
-            }, HttpStatus.NOT_FOUND)
+                message: "Owner does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let playlist = Playlist.create({name: dto.name, isPublic: dto.isPublic, photoLocation: dto.photoLocation, owner: owner});
@@ -42,24 +42,19 @@ export class PlaylistsService {
         if (!dto.tracks) {
             throw new HttpException({
                 message: "Enter tracks."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let playlist = await Playlist.findOne(id);
         if (!playlist) {
             throw new HttpException({
-                message: "Playlist was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Playlist does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let tracks = await Track.find({
             where: dto.tracks.map((id) => ({id} as Track))
-        })
-            .catch(err => {
-                throw new HttpException({
-                    message: "One of entered tracks was not found."
-                }, HttpStatus.NOT_FOUND)
-            });
+        });
 
         let playlistTracks: PlaylistTrack[] = [];
         for (let track  of tracks)  {
@@ -76,12 +71,7 @@ export class PlaylistsService {
             playlistTracks.push(playlistTrack)
         }
 
-        await PlaylistTrack.save(playlistTracks)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+        await PlaylistTrack.save(playlistTracks);
 
         return PlaylistTrack.find({where: {playlist: playlist}, relations: ['playlist', 'track']})
             .then(i => i.map((u) => (u.track)))
@@ -93,29 +83,25 @@ export class PlaylistsService {
         if (!dto.tracks) {
             throw new HttpException({
                 message: "Enter tracks."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let playlist = await Playlist.findOne(id);
         if(!playlist) {
             throw new HttpException({
-                message: "Playlist was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Playlist does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let tracks = await Track.find({
-            where: dto.tracks.map((id) => ({id} as Track))})
-            .catch(err => {
-                throw new HttpException({
-                    message: "One of entered tracks was not found."
-                }, HttpStatus.NOT_FOUND)});
+            where: dto.tracks.map((id) => ({id} as Track))});
 
         for(let track of tracks) {
             let relation = await PlaylistTrack.findOne({where: {playlist: playlist, track: track}});
             if (!relation){
                 throw new HttpException({
                     message: `Relation was not found.`
-                }, HttpStatus.NOT_FOUND);
+                }, HttpStatus.BAD_REQUEST);
             }
 
             let playlistTrack = await PlaylistTrack.find({where: {playlist: playlist, track: track}});

@@ -31,12 +31,13 @@ export class UsersController {
     @ApiOkResponse( {type: UserDto })
     async getUserById(@Param('id') id : string)
         : Promise<UserDto> {
-        let user = User.findOne(+id)
-            .catch(err => {
+        let user = await User.findOne(+id);
+        if(!user){
             throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)
-        });
+                message: "This user does nor exist"
+            }, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+            
         return plainToInstance(UserDto, user);
     }
     
@@ -48,10 +49,10 @@ export class UsersController {
         let data = await User.find(obj)
             .then(items => items.map(data => plainToInstance(UserDto, data)))
             .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
-        
+                throw new HttpException(
+                    {message: err.message}, 
+                    HttpStatus.BAD_REQUEST)
+            });
         let count = await User.count({where: obj.where});
         return new PaginatedData<UserDto>(data, normalizedOptions, count);
     }
@@ -61,11 +62,7 @@ export class UsersController {
     @ApiCreatedResponse({ type: User })
     @UseInterceptors(new TransformInterceptor(UserDto))
     async updateUserPersonal(@Body() dto: UpdateUserDto) : Promise<UserDto>{
-            return await this.userService.updateUser(dto)
-                .catch(err => {
-                    throw new HttpException({
-                        message: err.message
-                    }, HttpStatus.BAD_REQUEST)});
+            return await this.userService.updateUser(dto);
     }
 
     @Post(':id/removeAvatar')

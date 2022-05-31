@@ -59,7 +59,10 @@ export class ArtistsController {
         let obj = this.filterOptionsService.GetFindOptionsObject(options, ['albums']);
         let data = await Artist.find(obj)
             .then(items => items.map(data => plainToInstance(ArtistsDto, data)))
-            .catch(err => {throw new HttpException({message: err.message}, HttpStatus.BAD_REQUEST)});
+            .catch(err => {
+                throw new HttpException(
+                    {message: err.message}, HttpStatus.BAD_REQUEST)
+            });
         let count = await Artist.count({where: obj.where});
         return new PaginatedData<ArtistsDto>(data, normalizedOptions, count);
     }
@@ -68,6 +71,11 @@ export class ArtistsController {
     @ApiOkResponse({ type: [UserDto] })
     async getArtistsUsers(@Param('id') id : string) : Promise<UserDto[]> {
         let artist = await Artist.findOne(+id);
+        if (!artist) {
+            throw new HttpException({
+                message: "This user does nor exist"
+            }, HttpStatus.UNPROCESSABLE_ENTITY);
+        }
         return UserArtist.find({where: {artist: artist}, relations: ['user', 'artist']})
             .then(i => i.map((u) => (u.user)))
             .then(u => u.map(data => plainToInstance(UserDto, data)));
@@ -77,11 +85,7 @@ export class ArtistsController {
     @ApiCreatedResponse({ type: [UserDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async addUsers(@Param('id') id : string, @Body() dto: UserArtistDto) : Promise<UserDto[]> {
-        return await this.artistsService.addUsers(+id, dto)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
+        return await this.artistsService.addUsers(+id, dto);
     }
 
     @Delete(":id/users")

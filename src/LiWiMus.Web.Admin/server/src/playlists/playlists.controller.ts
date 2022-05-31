@@ -33,11 +33,13 @@ export class PlaylistsController {
     @Get(':id')
     @ApiOkResponse({ type: PlaylistDto })
     async getPlaylistById(@Param('id') id : string): Promise<PlaylistDto> {
-        let playlist = Playlist.findOne(+id, {relations: ['owner']})
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
+        let playlist = await Playlist.findOne(+id, {relations: ['owner']});
+        if (!playlist) {
+            throw new HttpException({
+                message: "Playlist was not found."
+            }, HttpStatus.BAD_REQUEST)
+        }
+        
         return plainToInstance(PlaylistDto, playlist);
     }
 
@@ -63,33 +65,21 @@ export class PlaylistsController {
     @ApiCreatedResponse({ type: [PlaylistDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async createPlaylist(@Body() dto: CreatePlaylistDto) : Promise<PlaylistDto> {
-        return await this.playlistsService.createPlaylist(dto)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
+        return await this.playlistsService.createPlaylist(dto);
     }
 
     @Post(":id/tracks")
     @ApiCreatedResponse({ type: [UserDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async addTracks(@Param('id') id : string, @Body() dto: PlaylistTrackDto) : Promise<TrackDto[]> {
-        return await this.playlistsService.addPlaylistTracks(+id, dto)
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
+        return await this.playlistsService.addPlaylistTracks(+id, dto);
     }
 
     @Delete(":id/tracks")
     @ApiOkResponse({ type: [UserDto] })
     @UsePipes(new ValidationPipe({skipMissingProperties: true, whitelist: true}))
     async deleteTracks(@Param('id') id : string, @Body() dto: PlaylistTrackDto) : Promise<TrackDto[]> {
-        return await this.playlistsService.deletePlaylistTrack(+id, dto)
-            .catch(err => {
-            throw new HttpException({
-                message: err.message
-            }, HttpStatus.BAD_REQUEST)});
+        return await this.playlistsService.deletePlaylistTrack(+id, dto);
     }
 }
 

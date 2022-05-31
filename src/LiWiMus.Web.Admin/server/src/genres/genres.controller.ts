@@ -36,12 +36,13 @@ export class GenresController {
     @UseInterceptors(new TransformInterceptor(GenreDto))
     @ApiOkResponse({ type: GenreDto })
     async getGenreById(@Param('id') id : string) : Promise<GenreDto> {
-        let genre = await Genre.findOne(+id, {relations: ['tracks']})
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+        let genre = await Genre.findOne(+id, {relations: ['tracks']});
+        if(!genre) {
+            throw new HttpException({
+                message: "Genre was not found."
+            }, HttpStatus.BAD_REQUEST);
+        }
+        
         let result = plainToInstance(GenreDto, genre);
         result.tracksCount = genre.tracks.length;
         return result;
@@ -70,7 +71,7 @@ export class GenresController {
         if (!genre) {
             throw new HttpException({
                 message: "Genre was not found"
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
         
         await Genre

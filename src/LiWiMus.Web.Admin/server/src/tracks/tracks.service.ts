@@ -26,9 +26,10 @@ export class TracksService {
         let track = await Track.findOne(dto.id);
         if (!track) {
             throw new HttpException({
-                message: "Track was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST);
         }
+        
         let updatedTrack = Track.create(dto);
         updatedTrack.modifiedAt = await this.dateSetter.setDate();
         await Track.save(updatedTrack);
@@ -39,8 +40,8 @@ export class TracksService {
         let track = await Track.findOne(id);
         if (!track){
             throw new HttpException({
-                message: `Track was not found.`
-            }, HttpStatus.NOT_FOUND);
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST);
         }
 
         await Track.remove(track);
@@ -53,29 +54,27 @@ export class TracksService {
         if (!dto.genreId) {
             throw new HttpException({
                 message: "Enter genre."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let genre = await Genre.findOne(dto.genreId);
         
         if(!genre) {
             throw new HttpException({
-                message: "Genre was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Genre does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
         
         let date = await this.dateSetter.setDate();
         let track = await Track.findOne(id, {relations: ['genres']});
-        if(!track) {
+        if (!track) {
             throw new HttpException({
-                message: "Track was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         track.modifiedAt = date;
-        
         track.genres.push(genre);
-
         await Track.save(track);
         return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
     }
@@ -86,29 +85,24 @@ export class TracksService {
         if (!dto.genreId) {
             throw new HttpException({
                 message: "Enter genre."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let genre = await Genre.findOne(dto.genreId);
 
-        if(!genre) {
+        if (!genre) {
             throw new HttpException({
-                message: "Genre was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Genre does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let date = await this.dateSetter.setDate();
         let track = await Track.findOne(id, {relations: ['genres']});
-        if(!track) {
+        if (!track) {
             throw new HttpException({
-                message: "Track was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
-
-        
-
-        //let trackGenres = await Track.findOne({where: {id: id}, relations: ['genres']})
-        //    .then(i => i.genres);
 
         const index = track.genres.map(function (g) {
             return g.id;
@@ -120,15 +114,14 @@ export class TracksService {
         
         if (track.genres.length === 0) {
             throw new HttpException({
-                message: "The rack must have a genre."
+                message: "The track must have a genre."
             }, HttpStatus.CONFLICT)
         }
 
         track.modifiedAt = date;
-        
         await Track.save(track);
-        
-        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+        const updatedTrack = await Track.findOne(id, {relations: ['genres', 'album', 'artists']});
+        return plainToInstance(TrackDto, updatedTrack);
     }
     
     public async updateTrackAlbum(id: number, dto: TrackAlbumDto)
@@ -137,31 +130,30 @@ export class TracksService {
         if (!dto.albumId) {
             throw new HttpException({
                 message: "Enter album."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let album = await Album.findOne(dto.albumId);
 
-        if(!album) {
+        if (!album) {
             throw new HttpException({
-                message: "Album was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Album does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let date = await this.dateSetter.setDate();
         let track = await Track.findOne(id, {relations: ['album']});
-        if(!track) {
+        if (!track) {
             throw new HttpException({
-                message: "Track was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         track.modifiedAt = date;
-
         track.album = album;
-
         await Track.save(track);
-        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+        const updatedTrack = await Track.findOne(id, {relations: ['genres', 'album', 'artists']});
+        return plainToInstance(TrackDto, updatedTrack);
     }
 
     public async addTrackArtist(id: number, dto: TrackArtistDto)
@@ -170,31 +162,30 @@ export class TracksService {
         if (!dto.artistId) {
             throw new HttpException({
                 message: "Enter artist."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let artist = await Artist.findOne(dto.artistId);
 
-        if(!artist) {
+        if (!artist) {
             throw new HttpException({
-                message: "Artist was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Artist does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let date = await this.dateSetter.setDate();
         let track = await Track.findOne(id, {relations: ['artists']});
-        if(!track) {
+        if (!track) {
             throw new HttpException({
-                message: "Track was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         track.modifiedAt = date;
-
         track.artists.push(artist);
-
         await Track.save(track);
-        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+        let updatedTrack = await Track.findOne(id, {relations: ['genres', 'album', 'artists']});
+        return plainToInstance(TrackDto, updatedTrack);
     }
 
     public async deleteTrackArtist(id: number, dto: TrackArtistDto)
@@ -203,25 +194,24 @@ export class TracksService {
         if (!dto.artistId) {
             throw new HttpException({
                 message: "Enter artist."
-            }, HttpStatus.NOT_FOUND)
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let artist = await Artist.findOne(dto.artistId);
 
-        if(!artist) {
+        if (!artist) {
             throw new HttpException({
-                message: "Artist was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Artist does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
 
         let date = await this.dateSetter.setDate();
         let track = await Track.findOne(id, {relations: ['artists']});
         if(!track) {
             throw new HttpException({
-                message: "Track was not found."
-            }, HttpStatus.NOT_FOUND)
+                message: "Track does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
-
 
         const index = track.artists.map(function (g) {
             return g.id;
@@ -240,8 +230,9 @@ export class TracksService {
         track.modifiedAt = date;
 
         await Track.save(track);
+        const updatedTrack = await Track.findOne(id, {relations: ['genres', 'album', 'artists']});
 
-        return plainToInstance(TrackDto, Track.findOne(id, {relations: ['genres', 'album', 'artists']}));
+        return plainToInstance(TrackDto, updatedTrack);
     }
 } 
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import {GenreDto} from "./dto/genre.dto";
 import {Genre} from "./genre.entity";
 import {DateSetterService} from "../shared/setDate/set.date";
@@ -10,12 +10,17 @@ export class GenresService {
     constructor(private readonly dateSetter: DateSetterService) {}
     async updateGenre(dto: UpdateGenreDto) 
         : Promise<GenreDto> {
-        if (await Genre.findOne(dto.id)){
+        if (await Genre.findOne(dto.id)) {
             let updatedGenre = Genre.create(dto);
             updatedGenre.modifiedAt = await this.dateSetter.setDate();
             await Genre.save(updatedGenre);
-            let genre = Genre.findOne(dto.id);
+            let genre = await Genre.findOne(dto.id);
             return plainToInstance(GenreDto, genre);
+        }
+        else {
+            throw new HttpException({
+                message: "Genre does not exist."
+            }, HttpStatus.BAD_REQUEST)
         }
     }
 }

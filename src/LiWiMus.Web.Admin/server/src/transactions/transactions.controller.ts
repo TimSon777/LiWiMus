@@ -16,11 +16,12 @@ export class TransactionsController {
     @Get(':id')
     @ApiOkResponse({ type: TransactionDto })
     async getTransactionsDtoById(@Param('id') id : string) : Promise<TransactionDto> {
-        let transaction = Transaction.findOne(+id, {relations: ["user"]})
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)});
+        let transaction = await Transaction.findOne(+id, {relations: ["user"]});
+        if (!transaction) {
+            throw new HttpException({
+                message: "Transaction does not exist."
+            }, HttpStatus.BAD_REQUEST)
+        }
         return plainToInstance(TransactionDto, transaction);
     }
 
