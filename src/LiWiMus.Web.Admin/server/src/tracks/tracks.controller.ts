@@ -37,12 +37,12 @@ export class TracksController {
     @Get(':id')
     @ApiOkResponse({ type: TrackDto })
     async getTrackById(@Param('id') id : string) : Promise<TrackDto> {
-        let track = await Track.findOne(+id, {relations: ['genres', 'album', 'artists']})
-            .catch(err => {
-                throw new HttpException({
-                    message: err.message
-                }, HttpStatus.BAD_REQUEST)
-            });
+        let track = await Track.findOne(+id, {relations: ['genres', 'album', 'artists']});
+        if (!track) {
+            throw new HttpException({
+                message: 'The track does not exist.'
+            }, HttpStatus.UNPROCESSABLE_ENTITY)
+        }
         return plainToInstance(TrackDto, track);
     }
 
