@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { User } from "../../users/types/User";
-import { useUserService } from "../../users/UserService.hook";
+import axios from "axios";
 
 const storageName = "userData";
+const API_URL = process.env.REACT_APP_API_URL;
 
 type JwtPayload = {
   sub: string;
@@ -14,8 +15,6 @@ type JwtPayload = {
 };
 
 export const useAuth = () => {
-  const userService = useUserService();
-
   const [user, setUser] = useState<User | null>(null);
   const [ready, setReady] = useState<boolean>(false);
   const [payload, setPayload] = useState<JwtPayload | null>(null);
@@ -29,7 +28,28 @@ export const useAuth = () => {
 
     const userId = payload.sub;
     try {
-      const user = await userService.get(userId);
+      const response = await axios
+        .create({
+          baseURL: API_URL,
+          headers: { Authorization: `Bearer ${jwtToken}` },
+        })
+        .get(`/users/${userId}`);
+      const user = new User(
+        response.data.id,
+        response.data.userName,
+        response.data.email,
+        response.data.emailConfirmed,
+        response.data.firstName,
+        response.data.secondName,
+        response.data.patronymic,
+        response.data.birthDate,
+        response.data.gender,
+        response.data.balance,
+        response.data.avatarLocation,
+        response.data.createdAt,
+        response.data.modifiedAt,
+        response.data.lockoutEnd
+      );
 
       setUser(user);
     } catch (e) {

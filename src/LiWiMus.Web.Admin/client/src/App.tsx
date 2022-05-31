@@ -46,7 +46,7 @@ function App() {
                 horizontal: "center",
               }}
             >
-              <Layout user={user}>{routes}</Layout>
+              <Layout>{routes}</Layout>
             </SnackbarProvider>
           </ThemeProvider>
         </LocalizationProvider>

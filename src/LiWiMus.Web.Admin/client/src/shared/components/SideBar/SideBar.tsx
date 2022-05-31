@@ -20,7 +20,6 @@ import ListLink from "../ListLink/ListLink";
 import ListButton from "../ListButton/ListButton";
 import AlbumIcon from "@mui/icons-material/Album";
 import "./SideBar.sass";
-import { User } from "../../../users/types/User";
 import avatarPlaceholder from "../../images/avatar-placeholder.jpg";
 import { Link as RLink } from "react-router-dom";
 import { useFileService } from "../../hooks/FileService.hook";
@@ -28,19 +27,14 @@ import { useFileService } from "../../hooks/FileService.hook";
 const drawerWidth = 240;
 
 export interface SideBarProps {
-  user: User | null;
   mobileOpen: boolean;
   setMobileOpen: (state: boolean) => void;
 }
 
-export default function SideBar({
-  mobileOpen,
-  setMobileOpen,
-  user,
-}: SideBarProps) {
+export default function SideBar({ mobileOpen, setMobileOpen }: SideBarProps) {
   const fileService = useFileService();
 
-  const { logout } = useContext(AuthContext);
+  const { logout, user } = useContext(AuthContext);
 
   const linkClickHandler = () => {
     setMobileOpen(false);

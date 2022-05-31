@@ -30,8 +30,6 @@ export const useAxios = (prefix?: string) => {
   const baseUrl = prefix ? API_URL!.concat(prefix) : API_URL;
   const authContext = useContext(AuthContext);
 
-  if (authContext.token) {
-  }
   const authHeader = authContext.token
     ? { Authorization: `Bearer ${authContext.token}` }
     : undefined;
