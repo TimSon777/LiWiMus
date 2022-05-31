@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // @ts-ignore
 import dateFormat from "dateformat";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
@@ -102,7 +102,8 @@ export default function PlansPage() {
           color="primary"
           sx={{ position: "fixed", bottom: 50, right: 50 }}
           aria-label="add"
-          href="/admin/plans/create"
+          component={Link}
+          to="/admin/plans/create"
         >
           <AddIcon />
         </Fab>

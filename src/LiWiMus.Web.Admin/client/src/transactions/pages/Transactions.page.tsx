@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   DataGrid,
   GridColDef,
@@ -257,7 +257,8 @@ export default function UsersPage() {
           color="primary"
           sx={{ position: "fixed", bottom: 50, right: 50 }}
           aria-label="add"
-          href="/admin/transactions/create"
+          component={Link}
+          to="/admin/transactions/create"
         >
           <AddIcon />
         </Fab>

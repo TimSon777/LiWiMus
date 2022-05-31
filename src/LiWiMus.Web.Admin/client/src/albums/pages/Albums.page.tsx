@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // @ts-ignore
 import dateFormat from "dateformat";
 import {
@@ -267,7 +267,8 @@ export default function AlbumsPage() {
           color="primary"
           sx={{ position: "fixed", bottom: 50, right: 50 }}
           aria-label="add"
-          href="/admin/albums/create"
+          component={Link}
+          to="/admin/albums/create"
         >
           <AddIcon />
         </Fab>
