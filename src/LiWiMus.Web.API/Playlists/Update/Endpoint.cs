@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LiWiMus.Core.Playlists;
+using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
@@ -29,7 +30,7 @@ public class Endpoint : IEndpoint<IResult, Request>
             return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
-        var playlist = await _repository.GetByIdAsync(request.Id);
+        var playlist = await _repository.GetWithTracksAndSubscribersAsync(request.Id);
         if (playlist is null)
         {
             return Results.Extensions.NotFoundById(EntityType.Playlists, request.Id);

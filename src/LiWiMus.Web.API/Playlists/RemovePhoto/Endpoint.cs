@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LiWiMus.Core.Playlists;
+using LiWiMus.Core.Playlists.Specifications;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
@@ -19,7 +20,7 @@ public class Endpoint : IEndpoint<IResult, int>
 
     public async Task<IResult> HandleAsync(int id)
     {
-        var playlist = await _repository.GetByIdAsync(id);
+        var playlist = await _repository.GetWithTracksAndSubscribersAsync(id);
         if (playlist is null)
         {
             return Results.Extensions.NotFoundById(EntityType.Playlists, id);
