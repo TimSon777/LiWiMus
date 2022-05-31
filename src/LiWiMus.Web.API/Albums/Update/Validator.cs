@@ -20,6 +20,6 @@ public class Validator : AbstractValidator<Request>
             .Cascade(CascadeMode.Stop)
             .Must(d => d <= DateOnly.FromDateTime(DateTime.UtcNow))
             .When(request => request.PublishedAt is not null, ApplyConditionTo.CurrentValidator)
-            .WithMessage(ValidationMessages.DateLessThenNow);
+            .WithMessage(ValidationMessages.DateLessOrEqualThenNow);
     }
 }

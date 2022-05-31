@@ -2,6 +2,7 @@
 using LiWiMus.Core.Roles.Interfaces;
 using LiWiMus.Core.Settings;
 using LiWiMus.Core.Users;
+using LiWiMus.Core.Users.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
@@ -15,17 +16,61 @@ public class UserSeeder : ISeeder
     private readonly AdminSettings _adminSettings;
 
     public UserSeeder(UserManager<User> userManager, IOptions<AdminSettings> adminSettingsOptions,
-                      IRoleManager roleManager)
+        IRoleManager roleManager)
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _adminSettings = adminSettingsOptions.Value;
     }
+
+    private async Task<User> CreateUserAndThrowWhenNotSucceedAsync(string email, string userName, int id)
+    {
+        var user = new User
+        {
+            Id = id,
+            UserName = userName,
+            Gender = Gender.Male,
+            Email = email,
+        };
+
+        var result = await _userManager.CreateAsync(user, "Password");
+
+        if (!result.Succeeded)
+        {
+            throw new SystemException();
+        }
+
+        return user;
+    }
+
     public async Task SeedAsync(EnvironmentType environmentType)
     {
         await SeedAdminAsync();
+        const string userName1 = "MockUser1_User";
+
+        if (await _userManager.FindByNameAsync(userName1) is not null)
+        {
+            return;
+        }
+
+        switch (environmentType)
+        {
+            case EnvironmentType.Development:
+                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail1@mock.mock_User", userName1, 380000);
+                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail2@mock.mock_User", "MockUser2_User", 380001);
+                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail3@mock.mock_User", "MockUser3_User", 380002);
+                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail4@mock.mock_User", "MockUser4_User", 380003);
+                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail5@mock.mock_User", "MockUser5_User", 380004);
+                var mockAdmin = await CreateUserAndThrowWhenNotSucceedAsync("mockEmail6@mock.mock_User", "MockUser6_User", 380005);
+                await _roleManager.AddToRoleAsync(mockAdmin, DefaultRoles.Admin.Name);
+                break;
+            case EnvironmentType.Production:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(environmentType), environmentType, null);
+        }
     }
-    
+
     private async Task SeedAdminAsync()
     {
         var oldAdmin = await _userManager.FindByNameAsync(_adminSettings.UserName);
@@ -33,16 +78,16 @@ public class UserSeeder : ISeeder
         {
             return;
         }
-        
+
         var admin = new User
         {
             UserName = _adminSettings.UserName,
             Email = _adminSettings.Email,
             EmailConfirmed = true
         };
-        
+
         var user = await _userManager.FindByEmailAsync(admin.Email);
-        
+
         if (user == null)
         {
             var result = await _userManager.CreateAsync(admin, _adminSettings.Password);
@@ -56,7 +101,7 @@ public class UserSeeder : ISeeder
         {
             admin = user;
         }
-        
+
         await _userManager.UpdateAsync(admin);
         await _roleManager.AddToRoleAsync(admin, DefaultRoles.Admin.Name);
     }
