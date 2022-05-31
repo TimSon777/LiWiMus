@@ -14,12 +14,14 @@ public class UserSeeder : ISeeder
     private readonly UserManager<User> _userManager;
     private readonly IRoleManager _roleManager;
     private readonly AdminSettings _adminSettings;
+    private readonly ApplicationContext _applicationContext;
 
     public UserSeeder(UserManager<User> userManager, IOptions<AdminSettings> adminSettingsOptions,
-        IRoleManager roleManager)
+        IRoleManager roleManager, ApplicationContext applicationContext)
     {
         _userManager = userManager;
         _roleManager = roleManager;
+        _applicationContext = applicationContext;
         _adminSettings = adminSettingsOptions.Value;
     }
 
@@ -56,13 +58,24 @@ public class UserSeeder : ISeeder
         switch (environmentType)
         {
             case EnvironmentType.Development:
-                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail1@mock.mock_User", userName1, 380000);
+                var user = await CreateUserAndThrowWhenNotSucceedAsync("mockEmail1@mock.mock_User", userName1, 380000);
                 await CreateUserAndThrowWhenNotSucceedAsync("mockEmail2@mock.mock_User", "MockUser2_User", 380001);
                 await CreateUserAndThrowWhenNotSucceedAsync("mockEmail3@mock.mock_User", "MockUser3_User", 380002);
                 await CreateUserAndThrowWhenNotSucceedAsync("mockEmail4@mock.mock_User", "MockUser4_User", 380003);
-                await CreateUserAndThrowWhenNotSucceedAsync("mockEmail5@mock.mock_User", "MockUser5_User", 380004);
+                var user5 = await CreateUserAndThrowWhenNotSucceedAsync("mockEmail5@mock.mock_User", "MockUser5_User", 380004);
                 var mockAdmin = await CreateUserAndThrowWhenNotSucceedAsync("mockEmail6@mock.mock_User", "MockUser6_User", 380005);
                 await _roleManager.AddToRoleAsync(mockAdmin, DefaultRoles.Admin.Name);
+                
+                var role = new Role
+                {
+                    Id = 380000,
+                    Name = "MockRole_User",
+                    Description = "About"
+                };
+
+                _applicationContext.Add(role);
+                await _roleManager.AddToRoleAsync(user, role);
+                await _roleManager.AddToRoleAsync(user5, role);
                 break;
             case EnvironmentType.Production:
                 break;
