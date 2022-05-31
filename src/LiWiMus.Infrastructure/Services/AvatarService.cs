@@ -3,6 +3,7 @@
 using LiWiMus.Core.Interfaces;
 using LiWiMus.Core.Interfaces.Files;
 using LiWiMus.Core.Users;
+using Refit;
 
 #endregion
 
@@ -41,10 +42,9 @@ public class AvatarService : IAvatarService
 
             user.AvatarLocation = fileResult.Content.Location;
         }
-        catch (Exception)
+        catch (ApiException)
         {
             user.AvatarLocation = null;
         }
-        
     }
 }
