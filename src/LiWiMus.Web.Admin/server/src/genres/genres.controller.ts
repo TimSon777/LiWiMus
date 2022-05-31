@@ -18,7 +18,7 @@ import {getRepository} from "typeorm";
 import {GenresService} from "./genres.service";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {TrackDto} from "../tracks/dto/track.dto";
-import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {Artist} from "../artists/artist.entity";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
@@ -26,6 +26,7 @@ import {UpdateGenreDto} from "./dto/update.genre.dto";
 
 @Controller('genres')
 @ApiTags('genres')
+@ApiBearerAuth('swagger')
 export class GenresController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly genreService: GenresService) {

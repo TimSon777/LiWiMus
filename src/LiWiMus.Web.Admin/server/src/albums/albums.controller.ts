@@ -8,12 +8,13 @@ import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterOptions} from "../filters/filter.options";
 import {Album} from "./album.entity";
 import {AlbumDto} from "./dto/album.dto";
-import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
 
 @Controller('albums')
 @ApiTags('albums')
+@ApiBearerAuth('swagger')
 export class AlbumsController {
     constructor(private readonly filterOptionsService: FilterOptionsService) {}
 

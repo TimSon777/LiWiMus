@@ -17,7 +17,7 @@ import {FilterOptions} from "../filters/filter.options";
 import {Artist} from "./artist.entity";
 import {UserArtist} from "../userArtist/userArtist.entity";
 import {ArtistsDto} from "./dto/artists.dto";
-import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
 import {CreateArtistDto} from "./dto/create.artist.dto";
@@ -28,6 +28,7 @@ import {UpdateArtistDto} from "./dto/update.artist.dto";
 
 @Controller('artists')
 @ApiTags('artists')
+@ApiBearerAuth('swagger')
 export class ArtistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService, 
                 private readonly artistsService: ArtistsService){}

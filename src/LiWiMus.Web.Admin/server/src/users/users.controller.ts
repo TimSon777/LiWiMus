@@ -17,12 +17,13 @@ import {UsersService} from "./users.service";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {UserDto} from "./dto/user.dto";
 import {UpdateUserDto} from "./dto/update.user.dto";
-import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {PaginatedData} from "../pagination/paginatied.data";
 import {plainToInstance} from "class-transformer";
 
 @Controller("users")
 @ApiTags('users')
+@ApiBearerAuth('swagger')
 export class UsersController {
     constructor(private readonly filterOptionsService: FilterOptionsService, private readonly userService: UsersService){}
 

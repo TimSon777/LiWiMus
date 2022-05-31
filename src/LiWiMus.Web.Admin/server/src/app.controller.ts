@@ -10,8 +10,10 @@ import {Playlist} from "./playlists/playlist.entity";
 import {serialize} from "v8";
 import {UserArtist} from "./userArtist/userArtist.entity";
 import {MoreThan} from "typeorm";
+import {ApiBearerAuth} from "@nestjs/swagger";
 
 @Controller()
+@ApiBearerAuth('swagger')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 

@@ -15,7 +15,7 @@ import {FilterOptions} from "../filters/filter.options";
 import {Track} from "./track.entity";
 import {TransformInterceptor} from "../transformInterceptor/transform.interceptor";
 import {TrackDto} from "./dto/track.dto";
-import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {Artist} from "../artists/artist.entity";
 import {User} from "../users/user.entity";
 import {UserDto} from "../users/dto/user.dto";
@@ -29,6 +29,7 @@ import {TrackArtistDto} from "./dto/track.artist.dto";
 
 @Controller('tracks')
 @ApiTags('tracks')
+@ApiBearerAuth('swagger')
 export class TracksController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private  readonly trackService: TracksService){}

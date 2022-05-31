@@ -9,7 +9,7 @@ import {
     Query,
     UsePipes, ValidationPipe
 } from '@nestjs/common';
-import {ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterOptions} from "../filters/filter.options";
 import {Playlist} from "./playlist.entity";
@@ -24,6 +24,7 @@ import {PlaylistTrackDto} from "./dto/playlist.track.dto";
 
 @Controller('playlists')
 @ApiTags('playlists')
+@ApiBearerAuth('swagger')
 export class PlaylistsController {
     constructor(private readonly filterOptionsService: FilterOptionsService,
                 private readonly playlistsService: PlaylistsService) {

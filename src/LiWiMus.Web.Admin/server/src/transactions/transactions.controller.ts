@@ -3,12 +3,13 @@ import {FilterOptionsService} from "../filters/services/filter.options.service";
 import {FilterOptions} from "../filters/filter.options";
 import {Transaction} from "./transaction.entity";
 import {TransactionDto} from "./dto/transaction.dto";
-import {ApiOkResponse, ApiTags} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiOkResponse, ApiTags} from "@nestjs/swagger";
 import {plainToInstance} from "class-transformer";
 import {PaginatedData} from "../pagination/paginatied.data";
 
 @Controller('transactions')
 @ApiTags('transactions')
+@ApiBearerAuth('swagger')
 export class TransactionsController {
     constructor(private readonly filterOptionsService: FilterOptionsService){}
 
