@@ -1,4 +1,4 @@
-module LiWiMus.Web.API.Tests.MockPolicyEvaluator
+namespace LiWiMus.Web.API.Tests.Mocks
 
 open System.Security.Claims
 open System.Threading.Tasks

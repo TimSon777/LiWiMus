@@ -8,7 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="MockPolicyEvaluator.fs" />
+        <Compile Include="Mocks\MockPolicyEvaluator.fs" />
+        <Compile Include="Mocks\MockAvatarService.fs" />
         <Compile Include="JsonOptionsExtensions.fs" />
         <Compile Include="HttpResponseMessageExtensions.fs" />
         <Compile Include="TestHelpers.fs" />
