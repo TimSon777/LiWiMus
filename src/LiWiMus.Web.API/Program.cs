@@ -1,10 +1,13 @@
 using System.Reflection;
 using DateOnlyTimeOnly.AspNet.Converters;
 using FluentValidation.AspNetCore;
+using LiWiMus.Core.Roles;
 using LiWiMus.Core.Settings;
 using LiWiMus.Infrastructure.Data.Config;
 using LiWiMus.Web.Shared.Configuration;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.IdentityModel.Tokens;
 using MinimalApi.Endpoint.Extensions;
 using OpenIddict.Validation.AspNetCore;
 
@@ -38,7 +41,13 @@ builder.Services.Configure<AdminSettings>(builder.Configuration.GetSection(nameo
 
 builder.Services.AddAuthentication(options =>
     options.DefaultScheme = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme);
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)
+        .RequireClaim(SystemPermission.ClaimType, DefaultSystemPermissions.Admin.Access.Name)
+        .Build();
+});
 
 builder.Services
        .AddOpenIddict()
@@ -47,6 +56,9 @@ builder.Services
            options.SetIssuer("https://localhost:5021");
            options.UseSystemNetHttp();
            options.UseAspNetCore();
+           options.Configure(a => a.TokenValidationParameters.IssuerSigningKey =
+               new SymmetricSecurityKey(
+                   Convert.FromBase64String(builder.Configuration["SigninKey"])));
        });
 
 builder.Services.AddSeeders();
