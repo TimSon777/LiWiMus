@@ -81,16 +81,17 @@ builder.Services.AddEndpointsApiExplorer();
 // });
 builder.Services.AddSwaggerWithAuthorize(builder.Environment.ApplicationName);
 var app = builder.Build();
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.UseCors();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", builder.Environment.ApplicationName);
     c.RoutePrefix = "api/swagger";
 });
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseCors();
+
 app.MapEndpoints();
 
 {

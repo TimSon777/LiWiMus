@@ -27,7 +27,7 @@ public static class ConfigureSwagger
             {
                 Password = new OpenApiOAuthFlow
                 {
-                    TokenUrl = new Uri("https://localhost:5021/auth/connect/token")
+                    TokenUrl = new Uri("http://localhost:5020/auth/connect/token")
                 }
             }
         };
