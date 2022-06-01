@@ -39,6 +39,33 @@ public class RoleSeeder : ISeeder
                 await _roleManager.GrantPermissionAsync(admin, systemPermission);
             }
         }
+
+        const string roleName = "MockRole_Role";
+        
+        var roles = await _roleRepository.ListAsync();
+        if (roles.Any(x => x.Name == roleName))
+        {
+            return;
+        }
+        
+        switch (environmentType)
+        {
+            case EnvironmentType.Development:
+                var role = new Role
+                {
+                    Id = 990000,
+                    Description = "MockRole_Role",
+                    Name = roleName
+                };
+                
+                _applicationContext.Add(role);
+                
+                break;
+            case EnvironmentType.Production:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(environmentType), environmentType, null);
+        }
     }
 
     private async Task SeedRolesAsync(EnvironmentType _)

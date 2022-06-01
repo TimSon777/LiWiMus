@@ -58,6 +58,8 @@
         <Compile Include="Roles\Generators\CreateTestsGeneratorFailure.fs" />
         <Compile Include="Roles\CreateTests.fs" />
         <Compile Include="Roles\ListTests.fs" />
+        <Compile Include="Roles\ReadTests.fs" />
+        <Compile Include="Roles\DeleteTests.fs" />
     </ItemGroup>
 
     <ItemGroup>

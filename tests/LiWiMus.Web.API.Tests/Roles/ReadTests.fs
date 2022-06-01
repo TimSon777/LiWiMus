@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.API.Tests.Plans
+namespace LiWiMus.Web.API.Tests.Roles
 
 open LiWiMus.Web.API.Shared
 open FluentAssertions
@@ -6,15 +6,15 @@ open LiWiMus.Web.API.Tests
 open Xunit
 
 type ReadTests(factory: TestApplicationFactory) =
-    let url = RouteConstants.Plans.Read
+    let url = RouteConstants.Roles.Read
     interface IClassFixture<TestApplicationFactory>
     
     [<Fact>]
-    member this.``Tests(Plans): Read => Success``() =
+    member this.``Tests(Roles): Read => Success``() =
     
         // Arrange
         let client = factory.CreateClient()
-        let id = 180000
+        let id = 1
         
         task {
     
@@ -24,20 +24,21 @@ type ReadTests(factory: TestApplicationFactory) =
             //Assert
             httpMessage
                 .Should()
-                .BeSuccessful($"plan with id {id} must be in db (see seeder)")
+                .BeSuccessful($"role with id {id} must be in db (see seeder)")
             |> ignore
         }
 
     [<Fact>]
-    member this.``Tests(Plans): Read => Failure (not found)``() =
+    member this.``Tests(Roles): Read => Failure (not found)``() =
     
         // Arrange
         let client = factory.CreateClient()
-    
+        let id = 13223
+        
         task {
     
             //Act
-            let! httpMessage = client.GetAsync(url.Replace("{id:int}", "185000"))
+            let! httpMessage = client.GetAsync(url.Replace("{id:int}", id.ToString()))
     
             //Assert
             httpMessage

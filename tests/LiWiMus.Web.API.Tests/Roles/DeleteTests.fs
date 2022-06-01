@@ -1,4 +1,4 @@
-﻿namespace LiWiMus.Web.API.Tests.Plans
+namespace LiWiMus.Web.API.Tests.Roles
 
 open LiWiMus.Web.API.Shared
 open LiWiMus.Web.API.Tests
@@ -6,15 +6,15 @@ open Xunit
 open FluentAssertions
 
 type DeleteTests(factory: TestApplicationFactory) =
-    let url = RouteConstants.Plans.Delete
+    let url = RouteConstants.Roles.Delete
     interface IClassFixture<TestApplicationFactory>
     
     [<Fact>]
-    member this.``Tests(Plans): Delete => Success``() =
+    member this.``Tests(Roles): Delete => Success``() =
     
         // Arrange
         let client = factory.CreateClient()
-        let id = 180000
+        let id = 990000
         
         task {
     
@@ -24,12 +24,12 @@ type DeleteTests(factory: TestApplicationFactory) =
             //Assert
             httpMessage
                 .Should()
-                .BeSuccessful($"plan with id {id} must be in db (see seeder)")
+                .BeSuccessful($"role with id {id} must be in db (see seeder)")
             |> ignore
         }
 
     [<Fact>]
-    member this.``Tests(Plans): Delete => Failure (not found)``() =
+    member this.``Tests(Roles): Delete => Failure (not found)``() =
     
         // Arrange
         let client = factory.CreateClient()
@@ -50,7 +50,7 @@ type DeleteTests(factory: TestApplicationFactory) =
     [<InlineData(1)>]
     [<InlineData(2)>]
     [<InlineData(3)>]
-    member this.``Tests(Plans): Delete => Failure (not access)``(id) =
+    member this.``Tests(Playlists): Delete => Failure (not access)``(id) =
     
         // Arrange
         let client = factory.CreateClient()
