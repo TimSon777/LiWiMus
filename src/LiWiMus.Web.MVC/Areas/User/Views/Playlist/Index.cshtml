@@ -94,7 +94,6 @@
                         <a class="text-link" asp-area="User" asp-controller="Plans" asp-action="Index">Buy plan to set photo</a>
                     }
         </div>
-        
 
         <form asp-formhelper="true" class="m-3" method="put" asp-resetFormAfterSuccess="false" asp-area="User" asp-controller="Playlist" asp-action="Update" asp-enableButtonAfterSuccess="true">
             <input type="hidden" name="Id" value="@Model.Id">
@@ -106,5 +105,6 @@
 
 @section Scripts
 {
+    <script src="/js/subscribeUnsubscribe.js"></script>
     <script src="~/js/playlist.js"></script>
 }

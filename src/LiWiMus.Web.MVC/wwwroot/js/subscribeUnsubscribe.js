@@ -1,5 +1,4 @@
-﻿
-const subBtn = document.querySelector(".subscribe-button");
+﻿const subBtn = document.querySelector(".subscribe-button");
 
 function subscribe(){
     subBtn.classList.add("subscribed");
