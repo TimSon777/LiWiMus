@@ -1,0 +1,4 @@
+* linguist-vendored=false
+src/LiWiMus.Web.MVC/**/*.* linguist-vendored=true
+src/LiWiMus.Web.Admin/**/*.* linguist-vendored=true
+src/LiWiMus.Web.MailServer/**/*.* linguist-vendored=true
