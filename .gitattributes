@@ -1,1 +1,2 @@
-src/LiWiMus.Web.MVC linguist-vendored=false
+* linguist-vendored=true
+src/LiWiMus.Web.MVC/**/*.* linguist-vendored=false
