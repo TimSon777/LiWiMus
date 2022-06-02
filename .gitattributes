@@ -3,3 +3,7 @@ src/LiWiMus.Web.MVC/**/*.* linguist-vendored=true
 src/LiWiMus.Web.Admin/**/*.* linguist-vendored=true
 src/LiWiMus.Web.MailServer/**/*.* linguist-vendored=true
 src/LiWiMus.Infrastructure/Data/Migrations/**/*.* linguist-vendored=true
+src/LiWiMus.Core/Chats/**/*.* linguist-vendored=true
+src/LiWiMus.Core/Messages/**/*.* linguist-vendored=true
+src/LiWiMus.Core/Offices/**/*.* linguist-vendored=true
+src/LiWiMus.Core/OnlineConsultants/**/*.* linguist-vendored=true
