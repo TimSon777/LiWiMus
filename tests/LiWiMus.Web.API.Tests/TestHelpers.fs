@@ -11,3 +11,6 @@ module TestHelpers =
         ]
         
         QueryHelpers.AddQueryString(baseUrl.Replace(replace, id.ToString()), queries)
+        
+    let isNotNull x =
+        x |> isNull |> not

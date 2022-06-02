@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using LiWiMus.Core.Plans;
 using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
@@ -6,6 +7,7 @@ using LiWiMus.Core.Users;
 using LiWiMus.SharedKernel.Interfaces;
 using LiWiMus.Web.API.Shared;
 using LiWiMus.Web.API.Shared.Extensions;
+using LiWiMus.Web.Shared.Extensions;
 using MinimalApi.Endpoint;
 
 namespace LiWiMus.Web.API.UserPlans.Create;
@@ -16,14 +18,22 @@ public class Endpoint : IEndpoint<IResult, Request>
     private IRepository<Plan> _planRepository = null!;
     private IUserPlanManager _planManager = null!;
     private readonly IMapper _mapper;
+    private readonly IValidator<Request> _validator;
 
-    public Endpoint(IMapper mapper)
+    public Endpoint(IMapper mapper, IValidator<Request> validator)
     {
         _mapper = mapper;
+        _validator = validator;
     }
 
     public async Task<IResult> HandleAsync(Request request)
     {
+        var validationResult = await _validator.ValidateAsync(request);
+        if (!validationResult.IsValid)
+        {
+            return Results.ValidationProblem(validationResult.ToDictionary());
+        }
+        
         var user = await _userRepository.GetByIdAsync(request.UserId);
         if (user is null)
         {

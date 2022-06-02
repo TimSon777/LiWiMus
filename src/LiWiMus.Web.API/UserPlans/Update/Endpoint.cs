@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FluentValidation;
 using LiWiMus.Core.Plans;
 using LiWiMus.Core.Plans.Exceptions;
 using LiWiMus.Core.Plans.Interfaces;
@@ -16,12 +15,10 @@ public class Endpoint : IEndpoint<IResult, int, Request>
 {
     private IRepository<UserPlan> _repository = null!;
     private IUserPlanManager _planManager = null!;
-    private readonly IValidator<Request> _validator;
     private readonly IMapper _mapper;
 
-    public Endpoint(IValidator<Request> validator, IMapper mapper)
+    public Endpoint(IMapper mapper)
     {
-        _validator = validator;
         _mapper = mapper;
     }
 
@@ -31,12 +28,6 @@ public class Endpoint : IEndpoint<IResult, int, Request>
         if (userPlan is null)
         {
             return Results.Extensions.NotFoundById(EntityType.UserPlans, id);
-        }
-
-        var validationResult = await _validator.ValidateAsync(request);
-        if (!validationResult.IsValid)
-        {
-            return Results.ValidationProblem(validationResult.ToDictionary());
         }
 
         _mapper.Map(request, userPlan);

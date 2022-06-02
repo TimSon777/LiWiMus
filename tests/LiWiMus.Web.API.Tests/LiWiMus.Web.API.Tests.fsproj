@@ -60,6 +60,11 @@
         <Compile Include="Roles\ListTests.fs" />
         <Compile Include="Roles\ReadTests.fs" />
         <Compile Include="Roles\DeleteTests.fs" />
+        <Compile Include="UserPlans\TestsHelpers.fs" />
+        <Compile Include="UserPlans\ListTests.fs" />
+        <Compile Include="UserPlans\ReadTests.fs" />
+        <Compile Include="UserPlans\CreateTests.fs" />
+        <Compile Include="UserPlans\UpdateTests.fs" />
     </ItemGroup>
 
     <ItemGroup>
