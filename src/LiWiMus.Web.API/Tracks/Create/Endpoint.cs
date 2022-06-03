@@ -73,8 +73,8 @@ public class Endpoint : IEndpoint<IResult, Request>
             track.Owners.Add(artist);
         }
 
-        await _trackRepository.AddAsync(track);
-        return Results.NoContent();
+        var createdTrack = await _trackRepository.AddAsync(track);
+        return Results.Ok(createdTrack.Id);
     }
 
     public void AddRoute(IEndpointRouteBuilder app)
