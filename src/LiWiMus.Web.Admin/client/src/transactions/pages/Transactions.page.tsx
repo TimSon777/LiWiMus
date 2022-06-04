@@ -25,7 +25,7 @@ type FilterItem = {
 
 interface FilterModel extends Array<FilterItem> {}
 
-export default function UsersPage() {
+export default function TransactionsPage() {
   const transactionService = useTransactionService();
 
   const [rowsCount, setRowsCount] = useState(0);
@@ -45,7 +45,7 @@ export default function UsersPage() {
   const columns: GridColDef[] = [
     { field: "id", hide: true },
     {
-      field: "user",
+      field: "user.userName",
       headerName: "User",
       flex: 0.5,
       filterable: false,

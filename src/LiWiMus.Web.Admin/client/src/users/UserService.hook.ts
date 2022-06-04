@@ -28,7 +28,7 @@ const map = (data: any) =>
 export const useUserService = () => {
   const axios = useAxios("/users");
   const fileService = useFileService();
-
+  
   const getUsers = async (
     options: FilterOptions<User>
   ): Promise<PaginatedData<User>> => {
@@ -45,7 +45,12 @@ export const useUserService = () => {
       data: data.data.map((x: any) => map(x)),
     };
   };
-
+  
+  const getAllUsers = async (): Promise<PaginatedData<User>> => {
+    const response = await axios.get(``);
+    const data = response.data;
+    return data;
+  }
   const save = async (user: CreateUserDto) => {
     const response = await axios.post("", user);
     return map(response.data);

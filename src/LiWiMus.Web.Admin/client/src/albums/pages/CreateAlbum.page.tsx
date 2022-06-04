@@ -4,16 +4,17 @@ import ContrastTextField from "../../shared/components/ContrastTextField/Contras
 import ImageEditor from "../../shared/components/ImageEditor/ImageEditor";
 import { useNotifier } from "../../shared/hooks/Notifier.hook";
 import albumPlaceholder from "../../shared/images/image-placeholder.png";
-import { SubmitHandler, useForm } from "react-hook-form";
+import {Controller, SubmitHandler, useForm} from "react-hook-form";
 import { CreateAlbumDto } from "../types/CreateAlbumDto";
 import { useNavigate } from "react-router-dom";
-import { DatePicker } from "@mui/x-date-pickers";
+import {DatePicker, DateTimePicker} from "@mui/x-date-pickers";
 import { useAlbumService } from "../AlbumService.hook";
 import { useFileService } from "../../shared/hooks/FileService.hook";
+import { format, parse } from "date-fns";
 
 type Inputs = {
   title: string;
-  publishedAt: Date;
+  publishedAt: Date | null,
   photoFlag: string;
 };
 
@@ -26,8 +27,10 @@ export default function CreateAlbumPage() {
     formState: { errors },
     clearErrors,
     setValue,
-    getValues,
-  } = useForm<Inputs>();
+      control,
+  } = useForm<Inputs>({
+    defaultValues:{title:"", publishedAt: null, photoFlag:""}
+  });
 
   const [photo, setPhoto] = useState<File>();
   const [photoBase64, setPhotoBase64] = useState<string>(albumPlaceholder);
@@ -38,9 +41,10 @@ export default function CreateAlbumPage() {
     try {
       // @ts-ignore
       const coverLocation = await fileService.save(photo);
+      
       const dto: CreateAlbumDto = {
         title: data.title,
-        publishedAt: data.publishedAt,
+        publishedAt: format(data.publishedAt as Date, "yyyy-MM-dd"),
         coverLocation,
       };
       const album = await albumService.save(dto);
@@ -129,26 +133,31 @@ export default function CreateAlbumPage() {
                       maxLength: { value: 50, message: "Max length - 50" },
                     })}
                   />
-                  <DatePicker
-                    label={"Published at"}
-                    mask={"__.__.____"}
-                    value={getValues("publishedAt")}
-                    onChange={(newValue) => {
-                      newValue && setValue("publishedAt", newValue);
-                    }}
-                    renderInput={(params) => (
-                      <ContrastTextField
-                        InputLabelProps={{
-                          shrink: true,
-                        }}
-                        error={
-                          !!errors.publishedAt && !!errors.publishedAt.message
-                        }
-                        helperText={errors.publishedAt?.message}
-                        {...params}
-                        {...register("publishedAt", { required: true })}
-                      />
-                    )}
+                  <Controller
+                      name={"publishedAt"}
+                      control={control}
+                      rules={{
+                        required: { value: true, message: "Required" },
+                      }}
+                      
+                      render={({ field }) => (
+                          <DatePicker
+                              maxDate={new Date()}
+                              mask={"__.__.____"}
+                              label={"Published at"}
+                              InputProps={{
+                                error: !!errors.publishedAt,
+                              }}
+                              renderInput={(params) => (
+                                  <ContrastTextField
+                                      fullWidth
+                                      helperText={errors.publishedAt?.message}
+                                      {...params}
+                                  />
+                              )}
+                              {...field}
+                          />
+                      )}
                   />
                   <Button
                     type={"submit"}

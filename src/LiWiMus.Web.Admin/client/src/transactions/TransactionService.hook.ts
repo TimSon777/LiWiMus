@@ -14,6 +14,11 @@ export const useTransactionService = () => {
     });
     return response.data as PaginatedData<Transaction>;
   };
+  
+  const search = async () => {
+    const response = await axios.get("",);
+    return response
+  }
 
   const get = async (id: string) => {
     const response = await axios.get(`/${id}`);

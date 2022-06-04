@@ -24,21 +24,21 @@ export default function CreatePlanPage() {
   const { showError, showSuccess } = useNotifier();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    try {
-      // @ts-ignore
-      const dto: CreatePlanDto = {
-        name: data.name,
-        description: data.description,
-        pricePerMonth: data.pricePerMonth,
-      };
-      const genre = await PlanService.save(dto);
-      showSuccess("Plan created");
-      navigate(`/admin/plans/${genre.id}`);
-    } catch (e) {
-      showError(e);
-    }
-  };
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+        try {
+            // @ts-ignore
+            const dto: CreatePlanDto = {
+                name: data.name,
+                description: data.description,
+                pricePerMonth: data.pricePerMonth
+            };
+            const plan = await PlanService.save(dto);
+            showSuccess("Plan created");
+            navigate(`/admin/plans/${plan.id}`);
+        } catch (e) {
+            showError(e);
+        }
+    };
 
   return (
     <Grid container spacing={2} justifyContent={"center"}>

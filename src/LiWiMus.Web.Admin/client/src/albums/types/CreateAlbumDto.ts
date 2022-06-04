@@ -1,5 +1,5 @@
 ﻿export type CreateAlbumDto ={
     title: string,
-    publishedAt: Date,
+    publishedAt: string,
     coverLocation: string
 }

@@ -45,7 +45,7 @@ export const useTrackService = () => {
 
   const save = async (track: CreateTrackDto) => {
     const response = await axios.post(``, track);
-    return response.data as Artist;
+    return response.data as Track;
   };
 
   const remove = async (track: Track) => {
