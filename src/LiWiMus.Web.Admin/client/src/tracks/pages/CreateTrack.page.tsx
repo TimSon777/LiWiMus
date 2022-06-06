@@ -90,12 +90,12 @@ export default function CreateTrackPage() {
             // @ts-ignore
             const trackDuration = await getAudio(file)
             const dto: CreateTrackDto = {
-                albumId: albums.filter(a => a.label === data.albumId.split(": ")[1])[0].id,
+                albumId: albums.filter(a => a.label === data.albumId.split(" ")[0])[0].id,
                 name: data.name,
                 publishedAt: format(data.publishedAt as Date, "yyyy-MM-dd"),
                 fileLocation,
                 genreIds: [genres.filter(a => a.label === data.genreIds)[0].id],
-                ownerIds: [artists.filter(a => a.label === data.ownerIds.split(": ")[1])[0].id],
+                ownerIds: [artists.filter(a => a.label === data.ownerIds.split(" ")[0])[0].id],
                 duration: trackDuration.duration
             };
             const track = await trackService.save(dto);
@@ -148,15 +148,15 @@ export default function CreateTrackPage() {
 
                 const searchAlbumsAwait = await albumService.getAlbums({
                     filters: [{columnName: "title", operator: "cnt", value: albumValue}],
-                    page: {pageNumber: 1, numberOfElementsOnPage: 5}
+                   /* page: {pageNumber: 1, numberOfElementsOnPage: 5}*/
                 });
                 const searchArtistsAwait = await artistService.getArtists({
                     filters: [{columnName: "name", operator: "cnt", value: artistValue}],
-                    page: {pageNumber: 1, numberOfElementsOnPage: 5}
+                   /* page: {pageNumber: 1, numberOfElementsOnPage: 5}*/
                 });
                 const searchGenresAwait = await genreService.getGenres({
                     filters: [{columnName: "name", operator: "cnt", value: genreValue}],
-                    page: {pageNumber: 1, numberOfElementsOnPage: 5}
+                    /*page: {pageNumber: 1, numberOfElementsOnPage: 5}*/
                 });
 
                 const albumsSearchRes = searchAlbumsAwait.data.map(a => ({
@@ -195,7 +195,7 @@ export default function CreateTrackPage() {
                                 autoComplete
                                 onInputChange={event => setAlbumValue((event.target as HTMLInputElement).value)}
                                 fullWidth
-                                getOptionLabel={(option) => option.id.toString() +": "+ option.label }
+                                getOptionLabel={(option) => option.label + " (" +option.id.toString()+")" }
                                 isOptionEqualToValue={(option, value) => option.id === value.id}
                                 options={albumOptions}
                                 renderInput={(params) =>
@@ -226,8 +226,7 @@ export default function CreateTrackPage() {
                                 autoComplete
                                 onInputChange={event => setArtistValue((event.target as HTMLInputElement).value)}
                                 fullWidth
-                                getOptionLabel={(option) => option.id.toString() +": "+ option.label }
-                                isOptionEqualToValue={(option, value) => option.id === value.id}
+                                getOptionLabel={(option) => option.label + " (" +option.id.toString()+")" }                                isOptionEqualToValue={(option, value) => option.id === value.id}
                                 options={artistOptions}
                                 renderInput={(params) =>
                                     (<ContrastTextField
