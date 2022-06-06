@@ -1,8 +1,8 @@
 import axios from "axios";
 import Qs from "qs";
 import axiosRetry from "axios-retry";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/Auth.context";
+import {useContext} from "react";
+import {AuthContext} from "../contexts/Auth.context";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -10,7 +10,7 @@ const getMessage = (error: any): string => {
   if (error.response) {
     // The request was made and the server responded with a status code
     // that falls out of the range of 2xx
-    return error.response.statusText;
+    return `${error.response.status} ${error.response.statusText}`;
   } else if (error.request) {
     // The request was made but no response was received
     // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

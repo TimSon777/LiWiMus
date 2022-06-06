@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 // @ts-ignore
 import dateFormat from "dateformat";
-import { Link as RouterLink, useParams } from "react-router-dom";
-import { useNotifier } from "../../shared/hooks/Notifier.hook";
+import {Link as RouterLink, useParams} from "react-router-dom";
+import {useNotifier} from "../../shared/hooks/Notifier.hook";
 import Loading from "../../shared/components/Loading/Loading";
 import NotFound from "../../shared/components/NotFound/NotFound";
-import { Grid, Link, Stack, Typography } from "@mui/material";
+import {Grid, Link, Stack, Typography} from "@mui/material";
 import ReadonlyInfo from "../../shared/components/InfoItem/ReadonlyInfo";
 import InfoCard from "../../shared/components/InfoCard/InfoCard";
-import { Transaction } from "../types/Transaction";
+import {Transaction} from "../types/Transaction";
 import TransactionInfoEditor from "../components/TransactionInfoEditor/TransactionInfoEditor";
-import { useTransactionService } from "../TransactionService.hook";
+import {useTransactionService} from "../TransactionService.hook";
 
 export default function TransactionDetailsPage() {
   const transactionService = useTransactionService();
@@ -23,8 +23,8 @@ export default function TransactionDetailsPage() {
   useEffect(() => {
     transactionService
       .get(id)
-      .then((transaction) => {
-        setTransaction(transaction);
+      .then((t) => {
+        setTransaction({...transaction, ...t});
       })
       .catch((error) => showError(error))
       .then(() => setLoading(false));
@@ -93,7 +93,7 @@ export default function TransactionDetailsPage() {
           <Stack spacing={4}>
             <InfoCard
               title={"Amount"}
-              value={(+transaction.amount).toFixed(2)}
+              value={(+transaction.amount).toFixed(0)}
             />
           </Stack>
         </Grid>

@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import { Box, Typography } from "@mui/material";
+import React, {ReactElement} from "react";
+import {Box, Typography} from "@mui/material";
 
 type Props = {
   name: string;
@@ -22,10 +22,10 @@ export default function ReadonlyInfo({ name, value }: Props) {
         },
       }}
     >
-      <Typography variant={"h6"} component={"div"}>
+      <Typography variant={"h6"} component={"div"} sx={{mr: 2}}>
         {name}
       </Typography>
-      <Typography variant={"h6"} component={"div"}>
+      <Typography variant={"h6"} component={"div"} sx={{overflowX: "scroll", "&::-webkit-scrollbar": {width: "0px", background: "transparent"}}}>
         {value}
       </Typography>
     </Box>
