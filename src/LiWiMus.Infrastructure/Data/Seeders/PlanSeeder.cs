@@ -59,7 +59,7 @@ public class PlanSeeder : ISeeder
                     Id = 180000,
                     UserName = userName,
                     Email = "mockEmail@mock.mock_Plan",
-                    Gender = Gender.Male,
+                    Gender = Gender.Male
                 };
 
                 var result = await _userManager.CreateAsync(user, "Password");

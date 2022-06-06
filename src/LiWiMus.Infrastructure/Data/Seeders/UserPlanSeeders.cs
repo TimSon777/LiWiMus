@@ -2,6 +2,7 @@ using LiWiMus.Core.Plans;
 using LiWiMus.Core.Plans.Specifications;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Enums;
+using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
@@ -41,8 +42,6 @@ public class UserPlanSeeders : ISeeder
                     Id = 440000
                 };
 
-
-
                 var result = await _userManager.CreateAsync(user, "Password");
 
                 if (!result.Succeeded)
@@ -62,7 +61,7 @@ public class UserPlanSeeders : ISeeder
                     Id = 440000,
                     Plan = plan,
                     Start = DateTime.Now,
-                    End = DateTime.MaxValue,
+                    End = DateTime.Now.PlusYears(),
                     User = user
                 };
 

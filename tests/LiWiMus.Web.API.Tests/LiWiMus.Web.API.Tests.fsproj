@@ -43,7 +43,6 @@
         <Compile Include="Plans\Permissions\AddTests.fs" />
         <Compile Include="Plans\Permissions\RemoveTests.fs" />
         <Compile Include="Plans\Permissions\ReplaceAllTests.fs" />
-        <Compile Include="Users\Generators\LockoutTestsGeneratorFailure.fs" />
         <Compile Include="Users\CreateTests.fs" />
         <Compile Include="Users\LockoutTests.fs" />
         <Compile Include="Users\Roles\ListTests.fs" />

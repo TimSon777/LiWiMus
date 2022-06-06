@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using LiWiMus.Web.API.Shared;
 
 namespace LiWiMus.Web.API.Users.LockOut;
 
@@ -9,8 +8,6 @@ public class Validator : AbstractValidator<Request>
     public Validator()
     {
         RuleFor(request => request.End)
-            .NotEmpty()
-            .Must(r => r > DateTime.Now)
-            .WithMessage(ValidationMessages.DateGreaterThenNow);
+            .NotEmpty();
     }
 }

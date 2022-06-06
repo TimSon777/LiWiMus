@@ -223,7 +223,7 @@ export class TracksService {
 
         if (track.artists.length === 0) {
             throw new HttpException({
-                message: "The rack must have a genre."
+                message: "The track must have an artist."
             }, HttpStatus.CONFLICT)
         }
 

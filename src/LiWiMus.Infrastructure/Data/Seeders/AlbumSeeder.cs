@@ -3,6 +3,7 @@ using LiWiMus.Core.Artists;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Enums;
+using LiWiMus.SharedKernel.Extensions;
 using LiWiMus.SharedKernel.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
@@ -68,7 +69,8 @@ public class AlbumSeeder : ISeeder
                     Id = 90000,
                     CoverLocation = "Location",
                     Owners = new List<Artist> {artist1, artist2},
-                    Title = "MockAlbum_Album"
+                    Title = "MockAlbum_Album",
+                    PublishedAt = DateOnlyExtensions.Now
                 };
 
                 var track = new Track
@@ -78,7 +80,8 @@ public class AlbumSeeder : ISeeder
                     Duration = 90,
                     Name = "MockTrack_Album",
                     Owners = new List<Artist> {artist1},
-                    FileLocation = "Location"
+                    FileLocation = "Location",
+                    PublishedAt = DateOnlyExtensions.Now
                 };
 
                 _applicationContext.Add(track);
@@ -95,11 +98,11 @@ public class AlbumSeeder : ISeeder
                 {
                     Id = 90001,
                     CoverLocation = "Location",
-                    Title = "MockAlbum_Album"
+                    Title = "MockAlbum_Album",
+                    PublishedAt = DateOnlyExtensions.Now
                 };
 
                 _applicationContext.Add(albumEmpty);
-
                 _applicationContext.Add(artistWithoutAlbum);
                 break;
             case EnvironmentType.Production:

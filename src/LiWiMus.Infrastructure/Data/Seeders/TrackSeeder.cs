@@ -4,6 +4,7 @@ using LiWiMus.Core.Genres;
 using LiWiMus.Core.Tracks;
 using LiWiMus.Core.Users;
 using LiWiMus.Core.Users.Enums;
+using LiWiMus.SharedKernel.Extensions;
 using Microsoft.AspNetCore.Identity;
 
 namespace LiWiMus.Infrastructure.Data.Seeders;
@@ -73,6 +74,7 @@ public class TrackSeeder : ISeeder
                     Id = 220000,
                     CoverLocation = "Location",
                     Title = "MockAlbum_Track",
+                    PublishedAt = DateOnlyExtensions.Now
                 };
 
                 var genreToTrack = new Genre
@@ -96,7 +98,8 @@ public class TrackSeeder : ISeeder
                     Genres = new List<Genre> {genreToTrack},
                     Id = 220000,
                     Name = "MockTrack_Track",
-                    FileLocation = "Location"
+                    FileLocation = "Location",
+                    PublishedAt = DateOnlyExtensions.Now
                 };
 
                 _applicationContext.Add(track);

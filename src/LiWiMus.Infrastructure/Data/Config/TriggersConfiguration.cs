@@ -12,8 +12,30 @@ namespace LiWiMus.Infrastructure.Data.Config;
 
 public static class TriggersConfiguration
 {
+    private static volatile bool _forTests;
+    private static readonly object Lock = new();
+    
     public static void ConfigureTriggers()
     {
+        if (!_forTests)
+        {
+            lock (Lock)
+            {
+                if (!_forTests)
+                {
+                    _forTests = true;
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+        else
+        {
+            return;
+        }
+        
         Triggers<BaseEntity>.Inserting += entry => entry.Entity.CreatedAt = entry.Entity.ModifiedAt = DateTime.UtcNow;
         Triggers<BaseEntity>.Updating += entry => entry.Entity.ModifiedAt = DateTime.UtcNow;
 
