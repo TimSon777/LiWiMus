@@ -67,7 +67,9 @@ export default function CreateTransactionPage() {
                 }))
                 const searchUsersAwait = await userService.getUsers({
                     filters: [{columnName: "email", operator: "cnt", value: value}],
+/*
                     page: {pageNumber: 1, numberOfElementsOnPage: 5}
+*/
                 });
                 const searchUserRes = searchUsersAwait.data.map(a => ({
                     label: a.email, id: a.id
