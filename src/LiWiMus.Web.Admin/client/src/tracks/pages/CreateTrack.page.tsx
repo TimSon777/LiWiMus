@@ -47,8 +47,8 @@ export default function CreateTrackPage() {
     const [artists, setArtists] = useState<{ label: string | undefined; id: number; }[]>([])
     const [genres, setGenres] = useState<{ label: string | undefined; id: number; }[]>([])
 
-    const [albumOptions, setAlbumOptions] = useState<{ label: string | undefined; id: number; }[]>([])
-    const [artistOptions, setArtistOptions] = useState<{ label: string | undefined; id: number; }[]>([])
+    const [albumOptions, setAlbumOptions] = useState<{ label: string; id: number; }[]>([])
+    const [artistOptions, setArtistOptions] = useState<{ label: string; id: number; }[]>([])
     const [genreOptions, setGenreOptions] = useState<{ label: string | undefined; id: number; }[]>([])
 
 
@@ -90,17 +90,17 @@ export default function CreateTrackPage() {
             // @ts-ignore
             const trackDuration = await getAudio(file)
             const dto: CreateTrackDto = {
-                albumId: albums.filter(a => a.label === data.albumId)[0].id,
+                albumId: albums.filter(a => a.label === data.albumId.split(": ")[1])[0].id,
                 name: data.name,
                 publishedAt: format(data.publishedAt as Date, "yyyy-MM-dd"),
                 fileLocation,
                 genreIds: [genres.filter(a => a.label === data.genreIds)[0].id],
-                ownerIds: [artists.filter(a => a.label === data.ownerIds)[0].id],
+                ownerIds: [artists.filter(a => a.label === data.ownerIds.split(": ")[1])[0].id],
                 duration: trackDuration.duration
             };
             const track = await trackService.save(dto);
             showSuccess("Track created");
-            navigate(`/admin/tracks/${track.id}`);
+            navigate(`/admin/tracks/${track}`);
         } catch (e) {
             showError(e);
         }
@@ -195,6 +195,7 @@ export default function CreateTrackPage() {
                                 autoComplete
                                 onInputChange={event => setAlbumValue((event.target as HTMLInputElement).value)}
                                 fullWidth
+                                getOptionLabel={(option) => option.id.toString() +": "+ option.label }
                                 isOptionEqualToValue={(option, value) => option.id === value.id}
                                 options={albumOptions}
                                 renderInput={(params) =>
@@ -225,6 +226,7 @@ export default function CreateTrackPage() {
                                 autoComplete
                                 onInputChange={event => setArtistValue((event.target as HTMLInputElement).value)}
                                 fullWidth
+                                getOptionLabel={(option) => option.id.toString() +": "+ option.label }
                                 isOptionEqualToValue={(option, value) => option.id === value.id}
                                 options={artistOptions}
                                 renderInput={(params) =>
