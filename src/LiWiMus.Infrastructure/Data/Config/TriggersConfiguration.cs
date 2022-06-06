@@ -29,8 +29,8 @@ public static class TriggersConfiguration
                 return;
             }
             
-            _forTests = true;
             AddTriggers();
+            _forTests = true;
         }
     }
 
