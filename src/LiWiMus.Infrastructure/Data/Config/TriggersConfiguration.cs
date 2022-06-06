@@ -17,25 +17,25 @@ public static class TriggersConfiguration
     
     public static void ConfigureTriggers()
     {
-        if (!_forTests)
-        {
-            lock (Lock)
-            {
-                if (!_forTests)
-                {
-                    _forTests = true;
-                }
-                else
-                {
-                    return;
-                }
-            }
-        }
-        else
+        if (_forTests)
         {
             return;
         }
         
+        lock (Lock)
+        {
+            if (_forTests)
+            {
+                return;
+            }
+            
+            _forTests = true;
+            AddTriggers();
+        }
+    }
+
+    private static void AddTriggers()
+    {
         Triggers<BaseEntity>.Inserting += entry => entry.Entity.CreatedAt = entry.Entity.ModifiedAt = DateTime.UtcNow;
         Triggers<BaseEntity>.Updating += entry => entry.Entity.ModifiedAt = DateTime.UtcNow;
 
@@ -62,9 +62,6 @@ public static class TriggersConfiguration
 
         Triggers<User>.GlobalInserted.Add<IAvatarService>(async entry =>
             await entry.Service.SetRandomAvatarAsync(entry.Entity));
-
-        /*Triggers<User, ApplicationContext>.GlobalInserted.Add<UserManager<User>>(async entry =>
-            await entry.Service.AddToRoleAsync(entry.Entity, DefaultRoles.User.Name));*/
 
         Triggers<User>.GlobalInserted.Add<IUserPlanManager>(async entry =>
             await entry.Service.AddToDefaultPlanAsync(entry.Entity));
