@@ -90,12 +90,12 @@ export default function CreateTrackPage() {
             // @ts-ignore
             const trackDuration = await getAudio(file)
             const dto: CreateTrackDto = {
-                albumId: albums.filter(a => a.label === data.albumId.split(" ")[0])[0].id,
+                albumId: albums.filter(a => a.label === data.albumId.split(" (")[0])[0].id,
                 name: data.name,
                 publishedAt: format(data.publishedAt as Date, "yyyy-MM-dd"),
                 fileLocation,
                 genreIds: [genres.filter(a => a.label === data.genreIds)[0].id],
-                ownerIds: [artists.filter(a => a.label === data.ownerIds.split(" ")[0])[0].id],
+                ownerIds: [artists.filter(a => a.label === data.ownerIds.split(" (")[0])[0].id],
                 duration: trackDuration.duration
             };
             const track = await trackService.save(dto);
