@@ -16,8 +16,6 @@ import {TrackDto} from "../../tracks/dto/track.dto";
 export class ArtistsDto extends IdDto {
     @ApiProperty()
     @Expose()
-    @IsString()
-    @MaxLength(50)
     name: string;
 
     @ApiProperty()
@@ -41,4 +39,8 @@ export class ArtistsDto extends IdDto {
     @ApiProperty()
     @Expose()
     modifiedAt: Date;
+
+    @ApiProperty()
+    @Expose()
+    tracksCount: number;
 }

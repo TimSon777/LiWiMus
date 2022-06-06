@@ -25,6 +25,7 @@ import {ArtistsService} from "./artists.service";
 import {UserDto} from "../users/dto/user.dto";
 import {UserArtistDto} from "./dto/user.artist.dto";
 import {UpdateArtistDto} from "./dto/update.artist.dto";
+import {GenreDto} from "../genres/dto/genre.dto";
 
 @Controller('artists')
 @ApiTags('artists')
@@ -49,7 +50,10 @@ export class ArtistsController {
                 message: "The artist does not exist."
             }, HttpStatus.BAD_REQUEST)
         }
-       return plainToInstance(ArtistsDto, artist);
+
+        let result = plainToInstance(ArtistsDto, artist);
+        result.tracksCount = artist.tracks.length;
+        return result;
     }
 
     @Get()
