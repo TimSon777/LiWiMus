@@ -43,7 +43,7 @@ export default function ArtistsPage() {
   };
   const navigate = useNavigate();
   const columns: GridColDef[] = [
-    { field: "id", hide: true },
+    { field: "id" },
     {
       field: "name",
       headerName: "Name",

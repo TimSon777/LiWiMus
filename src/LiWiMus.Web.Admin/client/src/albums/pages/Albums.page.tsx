@@ -44,7 +44,7 @@ export default function AlbumsPage() {
   };
   const navigate = useNavigate();
   const columns: GridColDef[] = [
-    { field: "id", hide: true },
+    { field: "id"},
     {
       field: "title",
       headerName: "Title",
