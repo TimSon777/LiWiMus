@@ -44,7 +44,7 @@ export class ArtistsController {
     @Get(':id')
     @ApiOkResponse({ type: ArtistsDto })
     async getArtistById(@Param('id') id : string) : Promise<ArtistsDto> {
-        let artist = await Artist.findOne(+id, {relations: ['albums']});
+        let artist = await Artist.findOne(+id, {relations: ['albums', 'tracks']});
         if(!artist){
             throw new HttpException({
                 message: "The artist does not exist."
