@@ -113,7 +113,8 @@ export default function UsersPage() {
   ];
   const columnsOptions: any[] = columns
     .filter(
-      (name) => name.headerName !== undefined && name.headerName !== "Edit"
+      (name) => name.headerName !== undefined && name.headerName !== "Edit" &&
+          name.headerName !== "PublishedAt"
     )
     .map((opt) => opt.headerName);
   const operatorsOptions: string[] = filterOperators.map((a) => a.value);

@@ -54,7 +54,7 @@ export default function UsersPage() {
     },
     {
       field: "createdAt",
-      headerName: "createdAt",
+      headerName: "CreatedAt",
       flex: 0.5,
       filterable: false,
       valueFormatter: (params) =>
@@ -62,7 +62,7 @@ export default function UsersPage() {
     },
     {
       field: "modifiedAt",
-      headerName: "modifiedAt",
+      headerName: "ModifiedAt",
       flex: 0.5,
       filterable: false,
       valueFormatter: (params) =>
@@ -115,7 +115,9 @@ export default function UsersPage() {
   ];
   const columnsOptions: any[] = columns
     .filter(
-      (name) => name.headerName !== undefined && name.headerName !== "Edit"
+      (name) => name.headerName !== undefined && name.headerName !== "Edit" &&
+          name.headerName !== "CreatedAt" &&
+          name.headerName !== "ModifiedAt"
     )
     .map((opt) => opt.headerName);
   const operatorsOptions: string[] = filterOperators.map((a) => a.value);

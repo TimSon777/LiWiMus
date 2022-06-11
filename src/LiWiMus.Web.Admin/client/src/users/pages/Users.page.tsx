@@ -140,7 +140,8 @@ export default function UsersPage() {
         name.headerName !== undefined &&
         name.headerName !== "Edit" &&
         name.headerName !== "Email Confirmed" &&
-        name.headerName !== "Phone Confirmed"
+        name.headerName !== "Phone Confirmed" &&
+          name.headerName !== "BirthDate"
     )
     .map((opt) => opt.headerName);
   const operatorsOptions: string[] = filterOperators.map((a) => a.value);
