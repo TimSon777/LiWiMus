@@ -53,7 +53,7 @@ builder.Services
        .AddOpenIddict()
        .AddValidation(options =>
        {
-           options.SetIssuer("http://localhost:5020");
+           options.SetIssuer(builder.Configuration["AuthUrl"]);
            options.UseSystemNetHttp();
            options.UseAspNetCore();
            options.Configure(a => a.TokenValidationParameters.IssuerSigningKey =
